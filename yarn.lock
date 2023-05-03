@@ -34,7 +34,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-advisor@npm:^3.0.3":
+"@azure/arm-advisor@npm:^3.1.0":
   version: 3.1.0
   resolution: "@azure/arm-advisor@npm:3.1.0"
   dependencies:
@@ -47,29 +47,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:9.1.0":
-  version: 9.1.0
-  resolution: "@azure/arm-consumption@npm:9.1.0"
+"@azure/arm-consumption@npm:^9.2.0":
+  version: 9.2.0
+  resolution: "@azure/arm-consumption@npm:9.2.0"
   dependencies:
     "@azure/core-auth": ^1.3.0
-    "@azure/core-client": ^1.5.0
+    "@azure/core-client": ^1.6.1
     "@azure/core-paging": ^1.2.0
     "@azure/core-rest-pipeline": ^1.8.0
     tslib: ^2.2.0
-  checksum: 4e8f8f61433e3c031c1072a627375c8e5f183c78e0ad623e00f0f04013e5a535f5dcdc7c042212871032913053dbda572b7f8982c2940cbccba7ba49166d05c5
+  checksum: c37cab95d06a3462725609cdc1e32ea95540f865f2cdf67df7841819b37a3eee2bbe9a9eaed2267b371b3d92ee1090b1fbf356f22798392440bc2141e2c4ae36
   languageName: node
   linkType: hard
 
-"@azure/arm-resources-subscriptions@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@azure/arm-resources-subscriptions@npm:2.0.1"
+"@azure/arm-resources-subscriptions@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@azure/arm-resources-subscriptions@npm:2.0.2"
   dependencies:
     "@azure/core-auth": ^1.3.0
-    "@azure/core-client": ^1.5.0
+    "@azure/core-client": ^1.6.1
     "@azure/core-paging": ^1.2.0
     "@azure/core-rest-pipeline": ^1.8.0
     tslib: ^2.2.0
-  checksum: b39332c922ca7638df0e6a865ba50950a43c130185c8078d9d3434dbfa44ca7c8068d8570eb20d86db73674b68c8f108c3b0cf5aeb79859cfb348fdf1cf577b1
+  checksum: b9971dbfbae8b418a3a1f0200a8e503ac9a9651cf60a28eef83673a67529ef3af0653a3bee6da6e3a7548aa9e8e48a1818f79460dc5e9044914227093a108fd9
   languageName: node
   linkType: hard
 
@@ -83,18 +83,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-client@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@azure/core-client@npm:1.6.0"
+"@azure/core-auth@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@azure/core-auth@npm:1.4.0"
   dependencies:
     "@azure/abort-controller": ^1.0.0
-    "@azure/core-auth": ^1.3.0
-    "@azure/core-rest-pipeline": ^1.5.0
+    tslib: ^2.2.0
+  checksum: 1c76c296fe911ad39fc780b033c25a92c41c5a15f011b816d42c13584f627a4dd153dfb4334900ec93eb5b006e14bdda37e8412a7697c5a9636a0abaccffad39
+  languageName: node
+  linkType: hard
+
+"@azure/core-client@npm:^1.4.0, @azure/core-client@npm:^1.6.1":
+  version: 1.7.2
+  resolution: "@azure/core-client@npm:1.7.2"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    "@azure/core-auth": ^1.4.0
+    "@azure/core-rest-pipeline": ^1.9.1
     "@azure/core-tracing": ^1.0.0
     "@azure/core-util": ^1.0.0
     "@azure/logger": ^1.0.0
     tslib: ^2.2.0
-  checksum: 5f9c0d48d03f382ac04e34dbfbcd846f829f5df668b8d357927da75d2c8e4a06460f6e51a843abea0ed39e0c0d4a53a1dfe6134c7dadd14c5f96ece601a44ea2
+  checksum: 2c6af345ed7f97d7d214873cf08c2564603c659abc8950a1b866b137dfb8b68cc367f75a1c0d0ea840ac8f66a50604661f6f2569184dcda717ec4e62c3c6d977
   languageName: node
   linkType: hard
 
@@ -107,7 +117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-rest-pipeline@npm:^1.1.0, @azure/core-rest-pipeline@npm:^1.5.0, @azure/core-rest-pipeline@npm:^1.8.0":
+"@azure/core-rest-pipeline@npm:^1.1.0, @azure/core-rest-pipeline@npm:^1.8.0":
   version: 1.9.0
   resolution: "@azure/core-rest-pipeline@npm:1.9.0"
   dependencies:
@@ -122,6 +132,23 @@ __metadata:
     tslib: ^2.2.0
     uuid: ^8.3.0
   checksum: a8d21693251b7c2c87b52c62b4dd4a37901a82be8b050283821a56ec80257ef39cb2aa36f7f57bf0cb425ab4c04d84df74e019db8a6b404f1d40a81a08f8e260
+  languageName: node
+  linkType: hard
+
+"@azure/core-rest-pipeline@npm:^1.9.1":
+  version: 1.10.3
+  resolution: "@azure/core-rest-pipeline@npm:1.10.3"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    "@azure/core-auth": ^1.4.0
+    "@azure/core-tracing": ^1.0.1
+    "@azure/core-util": ^1.3.0
+    "@azure/logger": ^1.0.0
+    form-data: ^4.0.0
+    http-proxy-agent: ^5.0.0
+    https-proxy-agent: ^5.0.0
+    tslib: ^2.2.0
+  checksum: 6704101a2d6ca651ffc09e4d9fa77bc9718ed0d9b96b93d23a845dbac50a71bb089486808230ebaf59c9cb2557661ee5b020222ad5ad6d49d09b47c6ed11fce4
   languageName: node
   linkType: hard
 
@@ -143,9 +170,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@azure/identity@npm:3.0.0"
+"@azure/core-util@npm:^1.3.0":
+  version: 1.3.1
+  resolution: "@azure/core-util@npm:1.3.1"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    tslib: ^2.2.0
+  checksum: 861d9bd1a9db863bfc71b95447d548f100bec975670efb658ddc9b7c0d676d03a21a48042aa9ec853ad6b1bd38da2cf3069cd7e872196bea1598bf4357430d8f
+  languageName: node
+  linkType: hard
+
+"@azure/identity@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@azure/identity@npm:3.1.4"
   dependencies:
     "@azure/abort-controller": ^1.0.0
     "@azure/core-auth": ^1.3.0
@@ -154,16 +191,16 @@ __metadata:
     "@azure/core-tracing": ^1.0.0
     "@azure/core-util": ^1.0.0
     "@azure/logger": ^1.0.0
-    "@azure/msal-browser": ^2.26.0
-    "@azure/msal-common": ^7.0.0
-    "@azure/msal-node": ^1.10.0
+    "@azure/msal-browser": ^2.32.2
+    "@azure/msal-common": ^9.0.2
+    "@azure/msal-node": ^1.14.6
     events: ^3.0.0
     jws: ^4.0.0
     open: ^8.0.0
     stoppable: ^1.1.0
     tslib: ^2.2.0
     uuid: ^8.3.0
-  checksum: 1af675d6082d86d6325aa4db5e1e75aa730ec5f39e490e94236dc043908191bac9ccbaa0a7491a41678d07101082d0de0b7f415131d471ba47b1fef0b608fc1b
+  checksum: 8851b32623565235ca390e8db340a7320864267c552a44d5e564db126d0dc7020b7de787914e50578b720ed80b99c87e957dfe302400cd50d64367e33ee294a0
   languageName: node
   linkType: hard
 
@@ -200,9 +237,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/ms-rest-js@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@azure/ms-rest-js@npm:2.6.2"
+"@azure/ms-rest-js@npm:^2.6.6":
+  version: 2.6.6
+  resolution: "@azure/ms-rest-js@npm:2.6.6"
   dependencies:
     "@azure/core-auth": ^1.1.4
     abort-controller: ^3.0.0
@@ -212,8 +249,8 @@ __metadata:
     tslib: ^1.10.0
     tunnel: 0.0.6
     uuid: ^8.3.2
-    xml2js: ^0.4.19
-  checksum: de650dfc3928a2036923fb3bf50e0324f9f36f5d320ca6d128005b1345ad80b39ab3410073ac35fb137dec4c7d799c602b1cafdf9573b3432b6b8eee8a1e39f8
+    xml2js: ^0.5.0
+  checksum: bd85d2df8da800c96c062a9ce26e98f72ee6fa61c9e010ec45fc3f63f9276a2668737a73dd2e19729dcfb81f22eedc7919262cc24ae5581ab4f4b526a5fcb6c1
   languageName: node
   linkType: hard
 
@@ -228,30 +265,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-browser@npm:^2.26.0":
-  version: 2.30.0
-  resolution: "@azure/msal-browser@npm:2.30.0"
+"@azure/msal-browser@npm:^2.32.2":
+  version: 2.36.0
+  resolution: "@azure/msal-browser@npm:2.36.0"
   dependencies:
-    "@azure/msal-common": ^7.6.0
-  checksum: 571722fb4a774a7f069459c1d3af8e886f7660fa384f46a8d2eaeda98fb8eab427907f159d62dc01f5128844484bfb4401a63a9c3f7634f59f3d4e3194cc80ac
+    "@azure/msal-common": ^12.1.0
+  checksum: bfb6fdad074ae8b426bbae8713bebef9a28b2c447ce87bd50cee051c85c026a5568e235b1536c6a9cd3bb0abd14e46572b0af487f4a4c814b4f3e3787c45bda0
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:^7.0.0, @azure/msal-common@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@azure/msal-common@npm:7.6.0"
-  checksum: b2541603c87778daad4627ddd796577651ccae18c93d518f4c0e40e42475dab8781644903ad1c7f876277e0c436d47548c82d9034b458bca00c746fd465ae184
+"@azure/msal-common@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "@azure/msal-common@npm:12.1.0"
+  checksum: 6ed6fa9d8303906617ad1f1d0e4805e297c5ca6fa72ff5095febed99daf5e0a5e9b59b6ec3baa62d996eb6356ecf8d104633a3c6a6414759c05e58e3fa82399b
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^1.10.0":
-  version: 1.14.2
-  resolution: "@azure/msal-node@npm:1.14.2"
+"@azure/msal-common@npm:^9.0.2":
+  version: 9.1.1
+  resolution: "@azure/msal-common@npm:9.1.1"
+  checksum: d51d645ee485b699a0fbeab6d9bb01c91f4124704f756266e109c2d1d8ea0ca8d66a9ab81f62f9f76e7358906badcf7d2dd9911c18e20f57770ec9beb4fc4fcd
+  languageName: node
+  linkType: hard
+
+"@azure/msal-node@npm:^1.14.6":
+  version: 1.17.1
+  resolution: "@azure/msal-node@npm:1.17.1"
   dependencies:
-    "@azure/msal-common": ^7.6.0
-    jsonwebtoken: ^8.5.1
+    "@azure/msal-common": ^12.1.0
+    jsonwebtoken: ^9.0.0
     uuid: ^8.3.0
-  checksum: 5becc4cce60957c619b1b709f89fae5d56586e13487979474c5e50554bfa56c58edae64d88ac6141b86ccd0ebb38d813323d62bacc0703c275a1b8e5ee62b128
+  checksum: cbc06cbaa4a2cc36d34bf90460321458b903d8a7f909f34626037e7c3faf8e9562020c4fc7dcf99d461e447a655a47ba25af32d1ce4f1911d4c6ec1712903d22
   languageName: node
   linkType: hard
 
@@ -2223,7 +2267,7 @@ __metadata:
     moment: ^2.29.1
     mongodb: ^4.7.0
     prettier: ^2.5.1
-    ramda: ^0.28.0
+    ramda: ^0.29.0
     rimraf: ^3.0.2
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
@@ -2258,7 +2302,7 @@ __metadata:
     moment: ^2.29.1
     onchange: ^7.1.0
     prettier: ^2.5.1
-    ramda: ^0.28.0
+    ramda: ^0.29.0
     rimraf: ^3.0.2
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
@@ -2272,11 +2316,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
-    "@azure/arm-advisor": ^3.0.3
-    "@azure/arm-consumption": ^9.1.0
-    "@azure/arm-resources-subscriptions": ^2.0.1
-    "@azure/identity": ^3.0.0
-    "@azure/ms-rest-js": ^2.6.2
+    "@azure/arm-advisor": ^3.1.0
+    "@azure/arm-consumption": ^9.2.0
+    "@azure/arm-resources-subscriptions": ^2.0.2
+    "@azure/identity": ^3.1.4
+    "@azure/ms-rest-js": ^2.6.6
     "@azure/ms-rest-nodeauth": ^3.1.1
     "@cloud-carbon-footprint/common": ^1.10.0
     "@cloud-carbon-footprint/core": ^0.17.1
@@ -2310,8 +2354,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
-    "@azure/arm-consumption": ^9.1.0
-    "@azure/arm-resources-subscriptions": ^2.0.1
+    "@azure/arm-consumption": ^9.2.0
+    "@azure/arm-resources-subscriptions": ^2.0.2
     "@cloud-carbon-footprint/app": 1.2.0
     "@cloud-carbon-footprint/common": ^1.10.0
     "@types/cli-table": ^0.3.0
@@ -2319,7 +2363,7 @@ __metadata:
     "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/prompts": ^2.0.12
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.29.0
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -2341,7 +2385,7 @@ __metadata:
     moment: ^2.29.1
     onchange: ^7.1.0
     prettier: ^2.5.1
-    ramda: ^0.28.0
+    ramda: ^0.29.0
     rimraf: ^3.0.2
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
@@ -2374,7 +2418,7 @@ __metadata:
     "@types/jest": ^27.4.0
     "@types/mockdate": ^3.0.0
     "@types/node": ^17.0.8
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.29.0
     "@types/react": ^18.0.27
     "@types/react-dates": ^21.8.2
     "@types/react-dom": ^17.0.11
@@ -2399,7 +2443,7 @@ __metadata:
     mockdate: ^3.0.5
     moment: ^2.29.1
     prettier: ^2.5.1
-    ramda: ^0.28.0
+    ramda: ^0.29.0
     react: ^18.2.0
     react-apexcharts: ^1.3.9
     react-dates: ^21.8.0
@@ -2450,7 +2494,7 @@ __metadata:
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.29.0
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -2465,7 +2509,7 @@ __metadata:
     moment: ^2.29.1
     onchange: ^7.1.0
     prettier: ^2.5.1
-    ramda: ^0.28.0
+    ramda: ^0.29.0
     rimraf: ^3.0.2
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
@@ -6112,12 +6156,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ramda@npm:^0.27.40":
-  version: 0.27.66
-  resolution: "@types/ramda@npm:0.27.66"
+"@types/ramda@npm:^0.29.0":
+  version: 0.29.0
+  resolution: "@types/ramda@npm:0.29.0"
   dependencies:
-    ts-toolbelt: ^6.15.1
-  checksum: eea577e4a0934849b4103c1452a7c8ddbc9bbf0e2aafb908467212654555145f846a16fe737563b582e8fb5bd6698481ebec1237537e5e662587c47f626e4c92
+    types-ramda: ^0.29.1
+  checksum: f133675d7cf0df801de3d9790bc04af76e489179c31f21f6bbd8939dd659cefd878cce77f7abba41b04c6986c25008e3dd55c3250315e5232b5bccac213e5da9
   languageName: node
   linkType: hard
 
@@ -6707,9 +6751,9 @@ __metadata:
   linkType: hard
 
 "@xmldom/xmldom@npm:^0.7.0":
-  version: 0.7.5
-  resolution: "@xmldom/xmldom@npm:0.7.5"
-  checksum: 8d7ec35c1ef6183b4f621df08e01d7e61f244fb964a4719025e65fe6ac06fac418919be64fb40fe5908e69158ef728f2d936daa082db326fe04603012b5f2a84
+  version: 0.7.8
+  resolution: "@xmldom/xmldom@npm:0.7.8"
+  checksum: 3bae232f9e6e8218a2c4ab4baa0e2afd5d15d070236cd14b36a59261e5bc9ab26ddf919671fd3ed7474552c7528cf659f14993fdb12f26418f568121f8f4385f
   languageName: node
   linkType: hard
 
@@ -10613,13 +10657,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.9.3":
-  version: 5.10.0
-  resolution: "enhanced-resolve@npm:5.10.0"
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.12.0
+  resolution: "enhanced-resolve@npm:5.12.0"
   dependencies:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
-  checksum: 0bb9830704db271610f900e8d79d70a740ea16f251263362b0c91af545576d09fe50103496606c1300a05e588372d6f9780a9bc2e30ce8ef9b827ec8f44687ff
+  checksum: bf3f787facaf4ce3439bef59d148646344e372bef5557f0d37ea8aa02c51f50a925cd1f07b8d338f18992c29f544ec235a8c64bcdb56030196c48832a5494174
   languageName: node
   linkType: hard
 
@@ -15015,6 +15059,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonwebtoken@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "jsonwebtoken@npm:9.0.0"
+  dependencies:
+    jws: ^3.2.2
+    lodash: ^4.17.21
+    ms: ^2.1.1
+    semver: ^7.3.8
+  checksum: b9181cecf9df99f1dc0253f91ba000a1aa4d91f5816d1608c0dba61a5623726a0bfe200b51df25de18c1a6000825d231ad7ce2788aa54fd48dcb760ad9eb9514
+  languageName: node
+  linkType: hard
+
 "jsprim@npm:^1.2.2":
   version: 1.4.2
   resolution: "jsprim@npm:1.4.2"
@@ -15451,13 +15507,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "loader-utils@npm:2.0.2"
+  version: 2.0.4
+  resolution: "loader-utils@npm:2.0.4"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^2.1.2
-  checksum: 9078d1ed47cadc57f4c6ddbdb2add324ee7da544cea41de3b7f1128e8108fcd41cd3443a85b7ee8d7d8ac439148aa221922774efe4cf87506d4fb054d5889303
+  checksum: a5281f5fff1eaa310ad5e1164095689443630f3411e927f95031ab4fb83b4a98f388185bb1fe949e8ab8d4247004336a625e9255c22122b815bb9a4c5d8fc3b7
   languageName: node
   linkType: hard
 
@@ -19177,10 +19233,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ramda@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "ramda@npm:0.28.0"
-  checksum: 44ea6e5010bba70151b6a92d8114a91915e8b5a16105cce65fae58c9d7386b812c429645e35f21141d7087568550ce383bc10ee1a65cdec951f4b69ea457e6a4
+"ramda@npm:^0.29.0":
+  version: 0.29.0
+  resolution: "ramda@npm:0.29.0"
+  checksum: 9ab26c06eb7545cbb7eebcf75526d6ee2fcaae19e338f165b2bf32772121e7b28192d6664d1ba222ff76188ba26ab307342d66e805dbb02c860560adc4d5dd57
   languageName: node
   linkType: hard
 
@@ -20615,14 +20671,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.1.2":
-  version: 7.3.8
-  resolution: "semver@npm:7.3.8"
+"semver@npm:^7.3.8":
+  version: 7.5.0
+  resolution: "semver@npm:7.5.0"
   dependencies:
     lru-cache: ^6.0.0
   bin:
     semver: bin/semver.js
-  checksum: ba9c7cbbf2b7884696523450a61fee1a09930d888b7a8d7579025ad93d459b2d1949ee5bbfeb188b2be5f4ac163544c5e98491ad6152df34154feebc2cc337c1
+  checksum: 2d266937756689a76f124ffb4c1ea3e1bbb2b263219f90ada8a11aebebe1280b13bb76cca2ca96bdee3dbc554cbc0b24752eb895b2a51577aa644427e9229f2b
   languageName: node
   linkType: hard
 
@@ -22710,10 +22766,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-toolbelt@npm:^6.15.1":
-  version: 6.15.5
-  resolution: "ts-toolbelt@npm:6.15.5"
-  checksum: 24ad00cfd9ce735c76c873a9b1347eac475b94e39ebbdf100c9019dce88dd5f4babed52884cf82bb456a38c28edd0099ab6f704b84b2e5e034852b618472c1f3
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 9f35fd95d895a5d32ea9fd2e532a695b0bae6cbff6832b77292efa188a0ed1ed6e54f63f74a8920390f3d909a7a3adb20a144686372a8e78b420246a9bd3d58a
   languageName: node
   linkType: hard
 
@@ -22919,6 +22975,15 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
+  languageName: node
+  linkType: hard
+
+"types-ramda@npm:^0.29.1":
+  version: 0.29.1
+  resolution: "types-ramda@npm:0.29.1"
+  dependencies:
+    ts-toolbelt: ^9.6.0
+  checksum: b67391954cbd75528a09ff8433c11c32ae3f3af28e2b0c0fb05807208cdb6d221aa860732d28174adcd3038ec2ad6c3d9c26bbc1b5379dca555de6e9504668e4
   languageName: node
   linkType: hard
 
@@ -23381,7 +23446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"watchpack@npm:^2.3.1":
+"watchpack@npm:^2.4.0":
   version: 2.4.0
   resolution: "watchpack@npm:2.4.0"
   dependencies:
@@ -23550,19 +23615,19 @@ __metadata:
   linkType: hard
 
 "webpack@npm:^5.64.4":
-  version: 5.73.0
-  resolution: "webpack@npm:5.73.0"
+  version: 5.76.3
+  resolution: "webpack@npm:5.76.3"
   dependencies:
     "@types/eslint-scope": ^3.7.3
     "@types/estree": ^0.0.51
     "@webassemblyjs/ast": 1.11.1
     "@webassemblyjs/wasm-edit": 1.11.1
     "@webassemblyjs/wasm-parser": 1.11.1
-    acorn: ^8.4.1
+    acorn: ^8.7.1
     acorn-import-assertions: ^1.7.6
     browserslist: ^4.14.5
     chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.9.3
+    enhanced-resolve: ^5.10.0
     es-module-lexer: ^0.9.0
     eslint-scope: 5.1.1
     events: ^3.2.0
@@ -23575,14 +23640,14 @@ __metadata:
     schema-utils: ^3.1.0
     tapable: ^2.1.1
     terser-webpack-plugin: ^5.1.3
-    watchpack: ^2.3.1
+    watchpack: ^2.4.0
     webpack-sources: ^3.2.3
   peerDependenciesMeta:
     webpack-cli:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: aa434a241bad6176b68e1bf0feb1972da4dcbf27cb3d94ae24f6eb31acc37dceb9c4aae55e068edca75817bfe91f13cd20b023ac55d9b1b2f8b66a4037c9468f
+  checksum: 363f536b56971d056e34ab4cffa4cbc630b220e51be1a8c3adea87d9f0b51c49cfc7c3720d6614a1fd2c8c63f1ab3100db916fe8367c8bb9299327ff8c3f856d
   languageName: node
   linkType: hard
 
@@ -24150,6 +24215,16 @@ __metadata:
     sax: ">=0.6.0"
     xmlbuilder: ~11.0.0
   checksum: ca0cf2dfbf6deeaae878a891c8fbc0db6fd04398087084edf143cdc83d0509ad0fe199b890f62f39c4415cf60268a27a6aed0d343f0658f8779bd7add690fa98
+  languageName: node
+  linkType: hard
+
+"xml2js@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "xml2js@npm:0.5.0"
+  dependencies:
+    sax: ">=0.6.0"
+    xmlbuilder: ~11.0.0
+  checksum: 1aa71d62e5bc2d89138e3929b9ea46459157727759cbc62ef99484b778641c0cd21fb637696c052d901a22f82d092a3e740a16b4ce218e81ac59b933535124ea
   languageName: node
   linkType: hard
 

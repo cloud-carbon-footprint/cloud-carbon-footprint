@@ -12,7 +12,6 @@ import {
 } from './VirtualMachineTypes'
 import { AZURE_REGIONS } from './AzureRegions'
 import { UsageDetailResult } from './ConsumptionTypes'
-import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
 import { configLoader, Logger } from '@cloud-carbon-footprint/common'
 
 const RESOURCE_GROUP_TAG_NAME = 'resourceGroup'
@@ -41,7 +40,7 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     }
 
     if (tagNames.includes(RESOURCE_GROUP_TAG_NAME)) {
-      this.tags.resourceGroup = usageDetail.properties.resourceGroup
+      this.tags.resourceGroup = usageDetail.resourceGroup
     }
   }
 
@@ -104,32 +103,29 @@ export default class ConsumptionDetailRow extends BillingDataRow {
 const getConsumptionDetails = (usageDetail: UsageDetailResult) => {
   const consumptionDetails: Partial<BillingDataRow> = {
     cloudProvider: 'AZURE',
-    accountName: usageDetail.properties.subscriptionName,
-    timestamp: new Date(usageDetail.properties.date),
-    usageAmount: usageDetail.properties.quantity,
-    region: usageDetail.properties.resourceLocation,
+    accountName: usageDetail.subscriptionName,
+    timestamp: new Date(usageDetail.date),
+    usageAmount: usageDetail.quantity,
+    region: usageDetail.resourceLocation,
   }
 
-  let properties
   if (usageDetail.kind === 'modern') {
-    properties = usageDetail.properties as ModernUsageDetail
     return {
       ...consumptionDetails,
-      accountId: properties.subscriptionGuid,
-      usageType: properties.meterName,
-      usageUnit: properties.unitOfMeasure,
-      serviceName: properties.meterCategory,
-      cost: properties.costInUSD,
+      accountId: usageDetail.subscriptionGuid,
+      usageType: usageDetail.meterName,
+      usageUnit: usageDetail.unitOfMeasure,
+      serviceName: usageDetail.meterCategory,
+      cost: usageDetail.costInUSD,
     }
   } else {
-    properties = usageDetail.properties as LegacyUsageDetail
     return {
       ...consumptionDetails,
       accountId: usageDetail.id,
-      usageType: properties.meterDetails.meterName,
-      usageUnit: properties.meterDetails.unitOfMeasure,
-      serviceName: properties.meterDetails.meterCategory,
-      cost: properties.cost,
+      usageType: usageDetail.meterDetails.meterName,
+      usageUnit: usageDetail.meterDetails.unitOfMeasure,
+      serviceName: usageDetail.meterDetails.meterCategory,
+      cost: usageDetail.cost,
     }
   }
 }

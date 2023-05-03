@@ -10,10 +10,8 @@ describe('ConsumptionDetailRow', () => {
     //given
     const computeConsumptionDetails: LegacyUsageDetail = {
       kind: null,
-      properties: {
-        meterDetails: {
-          meterName: 'test-usageType',
-        },
+      meterDetails: {
+        meterName: 'test-usageType',
       },
     }
 

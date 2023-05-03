@@ -23,9 +23,7 @@
     "@babel/core": "~7.16.7",
     "@types/eslint": "^8.2.1",
     "google-auth-library": "^7.11.0",
-    "typescript": "^4.6.2",
-    "@azure/arm-consumption": "9.1.0",
-    "@azure/core-client": "1.6.0"
+    "typescript": "^4.6.2"
   },
   "workspaces": {
     "packages": [

@@ -23,13 +23,8 @@ export type UsageRowPageErrorResponse = {
   message: string
 }
 
-export type UsageDetailResult = {
-  id: string
-  name: string
-  type: string
+export type UsageDetailResult = (LegacyUsageDetail | ModernUsageDetail) & {
   tags: TagCollection
-  kind: string
-  properties: LegacyUsageDetail | ModernUsageDetail
 }
 
 export const UNKNOWN_SERVICES: string[] = [

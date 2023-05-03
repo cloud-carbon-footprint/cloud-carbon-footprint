@@ -19,13 +19,27 @@ export interface ClientConfig {
   START_DATE: string
   END_DATE: string
   DISABLE_CACHE: boolean
+  TEST_MODE: boolean
 }
 
-const previousYearOfUsage =
+let previousYearOfUsage =
   !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE &&
   process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE !== 'false'
+let groupBy = process.env.REACT_APP_GROUP_BY || 'day'
+let pageLimit = process.env.REACT_APP_PAGE_LIMIT || '50000'
+let baseUrl = process.env.REACT_APP_BASE_URL || '/api'
+let endDate = process.env.REACT_APP_END_DATE
+let minDateAge = process.env.REACT_APP_MINIMAL_DATE_AGE || '0'
 
-const groupBy = process.env.REACT_APP_GROUP_BY || 'day'
+// For local development / integration testing
+if (process.env.REACT_APP_TEST_MODE === 'true') {
+  previousYearOfUsage = true
+  groupBy = 'month'
+  pageLimit = '1000'
+  baseUrl = 'http://127.0.0.1:3000/api'
+  endDate = null
+  minDateAge = '0'
+}
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
@@ -39,12 +53,13 @@ const appConfig: ClientConfig = {
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
   GROUP_BY: groupBy,
-  PAGE_LIMIT: process.env.REACT_APP_PAGE_LIMIT || '50000',
-  BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
-  MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
+  PAGE_LIMIT: pageLimit,
+  BASE_URL: baseUrl,
+  MINIMAL_DATE_AGE: minDateAge,
   START_DATE: process.env.REACT_APP_START_DATE,
-  END_DATE: process.env.REACT_APP_END_DATE,
+  END_DATE: endDate,
   DISABLE_CACHE: process.env.REACT_APP_DISABLE_CACHE === 'true',
+  TEST_MODE: process.env.REACT_APP_TEST_MODE === 'true',
 }
 
 export default appConfig
