@@ -64,7 +64,7 @@
   ],
   "footprint": [
     {
-      "timestamp": "2023-04-01T06:00:00.000Z",
+      "timestamp": "2023-05-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -139,7 +139,7 @@
       ]
     },
     {
-      "timestamp": "2023-03-01T07:00:00.000Z",
+      "timestamp": "2023-04-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -214,7 +214,7 @@
       ]
     },
     {
-      "timestamp": "2023-02-01T07:00:00.000Z",
+      "timestamp": "2023-03-01T07:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -289,7 +289,7 @@
       ]
     },
     {
-      "timestamp": "2023-01-01T07:00:00.000Z",
+      "timestamp": "2023-02-01T07:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -364,7 +364,7 @@
       ]
     },
     {
-      "timestamp": "2022-12-01T07:00:00.000Z",
+      "timestamp": "2023-01-01T07:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -439,7 +439,7 @@
       ]
     },
     {
-      "timestamp": "2022-11-01T06:00:00.000Z",
+      "timestamp": "2022-12-01T07:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -514,7 +514,7 @@
       ]
     },
     {
-      "timestamp": "2022-10-01T06:00:00.000Z",
+      "timestamp": "2022-11-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -589,7 +589,7 @@
       ]
     },
     {
-      "timestamp": "2022-09-01T06:00:00.000Z",
+      "timestamp": "2022-10-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -664,7 +664,7 @@
       ]
     },
     {
-      "timestamp": "2022-08-01T06:00:00.000Z",
+      "timestamp": "2022-09-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -739,7 +739,7 @@
       ]
     },
     {
-      "timestamp": "2022-07-01T06:00:00.000Z",
+      "timestamp": "2022-08-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -814,7 +814,7 @@
       ]
     },
     {
-      "timestamp": "2022-06-01T06:00:00.000Z",
+      "timestamp": "2022-07-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -889,7 +889,7 @@
       ]
     },
     {
-      "timestamp": "2022-05-01T06:00:00.000Z",
+      "timestamp": "2022-06-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -964,7 +964,7 @@
       ]
     },
     {
-      "timestamp": "2022-04-01T06:00:00.000Z",
+      "timestamp": "2022-05-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -1039,7 +1039,7 @@
       ]
     },
     {
-      "timestamp": "2022-03-01T07:00:00.000Z",
+      "timestamp": "2022-04-01T06:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
@@ -1114,7 +1114,7 @@
       ]
     },
     {
-      "timestamp": "2022-02-01T07:00:00.000Z",
+      "timestamp": "2022-03-01T07:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
