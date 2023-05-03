@@ -7,7 +7,6 @@ const path = require('path')
 const moment = require('moment')
 
 async function update() {
-  console.log('hit update')
   const data = fs.readFileSync(
     path.resolve(__dirname, `../packages/client/stub-server/mockData.json`),
     'utf8',
