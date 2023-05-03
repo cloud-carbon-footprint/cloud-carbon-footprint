@@ -14,6 +14,7 @@ import {
   ImagesClient,
   MachineTypesClient,
 } from '@google-cloud/compute'
+import { GoogleAuth } from 'google-auth-library'
 import {
   ICloudService,
   Region,
@@ -34,7 +35,6 @@ import {
   LookupTableOutput,
   GroupBy,
 } from '@cloud-carbon-footprint/common'
-import { GoogleAuth } from 'google-auth-library'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
 import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
