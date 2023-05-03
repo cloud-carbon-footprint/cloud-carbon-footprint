@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/client
 
+## 4.1.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
 ## 4.1.1
 
 ### Patch Changes

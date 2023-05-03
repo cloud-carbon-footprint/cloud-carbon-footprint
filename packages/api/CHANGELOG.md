@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/api
 
+## 1.6.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
 ## 1.6.1
 
 ### Patch Changes

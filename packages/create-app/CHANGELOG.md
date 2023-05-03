@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.5
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
 ## 2.3.4
 
 ### Patch Changes
