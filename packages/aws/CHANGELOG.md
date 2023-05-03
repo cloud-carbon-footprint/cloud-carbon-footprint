@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/aws
 
+## 0.14.4
+
+### Patch Changes
+
+- 2510e2a7: Adds support for additional usage types
+- 65386330: bumps ramda dependency
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
 ## 0.14.3
 
 ### Patch Changes
