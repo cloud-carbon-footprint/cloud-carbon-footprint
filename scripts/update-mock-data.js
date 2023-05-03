@@ -6,7 +6,8 @@ const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 
-async function main() {
+async function update() {
+  console.log('hit update')
   const data = fs.readFileSync(
     path.resolve(__dirname, `../packages/client/stub-server/mockData.json`),
     'utf8',
@@ -98,7 +99,9 @@ const writeToFile = async (
 }
 
 
-main().catch((error) => {
+update().catch((error) => {
   console.error(error.stack)
   process.exit(1)
 })
+
+module.exports = { update }
