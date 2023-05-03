@@ -1,9 +1,14 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
-import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
-import { APIEndpoint } from 'googleapis-common'
+import {
+  AddressesClient,
+  DisksClient,
+  ImagesClient,
+  InstancesClient,
+  MachineTypesClient,
+} from '@google-cloud/compute'
+import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { ProjectsClient } from '@google-cloud/resource-manager'
 import {
@@ -32,21 +37,21 @@ import {
   mockDeleteAddressRecommendationsEast,
 } from './fixtures/recommender.fixtures'
 import {
-  mockedAddressesResultItems,
-  mockedDisksResultItems,
+  mockAddressesResultItems,
+  mockDisksResultItems,
   mockedInstanceGetItems,
   mockedInstanceGetItemsCurrent,
   mockedInstanceGetItemsWithBothDisks,
   mockedInstanceGetItemsWithHDDDisks,
-  mockedInstanceResultItems,
+  mockInstanceResultItems,
   mockedMachineTypesGetItems,
   mockedMachineTypesGetItemsNew,
   mockedMachineTypesGetItemsCurrent,
   mockedDisksGetSSDDetails,
   mockedDisksGetHDDDetails,
   mockedImageGetDetails,
-  mockedInstanceGlobalResultItems,
-  mockedInstanceRegionsResultItems,
+  mockInstanceGlobalResultItems,
+  mockInstanceRegionsResultItems,
   mockedAddressGetDetails,
 } from './fixtures/googleapis.fixtures'
 
@@ -70,10 +75,12 @@ jest.mock('@google-cloud/recommender', () => ({
 }))
 
 describe('GCP Recommendations Service', () => {
-  let googleAuthClient: GoogleAuthClient
-  let googleComputeClient: APIEndpoint
+  let googleAuthClient: GoogleAuthClient,
+    serviceWrapper: ServiceWrapper,
+    mockGoogleCompute: any
 
   beforeEach(async () => {
+    const googleAuth = new GoogleAuth()
     const getClientSpy = jest.spyOn(googleAuth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
@@ -81,29 +88,47 @@ describe('GCP Recommendations Service', () => {
     googleAuthClient = await googleAuth.getClient({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
-    googleComputeClient = googleCompute('v1')
+
+    mockGoogleCompute = {
+      instances: new InstancesClient(),
+      machineTypes: new MachineTypesClient(),
+      disks: new DisksClient(),
+      images: new ImagesClient(),
+      addresses: new AddressesClient(),
+    }
 
     setupSpy(
-      googleComputeClient.instances,
-      'aggregatedList',
-      mockedInstanceResultItems,
+      mockGoogleCompute.instances,
+      'aggregatedListAsync',
+      mockInstanceResultItems(),
     )
     setupSpy(
-      googleComputeClient.disks,
-      'aggregatedList',
-      mockedDisksResultItems,
+      mockGoogleCompute.disks,
+      'aggregatedListAsync',
+      mockDisksResultItems(),
     )
     setupSpy(
-      googleComputeClient.addresses,
-      'aggregatedList',
-      mockedAddressesResultItems,
+      mockGoogleCompute.addresses,
+      'aggregatedListAsync',
+      mockAddressesResultItems(),
+    )
+
+    serviceWrapper = new ServiceWrapper(
+      new ProjectsClient(),
+      googleAuthClient,
+      mockGoogleCompute.instances,
+      mockGoogleCompute.disks,
+      mockGoogleCompute.addresses,
+      mockGoogleCompute.images,
+      mockGoogleCompute.machineTypes,
+      new RecommenderClient(),
     )
   })
 
   describe('Stop VM Recommendations', () => {
     beforeEach(() => {
       setupSpy(
-        googleComputeClient.machineTypes,
+        mockGoogleCompute.machineTypes,
         'get',
         mockedMachineTypesGetItems,
       )
@@ -113,18 +138,13 @@ describe('GCP Recommendations Service', () => {
       mockListRecommendations
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -156,24 +176,19 @@ describe('GCP Recommendations Service', () => {
         )
         .mockResolvedValue([[]])
 
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       setupSpy(
-        googleComputeClient.instances,
-        'aggregatedList',
-        mockedInstanceGlobalResultItems,
+        mockGoogleCompute.instances,
+        'aggregatedListAsync',
+        mockInstanceGlobalResultItems(),
       )
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -203,24 +218,19 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
 
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       setupSpy(
-        googleComputeClient.instances,
-        'aggregatedList',
-        mockedInstanceRegionsResultItems,
+        mockGoogleCompute.instances,
+        'aggregatedListAsync',
+        mockInstanceRegionsResultItems(),
       )
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -250,19 +260,14 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
 
-      const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+      const targetFunctionSpy = jest.spyOn(mockGoogleCompute.instances, 'get')
       ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -292,22 +297,17 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
       setupSpy(
-        googleComputeClient.instances,
+        mockGoogleCompute.instances,
         'get',
         mockedInstanceGetItemsWithHDDDisks,
       )
-      setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
+      setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetHDDDetails)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -337,13 +337,13 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
       setupSpy(
-        googleComputeClient.instances,
+        mockGoogleCompute.instances,
         'get',
         mockedInstanceGetItemsWithBothDisks,
       )
 
       setupSpyWithMultipleValues(
-        googleComputeClient.disks,
+        mockGoogleCompute.disks,
         'get',
         mockedDisksGetSSDDetails,
         mockedDisksGetHDDDetails,
@@ -353,12 +353,7 @@ describe('GCP Recommendations Service', () => {
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -390,28 +385,19 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValue([[]])
 
     setupSpyWithMultipleValues(
-      googleComputeClient.machineTypes,
+      mockGoogleCompute.machineTypes,
       'get',
       mockedMachineTypesGetItemsCurrent,
       mockedMachineTypesGetItemsNew,
     )
 
-    setupSpy(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsCurrent,
-    )
+    setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItemsCurrent)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -442,25 +428,20 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValue([[]])
 
     setupSpyWithMultipleValues(
-      googleComputeClient.machineTypes,
+      mockGoogleCompute.machineTypes,
       'get',
       mockedMachineTypesGetItemsCurrent,
       mockedMachineTypesGetItemsNew,
     )
 
-    const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+    const targetFunctionSpy = jest.spyOn(mockGoogleCompute.instances, 'get')
     ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -490,18 +471,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteDiskRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetSSDDetails)
+    setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetSSDDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -531,18 +507,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockSnapshotAndDeleteDiskRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
+    setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetHDDDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -572,18 +543,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteImageRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
+    setupSpy(mockGoogleCompute.images, 'get', mockedImageGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -612,18 +578,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteAddressRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+    setupSpy(mockGoogleCompute.addresses, 'get', mockedAddressGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -654,24 +615,15 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteAddressRecommendationsEast)
       .mockResolvedValue([[]])
 
-    setupSpy(
-      googleComputeClient.machineTypes,
-      'get',
-      mockedMachineTypesGetItems,
-    )
-    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
-    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+    setupSpy(mockGoogleCompute.machineTypes, 'get', mockedMachineTypesGetItems)
+    setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
+    setupSpy(mockGoogleCompute.addresses, 'get', mockedAddressGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -732,12 +684,7 @@ describe('GCP Recommendations Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()

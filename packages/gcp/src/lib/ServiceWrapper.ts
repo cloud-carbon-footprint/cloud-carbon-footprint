@@ -2,45 +2,47 @@
  * © 2021 Thoughtworks, Inc.
  */
 import R from 'ramda'
-import { ProjectsClient, protos } from '@google-cloud/resource-manager'
-import { APIEndpoint } from 'googleapis-common'
+import {
+  ProjectsClient,
+  protos as googleResource,
+} from '@google-cloud/resource-manager'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { compute_v1 } from 'googleapis'
-import Project = protos.google.cloud.resourcemanager.v3.IProject
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
-import Schema$Disk = compute_v1.Schema$Disk
-import Schema$Image = compute_v1.Schema$Image
-import Schema$Address = compute_v1.Schema$Address
-import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
-import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
-import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
+import {
+  protos as googleCompute,
+  InstancesClient,
+  DisksClient,
+  AddressesClient,
+  ImagesClient,
+  MachineTypesClient,
+} from '@google-cloud/compute'
 import { GoogleAuthClient, Logger, wait } from '@cloud-carbon-footprint/common'
-import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
 import {
   ActiveProject,
   RecommenderRecommendations,
 } from './RecommendationsTypes'
+// Interfaces
+import Project = googleResource.google.cloud.resourcemanager.v3.IProject
+import Instance = googleCompute.google.cloud.compute.v1.IInstance
+import MachineType = googleCompute.google.cloud.compute.v1.IMachineType
+import Disk = googleCompute.google.cloud.compute.v1.IDisk
+import Image = googleCompute.google.cloud.compute.v1.IImage
+import Address = googleCompute.google.cloud.compute.v1.IAddress
+import { IterableScopedList } from './ServiceWrapperTypes'
 
 const RETRY_AFTER = 10
-
-type Zone = [
-  string,
-  (
-    | Schema$InstancesScopedList
-    | Schema$DisksScopedList
-    | Schema$AddressesScopedList
-  ),
-]
 
 export default class ServiceWrapper {
   private readonly serviceWrapperLogger: Logger
   private readonly noResultsOnPageMessage = 'NO_RESULTS_ON_PAGE'
   constructor(
-    private readonly googleProjectsClient: ProjectsClient,
-    private readonly googleAuthClient: GoogleAuthClient,
-    private readonly googleComputeClient: APIEndpoint,
-    private readonly googleRecommenderClient: RecommenderClient,
+    private readonly projectsClient: ProjectsClient,
+    private readonly authClient: GoogleAuthClient,
+    private readonly instancesClient: InstancesClient,
+    private readonly disksClient: DisksClient,
+    private readonly addressesClient: AddressesClient,
+    private readonly imagesClient: ImagesClient,
+    private readonly machineTypesClient: MachineTypesClient,
+    private readonly recommenderClient: RecommenderClient,
   ) {
     this.serviceWrapperLogger = new Logger('GCP Service Wrapper')
   }
@@ -64,7 +66,7 @@ export default class ServiceWrapper {
   }
 
   private async getProjects(): Promise<Project[]> {
-    const [projects] = await this.googleProjectsClient.searchProjects()
+    const [projects] = await this.projectsClient.searchProjects()
     return projects
   }
 
@@ -74,23 +76,21 @@ export default class ServiceWrapper {
     try {
       const computeEngineRequest = {
         project: project.projectId,
-        auth: this.googleAuthClient,
+        auth: this.authClient,
       }
-      const instancesResult =
-        await this.googleComputeClient.instances.aggregatedList(
-          computeEngineRequest,
-        )
-      const disksResult = await this.googleComputeClient.disks.aggregatedList(
+      const instancesResult = await this.instancesClient.aggregatedListAsync(
         computeEngineRequest,
       )
-      const addressesResult =
-        await this.googleComputeClient.addresses.aggregatedList(
-          computeEngineRequest,
-        )
+      const disksResult = await this.disksClient.aggregatedListAsync(
+        computeEngineRequest,
+      )
+      const addressesResult = await this.addressesClient.aggregatedListAsync(
+        computeEngineRequest,
+      )
 
-      const instanceZones = this.extractZones(instancesResult.data.items)
-      const diskZones = this.extractZones(disksResult.data.items)
-      const addressesZones = this.extractZones(addressesResult.data.items)
+      const instanceZones = await this.extractZones(instancesResult)
+      const diskZones = await this.extractZones(disksResult)
+      const addressesZones = await this.extractZones(addressesResult)
 
       return {
         id: project.projectId,
@@ -110,13 +110,15 @@ export default class ServiceWrapper {
     }
   }
 
-  private extractZones(items: InstanceData): string[] {
-    if (!items) return []
-    return Object.entries(items)
-      .filter((zone: Zone) => {
-        return zone[1].warning?.code !== this.noResultsOnPageMessage
-      })
-      .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
+  private async extractZones(results: IterableScopedList): Promise<string[]> {
+    const items = []
+    for await (const [zone, result] of results) {
+      if (result.warning?.code !== this.noResultsOnPageMessage) {
+        const formattedZone = zone.replace('zones/', '').replace('regions/', '')
+        items.push(formattedZone)
+      }
+    }
+    return items
   }
 
   async getRecommendationsForRecommenderIds(
@@ -130,13 +132,12 @@ export default class ServiceWrapper {
       while (inProcess) {
         try {
           const [recommendations] =
-            await this.googleRecommenderClient.listRecommendations({
-              parent:
-                this.googleRecommenderClient.projectLocationRecommenderPath(
-                  projectId,
-                  zone,
-                  recommenderId,
-                ),
+            await this.recommenderClient.listRecommendations({
+              parent: this.recommenderClient.projectLocationRecommenderPath(
+                projectId,
+                zone,
+                recommenderId,
+              ),
             })
           inProcess = false
           recommendationByRecommenderIds.push({
@@ -161,34 +162,34 @@ export default class ServiceWrapper {
     projectId: string,
     instanceId: string,
     zone: string,
-  ): Promise<Schema$Instance> {
+  ): Promise<Instance> {
     const computeEngineRequest = {
       project: projectId,
       zone: zone,
       instance: instanceId,
-      auth: this.googleAuthClient,
+      auth: this.authClient,
     }
-    const result = await this.googleComputeClient.instances.get(
+    const [instanceDetails] = await this.instancesClient.get(
       computeEngineRequest,
     )
-    return result.data
+    return instanceDetails
   }
 
   async getMachineTypeDetails(
     projectId: string,
     machineType: string,
     zone: string,
-  ): Promise<Schema$MachineType> {
+  ): Promise<MachineType> {
     const machineTypeRequest = {
       project: projectId,
       zone: zone,
       machineType: machineType,
-      auth: this.googleAuthClient,
+      auth: this.authClient,
     }
-    const result = await this.googleComputeClient.machineTypes.get(
+    const [machineTypeDetails] = await this.machineTypesClient.get(
       machineTypeRequest,
     )
-    return result.data
+    return machineTypeDetails
   }
 
   getStorageTypeFromDiskName(diskName: string): string {
@@ -199,46 +200,41 @@ export default class ServiceWrapper {
     projectId: string,
     diskId: string,
     zone: string,
-  ): Promise<Schema$Disk> {
+  ): Promise<Disk> {
     const diskDetailsRequest = {
       project: projectId,
       zone: zone,
       disk: diskId,
-      auth: this.googleAuthClient,
+      auth: this.authClient,
     }
-    const result = await this.googleComputeClient.disks.get(diskDetailsRequest)
-    return result.data
+    const [diskDetails] = await this.disksClient.get(diskDetailsRequest)
+    return diskDetails
   }
 
-  async getImageDetails(
-    projectId: string,
-    imageId: string,
-  ): Promise<Schema$Image> {
-    const ImageDetailsRequest = {
+  async getImageDetails(projectId: string, imageId: string): Promise<Image> {
+    const imageDetailsRequest = {
       project: projectId,
       image: imageId,
-      auth: this.googleAuthClient,
+      auth: this.authClient,
     }
-    const result = await this.googleComputeClient.images.get(
-      ImageDetailsRequest,
-    )
-    return result.data
+    const [imageDetails] = await this.imagesClient.get(imageDetailsRequest)
+    return imageDetails
   }
 
   async getAddressDetails(
     projectId: string,
     addressId: string,
     zone: string,
-  ): Promise<Schema$Address> {
+  ): Promise<Address> {
     const AddressDetailsRequest = {
       project: projectId,
       region: zone,
       address: addressId,
-      auth: this.googleAuthClient,
+      auth: this.authClient,
     }
-    const result = await this.googleComputeClient.addresses.get(
+    const [addressDetails] = await this.addressesClient.get(
       AddressDetailsRequest,
     )
-    return result.data
+    return addressDetails
   }
 }
