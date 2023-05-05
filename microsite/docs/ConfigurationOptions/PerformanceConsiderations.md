@@ -5,16 +5,43 @@ slug: /performance-considerations
 sidebar_position: 2
 ---
 
-## Options to Improve Query Performance
+## Improving Query Performance and Handling Large Data
 
-When running very large amounts of data with the default configuration of querying each day for the previous year, we have noticed that the time it takes to start the app increases significantly. We have added optional configuration to help with this performance issue to query and date filter in a few different ways:
+When running very large amounts of data, we noticed there may be some issues in the time it takes to load estimates and to receive a response from the app. Depending on the configuration of your environment, querying for dates with significant amount of usage may result in long request times, runtime errors, or even cause requests to fail. While we work hard to continuously optimize and improve CCF for large organizations and usages, we recommend considering the following to help avoid some of these issues:
 
-### Date Range
+## Considerations for Large Requests
+
+When querying for a specific date range, you may encounter instances where the requested date range has a large amount of usage for the app to process. Depending on the environment in which your CCF app is running, this may cause requests to stall or timeout due to memory issues. We recommend doing the following:
+
+- Backfill and seed large amounts of data using the [Seed Cache File](DataPersistenceAndCaching.md#seeding-cache-file) method. (Recommended)
+- Decrease the date range of the request to reduce the amount of estimates needed to be calculated
+- Disable other cloud provider configurations to reduce the amount of cloud providers being queried in one request
+
+Backfilling and seeding the cache is useful for handling the calculation of a large amount of data. Using this method will allow for calculated estimates to be saved, enabling faster subsequent requests with less overhead for those date ranges to be viewed in the client or output in the API/CLI.
+
+## Date Range Considerations
+
+### Date Range via the Client
+
+When using the client dashboard and running very large amounts of data with the default configuration of querying each day for the previous year, we have noticed that the time it takes to start the app increases significantly.
 
 In your `packages/client/.env` file, you can provide the following variables for a custom date range:
 
+#### Custom Date Range
+
+Optionally set the date range to query data based on custom start/end timestamps.
+
+- `REACT_APP_START_DATE` (example value: 1-01-2023)
+- `REACT_APP_END_DATE` (example value: 3-01-2023)
+
+#### Date Range from Today (Legacy Configuration)
+
+Optionally set the date range to query the data starting back in days/weeks/months/quarters/years to the current date
+
 - `REACT_APP_DATE_RANGE_TYPE` (example values: day(s), week(s), month(s), etc..)
 - `REACT_APP_DATE_RANGE_VALUE` (example values: number correlating to day/week/month etc..)
+
+_Note_:  If set, these will take least precedence over all other date range configurations.
 
 ### Group By Timestamp in Queries
 

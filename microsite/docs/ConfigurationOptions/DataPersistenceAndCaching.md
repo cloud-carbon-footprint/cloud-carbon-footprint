@@ -13,16 +13,16 @@ We offer the following data caching methods of varying levels of simplicity and 
   - Google Cloud Storage
 - MongoDB (local or cloud database)
 
-### JSON File
+## JSON File
 
-#### Local Filesystem
+### Local Filesystem
 
 To make local development a pleasant experience with a quick feedback loop, we have a no-setup local caching method that uses a JSON file that is automatically generated. This file will be created in either the packages/api or packages/cli directory – typically with the name of the grouping method included (i.e. `estimates.month.cache.json`. If you would like to see up-to-date estimates, you will have to delete `packages/cli/estimates.[grouping].cache.json` and/or `packages/api/estimates.[grouping].cache.json`. Depending on how much usage you have, it could take several minutes to fetch up-to-date estimates and regenerate the cache file.
 Note: If you don’t see one of these files, don’t worry. Simply start the server, and load the app for the first time.
 
 Currently, this caching method is planned to be deprecated and will receive decreased support for incoming features made to the app. This is due to its poor scalability which creates issues for those with very large usage data on a typical enterprise or organizational scale. However, it is a great way to get up and start with the app quickly and still appropriate for small-scale users.
 
-#### Google Cloud Storage
+### Google Cloud Storage
 
 As an expansion to the local cache method, you can use the same JSON file generation within a Google Cloud Storage bucket. If you are experiencing long load times in your staging or production environments, or simply wish to forego the local filesystem, the option to store a JSON cache file in the cloud may be the best option for you. This could be especially helpful in improving re-estimate speeds for your deployed environments. In order to use the Google Cloud option, you have to set the following variables in your `packages/api/.env` or `packages/cli/.env` file:
 
@@ -40,7 +40,7 @@ For JSON Filesystem cache modes, CCF uses read and write streams to get and set 
 
 For this reason, we have chosen to focus our support on the MongoDB cache mode, where we have implemented pagination for the REST API response which will scale better and avoid the memory limitations. We believe the JSON File cache mode is a good choice for smaller data sets.
 
-### MongoDB Storage
+## MongoDB Storage
 
 Users or organizations with large amounts of usage data may have difficulty using the default local caching method. For those wishing to persist a larger scale of data, we offer the option of configuring a MongoDB instance to store your estimates. Similar to the local cache system, this method will also speed up subsequent calls to the API and is the recommended and fully supported caching method.
 
@@ -64,7 +64,7 @@ MONGODB_CREDENTIALS=/path-to-credentials.pem
 
 After calculating estimates for the first time, the app will create a new collection titled “ccf”. Estimates will be separated into timestamps and stored into a collection that is named according to the current grouping method (i.e. “estimates-by-month).
 
-#### Paginating Estimates
+### Paginating Estimates
 
 Since the MongoDB storage method is capable of storing a large amount of estimates, it is possible the estimates for a requested date range will exceed the ideal size of a REST API response. To accommodate this, we have enabled pagination when fetching estimates using this method alongside the CCF client or querying the API directly.
 
@@ -87,7 +87,7 @@ _Note: This feature only works when the MONGODB cache mode is enabled. The limit
 _To avoid potential issues with memory limitations when loading and aggregating estimates from the cache, a default value of 50,000 documents will be used for the page limit.
 This ensures that individual timestamps with significantly large amount of estimates are handled properly. Custom limit values that exceed this number will result in a validation error._
 
-#### Filtering Estimates
+### Filtering Estimates
 
 With the MongoDB cache mode, CCF is now supporting the capability to filter estimates by the following keys and request parameters:
 
@@ -116,9 +116,9 @@ _Note: Filtering for Mongodb will only work to filter existing cached data in th
 
 _Filtering is only supported via the API and is not yet supported on the client._
 
-### Caching Configurations
+## Caching Configurations
 
-#### Ensure real-time estimates
+### Ensure Real-Time Estimates
 
 In order to make local development a pleasant experience with a quick feedback loop, we have a cache file that is automatically generated. If you would like to see up-to-date estimates, you will have to delete `packages/cli/estimates.cache.json` and/or `packages/api/estimates.cache.json`. If you are using MongoDB or GCS to store estimates, you will either have to delete the collection or the estimates file in the storage bucket respectively. Depending on how much usage you have, it could take several minutes to fetch up-to-date estimates and regenerate the cache file.
 
@@ -130,16 +130,31 @@ Or when using the client, you can set an optional environment variable:
 
 `DISABLE_CACHE=true`
 
-#### Seeding cache file
+## Seeding Cache File
 
-We have an option to run the server side API calls as a background job. This can be useful for larger amounts of data to query from the cloud providers and will have no timeout limit when running with the browser. Before running the script, you will need to set the necessary configurations in a `.env` file in the CLI directory.
+We have an option to run the server-side API calls as a background job. This can be useful for larger amounts of data to query from the cloud providers and will have no timeout limit when running with the browser. Before running the script, you will need to set the necessary configurations in a `.env` file in the CLI directory.
 
 From the root directory, run:
 
 `yarn seed-cache-file`
 
-You will then be prompted enter a start date, end date and groupBy parameter. Optionally, you can specify a specific cloud provider to seed. This will allow you to append estimations to given dates in your requested time frame that may be missing from a newly configured cloud provider (currently only supported with a MongoDB caching mode).
+You will then be prompted to enter a start date, end date and groupBy parameter. 
 
-Once this process is finished running. A new cache file will be created in the CLI directory. In order to use the cache file to run with the front-end client package, you will have to copy the cache file to the API directory before starting the application.
+Optionally, you can specify a specific cloud provider to seed. This will allow you to append estimations to given dates in your requested time frame that may be missing from a newly configured cloud provider (currently only supported with a MongoDB caching mode).
+
+Once this process is finished running, estimates will either be saved to a newly created JSON file in the `packages/cli` directory or into your configured MongoDB instance. If using the JSON method, in order to use the cache file to run with the front-end client package, you will have to copy the cache file to the API directory before starting the application.
 
 _Note: If you end up seeing an error due to memory limitations, you will either have to adjust to a smaller date range or change the grouping method._
+
+### Fetch Methods
+
+When starting the cache file seeding, one of the last prompts will ask you to specify a fetch method for the requests that the script will make. This allows for greater flexibility with handling date ranges with potentially large data that will be too large to calculate in a single API request. You will be presented with the following options:
+
+- **Single** - Seed the cache file using a _single request_ to the API (Default)
+- **Split** -  Seed the cache file using multiple requests split according to specified number of days
+
+By default, the script will fetch estimates using a single request.
+
+If you choose to split your requests, you will be asked an optional follow-up question of how many days to fetch per request. This will allow it to fetch the provided number of days or to fetch a default of one day per request until the date range is covered.
+
+We recommend using this method when dealing with a large amount of usage data within a date range that may cause issues when running your app, especially for historical data, as described in the [Performance Considerations](PerformanceConsiderations.md) section.
