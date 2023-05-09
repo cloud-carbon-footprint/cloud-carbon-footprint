@@ -31,8 +31,8 @@ In your `packages/client/.env` file, you can provide the following variables for
 
 Optionally set the date range to query data based on custom start/end timestamps.
 
-- `REACT_APP_START_DATE` (example value: 1-01-2023)
-- `REACT_APP_END_DATE` (example value: 3-01-2023)
+- `REACT_APP_START_DATE` (yyyy-mm-dd)
+- `REACT_APP_END_DATE` (yyyy-mm-dd)
 
 #### Date Range from Today (Legacy Configuration)
 
