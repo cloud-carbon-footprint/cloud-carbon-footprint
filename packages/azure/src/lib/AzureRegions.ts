@@ -71,13 +71,14 @@ export const AZURE_REGIONS = {
   IN_WEST: { name: 'westindia', options: ['westindia'] },
 
   // EU regions
+  EU: { name: 'europe', options: ['Europe'] },
   EU_NORTH: {
     name: 'northeurope',
     options: ['northeurope', 'europenorth', 'NORTHEUROPE', 'EU North'],
   },
   EU_WEST: {
     name: 'westeurope',
-    options: ['westeurope', 'WESTEUROPE', 'EU West'],
+    options: ['westeurope', 'WESTEUROPE', 'EU West', 'EuropeWest'],
   },
   EU_FRANCE_CENTRAL: { name: 'francecentral', options: ['francecentral'] },
   EU_FRANCE_SOUTH: { name: 'francesouth', options: ['francesouth'] },
@@ -108,7 +109,8 @@ export const AZURE_REGIONS = {
   // Middle East regions
   ME_UAE: { name: 'uae', options: ['uae'] },
   ME_UAE_CENTRAL: { name: 'uaecentral', options: ['uaecentral'] },
-  ME_UAE_NORTH: { name: 'uaenorth', options: ['uaenorth'] },
+  ME_UAE_NORTH: { name: 'uaenorth', options: ['uaenorth', 'uaen'] },
+  ME_QATAR_CENTRAL: { name: 'qatarcentral', options: ['qatarcentral'] },
 
   // America regions
   US_CANADA: { name: 'canada', options: ['canada'] },
