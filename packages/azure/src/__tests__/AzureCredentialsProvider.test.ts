@@ -89,6 +89,44 @@ describe('Azure Credentials Provider', () => {
     expect(credentials).toBeInstanceOf(ClientSecretCredential)
   })
 
+  it('Provides default Credentials', async () => {
+    const azureClientId = ''
+    const azureClientSecret = ''
+    const azureTenantId = ''
+
+    ;(config as jest.Mock).mockReturnValue({
+      AZURE: {
+        authentication: {
+          mode: 'default',
+        },
+      },
+    })
+
+    const mockSecretClientId = buildMockSecretResponse(azureClientId)
+    const mockSecretVersion = buildMockSecretResponse(azureClientSecret)
+    const mockSecretTenantId = buildMockSecretResponse(azureTenantId)
+
+    const mockCredentials = mockClientSecretCredential(
+      azureTenantId,
+      azureClientId,
+      azureClientSecret,
+    )
+
+    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretClientId)
+    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretVersion)
+    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretTenantId)
+
+    const credentials: ClientSecretCredential =
+      await AzureCredentialsProvider.create()
+
+    expect(mockCredentials).toHaveBeenCalledWith(
+      azureTenantId,
+      azureClientId,
+      azureClientSecret,
+    )
+    expect(credentials).toBeInstanceOf(ClientSecretCredential)
+  })
+
   function buildMockSecretResponse(
     secret: string,
   ): IAccessSecretVersionResponse[] {

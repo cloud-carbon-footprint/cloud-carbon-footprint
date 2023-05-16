@@ -78,7 +78,7 @@ export default class CloudProviderAccount {
             periodStartDate: startDate,
             periodEndDate: endDate,
             groupBy: grouping,
-          }
+          } as EstimationResult
         })
 
         return estimationResults

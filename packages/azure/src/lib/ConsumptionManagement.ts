@@ -80,6 +80,10 @@ import {
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 
+const defaultKWHUnit = {
+  total: {},
+}
+
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
   private readonly consumptionManagementRateLimitRemainingHeader: string
@@ -114,8 +118,8 @@ export default class ConsumptionManagementService {
     usageRows
       .filter(
         (consumptionRow) =>
-          new Date(consumptionRow.date) >= startDate &&
-          new Date(consumptionRow.date) <= endDate,
+          new Date(consumptionRow.date || Date.now()) >= startDate &&
+          new Date(consumptionRow.date || Date.now()) <= endDate,
       )
       .map((consumptionRow) => {
         const consumptionDetailRow: ConsumptionDetailRow =
@@ -273,20 +277,20 @@ export default class ConsumptionManagementService {
       this.consumptionManagementLogger.info(
         `Retrying after ${retryAfterValue} seconds`,
       )
-      await wait(retryAfterValue * 1000)
+      await wait(retryAfterValue ?? 0 * 1000)
     } else {
       throw new Error(`${errorMsg} ${errorResponse.message}`)
     }
   }
 
   private async pageThroughUsageRows(
-    usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
+    usageRows?: PagedAsyncIterableIterator<UsageDetailUnion>,
   ): Promise<Array<UsageDetailResult>> {
     const usageRowDetails: Array<UsageDetailResult> = []
     let currentRow
     let hasNextPage = true
     try {
-      while (hasNextPage) {
+      while (hasNextPage && usageRows) {
         currentRow = await usageRows.next()
         if (currentRow?.value) {
           usageRowDetails.push(currentRow.value as UsageDetailResult)
@@ -309,7 +313,7 @@ export default class ConsumptionManagementService {
     let currentTry = 0
 
     const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow ${
-      configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS ? 'paging' : 'query'
+      configLoader().AZURE?.CONSUMPTION_CHUNKS_DAYS ? 'paging' : 'query'
     } for time range ${startDate.toISOString()} to ${endDate.toISOString()} failed. Reason:`
 
     while (currentTry <= maxRetries) {
@@ -323,15 +327,16 @@ export default class ConsumptionManagementService {
             includeEnd ? 'le' : 'lt'
           } '${endDate.toISOString()}'`,
         }
-        if (configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS) {
+        if (configLoader().AZURE?.CONSUMPTION_CHUNKS_DAYS) {
           this.consumptionManagementLogger.debug(
             `Querying consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()} for ${
-              this.consumptionManagementClient.subscriptionId
+              this.consumptionManagementClient?.subscriptionId
             }`,
           )
         }
-        const usageRows = this.consumptionManagementClient.usageDetails.list(
-          `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
+
+        const usageRows = this.consumptionManagementClient?.usageDetails.list(
+          `/subscriptions/${this.consumptionManagementClient?.subscriptionId}/`,
           options,
         )
         return await this.pageThroughUsageRows(usageRows)
@@ -357,7 +362,7 @@ export default class ConsumptionManagementService {
     const AZURE = configLoader().AZURE
 
     // no chunking is wished for
-    if (!AZURE.CONSUMPTION_CHUNKS_DAYS) {
+    if (!AZURE?.CONSUMPTION_CHUNKS_DAYS) {
       return await this.queryConsumptionUsageDetails(startDate, endDate)
     }
 
@@ -446,7 +451,8 @@ export default class ConsumptionManagementService {
             memoryFootprint.kilowattHours +
             embodiedEmissions.kilowattHours
           accumulateKilowattHours(
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT ||
+              defaultKWHUnit,
             consumptionDetailRow,
             kilowattHours,
             AccumulateKilowattHoursBy.USAGE_AMOUNT,
@@ -465,7 +471,8 @@ export default class ConsumptionManagementService {
 
         if (computeFootprint)
           accumulateKilowattHours(
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT ||
+              defaultKWHUnit,
             consumptionDetailRow,
             computeFootprint.kilowattHours,
             AccumulateKilowattHoursBy.USAGE_AMOUNT,
@@ -521,7 +528,11 @@ export default class ConsumptionManagementService {
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
-    let networkingEstimate: FootprintEstimate
+    let networkingEstimate: FootprintEstimate = {
+      timestamp: new Date(),
+      kilowattHours: 0,
+      co2e: 0,
+    }
     if (this.isNetworkingUsage(consumptionDetailRow)) {
       const networkingUsage: NetworkingUsage = {
         timestamp: consumptionDetailRow.timestamp,
@@ -543,7 +554,8 @@ export default class ConsumptionManagementService {
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
       accumulateKilowattHours(
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT ||
+          defaultKWHUnit,
         consumptionDetailRow,
         networkingEstimate.kilowattHours,
         AccumulateKilowattHoursBy.USAGE_AMOUNT,
@@ -570,7 +582,11 @@ export default class ConsumptionManagementService {
       replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
-    let estimate: FootprintEstimate
+    let estimate: FootprintEstimate = {
+      timestamp: new Date(),
+      kilowattHours: 0,
+      co2e: 0,
+    }
     if (this.isSSDStorage(consumptionDetailRow))
       estimate = this.ssdStorageEstimator.estimate(
         [storageUsage],
@@ -592,7 +608,8 @@ export default class ConsumptionManagementService {
     if (estimate) {
       estimate.usesAverageCPUConstant = false
       accumulateKilowattHours(
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT ||
+          defaultKWHUnit,
         consumptionDetailRow,
         estimate.kilowattHours,
         AccumulateKilowattHoursBy.USAGE_AMOUNT,
@@ -707,7 +724,8 @@ export default class ConsumptionManagementService {
       memoryEstimate.usesAverageCPUConstant = false
       !withCompute &&
         accumulateKilowattHours(
-          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT ||
+            defaultKWHUnit,
           consumptionDetailRow,
           memoryEstimate.kilowattHours,
           AccumulateKilowattHoursBy.USAGE_AMOUNT,
@@ -770,7 +788,7 @@ export default class ConsumptionManagementService {
     ) {
       // Extract disk type according to pattern of Managed SSD names
       const matchingDiskType =
-        consumptionDetailRow.usageType.match(/(P|E)\d{1,2}/)[0]
+        consumptionDetailRow.usageType.match(/(P|E)\d{1,2}/)![0]
       return convertGigaBytesToTerabyteHours(
         SSD_MANAGED_DISKS_STORAGE_GB[matchingDiskType],
       )
@@ -897,7 +915,9 @@ export default class ConsumptionManagementService {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
       COMPUTE_PROCESSOR_TYPES.UNKNOWN,
     ]
-    const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory(processors)
+    const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory
+      ? AZURE_CLOUD_CONSTANTS.getMemory(processors)
+      : 0
 
     // grab the entire instance series that the instance type is classified within
     const seriesInstanceTypes: number[][] = Object.values(

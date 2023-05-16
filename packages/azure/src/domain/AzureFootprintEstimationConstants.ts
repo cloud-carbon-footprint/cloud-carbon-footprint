@@ -33,13 +33,15 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   getMemory: (computeProcessors: string[]): number => {
     const memoryForProcessors: number[] = computeProcessors.map(
       (processor: string) => {
-        return AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
+        return AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR
+          ? AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
+          : 0
       },
     )
     const averageMemoryForProcessors = getAverage(memoryForProcessors)
     return averageMemoryForProcessors
       ? averageMemoryForProcessors
-      : AZURE_CLOUD_CONSTANTS.MEMORY_AVG
+      : AZURE_CLOUD_CONSTANTS.MEMORY_AVG || 0
   },
   MIN_WATTS_AVG: 0.74,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -76,7 +78,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     )
     return averageWattsForProcessors
       ? averageWattsForProcessors
-      : AZURE_CLOUD_CONSTANTS.MIN_WATTS_AVG
+      : AZURE_CLOUD_CONSTANTS.MIN_WATTS_AVG || 0
   },
   MAX_WATTS_AVG: 3.54,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -113,7 +115,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     )
     return averageWattsForProcessors
       ? averageWattsForProcessors
-      : AZURE_CLOUD_CONSTANTS.MAX_WATTS_AVG
+      : AZURE_CLOUD_CONSTANTS.MAX_WATTS_AVG || 0
   },
   NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
   MEMORY_COEFFICIENT: 0.000392, // kWh / Gb

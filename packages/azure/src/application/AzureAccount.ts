@@ -21,6 +21,7 @@ import {
   UnknownEstimator,
   CloudProviderAccount,
   EmbodiedEmissionsEstimator,
+  EstimateUnknownUsageBy,
 } from '@cloud-carbon-footprint/core'
 import {
   configLoader,
@@ -35,6 +36,10 @@ import AzureCredentialsProvider from './AzureCredentialsProvider'
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
+
+const defaultSubscriptionId = ''
+const defaultCoefficient = 0
+const defaultMemoryCoefficient = 1
 
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ClientSecretCredential | WorkloadIdentityCredential
@@ -62,7 +67,7 @@ export default class AzureAccount extends CloudProviderAccount {
       subscriptions.map(async (subscription: Subscription) => {
         try {
           return await this.getRecommendationsForSubscription(
-            subscription.subscriptionId,
+            subscription.subscriptionId || defaultSubscriptionId,
           )
         } catch (e) {
           this.logger.warn(
@@ -153,13 +158,25 @@ export default class AzureAccount extends CloudProviderAccount {
   ) {
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
-      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new StorageEstimator(
+        AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT || defaultCoefficient,
+      ),
+      new StorageEstimator(
+        AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT || defaultCoefficient,
+      ),
+      new NetworkingEstimator(
+        AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT || defaultCoefficient,
+      ),
+      new MemoryEstimator(
+        AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT || defaultMemoryCoefficient,
+      ),
+      new UnknownEstimator(
+        AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY ||
+          EstimateUnknownUsageBy.COST,
+      ),
       new EmbodiedEmissionsEstimator(
-        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN ||
+          defaultMemoryCoefficient,
       ),
     )
     return consumptionManagementService.getEstimatesFromInputData(inputData)
@@ -168,7 +185,9 @@ export default class AzureAccount extends CloudProviderAccount {
   private async getRecommendationsForSubscription(subscriptionId: string) {
     const advisorRecommendations = new AdvisorRecommendations(
       new ComputeEstimator(),
-      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new MemoryEstimator(
+        AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT || defaultCoefficient,
+      ),
       new AdvisorManagementClient(this.credentials, subscriptionId),
     )
     return advisorRecommendations.getRecommendations()
@@ -182,13 +201,24 @@ export default class AzureAccount extends CloudProviderAccount {
   ) {
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
-      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new StorageEstimator(
+        AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT || defaultCoefficient,
+      ),
+      new StorageEstimator(
+        AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT || defaultCoefficient,
+      ),
+      new NetworkingEstimator(
+        AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT || defaultCoefficient,
+      ),
+      new MemoryEstimator(
+        AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT || defaultCoefficient,
+      ),
+      new UnknownEstimator(
+        AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY ||
+          EstimateUnknownUsageBy.COST,
+      ),
       new EmbodiedEmissionsEstimator(
-        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN || defaultCoefficient,
       ),
       new ConsumptionManagementClient(this.credentials, subscriptionId),
     )

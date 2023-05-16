@@ -66,4 +66,32 @@ describe('MemoryEstimator', () => {
       },
     ])
   })
+
+  it('does estimates with default power constant coefficient', () => {
+    const input = [
+      {
+        timestamp: new Date('2021-02-01'),
+        gigabyteHours: 80,
+      },
+    ]
+    const awsUsEast1Region = 'us-east-1'
+    const awsEmissionsFactors = {
+      [awsUsEast1Region]: 0.000415755,
+    }
+    const awsConstants = {}
+    const result = new MemoryEstimator(memoryCoefficient).estimate(
+      input,
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
+    )
+
+    expect(result).toEqual([
+      {
+        co2e: 0.0000130380768,
+        timestamp: new Date('2021-02-01T00:00:00.000Z'),
+        kilowattHours: 0.03136,
+      },
+    ])
+  })
 })

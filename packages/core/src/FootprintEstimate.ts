@@ -251,7 +251,11 @@ function hasSameRegionAndServiceAndAccountAndTags(
   for (const tagIndex in tagNames) {
     const tagName = tagNames[tagIndex]
 
-    if (estimateOne.tags[tagName] != estimateTwo.tags[tagName]) {
+    if (
+      estimateOne.tags &&
+      estimateTwo.tags &&
+      estimateOne.tags[tagName] != estimateTwo.tags[tagName]
+    ) {
       return false
     }
   }

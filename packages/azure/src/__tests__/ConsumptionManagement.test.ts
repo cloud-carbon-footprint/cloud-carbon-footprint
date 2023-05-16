@@ -428,7 +428,7 @@ describe('Azure Consumption Management Service', () => {
             accountId: subscriptionId,
             accountName: subscriptionName,
             serviceName: 'Bandwidth',
-            cost: 5,
+            cost: 10,
             region: 'uksouth',
             tags: {
               resourceGroup: 'test-resource-group',
@@ -1285,7 +1285,7 @@ describe('Azure Consumption Management Service', () => {
             accountId: subscriptionId,
             accountName: subscriptionName,
             serviceName: 'Bandwidth',
-            cost: 5,
+            cost: 10,
             region: 'uksouth',
             tags: {
               resourceGroup: 'test-resource-group',

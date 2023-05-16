@@ -65,4 +65,32 @@ describe('NetworkingEstimator', () => {
       },
     ])
   })
+
+  it('does estimates when no power usage effectiveness constant provided', () => {
+    const input = [
+      {
+        timestamp: new Date('2021-01-01'),
+        gigabytes: 10000000,
+      },
+    ]
+    const gcpSouthAmericaEast1Region = 'southamerica-east1'
+    const gcpEmissionsFactors = {
+      [gcpSouthAmericaEast1Region]: 0.000109,
+    }
+    const gcpConstants = {}
+    const result = new NetworkingEstimator(networkingCoefficient).estimate(
+      input,
+      gcpSouthAmericaEast1Region,
+      gcpEmissionsFactors,
+      gcpConstants,
+    )
+
+    expect(result).toEqual([
+      {
+        co2e: 1.09,
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        kilowattHours: 10000,
+      },
+    ])
+  })
 })

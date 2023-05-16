@@ -58,7 +58,7 @@ export default class AdvisorRecommendations
       const filteredRecommendations = recommendations
         .flat()
         .filter((recs) =>
-          recs.shortDescription.solution.includes('underutilized'),
+          recs.shortDescription?.solution?.includes('underutilized'),
         )
       const recommendationsResult: RecommendationResult[] = []
       filteredRecommendations.forEach(
@@ -84,7 +84,7 @@ export default class AdvisorRecommendations
           const resizingTypes = ['Right-size', 'SkuChange']
           if (
             resizingTypes.includes(
-              recommendation.extendedProperties.recommendationType,
+              recommendation.extendedProperties?.recommendationType || '',
             )
           ) {
             const rightsizingTargetRecommendation =
@@ -281,7 +281,9 @@ export default class AdvisorRecommendations
     if (!isValidInstanceType || !instanceTypeMemory) return 0
 
     const processors = this.getComputeProcessors(rightsizingRecommendation)
-    const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory(processors)
+    const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory
+      ? AZURE_CLOUD_CONSTANTS.getMemory(processors)
+      : 0
 
     const seriesInstanceTypes: number[][] = Object.values(
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName],

@@ -11,6 +11,8 @@ import {
 } from '../.'
 import { MemoryUsage } from '.'
 
+const defaultConstantCoefficient = 1
+
 export default class MemoryEstimator implements IFootprintEstimator {
   coefficient: number
 
@@ -27,7 +29,7 @@ export default class MemoryEstimator implements IFootprintEstimator {
     return data.map((data: MemoryUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data.gigabyteHours,
-        constants.powerUsageEffectiveness,
+        constants.powerUsageEffectiveness || defaultConstantCoefficient,
         constants.replicationFactor,
       )
       const estimatedCO2Emissions = estimateCo2(
@@ -39,7 +41,7 @@ export default class MemoryEstimator implements IFootprintEstimator {
         timestamp: data.timestamp,
         kilowattHours: estimatedKilowattHours,
         co2e: estimatedCO2Emissions,
-      }
+      } as FootprintEstimate
     })
   }
   private estimateKilowattHours(

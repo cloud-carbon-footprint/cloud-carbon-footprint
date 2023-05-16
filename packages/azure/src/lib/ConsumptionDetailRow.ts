@@ -40,7 +40,7 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     }
 
     if (tagNames.includes(RESOURCE_GROUP_TAG_NAME)) {
-      this.tags.resourceGroup = usageDetail.resourceGroup
+      this.tags.resourceGroup = usageDetail.resourceGroup as string
     }
   }
 
@@ -101,10 +101,11 @@ export default class ConsumptionDetailRow extends BillingDataRow {
 }
 
 const getConsumptionDetails = (usageDetail: UsageDetailResult) => {
+  const timestamp = new Date()
   const consumptionDetails: Partial<BillingDataRow> = {
     cloudProvider: 'AZURE',
     accountName: usageDetail.subscriptionName,
-    timestamp: new Date(usageDetail.date),
+    timestamp: new Date(usageDetail.date || timestamp),
     usageAmount: usageDetail.quantity,
     region: usageDetail.resourceLocation,
   }
@@ -122,9 +123,9 @@ const getConsumptionDetails = (usageDetail: UsageDetailResult) => {
     return {
       ...consumptionDetails,
       accountId: usageDetail.id,
-      usageType: usageDetail.meterDetails.meterName,
-      usageUnit: usageDetail.meterDetails.unitOfMeasure,
-      serviceName: usageDetail.meterDetails.meterCategory,
+      usageType: usageDetail.meterDetails?.meterName,
+      usageUnit: usageDetail.meterDetails?.unitOfMeasure,
+      serviceName: usageDetail.meterDetails?.meterCategory,
       cost: usageDetail.cost,
     }
   }

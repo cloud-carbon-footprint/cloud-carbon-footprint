@@ -11,6 +11,8 @@ import {
 } from '../.'
 import { NetworkingUsage } from '.'
 
+const defaultConstantCoefficient = 1
+
 export default class NetworkingEstimator implements IFootprintEstimator {
   coefficient: number
 
@@ -27,7 +29,7 @@ export default class NetworkingEstimator implements IFootprintEstimator {
     return data.map((data: NetworkingUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data.gigabytes,
-        constants.powerUsageEffectiveness,
+        constants.powerUsageEffectiveness || defaultConstantCoefficient,
       )
       const estimatedCO2Emissions = estimateCo2(
         estimatedKilowattHours,
@@ -38,7 +40,7 @@ export default class NetworkingEstimator implements IFootprintEstimator {
         timestamp: data.timestamp,
         kilowattHours: estimatedKilowattHours,
         co2e: estimatedCO2Emissions,
-      }
+      } as FootprintEstimate
     })
   }
   private estimateKilowattHours(

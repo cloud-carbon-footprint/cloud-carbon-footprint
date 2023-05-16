@@ -35,7 +35,7 @@ export default class RightsizingRecommendation {
       }
       parsedInstanceType = instanceTypeSplit.join(' ')
     }
-    return parsedInstanceType
+    return parsedInstanceType || ''
   }
 
   public getSeriesFromInstanceType(): string {

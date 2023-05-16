@@ -19,27 +19,32 @@ enum SERVICES {
 export const AZURE_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService =
   {
     [SERVICES.STORAGE]: (usageType: string): number => {
-      if (usageType.includes('LRS')) return REPLICATION_FACTORS.STORAGE_LRS
-      if (usageType.includes('GZRS')) return REPLICATION_FACTORS.STORAGE_GZRS
-      if (usageType.includes('ZRS')) return REPLICATION_FACTORS.STORAGE_ZRS
-      if (usageType.includes('GRS')) return REPLICATION_FACTORS.STORAGE_GRS
-      if (usageType.includes('Disks')) return REPLICATION_FACTORS.STORAGE_DISKS
-      return REPLICATION_FACTORS.DEFAULT
+      if (usageType.includes('LRS'))
+        return REPLICATION_FACTORS?.STORAGE_LRS || 0
+      if (usageType.includes('GZRS'))
+        return REPLICATION_FACTORS?.STORAGE_GZRS || 0
+      if (usageType.includes('ZRS'))
+        return REPLICATION_FACTORS?.STORAGE_ZRS || 0
+      if (usageType.includes('GRS'))
+        return REPLICATION_FACTORS?.STORAGE_GRS || 0
+      if (usageType.includes('Disks'))
+        return REPLICATION_FACTORS?.STORAGE_DISKS || 0
+      return REPLICATION_FACTORS?.DEFAULT || 0
     },
     [SERVICES.DB_MYSQL]: (): number => {
-      return REPLICATION_FACTORS.DATABASE_MYSQL
+      return REPLICATION_FACTORS?.DATABASE_MYSQL || 0
     },
     [SERVICES.COSMOS_DB]: (usageType: string): number => {
       if (usageType.includes('Data Stored'))
-        return REPLICATION_FACTORS.COSMOS_DB
-      return REPLICATION_FACTORS.DEFAULT
+        return REPLICATION_FACTORS?.COSMOS_DB || 0
+      return REPLICATION_FACTORS?.DEFAULT || 0
     },
     [SERVICES.SQL_DB]: (usageType: string): number => {
       if (containsAny(['Data Stored', 'vCore'], usageType))
-        return REPLICATION_FACTORS.SQL_DB
-      return REPLICATION_FACTORS.DEFAULT
+        return REPLICATION_FACTORS?.SQL_DB || 0
+      return REPLICATION_FACTORS?.DEFAULT || 0
     },
     [SERVICES.REDIS_CACHE]: (): number => {
-      return REPLICATION_FACTORS.REDIS_CACHE
+      return REPLICATION_FACTORS?.REDIS_CACHE || 0
     },
   }

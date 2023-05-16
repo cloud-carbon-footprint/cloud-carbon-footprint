@@ -41,14 +41,15 @@ export default class ComputeEstimator implements IFootprintEstimator {
     constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((usage) => {
+      const defaultWattage = 0
       const estimatedKilowattHours = ENERGY_ESTIMATION_FORMULA(
         usage.cpuUtilizationAverage,
         usage.vCpuHours,
-        constants.minWatts,
-        constants.maxWatts,
-        constants.powerUsageEffectiveness,
-        constants.replicationFactor,
-        constants.averageWatts,
+        constants.minWatts || defaultWattage,
+        constants.maxWatts || defaultWattage,
+        constants.powerUsageEffectiveness || defaultWattage,
+        constants.replicationFactor || 1,
+        constants.averageWatts || defaultWattage,
       )
 
       const estimatedCO2Emissions = estimateCo2(
@@ -61,7 +62,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
         kilowattHours: estimatedKilowattHours,
         co2e: estimatedCO2Emissions,
         usesAverageCPUConstant: usage.usesAverageCPUConstant,
-      }
+      } as FootprintEstimate
     })
   }
 }
