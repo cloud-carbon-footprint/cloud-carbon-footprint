@@ -71,7 +71,6 @@ export const AZURE_REGIONS = {
   IN_WEST: { name: 'westindia', options: ['westindia'] },
 
   // EU regions
-  EU: { name: 'europe', options: ['Europe'] },
   EU_NORTH: {
     name: 'northeurope',
     options: ['northeurope', 'europenorth', 'NORTHEUROPE', 'EU North'],
