@@ -159,7 +159,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.0045358859520000004,
+          co2eSavings: 0.0034891430400000004,
           costSavings: 15,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -203,7 +203,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.41792000000001,
-          co2eSavings: 0.024046546771602437,
+          co2eSavings: 0.0185270715092137,
           costSavings: 55,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -245,7 +245,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.0045358859520000004,
+          co2eSavings: 0.0034891430400000004,
           costSavings: 15,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -322,7 +322,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.1626332,
-          co2eSavings: 0.0045366853896,
+          co2eSavings: 0.0034897579920000004,
           costSavings: 15,
           instanceName: 'test-instance-name',
           resourceId: '12456789012',
@@ -368,7 +368,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.18155480000001,
-          co2eSavings: 0.004538161274400001,
+          co2eSavings: 0.0034908932880000003,
           costSavings: 15,
           instanceName: 'test-instance-name',
           resourceId: '12456789012',
@@ -412,7 +412,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
         kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.00013229154899999999,
+        co2eSavings: 0.00010176272999999999,
         costSavings: 20,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -456,7 +456,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
         kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.00013229154899999999,
+        co2eSavings: 0.00010176272999999999,
         costSavings: 20,
         resourceId: '',
         instanceName: 'instance-name',
@@ -492,7 +492,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
         kilowattHourSavings: 0.0189216,
-        co2eSavings: 0.0000014758848,
+        co2eSavings: 0.000001135296,
         costSavings: 50,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -528,7 +528,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
         kilowattHourSavings: 0.010249200000000002,
-        co2eSavings: 7.994376000000002e-7,
+        co2eSavings: 6.149520000000001e-7,
         costSavings: 50,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -563,7 +563,7 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_IMAGE',
         recommendationDetail: "Save cost by deleting idle image 'test-image'.",
         kilowattHourSavings: 0.0002771527420842647,
-        co2eSavings: 2.1617913882572647e-8,
+        co2eSavings: 1.6629164525055884e-8,
         costSavings: 30,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -637,7 +637,7 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'STOP_VM',
         recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
         kilowattHourSavings: 58.152384000000005,
-        co2eSavings: 0.0045358859520000004,
+        co2eSavings: 0.0034891430400000004,
         costSavings: 15,
         instanceName: 'test-resource-name',
         resourceId: '12456789012',
@@ -651,7 +651,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle address 'test-address'.",
         kilowattHourSavings: 155.07302400000003,
-        co2eSavings: 0.012095695872000002,
+        co2eSavings: 0.009304381440000002,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',
@@ -665,7 +665,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle address 'test-address'.",
         kilowattHourSavings: 155.07302400000003,
-        co2eSavings: 0.07443505152000002,
+        co2eSavings: 0.06730169241600001,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',
