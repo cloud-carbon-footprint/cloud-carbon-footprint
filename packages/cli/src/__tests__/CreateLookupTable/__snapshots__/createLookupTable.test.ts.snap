@@ -44,22 +44,22 @@ VPN Gateway,Unknown,VpnGw1,,,0.015215399999999999,0.000005344865126207099
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with default output file path 1`] = `
 "serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014241485805096227,0.0000044006191137747345
-Compute Engine,europe-west1,Storage PD Capacity,,,6.384652806445957e-16,7.023118087090553e-20
-Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.6209821701049808e-9,3.983080387115479e-13
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014011885805096226,0.0000043296727137747334
+Compute Engine,europe-west1,Storage PD Capacity,,,6.443769962061198e-16,7.088146958267318e-20
+Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.654509782791138e-9,4.019960761070252e-13
 Compute Engine,us-central1,SSD backed PD Capacity,,,1.2114469427615405e-15,5.524198058992625e-19
-App Engine,us-east4,Backend Instances,,,0.012628000000000002,0.000003902052000000001
-Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6209821701049804e-9,1.1188834905624389e-12
+App Engine,us-east4,Backend Instances,,,0.0123984,0.0000038311056
+Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6545097827911376e-9,1.1292435228824614e-12
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with provided output file name 1`] = `
 "serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014241485805096227,0.0000044006191137747345
-Compute Engine,europe-west1,Storage PD Capacity,,,6.384652806445957e-16,7.023118087090553e-20
-Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.6209821701049808e-9,3.983080387115479e-13
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014011885805096226,0.0000043296727137747334
+Compute Engine,europe-west1,Storage PD Capacity,,,6.443769962061198e-16,7.088146958267318e-20
+Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.654509782791138e-9,4.019960761070252e-13
 Compute Engine,us-central1,SSD backed PD Capacity,,,1.2114469427615405e-15,5.524198058992625e-19
-App Engine,us-east4,Backend Instances,,,0.012628000000000002,0.000003902052000000001
-Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6209821701049804e-9,1.1188834905624389e-12
+App Engine,us-east4,Backend Instances,,,0.0123984,0.0000038311056
+Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6545097827911376e-9,1.1292435228824614e-12
 "
 `;
