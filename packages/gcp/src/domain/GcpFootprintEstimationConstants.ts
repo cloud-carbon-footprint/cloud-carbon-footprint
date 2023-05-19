@@ -121,14 +121,14 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   AVG_CPU_UTILIZATION_2020: 50,
   REPLICATION_FACTORS: {
     CLOUD_STORAGE_SINGLE_REGION: 2,
-    CLOUD_STORAGE_DUAL_REGION: 4,
-    CLOUD_STORAGE_MULTI_REGION: 6,
+    CLOUD_STORAGE_DUAL_REGION: 2,
+    CLOUD_STORAGE_MULTI_REGION: 2,
     COMPUTE_ENGINE_REGIONAL_DISKS: 2,
     CLOUD_FILESTORE: 2,
     CLOUD_SQL_HIGH_AVAILABILITY: 2,
     CLOUD_MEMORY_STORE_REDIS: 2,
-    CLOUD_SPANNER_SINGLE_REGION: 4,
-    CLOUD_SPANNER_MULTI_REGION: 6,
+    CLOUD_SPANNER_SINGLE_REGION: 2,
+    CLOUD_SPANNER_MULTI_REGION: 2,
     KUBERNETES_ENGINE: 3,
     DEFAULT: 1,
   },
@@ -179,12 +179,12 @@ export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
       [GCP_REGIONS.NORTHAMERICA_NORTHEAST2]: 0.00000232,
       [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.00002838,
       [GCP_REGIONS.SOUTHAMERICA_WEST1]: 0.0000589,
-      [GCP_DUAL_REGIONS.ASIA1]: 0.00046476,
-      [GCP_DUAL_REGIONS.EUR4]: 0.00008599,
-      [GCP_DUAL_REGIONS.NAM4]: 0.00019109,
-      [GCP_MULTI_REGIONS.ASIA]: 0.0005058233333,
-      [GCP_MULTI_REGIONS.EU]: 0.0001723183333,
-      [GCP_MULTI_REGIONS.US]: 0.00018025875,
+      [GCP_DUAL_REGIONS.ASIA1]: 0.00065472, // Sum of asia-northeast1 + asia-northeast2
+      [GCP_DUAL_REGIONS.EUR4]: 0.00014444, // Sum of europe-west4 + europe-north1
+      [GCP_DUAL_REGIONS.NAM4]: 0.00033732, // Sum of us-central1 + us-east1
+      [GCP_MULTI_REGIONS.ASIA]: 0.00139032, // Sum of region group data centers within Asia
+      [GCP_MULTI_REGIONS.EU]: 0.00121064, // Sum of region group data centers within EU
+      [GCP_MULTI_REGIONS.US]: 0.00143137, // Sum of all US data centers
       [GCP_REGIONS.UNKNOWN]: 0.0002152373529, // Average across all regions (excluding multi and dual regions)
     }
   // These emissions factors don't take into account Google's CFE%, and just use the Grid emissions factors published by Google.
@@ -224,12 +224,12 @@ export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
     [GCP_REGIONS.NORTHAMERICA_NORTHEAST2]: 0.000029,
     [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.000129,
     [GCP_REGIONS.SOUTHAMERICA_WEST1]: 0.00019,
-    [GCP_DUAL_REGIONS.ASIA1]: 0.000498,
-    [GCP_DUAL_REGIONS.EUR4]: 0.0002715,
-    [GCP_DUAL_REGIONS.NAM4]: 0.000467,
-    [GCP_MULTI_REGIONS.ASIA]: 0.0005515555556,
-    [GCP_MULTI_REGIONS.EU]: 0.000284,
-    [GCP_MULTI_REGIONS.US]: 0.0003734285714,
+    [GCP_DUAL_REGIONS.ASIA1]: 0.000848, // Sum of asia-northeast1 + asia-northeast2
+    [GCP_DUAL_REGIONS.EUR4]: 0.00041, // Sum of europe-west4 + europe-north1
+    [GCP_DUAL_REGIONS.NAM4]: 0.000828, // Sum of us-central1 + us-east1
+    [GCP_MULTI_REGIONS.ASIA]: 0.001676, // Sum of region group data centers within Asia
+    [GCP_MULTI_REGIONS.EU]: 0.001843, // Sum of region group data centers within EU
+    [GCP_MULTI_REGIONS.US]: 0.002805, // Sum of all US data centers
     [GCP_REGIONS.UNKNOWN]: 0.0003171470588, // Average of the above regions (excludes multi/dual-regions)
   }
 }

@@ -235,8 +235,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 3.551443417867025e-13,
-            co2e: 1.6585240761439007e-16,
+            kilowattHours: 1.7757217089335124e-13,
+            co2e: 1.4702975749969482e-16,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -270,9 +270,9 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 2.0858679274940342e-13,
+            co2e: 5.222649420999611e-13,
             cost: 220,
-            kilowattHours: 5.585721305881937e-10,
+            kilowattHours: 1.8619071019606457e-10,
             tags: {},
             region: 'us',
             serviceName: 'Cloud Storage',
@@ -342,8 +342,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-northeast1',
           },
           {
-            kilowattHours: 1.3380426046296634e-10,
-            co2e: 7.380048322129852e-14,
+            kilowattHours: 4.4601420154322116e-11,
+            co2e: 7.475198017864387e-14,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
