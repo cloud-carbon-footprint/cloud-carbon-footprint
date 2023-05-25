@@ -57,5 +57,8 @@
     "release": "changeset version && yarn install",
     "postinstall": "husky install",
     "version": "yarn changeset version && yarn install --no-immutable"
+  },
+  "dependencies": {
+    "swagger-jsdoc": "^6.2.8"
   }
 }
