@@ -33,6 +33,15 @@ const useRemoteRecommendationsService = (
       }
       setError(null)
 
+      const currentDate = new Date()
+      params.footprint.data = params.footprint.data.filter((element) => {
+        const elementDate = new Date(element.timestamp)
+        const diffInDays = Math.ceil(
+          (currentDate.getTime() - elementDate.getTime()) / (1000 * 60 * 60 * 24),
+        )
+        return diffInDays <= 30
+      })
+
       try {
         const res = params.awsRecommendationTarget
           ? await axios.get(`${params.baseUrl}/recommendations`, {
