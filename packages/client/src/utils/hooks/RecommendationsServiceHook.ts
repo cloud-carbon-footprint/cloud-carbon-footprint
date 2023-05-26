@@ -37,7 +37,8 @@ const useRemoteRecommendationsService = (
       params.footprint.data = params.footprint.data.filter((element) => {
         const elementDate = new Date(element.timestamp)
         const diffInDays = Math.ceil(
-          (currentDate.getTime() - elementDate.getTime()) / (1000 * 60 * 60 * 24),
+          (currentDate.getTime() - elementDate.getTime()) /
+            (1000 * 60 * 60 * 24),
         )
         return diffInDays <= 30
       })
