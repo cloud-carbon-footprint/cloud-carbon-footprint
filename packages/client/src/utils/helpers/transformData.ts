@@ -277,9 +277,8 @@ const useFilterDataFromRecommendations = (
 function tableFormatNearZero(rawValue: number): string {
   const formattedValue = rawValue
     .toLocaleString(undefined, {
-      maximumFractionDigits: 3,
+      maximumFractionDigits: 2,
     })
-    .replace(',', '')
   return formattedValue === '0' && rawValue > 0 ? '< 0.001' : formattedValue
 }
 
