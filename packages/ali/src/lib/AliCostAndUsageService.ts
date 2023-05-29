@@ -47,9 +47,9 @@ import {
   UNKNOWN_USAGE_TYPES,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
-  HDD_MANAGED_DISKS_STORAGE_GB, INSTANCE_SPECIFICATION_MAPPING,
+  HDD_MANAGED_DISKS_STORAGE_GB,
+  INSTANCE_SPECIFICATION_MAPPING,
 } from './AliTypes'
-import * as console from 'console'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -120,7 +120,7 @@ export default class AliCostAndUsageService {
 
         this.logger.info(
           'computeFootprintEstimate:' +
-          JSON.stringify(computeFootprintEstimate),
+            JSON.stringify(computeFootprintEstimate),
         )
         this.logger.info(
           'memoryFootprintEstimate:' + JSON.stringify(memoryFootprintEstimate),
@@ -486,7 +486,7 @@ export default class AliCostAndUsageService {
 
       const unknownConstants: CloudConstants = {
         kilowattHoursByServiceAndUsageUnit:
-        ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+          ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
       }
       return this.unknownEstimator.estimate(
         [unknownUsage],

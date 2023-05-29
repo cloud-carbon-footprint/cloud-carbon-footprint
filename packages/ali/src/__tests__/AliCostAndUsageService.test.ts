@@ -94,8 +94,8 @@ describe('Ali Cost And Usage Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 82.84723199999999,
-            co2e: 0.053956742067341565,
+            kilowattHours: 108.87606106987849,
+            co2e: 0.0709087968618621,
             usesAverageCPUConstant: false,
             cloudProvider: 'AliCloud',
             accountId: billAccountID,
