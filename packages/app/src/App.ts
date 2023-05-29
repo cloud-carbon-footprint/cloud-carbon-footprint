@@ -30,7 +30,6 @@ import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
 import { includeCloudProviders } from './common/helpers'
-import { ALIAccount } from '@cloud-carbon-footprint/ali'
 
 export const recommendationsMockPath = 'recommendations.mock.json'
 
@@ -44,7 +43,7 @@ export default class App {
     const grouping = request.groupBy as GroupBy
     const config = configLoader()
     includeCloudProviders(cloudProviderToSeed, config)
-    const { AWS, GCP, AZURE, ALI } = config
+    const { AWS, GCP, AZURE } = config
     if (process.env.TEST_MODE) {
       return []
     }
@@ -114,24 +113,12 @@ export default class App {
       AzureEstimatesByRegion.push(estimates)
       appLogger.info('Finished Azure Estimations')
     }
-    const AliEstimatesByRegion: EstimationResult[][] = []
-    if (ALI?.INCLUDE_ESTIMATES && ALI?.USE_BILLING_DATA) {
-      appLogger.info('Starting Ali Estimations')
-      const aliAccount = new ALIAccount()
-      const estimates = await aliAccount.getDataFromCostAndUsageReports(
-        startDate,
-        endDate,
-        grouping,
-      )
-      AliEstimatesByRegion.push(estimates)
-      appLogger.info('Finished Ali Estimations')
-    }
+
     return reduceByTimestamp(
       AWSEstimatesByRegion.flat()
         .flat()
         .concat(GCPEstimatesByRegion.flat())
-        .concat(AzureEstimatesByRegion.flat())
-        .concat(AliEstimatesByRegion.flat()),
+        .concat(AzureEstimatesByRegion.flat()),
     )
   }
 
