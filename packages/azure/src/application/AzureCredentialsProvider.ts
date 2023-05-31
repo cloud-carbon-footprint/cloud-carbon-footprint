@@ -2,7 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ClientSecretCredential, WorkloadIdentityCredential } from '@azure/identity'
+import {
+  ClientSecretCredential,
+  WorkloadIdentityCredential,
+} from '@azure/identity'
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 
 import { configLoader } from '@cloud-carbon-footprint/common'
@@ -26,7 +29,7 @@ export default class AzureCredentialsProvider {
       case 'workload_identity':
         return new WorkloadIdentityCredential({
           tenantId: tenantId,
-          clientId: clientId
+          clientId: clientId,
         })
       default:
         return new ClientSecretCredential(tenantId, clientId, clientSecret)
