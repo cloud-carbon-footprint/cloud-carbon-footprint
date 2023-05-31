@@ -180,9 +180,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^3.1.4":
-  version: 3.1.4
-  resolution: "@azure/identity@npm:3.1.4"
+"@azure/identity@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "@azure/identity@npm:3.2.2"
   dependencies:
     "@azure/abort-controller": ^1.0.0
     "@azure/core-auth": ^1.3.0
@@ -200,7 +200,7 @@ __metadata:
     stoppable: ^1.1.0
     tslib: ^2.2.0
     uuid: ^8.3.0
-  checksum: 8851b32623565235ca390e8db340a7320864267c552a44d5e564db126d0dc7020b7de787914e50578b720ed80b99c87e957dfe302400cd50d64367e33ee294a0
+  checksum: cbedd293ed6360d98c87148686a1be3a38aad3eaeadcaa7d73e79469904aac2f949a1be67e868d3fd295e749a24ad91bc389ddb82d8574dd173c0583767ec6bf
   languageName: node
   linkType: hard
 
@@ -2318,7 +2318,7 @@ __metadata:
     "@azure/arm-advisor": ^3.1.0
     "@azure/arm-consumption": ^9.2.0
     "@azure/arm-resources-subscriptions": ^2.0.2
-    "@azure/identity": ^3.1.4
+    "@azure/identity": ^3.2.2
     "@azure/ms-rest-js": ^2.6.6
     "@azure/ms-rest-nodeauth": ^3.1.1
     "@cloud-carbon-footprint/common": ^1.10.0
