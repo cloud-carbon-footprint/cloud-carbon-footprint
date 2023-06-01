@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.13.0
+
+### Minor Changes
+
+- 42b2359e: Updates emissions factors and PUE constants to latest published values
+
+### Patch Changes
+
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/common@1.11.0
+
 ## 0.12.0
 
 ### Minor Changes

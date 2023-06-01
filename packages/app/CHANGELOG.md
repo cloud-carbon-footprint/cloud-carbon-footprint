@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/app
 
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [42b2359e]
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/gcp@0.13.0
+  - @cloud-carbon-footprint/common@1.11.0
+
 ## 1.2.1
 
 ### Patch Changes
