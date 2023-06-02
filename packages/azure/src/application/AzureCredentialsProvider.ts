@@ -11,7 +11,9 @@ import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 import { configLoader } from '@cloud-carbon-footprint/common'
 
 export default class AzureCredentialsProvider {
-  static async create(): Promise<ClientSecretCredential> {
+  static async create(): Promise<
+    ClientSecretCredential | WorkloadIdentityCredential
+  > {
     const clientId = configLoader().AZURE.authentication.clientId
     const clientSecret = configLoader().AZURE.authentication.clientSecret
     const tenantId = configLoader().AZURE.authentication.tenantId
