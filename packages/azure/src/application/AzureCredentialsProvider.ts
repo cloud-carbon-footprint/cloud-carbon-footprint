@@ -28,7 +28,7 @@ export default class AzureCredentialsProvider {
           clientIdFromGoogle,
           clientSecretFromGoogle,
         )
-      case 'workload_identity':
+      case 'WORKLOAD_IDENTITY':
         return new WorkloadIdentityCredential({
           tenantId: tenantId,
           clientId: clientId,
