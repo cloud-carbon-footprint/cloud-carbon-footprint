@@ -95,8 +95,6 @@ fileignoreconfig:
   checksum: 13794d10fb75b46d3c6815362fd63e41f7d98afea859a4e65bdf8c8e0efd6f0b
 - filename: docker-compose.yml
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
-- filename: docker-compose.azure.yml
-  checksum: 376cb095943b9b20cbbe0b800039d46617e3444d14d013554bc00219557c3723
 - filename: docker/nginx.conf
   checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
 - filename: microsite/docs/ClassifyingUsageTypes.md
