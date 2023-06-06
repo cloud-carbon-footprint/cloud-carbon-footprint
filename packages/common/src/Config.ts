@@ -59,6 +59,7 @@ export interface CCFConfig {
     }
     RESOURCE_TAG_NAMES?: string[]
     CONSUMPTION_CHUNKS_DAYS?: number
+    SUBSCRIPTION_CHUNKS?: number
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string
@@ -262,6 +263,9 @@ const getConfig = (): CCFConfig => ({
     RESOURCE_TAG_NAMES: JSON.parse(getAzureResourceTagNames()),
     CONSUMPTION_CHUNKS_DAYS: parseInt(
       getEnvVar('AZURE_CONSUMPTION_CHUNKS_DAYS') || '0',
+    ),
+    SUBSCRIPTION_CHUNKS: parseInt(
+      getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '0',
     ),
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',

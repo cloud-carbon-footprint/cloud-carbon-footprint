@@ -30,8 +30,8 @@ import {
   LookupTableInput,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
+import R from 'ramda'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
-
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
@@ -84,36 +84,43 @@ export default class AzureAccount extends CloudProviderAccount {
 
     const AZURE = configLoader().AZURE
 
-    const requests = subscriptions.map((subscription) => {
-      return async () => {
-        try {
-          this.logger.info(`Getting data for ${subscription.displayName}...`)
-          return await this.getDataForSubscription(
-            startDate,
-            endDate,
-            subscription.subscriptionId,
-            grouping,
-          )
-        } catch (e) {
-          this.logger.warn(
-            `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
-          )
-          return []
-        }
-      }
-    })
+    const requests = this.createSubscriptionRequests(
+      subscriptions,
+      startDate,
+      endDate,
+      grouping,
+    )
 
+    // If chunking by day is enabled, synchronously fetch each subscription
     if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
       const estimationResults: Array<Array<EstimationResult>> = []
       for (const request of requests) {
         estimationResults.push(await request())
       }
       return estimationResults.flat()
-    } else {
-      return (
-        await Promise.all(requests.map(async (request) => request()))
-      ).flat()
     }
+
+    // If chunking by day is disabled, asynchronously fetch all or chunked subscriptions
+    const chunkedRequests = AZURE.SUBSCRIPTION_CHUNKS
+      ? R.splitEvery(AZURE.SUBSCRIPTION_CHUNKS, requests)
+      : [requests]
+    this.logger.debug(
+      `Fetching Azure consumption data with ${AZURE.SUBSCRIPTION_CHUNKS}} 1} chunk(s)`,
+    )
+
+    // TODO: Remove before release.
+    console.time(`Azure Subscriptions: ${AZURE.SUBSCRIPTION_CHUNKS} chunk(s)`)
+    const estimationResults = []
+    for (const requests of chunkedRequests) {
+      estimationResults.push(
+        await Promise.all(requests.map(async (request) => request())),
+      )
+    }
+    console.timeEnd(
+      `Azure Subscriptions: ${AZURE.SUBSCRIPTION_CHUNKS || 1} chunk(s)`,
+    )
+
+    return R.flatten(estimationResults)
   }
 
   public async getSubscriptions(): Promise<Subscription[]> {
@@ -181,5 +188,41 @@ export default class AzureAccount extends CloudProviderAccount {
       endDate,
       grouping,
     )
+  }
+
+  /**
+   * Creates an array of functions that each return a promise for EstimationResults.
+   * Each Promise corresponds to a mapped getDataForSubscription result for that subscription.
+   *
+   * @param {Subscription[]} subscriptions - An array of subscription information to retrieve data for.
+   * @param {Date} startDate - The start date for the estimation request period.
+   * @param {Date} endDate - The end date for the estimation request period.
+   * @param {GroupBy} grouping - The grouping method used intended for the estimation request.
+   * @returns {(() => Promise<EstimationResult[]>)[]} An array of functions that each return a promise for an array of estimation results.
+   */
+  private createSubscriptionRequests(
+    subscriptions: Subscription[],
+    startDate: Date,
+    endDate: Date,
+    grouping: GroupBy,
+  ): (() => Promise<EstimationResult[]>)[] {
+    return subscriptions.map((subscription) => {
+      return async () => {
+        try {
+          this.logger.info(`Getting data for ${subscription.displayName}...`)
+          return await this.getDataForSubscription(
+            startDate,
+            endDate,
+            subscription.subscriptionId,
+            grouping,
+          )
+        } catch (e) {
+          this.logger.warn(
+            `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+          )
+          return []
+        }
+      }
+    })
   }
 }
