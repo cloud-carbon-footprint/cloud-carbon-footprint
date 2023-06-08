@@ -3,8 +3,8 @@
  */
 
 import moment, { Moment } from 'moment'
-import { inputPrompt, listPrompt } from '../common'
 import { App, createValidFootprintRequest } from '@cloud-carbon-footprint/app'
+import yargs from 'yargs';
 
 /**
  * Logs the progress of the estimate request based on the given date range
@@ -24,18 +24,47 @@ function logRequestProgress(startDate: Moment, endDate?: Moment) {
 }
 
 export default async function seedCacheFile(): Promise<void> {
-  const start = await inputPrompt('Please enter start date: ')
-  const end = await inputPrompt('Please enter end date: ')
-  const groupBy = await listPrompt(
-    'Please select how to group results by [day]: ',
-    ['day', 'week', 'month', 'quarter', 'year'],
-    'day',
-  )
-  const fetchMethod = await listPrompt(
-    'Please specify a fetch method for the request [single]:',
-    ['single', 'split'],
-    'single',
-  )
+  const argv = yargs
+    .option('start', {
+      alias: 's',
+      default: '2022-01-01',
+      describe: 'The start date of the estimate request',
+      type: 'string',
+    })
+    .option('end', {
+      alias: 'e',
+      default: moment.utc().format('YYYY-MM-DD'),
+      describe: 'The end date of the estimate request',
+      type: 'string',
+    })
+    .option('groupBy', {
+      alias: 'g',
+      default: 'day',
+      describe: 'The time interval to group the data by',
+      choices: ['day', 'week', 'month'],
+      type: 'string',
+    })
+    .option('fetchMethod', {
+      alias: 'f',
+      default: 'single',
+      describe: 'The method to use for fetching estimates',
+      choices: ['single', 'split'],
+      type: 'string',
+    })
+    .option('cloudProviderToSeed', {
+      alias: 'c',
+      describe: 'The cloud provider to seed the cache file for',
+      type: 'string',
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
+
+  const start = argv.start;
+  const end = argv.end;
+  const groupBy = argv.groupBy;
+  const fetchMethod = argv.fetchMethod;
+  const cloudProviderToSeed = argv.cloudProviderToSeed;
 
   const currentDate = moment.utc(start)
   const endDate = moment.utc(end)
@@ -45,16 +74,14 @@ export default async function seedCacheFile(): Promise<void> {
   if (fetchMethod === 'split') {
     daysPerRequest =
       parseInt(
-        await inputPrompt(
-          'How many days would you like to fetch per request? [1]',
-        ),
+        await new Promise((resolve) => {
+          process.stdin.once('data', (data) => {
+            resolve(data.toString().trim())
+          })
+          console.log('How many days would you like to fetch per request? [1]')
+        }),
       ) || 1
   }
-
-  const cloudProviderToSeed = await inputPrompt(
-    'If you are using the MongoDB cache mode and only want to seed data from a specific cloud provider, please enter cloud provider [aws|gcp|azure] or press enter to skip: ',
-    false,
-  )
 
   const app = new App()
 
