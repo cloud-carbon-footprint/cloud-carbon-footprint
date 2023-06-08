@@ -101,6 +101,8 @@ export const HDD_USAGE_TYPES: string[] = [
   'ColdStorage-ByteHrs-DynamoDB', //AWSBackup
   'WarmStorage-ByteHrs-S3', // S3
   'AMP:MetricStorageByteHrs',
+  'Mirror-GP3-Storage',
+  'Multi-AZ-GP3-Storage', // S3
   'TimedStorage-INT-AIA-ByteHrs', // S3 Glacier
   'TimedStorage-GIR-ByteHrs', // S3 Glacier
 ]
@@ -120,6 +122,7 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'TransitGateway-Bytes',
   'Retrieval',
   'BilledBytes',
+  'VpcEndpoint-GWLBE-Hours,
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -178,6 +181,8 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Airflow-MediumEnvironment',
   'IPAddressManager-IP-Hours',
   'Gateway:VTL-Storage',
+  'Gateway:VTS-Storage-DA',
+  'Airflow-LargeEnvironment',
   'Aurora:ServerlessV2Usage', // RDS Aurora
 ]
 
