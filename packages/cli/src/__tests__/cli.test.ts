@@ -8,6 +8,7 @@ import {
   EstimationRequestValidationError,
   EstimationResult,
   GroupBy,
+  configLoader,
 } from '@cloud-carbon-footprint/common'
 import {
   mockAwsCloudWatchGetMetricData,
@@ -21,6 +22,7 @@ import {
   mockVCPUTimeSeries,
 } from './fixtures/cloudmonitoring.fixtures'
 import cli from '../cli'
+import { MongoDbCacheManager } from '@cloud-carbon-footprint/app'
 
 let mockWarn: jest.SpyInstance
 const mockListTimeSeries = jest.fn()
@@ -284,6 +286,28 @@ describe('cli', () => {
           'GroupBy parameter not specified, adopting "day" as the default.',
         )
       })
+    })
+  })
+
+  describe('database connection', () => {
+    const mockCreateDbConnection = jest.fn()
+    const mockClient: any = { close: jest.fn() }
+    beforeEach(() => {
+      MongoDbCacheManager.createDbConnection = mockCreateDbConnection
+      MongoDbCacheManager.mongoClient = mockClient
+      ;(configLoader as jest.Mock).mockReturnValue({
+        ...configLoader(),
+        CACHE_MODE: 'MONGODB',
+      })
+    })
+
+    it('should initialize MongoDB client when it is configured as the cache mode', async () => {
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation()
+
+      await cli([...rawRequest])
+      expect(mockCreateDbConnection).toHaveBeenCalledTimes(1)
+      expect(mockClient.close).toHaveBeenCalledTimes(1)
+      expect(consoleSpy).toHaveBeenCalledWith('MongoDB connection closed')
     })
   })
 })

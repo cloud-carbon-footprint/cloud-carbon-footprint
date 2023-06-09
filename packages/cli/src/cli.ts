@@ -7,8 +7,12 @@ import moment from 'moment'
 import path from 'path'
 import * as process from 'process'
 
-import { App, createValidFootprintRequest } from '@cloud-carbon-footprint/app'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  App,
+  createValidFootprintRequest,
+  MongoDbCacheManager,
+} from '@cloud-carbon-footprint/app'
+import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 
 import EmissionsByDayAndServiceTable from './EmissionsByDayAndServiceTable'
 import EmissionsByServiceTable from './EmissionsByServiceTable'
@@ -64,6 +68,10 @@ export default async function cli(argv: string[] = process.argv) {
     groupBy: 'day', // So that estimates are cached the same regardless of table grouping method
   })
 
+  if (configLoader().CACHE_MODE === 'MONGODB') {
+    await MongoDbCacheManager.createDbConnection()
+  }
+
   const { table, colWidths } = await new App()
     .getCostAndEstimates(estimationRequest)
     .then((estimations: EstimationResult[]) => {
@@ -75,6 +83,11 @@ export default async function cli(argv: string[] = process.argv) {
       }
       return EmissionsByDayAndServiceTable(estimations)
     })
+
+  if (configLoader().CACHE_MODE === 'MONGODB') {
+    await MongoDbCacheManager.mongoClient.close()
+    console.log('MongoDB connection closed')
+  }
 
   if (format === 'csv') {
     const filePath = path.join(
