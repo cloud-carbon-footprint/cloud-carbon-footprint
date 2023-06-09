@@ -12,17 +12,23 @@ import cors, { CorsOptions } from 'cors'
 
 import { createRouter } from './api'
 import auth from './auth'
-import { Logger } from '@cloud-carbon-footprint/common'
+import { Logger, configLoader } from '@cloud-carbon-footprint/common'
+import MongoDbCacheManager from '@cloud-carbon-footprint/app/src/MongoDbCacheManager'
 
 const port = process.env.PORT || 4000
 const httpApp = express()
-const serverLogger = new Logger('server')
+const serverLogger = new Logger('Server')
 
 if (process.env.NODE_ENV === 'production') {
   httpApp.use(auth)
 }
 
 httpApp.use(helmet())
+
+// Establish Mongo Connection if cache method selected
+if (configLoader()?.CACHE_MODE === 'MONGODB') {
+  MongoDbCacheManager.createDbConnection()
+}
 
 if (process.env.ENABLE_CORS) {
   const corsOptions: CorsOptions = {
@@ -46,3 +52,13 @@ httpApp.listen(port, () =>
     `Cloud Carbon Footprint Server listening at http://localhost:${port}`,
   ),
 )
+
+// Instructions for graceful shutdown
+process.on('SIGINT', async () => {
+  if (configLoader()?.CACHE_MODE === 'MONGODB') {
+    await MongoDbCacheManager.mongoClient.close()
+    serverLogger.info('\nMongoDB connection closed')
+  }
+  serverLogger.info('Cloud Carbon Footprint Server shutting down...')
+  process.exit()
+})
