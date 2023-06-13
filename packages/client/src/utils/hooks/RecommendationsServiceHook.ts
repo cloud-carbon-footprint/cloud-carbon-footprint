@@ -8,7 +8,7 @@ import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from '../../Types'
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 import { FootprintData } from './FootprintDataHook'
-
+import { sliceFootprintDataByLastMonth } from '../helpers/handleDates'
 export interface UseRemoteRecommendationServiceParams {
   baseUrl: string | null
   onApiError?: (e: Error) => void
@@ -33,15 +33,9 @@ const useRemoteRecommendationsService = (
       }
       setError(null)
 
-      const currentDate = new Date()
-      params.footprint.data = params.footprint.data.filter((element) => {
-        const elementDate = new Date(element.timestamp)
-        const diffInDays = Math.ceil(
-          (currentDate.getTime() - elementDate.getTime()) /
-            (1000 * 60 * 60 * 24),
-        )
-        return diffInDays <= 30
-      })
+      params.footprint.data = sliceFootprintDataByLastMonth(
+        params.footprint.data,
+      )
 
       try {
         const res = params.awsRecommendationTarget
