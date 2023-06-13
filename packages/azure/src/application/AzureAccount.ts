@@ -80,9 +80,11 @@ export default class AzureAccount extends CloudProviderAccount {
     endDate: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    const subscriptions = await this.getSubscriptions()
-
     const AZURE = configLoader().AZURE
+
+    const subscriptions = AZURE.SUBSCRIPTIONS?.length
+      ? await this.getSubscriptionsByIds(AZURE.SUBSCRIPTIONS)
+      : await this.getSubscriptions()
 
     const requests = this.createSubscriptionRequests(
       subscriptions,
@@ -105,7 +107,9 @@ export default class AzureAccount extends CloudProviderAccount {
       ? R.splitEvery(AZURE.SUBSCRIPTION_CHUNKS, requests)
       : [requests]
     this.logger.debug(
-      `Fetching Azure consumption data with ${AZURE.SUBSCRIPTION_CHUNKS}} 1} chunk(s)`,
+      `Fetching Azure consumption data with ${
+        AZURE.SUBSCRIPTION_CHUNKS || 1
+      } chunk(s)`,
     )
 
     // TODO: Remove before release.
@@ -134,6 +138,27 @@ export default class AzureAccount extends CloudProviderAccount {
         'No subscription returned for these Azure credentials, be sure the registered application has ' +
           'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
       )
+    }
+
+    return subscriptions
+  }
+
+  private async getSubscriptionsByIds(
+    subscriptionIds: string[],
+  ): Promise<Subscription[]> {
+    const subscriptions = []
+
+    for (const subscriptionId of subscriptionIds) {
+      try {
+        const subscription = await this.subscriptionClient.subscriptions.get(
+          subscriptionId,
+        )
+        subscriptions.push(subscription)
+      } catch (error) {
+        this.logger.warn(
+          `Unable to fetch subscription details for: "${subscriptionId}". Reason: ${error.message}`,
+        )
+      }
     }
 
     return subscriptions

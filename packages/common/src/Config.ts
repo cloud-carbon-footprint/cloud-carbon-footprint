@@ -60,6 +60,7 @@ export interface CCFConfig {
     RESOURCE_TAG_NAMES?: string[]
     CONSUMPTION_CHUNKS_DAYS?: number
     SUBSCRIPTION_CHUNKS?: number
+    SUBSCRIPTIONS: string[]
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string
@@ -130,6 +131,12 @@ const getAzureResourceTagNames = () => {
 
 const getGCPProjects = () => {
   return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
+}
+
+const getAzureSubscriptions = () => {
+  return process.env.AZURE_SUBSCRIPTIONS
+    ? process.env.AZURE_SUBSCRIPTIONS
+    : '[]'
 }
 
 // This function allows support for using Docker Secrets.
@@ -267,6 +274,7 @@ const getConfig = (): CCFConfig => ({
     SUBSCRIPTION_CHUNKS: parseInt(
       getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '0',
     ),
+    SUBSCRIPTIONS: JSON.parse(getAzureSubscriptions()) || [],
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
