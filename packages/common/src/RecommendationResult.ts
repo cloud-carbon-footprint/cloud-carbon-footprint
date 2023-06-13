@@ -11,7 +11,7 @@
  *      properties:
  *        cloudProvider:
  *          type: string
- *          description: aws, gcp, ...
+ *          description: aws | gcp | azure
  *        accountId:
  *          type: string
  *        accountName:
@@ -56,22 +56,6 @@ export type ComputeOptimizerRecommendationOption =
   | EBSRecommendationOption
   | LambdaRecommendationOption
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    EC2Recommendation:
- *      type: object
- *      properties:
- *        instanceType:
- *          type: string
- *        costSavings:
- *          type: string
- *        performanceRisk:
- *          type: string
- *        vcpus:
- *          type: string
- */
 export type EC2RecommendationOption = {
   instanceType: string
   costSavings: string
@@ -79,22 +63,6 @@ export type EC2RecommendationOption = {
   vcpus: string
 }
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    EBSRecommendation:
- *      type: object
- *      properties:
- *        volumeType:
- *          type: string
- *        volumeSize:
- *          type: string
- *        costSavings:
- *          type: string
- *        performanceRisk:
- *          type: string
- */
 export type EBSRecommendationOption = {
   volumeType: string
   volumeSize: string
@@ -102,20 +70,6 @@ export type EBSRecommendationOption = {
   performanceRisk: string
 }
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    LambdaRecommendation:
- *      type: object
- *      properties:
- *        memorySize:
- *          type: string
- *        costSavings:
- *          type: string
- *        performanceRisk?:
- *          type: string
- */
 export type LambdaRecommendationOption = {
   memorySize: string
   costSavings: string
