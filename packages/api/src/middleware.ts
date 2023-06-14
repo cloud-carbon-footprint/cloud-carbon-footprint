@@ -76,7 +76,7 @@ export const FootprintApiMiddleware = async function (
 }
 
 /**
- * Handles the fetching of emissions factors for different regions.
+ * Handles the fetching of emissions factors for all regions.
  *
  * @async
  * @returns A response object with the mapped emissions factors for each supported cloud provider region.
@@ -97,7 +97,7 @@ export const EmissionsApiMiddleware = async function (
 }
 
 /**
- * Handles the fetching of cloud footprint recommendations for a given AWS recommendation target.
+ * Handles the fetching of cost saving recommendations along with their calculated carbon and energy savings.
  *
  * @async
  * @param {express.Request} req - The Express request object containing the request parameters.

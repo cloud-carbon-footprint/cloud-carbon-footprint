@@ -6,47 +6,6 @@ import { reduceBy } from 'ramda'
 import { GroupBy } from './Config'
 import { getPeriodEndDate } from './helpers'
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    FootprintResponse:
- *      type: object
- *      properties:
- *        timestamp:
- *          type: string
- *        serviceEstimates:
- *          type: array
- *          items:
- *            type: object
- *            properties:
- *             cloudProvider:
- *               type: string
- *             kilowattHours:
- *               type: number
- *             co2e:
- *               type: number
- *             cost:
- *               type: number
- *             usesAverageCPUConstant?:
- *               type: boolean
- *             accountId:
- *               type: string
- *             accountName:
- *               type: string
- *             serviceName:
- *               type: string
- *             region:
- *               type: string
- *             tags:
- *              type: array
- *        periodStartDate:
- *          type: string
- *        periodEndDate:
- *          type: string
- *        groupBy:
- *          type: string
- */
 export interface EstimationResult {
   readonly timestamp: Date
   readonly serviceEstimates: ServiceData[]

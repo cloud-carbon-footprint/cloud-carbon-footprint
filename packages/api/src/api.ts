@@ -14,13 +14,16 @@ export const createRouter = (config?: CCFConfig) => {
   setConfig(config)
 
   const router = express.Router()
+
   /**
    * @openapi
    * /api/footprint:
    *  get:
    *     tags:
    *     - Footprint
-   *     summary: Get the footprint for the date range
+   *     summary: Gets calculated energy and carbon estimates for a given date range
+   *     produces:
+   *       - application/json
    *     parameters:
    *      - name: start
    *        in: query
@@ -51,14 +54,14 @@ export const createRouter = (config?: CCFConfig) => {
    *        schema:
    *          type: number
    *          default: 50000
-   *        description: The maximum number of estimates to return
+   *        description: The maximum number of estimates to return (MongoDB only, ignoreCache=false)
    *        required: false
    *      - name: skip
    *        in: query
    *        schema:
    *          type: number
    *          default: 0
-   *        description: The number of estimates to skip over
+   *        description: The maximum number of estimates to skip over (MongoDB only, ignoreCache=false)
    *        required: false
    *      - name: cloudProviders
    *        in: query
@@ -66,8 +69,7 @@ export const createRouter = (config?: CCFConfig) => {
    *          type: array
    *          items:
    *            type: string
-   *        default: []
-   *        description: Can be used to filter estimates
+   *        description: List of Cloud Providers to include in estimates (MongoDB only, Filter)
    *        required: false
    *      - name: accounts
    *        in: query
@@ -75,8 +77,7 @@ export const createRouter = (config?: CCFConfig) => {
    *          type: array
    *          items:
    *            type: string
-   *        default: []
-   *        description: Can be used to filter estimates
+   *        description: List of accounts to include in estimates (MongoDB only, Filter)
    *        required: false
    *      - name: services
    *        in: query
@@ -84,8 +85,7 @@ export const createRouter = (config?: CCFConfig) => {
    *          type: array
    *          items:
    *            type: string
-   *        default: []
-   *        description: Can be used to filter estimates
+   *        description: List of services to include in estimates (MongoDB only, Filter)
    *        required: false
    *      - name: regions
    *        in: query
@@ -93,8 +93,7 @@ export const createRouter = (config?: CCFConfig) => {
    *          type: array
    *          items:
    *            type: string
-   *        default: []
-   *        description: Can be used to filter estimates
+   *        description: List of regions to include in estimates (MongoDB only, Filter)
    *        required: false
    *      - name: tags
    *        in: query
@@ -102,8 +101,7 @@ export const createRouter = (config?: CCFConfig) => {
    *          type: object
    *          additionalProperties:
    *            type: string
-   *        default: {}
-   *        description: Can be used to filter estimates
+   *        description: List of resource tags to include in estimates (MongoDB only, Filter)
    *        required: false
    *     responses:
    *       200:
@@ -111,9 +109,15 @@ export const createRouter = (config?: CCFConfig) => {
    *         content:
    *          application/json:
    *            schema:
-   *             $ref: '#/components/schemas/FootprintResponse'
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/FootprintResponse'
    *       400:
    *         description: Bad request
+   *       416:
+   *         description: Partial Data Error
+   *       500:
+   *         description: Internal Server Error
    */
   router.get('/footprint', FootprintApiMiddleware)
 
@@ -123,14 +127,16 @@ export const createRouter = (config?: CCFConfig) => {
    *  get:
    *     tags:
    *     - Emissions Factors
-   *     description: Gives you back the emissions factors for all regions?
+   *     description: Gets the carbon intensity (co2e/kWh) of all cloud provider regions
    *     responses:
    *       200:
    *         description: Success
    *         content:
    *           application/json:
    *            schema:
-   *             $ref: '#/components/schemas/EmissionResponse'
+   *              type: array
+   *              items:
+   *                $ref: '#/components/schemas/EmissionResponse'
    */
   router.get('/regions/emissions-factors', EmissionsApiMiddleware)
 
@@ -140,14 +146,24 @@ export const createRouter = (config?: CCFConfig) => {
    *  get:
    *     tags:
    *     - Recommendations
-   *     description: Gives you back recommendations to decrease your cloud carbon footprint
+   *     description: Gets recommendations from cloud providers and their estimated carbon and energy impact
+   *     parameters:
+   *      - name: awsRecommendationTarget
+   *        in: query
+   *        description: Defines whether targeted AWS recommendations should be within the same family
+   *        schema:
+   *          type: string
+   *          enum: [SAME_INSTANCE_FAMILY, CROSS_INSTANCE_FAMILY]
+   *        required: true
    *     responses:
    *       200:
    *         description: Success
    *         content:
    *           application/json:
    *            schema:
-   *             $ref: '#/components/schemas/RecommendationsResponse'
+   *              type: array
+   *              items:
+   *                $ref: '#/components/schemas/RecommendationsResponse'
    */
   router.get('/recommendations', RecommendationsApiMiddleware)
 
@@ -160,7 +176,7 @@ export const createRouter = (config?: CCFConfig) => {
    *     description: Responds if the app is up and running
    *     responses:
    *       200:
-   *         description: App is up and running
+   *         description: Responds "OK" if app is up and running
    */
   router.get('/healthz', (req: express.Request, res: express.Response) => {
     res.status(200).send('OK')

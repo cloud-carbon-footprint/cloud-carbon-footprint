@@ -15,7 +15,7 @@ const options: swaggerJsdoc.Options = {
       version,
     },
   },
-  apis: ['./src/api.ts', '../common/src/*.ts'],
+  apis: ['./src/api.ts', './src/utils/schemas.yaml'],
 }
 
 const swaggerSpec = swaggerJsdoc(options)

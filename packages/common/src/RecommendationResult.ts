@@ -2,40 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    RecommendationsResponse:
- *      type: object
- *      properties:
- *        cloudProvider:
- *          type: string
- *          description: aws | gcp | azure
- *        accountId:
- *          type: string
- *        accountName:
- *          type: string
- *        region:
- *          type: string
- *        recommendationType:
- *          type: string
- *        recommendationDetail?:
- *          type: string
- *        resourceId?:
- *          type: string
- *        instanceName?:
- *          type: string
- *        kilowattHourSavings:
- *          type: number
- *        costSavings:
- *          type: number
- *        co2eSavings:
- *          type: number
- *        recommendationOptions?:
- *          type: object
- *          description: Either EC2, EBS, or Lambda recommendation
- */
 export interface RecommendationResult {
   readonly cloudProvider: string
   readonly accountId: string

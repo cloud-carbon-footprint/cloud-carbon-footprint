@@ -11,9 +11,9 @@ import helmet from 'helmet'
 import cors, { CorsOptions } from 'cors'
 
 import { createRouter } from './api'
-import auth from './auth'
+import auth from './utils/auth'
 import { Logger } from '@cloud-carbon-footprint/common'
-import swaggerDocs from './swagger'
+import swaggerDocs from './utils/swagger'
 
 const port = process.env.PORT || 4000
 const httpApp = express()

@@ -1,7 +1,7 @@
 import { Logger } from '@cloud-carbon-footprint/common'
 import request from 'supertest'
 import express from 'express'
-import swaggerDocs from '../swagger'
+import swaggerDocs from '../utils/swagger'
 
 describe('swaggerDocs', () => {
   const server = express()
