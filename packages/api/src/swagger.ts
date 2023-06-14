@@ -30,7 +30,7 @@ function swaggerDocs(app: Express, port: number) {
     res.send(swaggerSpec)
   })
 
-  serverLogger.info(`Docs available at http://localhost:${port}/docs`)
+  serverLogger.info(`Documentation available at http://localhost:${port}/docs`)
 }
 
 export default swaggerDocs
