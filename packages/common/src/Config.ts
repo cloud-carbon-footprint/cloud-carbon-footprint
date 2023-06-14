@@ -272,7 +272,7 @@ const getConfig = (): CCFConfig => ({
       getEnvVar('AZURE_CONSUMPTION_CHUNKS_DAYS') || '0',
     ),
     SUBSCRIPTION_CHUNKS: parseInt(
-      getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '0',
+      getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '10',
     ),
     SUBSCRIPTIONS: JSON.parse(getAzureSubscriptions()) || [],
   },
