@@ -93,36 +93,20 @@ export default class AzureAccount extends CloudProviderAccount {
       grouping,
     )
 
-    // If chunking by day is enabled, synchronously fetch each subscription
-    if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
-      const estimationResults: Array<Array<EstimationResult>> = []
-      for (const request of requests) {
-        estimationResults.push(await request())
-      }
-      return estimationResults.flat()
-    }
-
-    // If chunking by day is disabled, asynchronously fetch all or chunked subscriptions
+    // Fetch subscriptions in configured chunks or 10 at a time by default.
     const chunkedRequests = AZURE.SUBSCRIPTION_CHUNKS
       ? R.splitEvery(AZURE.SUBSCRIPTION_CHUNKS, requests)
       : [requests]
     this.logger.debug(
-      `Fetching Azure consumption data with ${
-        AZURE.SUBSCRIPTION_CHUNKS || 1
-      } chunk(s)`,
+      `Fetching Azure consumption data with ${AZURE.SUBSCRIPTION_CHUNKS} chunk(s)`,
     )
 
-    // TODO: Remove before release.
-    console.time(`Azure Subscriptions: ${AZURE.SUBSCRIPTION_CHUNKS} chunk(s)`)
     const estimationResults = []
     for (const requests of chunkedRequests) {
       estimationResults.push(
         await Promise.all(requests.map(async (request) => request())),
       )
     }
-    console.timeEnd(
-      `Azure Subscriptions: ${AZURE.SUBSCRIPTION_CHUNKS || 1} chunk(s)`,
-    )
 
     return R.flatten(estimationResults)
   }
