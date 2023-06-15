@@ -83,8 +83,9 @@ export default class AdvisorRecommendations
 
           const resizingTypes = ['Right-size', 'SkuChange']
           if (
+            recommendation.extendedProperties?.recommendationType &&
             resizingTypes.includes(
-              recommendation.extendedProperties?.recommendationType || '',
+              recommendation.extendedProperties?.recommendationType,
             )
           ) {
             const rightsizingTargetRecommendation =

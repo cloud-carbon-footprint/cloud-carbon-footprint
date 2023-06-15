@@ -116,11 +116,13 @@ export default class ConsumptionManagementService {
     const unknownRows: ConsumptionDetailRow[] = []
 
     usageRows
-      .filter(
-        (consumptionRow) =>
-          new Date(consumptionRow.date || Date.now()) >= startDate &&
-          new Date(consumptionRow.date || Date.now()) <= endDate,
-      )
+      .filter((consumptionRow) => {
+        const consumptionRowDate = consumptionRow.date || Date.now()
+        return (
+          new Date(consumptionRowDate) >= startDate &&
+          new Date(consumptionRowDate) <= endDate
+        )
+      })
       .map((consumptionRow) => {
         const consumptionDetailRow: ConsumptionDetailRow =
           new ConsumptionDetailRow(consumptionRow)
