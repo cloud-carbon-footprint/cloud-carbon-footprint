@@ -60,7 +60,7 @@ const RecommendationsPage = ({
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
           <RecommendationsTable
-            emissionsData={recommendations.filteredEmissionsData}
+            emissionsData={slicedFootprint}
             recommendations={recommendations.filteredRecommendationData}
             co2eUnit={co2eUnit}
             forecastDetails={forecastDetails}
