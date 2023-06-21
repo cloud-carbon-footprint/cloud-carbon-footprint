@@ -12,3 +12,6 @@ export {
   RecommendationsRawRequest,
   Tags,
 } from './RawRequest'
+export { default as MongoDbCacheManager } from './MongoDbCacheManager'
+export { default as LocalCacheManager } from './LocalCacheManager'
+export { default as GoogleCloudCacheManager } from './GoogleCloudCacheManager'

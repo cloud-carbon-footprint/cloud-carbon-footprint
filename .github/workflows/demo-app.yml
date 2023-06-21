@@ -70,7 +70,7 @@ jobs:
           mkdir packages/client/stub-server/api
           mkdir packages/client/stub-server/api/regions
 
-          node scripts/create-client-mock-data.js
+          node scripts/create-mock-data.js
 
           # Copy static build files to demo Google Cloud Bucket
           gsutil cp -r packages/client/build/* gs://${GOOGLE_DEMO_STORAGE_BUCKET}

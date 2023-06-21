@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/client
 
+## 4.1.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 4.1.1
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- 65386330: bumps ramda dependency
+
 ## 4.1.0
 
 ### Minor Changes

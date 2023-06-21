@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.11.0
+
+### Minor Changes
+
+- 0d20b32c: Adds support for Google Cloud resource tags to configuration options
+
 ## 1.10.0
 
 ### Minor Changes

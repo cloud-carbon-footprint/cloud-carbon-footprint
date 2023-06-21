@@ -2,13 +2,18 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ClientSecretCredential } from '@azure/identity'
+import {
+  ClientSecretCredential,
+  WorkloadIdentityCredential,
+} from '@azure/identity'
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 
 import { configLoader } from '@cloud-carbon-footprint/common'
 
 export default class AzureCredentialsProvider {
-  static async create(): Promise<ClientSecretCredential> {
+  static async create(): Promise<
+    ClientSecretCredential | WorkloadIdentityCredential
+  > {
     const clientId = configLoader().AZURE.authentication.clientId
     const clientSecret = configLoader().AZURE.authentication.clientSecret
     const tenantId = configLoader().AZURE.authentication.tenantId
@@ -23,6 +28,11 @@ export default class AzureCredentialsProvider {
           clientIdFromGoogle,
           clientSecretFromGoogle,
         )
+      case 'WORKLOAD_IDENTITY':
+        return new WorkloadIdentityCredential({
+          tenantId: tenantId,
+          clientId: clientId,
+        })
       default:
         return new ClientSecretCredential(tenantId, clientId, clientSecret)
     }

@@ -14,9 +14,9 @@ class Page {
     //--footprint page components here
 
     //main components
-    this.cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-    this.accounts = Selector('span').withText('Accounts: 15 of 15') //todo: minimize dataset-specific selectors
-    this.services = Selector('span').withText('Services: 8 of 8')
+    this.cloudProviders = Selector('span').withText('Cloud Providers')
+    this.accounts = Selector('span').withText('Accounts')
+    this.services = Selector('span').withText('Services')
     this.lineChart = Selector('#apexchartslineChart')
     this.carbonComparisonCard = Selector('#carbonComparisonCard')
     this.emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
@@ -68,11 +68,11 @@ class Page {
 
     //recommendations - main components
     this.recommendationsButton = Selector('a').withText('RECOMMENDATIONS')
-    this.regions = Selector('span').withText('Regions: 9 of 9')
+    this.regions = Selector('span').withText('Regions')
     this.recommendationTypes = Selector('span').withText(
       'Recommendation Types: 8 of 8',
     )
-    this.recAccounts = Selector('span').withText('Accounts: 15 of 15') //todo: minimize dataset-specific selectors
+    this.recAccounts = Selector('span').withText('Accounts')
 
     //forecast card components
     this.lastThirtyDayTotal = Selector(

@@ -7,6 +7,7 @@ import {
   LookupTableInput,
   LookupTableOutput,
   RecommendationResult,
+  configLoader,
 } from '@cloud-carbon-footprint/common'
 
 import AzureAccount from '../application/AzureAccount'
@@ -14,7 +15,7 @@ import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 
-const mockListSubscriptions = { list: jest.fn() }
+const mockListSubscriptions = { list: jest.fn(), get: jest.fn() }
 
 jest.mock('@azure/arm-resources-subscriptions', () => {
   return {
@@ -47,101 +48,254 @@ describe('Azure Account', () => {
   const testAccountId = 'test-subscription-id'
   const testAccountName = 'test-subscription'
 
-  it('gets results from getDataFromConsumptionManagement function', async () => {
-    const mockCredentials = {
-      clientId: 'test-client-id',
-      secret: 'test-client-secret',
-      domain: 'test-tenant-id',
-    }
-    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+  describe('getDataFromConsumptionManagement', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
 
-    mockListSubscriptions.list.mockReturnValue([
-      { subscriptionId: 'sub-1' },
-      { subscriptionId: 'sub-2' },
-    ])
+    it('gets results from getDataFromConsumptionManagement function', async () => {
+      const mockCredentials = {
+        clientId: 'test-client-id',
+        secret: 'test-client-secret',
+        domain: 'test-tenant-id',
+      }
+      ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
-    const mockEstimates: EstimationResult[] = [
-      {
-        timestamp: startDate,
-        serviceEstimates: [
+      mockListSubscriptions.list.mockReturnValue([
+        { subscriptionId: 'sub-1' },
+        { subscriptionId: 'sub-2' },
+      ])
+
+      const mockEstimates: EstimationResult[] = [
+        {
+          timestamp: startDate,
+          serviceEstimates: [
+            {
+              kilowattHours: 0.09313874999999999,
+              co2e: 0.000021235635,
+              usesAverageCPUConstant: true,
+              cloudProvider: 'AZURE',
+              accountId: testAccountId,
+              accountName: testAccountName,
+              serviceName: 'Virtual Machines',
+              cost: 5,
+              region: 'UK South',
+            },
+          ],
+          periodStartDate: startDate,
+          periodEndDate: endDate,
+          groupBy: grouping,
+        },
+      ]
+
+      ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+
+      const promiseSpy = jest.spyOn(Promise, 'all')
+
+      // when
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const results = await azureAccount.getDataFromConsumptionManagement(
+        startDate,
+        endDate,
+        grouping,
+      )
+
+      // then
+      const expectedEstimates: EstimationResult[] = [
+        {
+          timestamp: startDate,
+          serviceEstimates: [
+            {
+              kilowattHours: 0.09313874999999999,
+              co2e: 0.000021235635,
+              usesAverageCPUConstant: true,
+              cloudProvider: 'AZURE',
+              accountId: testAccountId,
+              accountName: testAccountName,
+              serviceName: 'Virtual Machines',
+              cost: 5,
+              region: 'UK South',
+            },
+          ],
+          periodStartDate: startDate,
+          periodEndDate: endDate,
+          groupBy: grouping,
+        },
+        {
+          timestamp: startDate,
+          serviceEstimates: [
+            {
+              kilowattHours: 0.09313874999999999,
+              co2e: 0.000021235635,
+              usesAverageCPUConstant: true,
+              cloudProvider: 'AZURE',
+              accountId: testAccountId,
+              accountName: testAccountName,
+              serviceName: 'Virtual Machines',
+              cost: 5,
+              region: 'UK South',
+            },
+          ],
+          periodStartDate: startDate,
+          periodEndDate: endDate,
+          groupBy: grouping,
+        },
+      ]
+
+      expect(results).toEqual(expectedEstimates)
+      expect(getEstimatesSpy).toHaveBeenNthCalledWith(
+        2,
+        startDate,
+        endDate,
+        grouping,
+      )
+      expect(promiseSpy).toBeCalledTimes(1)
+    })
+
+    describe('Fetch Configurations', () => {
+      it('fetches data for all subscriptions when subscription chunks are set', async () => {
+        const mockCredentials = {
+          clientId: 'test-client-id',
+          secret: 'test-client-secret',
+          domain: 'test-tenant-id',
+        }
+        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+        mockListSubscriptions.list.mockReturnValue([
+          { subscriptionId: 'sub-1' },
+          { subscriptionId: 'sub-2' },
+          { subscriptionId: 'sub-3' },
+          { subscriptionId: 'sub-4' },
+          { subscriptionId: 'sub-5' },
+        ])
+
+        const mockEstimates: EstimationResult[] = [
           {
-            kilowattHours: 0.09313874999999999,
-            co2e: 0.000021235635,
-            usesAverageCPUConstant: true,
-            cloudProvider: 'AZURE',
-            accountId: testAccountId,
-            accountName: testAccountName,
-            serviceName: 'Virtual Machines',
-            cost: 5,
-            region: 'UK South',
+            timestamp: startDate,
+            serviceEstimates: [
+              {
+                kilowattHours: 0.09313874999999999,
+                co2e: 0.000021235635,
+                usesAverageCPUConstant: true,
+                cloudProvider: 'AZURE',
+                accountId: testAccountId,
+                accountName: testAccountName,
+                serviceName: 'Virtual Machines',
+                cost: 5,
+                region: 'UK South',
+              },
+            ],
+            periodStartDate: startDate,
+            periodEndDate: endDate,
+            groupBy: grouping,
           },
-        ],
-        periodStartDate: startDate,
-        periodEndDate: endDate,
-        groupBy: grouping,
-      },
-    ]
+        ]
 
-    ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
-    // when
-    const azureAccount = new AzureAccount()
-    await azureAccount.initializeAccount()
-    const results = await azureAccount.getDataFromConsumptionManagement(
-      startDate,
-      endDate,
-      grouping,
-    )
+        const AZURE = configLoader().AZURE || {}
+        AZURE.SUBSCRIPTION_CHUNKS = 2
+        const promiseSpy = jest.spyOn(Promise, 'all')
+        // when
+        const azureAccount = new AzureAccount()
+        await azureAccount.initializeAccount()
+        const results = await azureAccount.getDataFromConsumptionManagement(
+          startDate,
+          endDate,
+          grouping,
+        )
 
-    // then
-    const expectedEstimates: EstimationResult[] = [
-      {
-        timestamp: startDate,
-        serviceEstimates: [
+        // Results should be the same as the mockEstimates array repeated 5 times
+        const expectedEstimates = Array.from(
+          { length: 5 },
+          () => mockEstimates[0],
+        )
+
+        expect(results).toEqual(expectedEstimates)
+
+        // getEstimates should have been called 5 times (once for each subscription)
+        expect(getEstimatesSpy).toHaveBeenCalledTimes(5)
+        // Promise.all should have been called 3 times (once for each chunk of 2 subscriptions)
+        expect(promiseSpy).toHaveBeenCalledTimes(3)
+
+        // Reset the config
+        delete AZURE.SUBSCRIPTION_CHUNKS
+      })
+
+      it('fetches data only for specific subscriptions when specified subscriptions are set', async () => {
+        const mockCredentials = {
+          clientId: 'test-client-id',
+          secret: 'test-client-secret',
+          domain: 'test-tenant-id',
+        }
+        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+        const AZURE: any = configLoader().AZURE || {}
+        const subscriptions = ['sub-1', 'sub-2', 'sub-3']
+        AZURE.SUBSCRIPTIONS = subscriptions
+
+        subscriptions.forEach((subscriptionId) => {
+          mockListSubscriptions.get.mockReturnValueOnce({ subscriptionId })
+        })
+
+        const mockEstimates: EstimationResult[] = [
           {
-            kilowattHours: 0.09313874999999999,
-            co2e: 0.000021235635,
-            usesAverageCPUConstant: true,
-            cloudProvider: 'AZURE',
-            accountId: testAccountId,
-            accountName: testAccountName,
-            serviceName: 'Virtual Machines',
-            cost: 5,
-            region: 'UK South',
+            timestamp: startDate,
+            serviceEstimates: [
+              {
+                kilowattHours: 0.09313874999999999,
+                co2e: 0.000021235635,
+                usesAverageCPUConstant: true,
+                cloudProvider: 'AZURE',
+                accountId: testAccountId,
+                accountName: testAccountName,
+                serviceName: 'Virtual Machines',
+                cost: 5,
+                region: 'UK South',
+              },
+            ],
+            periodStartDate: startDate,
+            periodEndDate: endDate,
+            groupBy: grouping,
           },
-        ],
-        periodStartDate: startDate,
-        periodEndDate: endDate,
-        groupBy: grouping,
-      },
-      {
-        timestamp: startDate,
-        serviceEstimates: [
-          {
-            kilowattHours: 0.09313874999999999,
-            co2e: 0.000021235635,
-            usesAverageCPUConstant: true,
-            cloudProvider: 'AZURE',
-            accountId: testAccountId,
-            accountName: testAccountName,
-            serviceName: 'Virtual Machines',
-            cost: 5,
-            region: 'UK South',
-          },
-        ],
-        periodStartDate: startDate,
-        periodEndDate: endDate,
-        groupBy: grouping,
-      },
-    ]
+        ]
 
-    expect(results).toEqual(expectedEstimates)
-    expect(getEstimatesSpy).toHaveBeenNthCalledWith(
-      2,
-      startDate,
-      endDate,
-      grouping,
-    )
+        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        const getDataForSubscriptionSpy = jest.spyOn(
+          AzureAccount.prototype,
+          'getDataForSubscription',
+        )
+
+        // when
+        const azureAccount = new AzureAccount()
+        await azureAccount.initializeAccount()
+        const results = await azureAccount.getDataFromConsumptionManagement(
+          startDate,
+          endDate,
+          grouping,
+        )
+
+        // Results should be the same as the mockEstimates array repeated35 times
+        const expectedEstimates = Array.from(
+          { length: 3 },
+          () => mockEstimates[0],
+        )
+
+        expect(results).toEqual(expectedEstimates)
+        // getDataForSubscription should have been called 3 times (once for each given subscription ID)
+        subscriptions.forEach((subscriptionId) => {
+          expect(getDataForSubscriptionSpy).toHaveBeenCalledWith(
+            startDate,
+            endDate,
+            subscriptionId,
+            grouping,
+          )
+        })
+
+        // Reset the config
+        delete AZURE.SUBSCRIPTIONS
+      })
+    })
   })
 
   it('gets results from getDataFromAdvisorManagement function', async () => {
@@ -237,8 +391,8 @@ describe('Azure Account', () => {
         serviceName: 'Virtual Machines',
         region: 'uksouth',
         usageType: 'D2 v2/DS2 v2',
-        kilowattHours: 0.015380813559107052,
-        co2e: 0.0000034606830507990865,
+        kilowattHours: 0.011945378995278953,
+        co2e: 0.000004196172273564499,
       },
     ]
     expect(result).toEqual(expectedResult)

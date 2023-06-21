@@ -22,7 +22,7 @@ import {
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 
-const apiLogger = new Logger('api')
+const apiLogger = new Logger('API')
 
 /**
  * Returns the raw estimates

@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/azure
 
+## 1.3.0
+
+### Minor Changes
+
+- 5b5a0ac5: Updates support to version 9.2 of the @azure/arm-consumption package
+- b98fd6d1: updates azure recs to support skuchange
+
+### Patch Changes
+
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
 ## 1.2.0
 
 ### Minor Changes

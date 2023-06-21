@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/core
 
+## 0.17.3
+
+### Patch Changes
+
+- 65386330: bumps ramda dependency
+
 ## 0.17.2
 
 ### Patch Changes

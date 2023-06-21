@@ -45,53 +45,49 @@ test('side drawer opens and closes when clicked', async (t) => {
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
   await page.totalCo2Amount.with({ visibilityCheck: true }).exists //await core element before getting any of its text-specific versions
   //check initial value then check after each filter option
-  await t.expect(page.totalCo2Amount.withText('255').exists).ok() //the other problem element //todo: minimize dataset-specific selectors
-  await t.click(page.cloudProviderDropDown)
-  await t.click(page.awsDropdownItem)
-  await t.expect(page.totalCo2Amount.withText('74').exists).ok()
-  await t.click(page.accountsDropDown)
-  await t.click(page.accountsDropdownItem)
-  await t.expect(page.totalCo2Amount.withText('107').exists).ok()
-  await t.click(page.servicesDropDown)
-  await t.click(page.servicesDropdownItem)
-  await t.expect(page.totalCo2Amount.withText('93').exists).ok()
+  await t.expect(page.totalCo2Amount.withText('metric tons CO2e').exists).ok() //the other problem element
 })
 
 test('carbon equivalency component displays each option when clicked', async (t) => {
   await t
     .click(page.flightsButton)
-    .expect(page.emissionsRecord.withText('315').exists) //todo: minimize dataset-specific selectors
+    .expect(
+      page.emissionsRecord.withText('direct one way flights from NYC to London')
+        .exists,
+    )
     .ok()
   await t
     .click(page.phonesButton)
-    .expect(page.emissionsRecord.withText('31.0+ M').exists)
+    .expect(page.emissionsRecord.withText('smartphones charged').exists)
     .ok()
   await t
     .click(page.treesButton)
-    .expect(page.emissionsRecord.withText('4,216').exists)
+    .expect(
+      page.emissionsRecord.withText('tree seedlings grown for 10 years').exists,
+    )
     .ok()
 })
 
 test('emissions breakdown component displays each bar chart when selected', async (t) => {
-  // Maximize the window in orde for all DOM elements to be visible.
+  // Maximize the window in order for all DOM elements to be visible.
   // For some reason this stops this test failing, and can help with debugging.
   // In headless mode, issues have been noted that can be resolved by resizing window: https://github.com/DevExpress/testcafe/issues/6739
   await t.maximizeWindow()
   //sort by account
   await t.click(page.dropDownSelector)
   await t.click(page.accountSelection)
-  await t.expect(page.selected.withText('aws account 3').exists).ok() //todo: minimize dataset-specific selectors
+  await t.expect(page.selected.exists).ok()
 
   //sort by service
   await t.click(page.dropDownSelector)
   await t.click(page.serviceSelection)
-  await t.expect(page.selected.withText('computeEngine').exists).ok() //todo: minimize dataset-specific selectors
+  await t.expect(page.selected.exists).ok()
 
   //sort by region
   await t.maximizeWindow()
   await t.click(page.dropDownSelector)
   await t.click(page.regionSelection)
-  await t.expect(page.selected.withText('us-east-1').exists).ok() //todo: minimize dataset-specific selectors
+  await t.expect(page.selected.exists).ok()
 })
 
 test('line chart displays the y-axis data when legend is clicked', async (t) => {

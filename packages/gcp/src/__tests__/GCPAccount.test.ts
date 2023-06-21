@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
+import { GoogleAuth } from 'google-auth-library'
 
 import { ComputeEngine, Recommendations } from '../lib'
 
@@ -174,7 +174,7 @@ describe('GCPAccount', () => {
       },
     ]
 
-    const getClientSpy = jest.spyOn(googleAuth, 'getClient')
+    const getClientSpy = jest.spyOn(GoogleAuth.prototype, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 

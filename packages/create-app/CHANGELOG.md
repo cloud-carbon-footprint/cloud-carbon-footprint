@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.5
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 2.3.4
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- 5e897485: Removes version locks for azure sdk
+- 65386330: bumps ramda dependency
+
 ## 2.3.3
 
 ### Patch Changes

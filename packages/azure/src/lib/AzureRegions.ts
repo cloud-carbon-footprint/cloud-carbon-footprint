@@ -31,15 +31,21 @@ export const AZURE_REGIONS = {
     name: 'australiasoutheast',
     options: ['australiasoutheast'],
   },
-  AP_EAST: { name: 'apeast', options: ['apeast'] },
-  AP_SOUTH_EAST: { name: 'apsoutheast', options: ['apsoutheast'] },
-  AP_JAPAN_EAST: { name: 'japaneast', options: ['japaneast'] },
-  AP_JAPAN_WEST: { name: 'japanwest', options: ['japanwest'] },
+  AP_EAST: { name: 'apeast', options: ['apeast', 'AP East'] },
+  AP_SOUTH_EAST: {
+    name: 'apsoutheast',
+    options: ['apsoutheast', 'AP Southeast'],
+  },
+  AP_JAPAN_EAST: { name: 'japaneast', options: ['japaneast', 'JA East'] },
+  AP_JAPAN_WEST: { name: 'japanwest', options: ['japanwest', 'JA West'] },
   AP_JAPAN: { name: 'japan', options: ['japan'] },
   AP_KOREA: { name: 'korea', options: ['korea'] },
-  AP_KOREA_EAST: { name: 'koreacentral', options: ['koreacentral'] },
+  AP_KOREA_EAST: {
+    name: 'koreacentral',
+    options: ['koreacentral', 'KR Central'],
+  },
   AP_KOREA_SOUTH: { name: 'koreasouth', options: ['koreasouth'] },
-  ASIA: { name: 'asia', options: ['asia'] },
+  ASIA: { name: 'asia', options: ['asia', 'Asia'] },
   ASIA_PACIFIC: { name: 'asiapacific', options: ['asiapacific'] },
   ASIA_EAST: { name: 'eastasia', options: ['eastasia', 'asiaeast'] },
   ASIA_EAST_STAGE: { name: 'eastasiastage', options: ['eastasiastage'] },
@@ -57,7 +63,7 @@ export const AZURE_REGIONS = {
   },
   IN_CENTRAL: {
     name: 'centralindia',
-    options: ['centralindia', 'IndiaCentral'],
+    options: ['centralindia', 'IndiaCentral', 'IN Central'],
   },
   IN_JIO_CENTRAL: { name: 'jioindiacentral', options: ['jioindiacentral'] },
   IN_JIO_WEST: { name: 'jioindiawest', options: ['jioindiawest'] },
@@ -71,7 +77,7 @@ export const AZURE_REGIONS = {
   },
   EU_WEST: {
     name: 'westeurope',
-    options: ['westeurope', 'WESTEUROPE', 'EU West'],
+    options: ['westeurope', 'WESTEUROPE', 'EU West', 'EuropeWest'],
   },
   EU_FRANCE_CENTRAL: { name: 'francecentral', options: ['francecentral'] },
   EU_FRANCE_SOUTH: { name: 'francesouth', options: ['francesouth'] },
@@ -102,7 +108,8 @@ export const AZURE_REGIONS = {
   // Middle East regions
   ME_UAE: { name: 'uae', options: ['uae'] },
   ME_UAE_CENTRAL: { name: 'uaecentral', options: ['uaecentral'] },
-  ME_UAE_NORTH: { name: 'uaenorth', options: ['uaenorth'] },
+  ME_UAE_NORTH: { name: 'uaenorth', options: ['uaenorth', 'uaen'] },
+  ME_QATAR_CENTRAL: { name: 'qatarcentral', options: ['qatarcentral'] },
 
   // America regions
   US_CANADA: { name: 'canada', options: ['canada'] },
@@ -137,7 +144,7 @@ export const AZURE_REGIONS = {
   US_US_EAP: { name: 'unitedstateseuap', options: ['unitedstateseuap'] },
   US_WEST_CENTRAL: {
     name: 'WestCentralUS',
-    options: ['WestCentralUS', 'westcentralus'],
+    options: ['WestCentralUS', 'westcentralus', 'US West Central'],
   },
   US_NORTH: { name: 'USNorth', options: ['USNorth'] },
   US_WEST: { name: 'WestUS', options: ['WestUS', 'westus', 'US West'] },

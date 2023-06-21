@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/api
 
+## 1.6.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 1.6.1
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/app@1.2.1
+
 ## 1.6.0
 
 ### Minor Changes

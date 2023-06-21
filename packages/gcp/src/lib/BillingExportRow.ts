@@ -3,9 +3,9 @@
  */
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
-import { GCP_REGIONS } from './GCPRegions'
 import { BigQueryDate } from '@google-cloud/bigquery'
 import { configLoader, containsAny } from '@cloud-carbon-footprint/common'
+import { GCP_REGIONS } from './GCPRegions'
 import { SERVICES_TO_OVERRIDE_USAGE_UNIT_AS_UNKNOWN } from './BillingExportTypes'
 import { SHARED_CORE_PROCESSORS } from './MachineTypes'
 

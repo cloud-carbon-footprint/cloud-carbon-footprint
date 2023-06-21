@@ -3,11 +3,13 @@
  */
 
 import {
+  configLoader,
   EstimationRequestValidationError,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
 import seedCacheFile from '../../SeedCacheFile/seedCacheFile'
 import * as common from '../../common'
+import { MongoDbCacheManager } from '@cloud-carbon-footprint/app'
 
 const mockGetCostAndEstimates = jest.fn()
 jest.mock('../../common')
@@ -27,6 +29,16 @@ jest.mock('@cloud-carbon-footprint/app', () => ({
     }
   }),
   cache: jest.fn(),
+}))
+
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  configLoader: jest.fn().mockImplementation(() => ({
+    CACHE_MODE: '',
+  })),
 }))
 
 describe('seedCacheFile', () => {
@@ -218,6 +230,38 @@ describe('seedCacheFile', () => {
           'Done! Estimates have been successfully seeded to the cache file!',
         )
       })
+    })
+  })
+
+  describe('database connection', () => {
+    it('should initialize MongoDB client when it is configured as the cache mode', async () => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        ...configLoader(),
+        CACHE_MODE: 'MONGODB',
+      })
+
+      const mockCreateDbConnection = jest.fn()
+      const mockMongoClient: any = { close: jest.fn() }
+
+      MongoDbCacheManager.createDbConnection = mockCreateDbConnection
+      MongoDbCacheManager.mongoClient = mockMongoClient
+
+      mockInputPrompts
+        .mockResolvedValueOnce('2020-07-01')
+        .mockResolvedValueOnce('2020-07-07')
+        .mockResolvedValueOnce('')
+
+      mockListPrompts
+        .mockResolvedValueOnce('day')
+        .mockResolvedValueOnce('single')
+
+      const mockResponse: EstimationResult[] = []
+      mockGetCostAndEstimates.mockResolvedValueOnce(mockResponse)
+
+      await seedCacheFile()
+
+      expect(mockCreateDbConnection).toHaveBeenCalledTimes(1)
+      expect(mockMongoClient.close).toHaveBeenCalledTimes(1)
     })
   })
 })
