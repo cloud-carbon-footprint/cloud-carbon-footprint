@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "skipLibCheck": true,
-    "resolveJsonModule": true
   },
   "include": ["./src"],
 }

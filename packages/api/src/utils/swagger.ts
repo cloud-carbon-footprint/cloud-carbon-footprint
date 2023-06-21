@@ -1,7 +1,6 @@
 import { Express, Request, Response } from 'express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
-// import {version} from '../package.json'
 import { Logger } from '@cloud-carbon-footprint/common'
 const serverLogger = new Logger('server')
 
