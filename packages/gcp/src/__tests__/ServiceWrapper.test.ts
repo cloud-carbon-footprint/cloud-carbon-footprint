@@ -13,7 +13,7 @@ import {
 } from '@google-cloud/compute'
 import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
+import { GoogleAuthClient, wait, Logger } from '@cloud-carbon-footprint/common'
 import {
   mockAddressesResultItems,
   mockedAddressGetDetails,
@@ -286,7 +286,11 @@ describe('GCP Service Wrapper', () => {
         .mockRejectedValueOnce({})
         .mockResolvedValue([[]])
 
-      console.warn = jest.fn().mockResolvedValue('Warn')
+      const warn = jest
+        .spyOn(Logger.prototype, 'warn')
+        .mockImplementation(() => {
+          return
+        })
 
       const recommenderIds = ['test-id-1']
       await serviceWrapper.getRecommendationsForRecommenderIds(
@@ -296,6 +300,36 @@ describe('GCP Service Wrapper', () => {
       )
 
       expect(wait).toHaveBeenCalled()
+      expect(warn).toHaveBeenCalledWith(
+        'GCP Recommendations API quota exceeded. Retrying after 10 seconds.',
+      )
+    })
+
+    it('fails to get recommendations from recommender client api calls', async () => {
+      mockRecommenderClientListRecommendations
+        .mockRejectedValueOnce({
+          details: 'Permission denied',
+          message: 'Missing permissions for recommender',
+        })
+        .mockRejectedValueOnce({})
+        .mockResolvedValue([[]])
+
+      const warn = jest
+        .spyOn(Logger.prototype, 'warn')
+        .mockImplementation(() => {
+          return
+        })
+
+      const recommenderIds = ['test-id-1']
+      await serviceWrapper.getRecommendationsForRecommenderIds(
+        'test-project-id',
+        'us-west1-a',
+        recommenderIds,
+      )
+
+      expect(warn).toHaveBeenCalledWith(
+        'Failed to get recommendations for GCP recommender ID: test-id-1. Error: Missing permissions for recommender',
+      )
     })
   })
 })
