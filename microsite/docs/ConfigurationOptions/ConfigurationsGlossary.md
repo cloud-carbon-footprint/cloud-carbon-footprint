@@ -103,17 +103,17 @@ sidebar_position: 4
 
 ### Optionaly include this for tagging support
 
-| Variable                 | Example Value                          | Type          | Notes                                                                                          |     |
-| ------------------------ | -------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------- | --- |
-| AZURE_RESOURCE_TAG_NAMES | ["resourceGroup","project","customer"] | array<string> | Azure resource tag names to include if present, include resourceGroup as a tag name if needed. |
+| Variable                 | Example Value                          | Type         | Notes                                                                                          |     |
+| ------------------------ | -------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------- | --- |
+| AZURE_RESOURCE_TAG_NAMES | ["resourceGroup","project","customer"] | array:string | Azure resource tag names to include if present, include resourceGroup as a tag name if needed. |
 
 ### Optionally set this to customize usage data fetch behavior. See [Azure Performance Considerations](./PerformanceConsiderations.md#azure-performance-considerations) for more information.
 
-| Variable                     | Example Value                        | Type          | Notes                                                                                                        |     |
-| ---------------------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------ | --- |
-| AZURE_CONSUMPTION_CHUNK_DAYS | 5                                    | number        | To avoid rate limiting, requests can be grouped in chunks of days. Use this to specify the chunk size        |
-| AZURE_SUBSCRIPTION_CHUNKS    | 10                                   | number        | To avoid rate limiting, a group size of subscipritions for asynchronous requests can be set. Defaults to 10. |
-| AZURE_SUBSCRIPTIONS          | ["subscription-1", "subscription-2"] | array<string> | List of subscriptions by IDs to include in estimations. Fetches all subscriptions by default                 |
+| Variable                     | Example Value                        | Type         | Notes                                                                                                        |     |
+| ---------------------------- | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------ | --- |
+| AZURE_CONSUMPTION_CHUNK_DAYS | 5                                    | number       | To avoid rate limiting, requests can be grouped in chunks of days. Use this to specify the chunk size        |
+| AZURE_SUBSCRIPTION_CHUNKS    | 10                                   | number       | To avoid rate limiting, a group size of subscipritions for asynchronous requests can be set. Defaults to 10. |
+| AZURE_SUBSCRIPTIONS          | ["subscription-1", "subscription-2"] | array:string | List of subscriptions by IDs to include in estimations. Fetches all subscriptions by default                 |
 
 ### Optionally set this to store cache file in Google Cloud Storage
 
