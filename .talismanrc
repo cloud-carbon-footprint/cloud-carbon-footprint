@@ -116,7 +116,7 @@ fileignoreconfig:
 - filename: packages/api/.env.template
   checksum: ec94dc4f50d599e64405562c74b0ba2d1f49781dba1d0fbc9f5011eeea7e2101
 - filename: packages/api/create_docker_secrets.sh
-  checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
+  checksum: 133cdb161e6c312c9a7707e0eb7fc6e05d946d9724e03d5d24a046230c92eb24
 - filename: packages/api/create_server_env_file.sh
   checksum: b6a9b46936e31ca0690ea2fc7080f4c6b5eac0e807c6a71e9dabc13ff8a2d026
 - filename: packages/api/estimates.cache-uscs.json
