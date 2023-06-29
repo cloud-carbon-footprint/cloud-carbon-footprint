@@ -2602,7 +2602,7 @@ __metadata:
     "@cloud-carbon-footprint/core": ^0.17.3
     "@google-cloud/bigquery": ^5.9.3
     "@google-cloud/compute": ^3.9.0
-    "@google-cloud/monitoring": ^2.3.5
+    "@google-cloud/monitoring": ^3.0.5
     "@google-cloud/recommender": ^4.2.5
     "@google-cloud/resource-manager": ^3.0.0
     "@types/jest": ^27.4.0
@@ -3185,12 +3185,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/monitoring@npm:^2.3.5":
-  version: 2.3.5
-  resolution: "@google-cloud/monitoring@npm:2.3.5"
+"@google-cloud/monitoring@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@google-cloud/monitoring@npm:3.0.5"
   dependencies:
-    google-gax: ^2.24.1
-  checksum: 4efdf0adf537fc6eafb559664ffd5a4394466a784d3fb14382bf76f0ab44b219f3dae98f06141b08e5da053d2b1a640bda0243bd6e9421c66a27100ff071771e
+    google-gax: ^3.5.8
+  checksum: 9f4b9a7ea3ee10a9558b3f29d562e4cbb58330fb2eeef047289338b19b9db2d84ef27a5cfa17f75b0a9946ea1786149ecdf990c307687f8631bf372c5b381d7d
   languageName: node
   linkType: hard
 
@@ -12651,7 +12651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-gax@npm:^3.5.2":
+"google-gax@npm:^3.5.2, google-gax@npm:^3.5.8":
   version: 3.6.0
   resolution: "google-gax@npm:3.6.0"
   dependencies:
