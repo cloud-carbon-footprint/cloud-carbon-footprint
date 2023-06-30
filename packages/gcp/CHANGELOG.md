@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.13.1
+
+### Patch Changes
+
+- 4683b86f: bug fix for gcp package
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
 ## 0.13.0
 
 ### Minor Changes

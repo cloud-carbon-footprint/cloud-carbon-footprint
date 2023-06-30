@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/azure
 
+## 1.4.0
+
+### Minor Changes
+
+- c82bf5fd: Adds config support for chunking/splitting azure requests by subscription
+- 1a5d7636: Adds support for listing Azure subscription IDs to fetch
+
+### Patch Changes
+
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
 ## 1.3.0
 
 ### Minor Changes

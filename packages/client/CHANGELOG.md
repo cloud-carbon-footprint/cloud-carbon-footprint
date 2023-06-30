@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/client
 
+## 4.1.3
+
+### Patch Changes
+
+- 3d7a21ff: Improves recommendations forecast accuracy, and fixes cost formatting errors for local currencies
+- e942828d: updates imports/exports for plugin compatibility
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
 ## 4.1.2
 
 ### Patch Changes

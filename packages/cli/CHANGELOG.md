@@ -1,5 +1,23 @@
 # @cloud-carbon-footprint/cli
 
+## 1.11.0
+
+### Minor Changes
+
+- c82bf5fd: Adds config support for chunking/splitting azure requests by subscription
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+### Patch Changes
+
+- 1a5d7636: Adds support for listing Azure subscription IDs to fetch
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [fedf79c0]
+  - @cloud-carbon-footprint/common@1.12.0
+  - @cloud-carbon-footprint/app@1.3.0
+
 ## 1.10.2
 
 ### Patch Changes
