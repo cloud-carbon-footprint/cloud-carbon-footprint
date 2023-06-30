@@ -1,5 +1,23 @@
 # @cloud-carbon-footprint/app
 
+## 1.3.0
+
+### Minor Changes
+
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+### Patch Changes
+
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [4683b86f]
+  - @cloud-carbon-footprint/azure@1.4.0
+  - @cloud-carbon-footprint/common@1.12.0
+  - @cloud-carbon-footprint/gcp@0.13.1
+
 ## 1.2.2
 
 ### Patch Changes
