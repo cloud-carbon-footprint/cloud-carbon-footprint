@@ -1,6 +1,6 @@
 import moment, { Moment, unitOfTime } from 'moment'
-import { ClientConfig } from 'src/Config'
-import loadConfig from 'src/ConfigLoader'
+import { ClientConfig } from '../../Config'
+import loadConfig from '../../ConfigLoader'
 import { ForecastDetails } from '../../pages/RecommendationsPage/RecommendationsTable/Forecast/Forecast'
 
 interface dateProps {
