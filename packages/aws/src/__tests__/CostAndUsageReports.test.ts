@@ -9,6 +9,7 @@ import AWS, {
   CostExplorer,
   Athena as AWSAthena,
   S3,
+  Glue,
 } from 'aws-sdk'
 import {
   GetQueryExecutionOutput,
@@ -17,6 +18,7 @@ import {
 import {
   EstimationResult,
   GroupBy,
+  Logger,
   LookupTableInput,
   LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
@@ -95,14 +97,30 @@ describe('CostAndUsageReports Service', () => {
   const getQueryExecutionFailedResponse = {
     QueryExecution: { Status: { State: 'FAILED', StateChangeReason: 'TEST' } },
   }
-  const getServiceWrapper = () =>
-    new ServiceWrapper(
+  const getServiceWrapper = () => {
+    const serviceWrapper = new ServiceWrapper(
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
       new S3(),
       new AWSAthena(),
+      new Glue(),
     )
+    // Ensures that tests pass product_vcpu column check by default
+    serviceWrapper.getAthenaTableDescription = jest.fn().mockResolvedValue({
+      Table: {
+        StorageDescriptor: {
+          Columns: [
+            {
+              Name: 'product_vcpu',
+              Type: 'string',
+            },
+          ],
+        },
+      },
+    })
+    return serviceWrapper
+  }
 
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -2403,6 +2421,155 @@ describe('CostAndUsageReports Service', () => {
     ]
 
     expect(result).toEqual(expectedResult)
+  })
+
+  describe('optional athena columns', () => {
+    let athenaService
+    beforeEach(() => {
+      mockStartQueryExecution(startQueryExecutionResponse)
+      mockGetQueryExecution(getQueryExecutionResponse)
+      mockGetQueryResults(athenaMockGetQueryResultsWithNoUsageAmount)
+    })
+
+    afterEach(() => {
+      AWSMock.restore()
+      jest.restoreAllMocks()
+      startQueryExecutionSpy.mockClear()
+      getQueryExecutionSpy.mockClear()
+      getQueryResultsSpy.mockClear()
+    })
+
+    it('validates presence of product_vcpu column before including in query', async () => {
+      const mockGetAthenaTable = jest.fn().mockResolvedValue({
+        Table: {
+          StorageDescriptor: {
+            Columns: [
+              {
+                Name: 'column1',
+                Type: 'string',
+              },
+              {
+                Name: 'product_vcpu',
+                Type: 'string',
+              },
+            ],
+          },
+        },
+      })
+      const serviceWrapper = getServiceWrapper()
+      serviceWrapper.getAthenaTableDescription = mockGetAthenaTable
+
+      athenaService = new CostAndUsageReports(
+        new ComputeEstimator(),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+        new EmbodiedEmissionsEstimator(
+          AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        ),
+        serviceWrapper,
+      )
+
+      await athenaService.getEstimates(startDate, endDate, grouping)
+
+      expect(mockGetAthenaTable).toHaveBeenCalledWith({
+        DatabaseName: 'test-db',
+        Name: 'test-table',
+      })
+      expect(startQueryExecutionSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          QueryString: expect.stringContaining('product_vcpu'),
+        }),
+        expect.anything(),
+      )
+    })
+
+    it('excludes product_vcpu column in query if not present in athena table', async () => {
+      const mockGetAthenaTable = jest.fn().mockResolvedValue({
+        Table: {
+          StorageDescriptor: {
+            Columns: [
+              {
+                Name: 'column1',
+                Type: 'string',
+              },
+            ],
+          },
+        },
+      })
+      const serviceWrapper = getServiceWrapper()
+      serviceWrapper.getAthenaTableDescription = mockGetAthenaTable
+
+      athenaService = new CostAndUsageReports(
+        new ComputeEstimator(),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+        new EmbodiedEmissionsEstimator(
+          AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        ),
+        serviceWrapper,
+      )
+
+      await athenaService.getEstimates(startDate, endDate, grouping)
+
+      expect(mockGetAthenaTable).toHaveBeenCalledWith({
+        DatabaseName: 'test-db',
+        Name: 'test-table',
+      })
+      expect(startQueryExecutionSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          QueryString: expect.not.stringContaining('product_vcpu'),
+        }),
+        expect.anything(),
+      )
+    })
+
+    it('handles any errors from checking the athena description by ignoring the product_vcpu column', async () => {
+      const mockGetAthenaTable = jest
+        .fn()
+        .mockRejectedValue(
+          new Error('EntityNotFoundException: Database test-db not found'),
+        )
+      const serviceWrapper = getServiceWrapper()
+      serviceWrapper.getAthenaTableDescription = mockGetAthenaTable
+
+      const errorLoggerSpy = jest.spyOn(Logger.prototype, 'error')
+      const warningLoggerSpy = jest.spyOn(Logger.prototype, 'warn')
+
+      athenaService = new CostAndUsageReports(
+        new ComputeEstimator(),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+        new EmbodiedEmissionsEstimator(
+          AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        ),
+        serviceWrapper,
+      )
+
+      await athenaService.getEstimates(startDate, endDate, grouping)
+
+      expect(errorLoggerSpy).toHaveBeenCalledWith(
+        'Error verifying schema for Athena table: "test-table"',
+        new Error('EntityNotFoundException: Database test-db not found'),
+      )
+      expect(warningLoggerSpy).toHaveBeenCalledWith(
+        `'product_vcpu' column could not be verified in Athena table schema. This may occur if there was an error fetching the schema or when there is no historical CPU usage (i.e. EC2) for the configured account. The CPU column will be excluded from Athena Query`,
+      )
+      expect(startQueryExecutionSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          QueryString: expect.not.stringContaining('product_vcpu'),
+        }),
+        expect.anything(),
+      )
+    })
   })
 
   const startQueryExecutionSpy = jest.fn()
