@@ -74,21 +74,23 @@ class Page {
     )
     this.recAccounts = Selector('span').withText('Accounts')
 
-    //forecast card components
-    this.lastThirtyDayTotal = Selector(
-      "[data-testid='forecast-card-last-thirty-day-total']",
+    //forecast card components (subcomponents not included due to conditional rendering)
+    // this.lastThirtyDayTotal = Selector(
+    //   "[data-testid='forecast-card-last-thirty-day-total']",
+    // )
+    // this.projectedThirtyDayTotal = Selector(
+    //   "[data-testid='forecast-card-projected-thirty-day-total']",
+    // )
+    // this.forecastEquivalencyCard = Selector(
+    //   "[data-testid='forecast-equivalency-card']",
+    // )
+    // this.treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
+    // this.costSavingsPerMonth = Selector(
+    //   "[data-testid='cost-savings-per-month']",
+    // )
+    this.forecastErrorMessage = Selector(
+      "[data-testid='forecast-error-message']",
     )
-    this.projectedThirtyDayTotal = Selector(
-      "[data-testid='forecast-card-projected-thirty-day-total']",
-    )
-    this.forecastEquivalencyCard = Selector(
-      "[data-testid='forecast-equivalency-card']",
-    )
-    this.treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
-    this.costSavingsPerMonth = Selector(
-      "[data-testid='cost-savings-per-month']",
-    )
-    this.errorMessage = Selector("[data-testid='forecast-error-message']")
 
     //table components
     this.searchInput = Selector("[data-testid='search-input']")
@@ -96,33 +98,12 @@ class Page {
       "[data-testid='recommendations-data-grid']",
     )
 
-    //units of measure
-    this.unitOfMeasureLastThirtyDayTotal = Selector(
-      "[data-testid='unit-of-measure-last-thirty-day-total']",
-    )
-    this.unitOfMeasureProjectedThirtyDayTotal = Selector(
-      "[data-testid='unit-of-measure-projected-thirty-day-total']",
-    )
-    this.co2eSavingsLastThirtyDayTotal = Selector(
-      "[data-testid='co2e-savings-last-thirty-day-total'",
-    )
-    this.co2eSavingsProjectedThirtyDayTotal = Selector(
-      "[data-testid='co2e-savings-projected-thirty-day-total'",
-    )
-    this.costSavingsLastThirtyDayTotal = Selector(
-      "[data-testid='cost-savings-last-thirty-day-total'",
-    )
-    this.costSavingsProjectedThirtyDayTotal = Selector(
-      "[data-testid='cost-savings-projected-thirty-day-total'",
-    )
-    this.co2eSavingsField = "[data-field='co2eSavings']"
-    this.tableSavingsColumn = Selector(
-      `[role='columnheader']${this.co2eSavingsField}`,
-    ).nth(0)
-    this.firstSavingsCell = Selector(
-      `${this.co2eSavingsField}[role='cell']`,
-    ).nth(0)
     this.toggle = Selector("[data-testid='toggle-label']")
+
+    this.tableSavingsColumn = Selector(
+      '.MuiDataGrid-columnHeaderTitle',
+    ).withText('Potential Carbon Savings')
+    this.firstSavingsCell = Selector('[data-field="co2eSavings"]').nth(0)
   }
 
   async loadingScreen() {
