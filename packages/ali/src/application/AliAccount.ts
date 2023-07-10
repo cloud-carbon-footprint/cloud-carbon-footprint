@@ -28,17 +28,6 @@ export default class AliAccount extends CloudProviderAccount {
     this.logger = new Logger('ALIAccount')
   }
 
-  async getDataForRegions(
-    startDate: Date,
-    endDate: Date,
-    grouping: GroupBy,
-  ): Promise<EstimationResult[]> {
-    this.logger.info(
-      `startDate: ${startDate}, endDate: ${endDate}, grouping: ${grouping}`,
-    )
-    return null
-  }
-
   getDataFromCostAndUsageReports(
     startDate: Date,
     endDate: Date,

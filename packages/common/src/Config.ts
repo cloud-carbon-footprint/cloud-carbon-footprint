@@ -65,10 +65,6 @@ export interface CCFConfig {
   }
   ALI?: {
     NAME?: string
-    CURRENT_SERVICES?: { key: string; name: string }[]
-    CURRENT_REGIONS?: string[]
-    INCLUDE_ESTIMATES?: boolean
-    USE_BILLING_DATA?: boolean
     authentication?: {
       accessKeyId: string
       accessKeySecret: string
@@ -289,20 +285,7 @@ const getConfig = (): CCFConfig => ({
     SUBSCRIPTIONS: JSON.parse(getAzureSubscriptions()) || [],
   },
   ALI: {
-    NAME: 'ALI',
-    CURRENT_REGIONS: ['us-east1', 'us-central1', 'us-west1'],
-    CURRENT_SERVICES: [
-      {
-        key: 'computeEngine',
-        name: 'ComputeEngine',
-      },
-    ],
-    INCLUDE_ESTIMATES: process.env.ALI_INCLUDE_ESTIMATES
-      ? !!process.env.ALI_INCLUDE_ESTIMATES
-      : true,
-    USE_BILLING_DATA:
-      !!process.env.ALI_USE_BILLING_DATA &&
-      process.env.ALI_USE_BILLING_DATA !== 'false',
+    NAME: 'AliCloud',
     authentication: {
       accessKeyId: process.env.ALI_ACCESS_KEY,
       accessKeySecret: process.env.ALI_ACCESS_SECRET,

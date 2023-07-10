@@ -127,7 +127,7 @@ export default class AliCostAndUsageService {
         )
         this.logger.info('row:' + JSON.stringify(row))
         serviceEstimates.push({
-          cloudProvider: 'AliCloud',
+          cloudProvider: aliConfig.NAME,
           accountName: row.accountName,
           serviceName: row.serviceName,
           accountId: row.accountId,

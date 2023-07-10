@@ -30,6 +30,7 @@ const getUsageSpy = jest.spyOn(AliCostAndUsageService.prototype, 'getUsage')
 
 const DEFAULT_CONFIG: CCFConfig = {
   ALI: {
+    NAME: 'AliCloud',
     authentication: {
       accessKeyId: 'id',
       accessKeySecret: 'secret',

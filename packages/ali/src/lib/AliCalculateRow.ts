@@ -1,7 +1,7 @@
 /*
  * © 2023 Thoughtworks, Inc.
  */
-
+import { mapToArabic } from '@cloud-carbon-footprint/common'
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import { DescribeInstanceBillResponseBodyDataItems } from '@alicloud/bssopenapi20171214/src/client'
 import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -70,13 +70,7 @@ export default class AliCalculateRow extends BillingDataRow {
       return 0
     } else {
       const quantity = parseInt(resultArr[0])
-      let unitValue = 0
-      const unit = resultArr[1]
-      if (unit == '万') {
-        unitValue = 10000
-      } else {
-        unitValue = 100000000
-      }
+      const unitValue = mapToArabic(resultArr[1])
       return (quantity * unitValue) / 3600
     }
   }
@@ -108,13 +102,7 @@ export default class AliCalculateRow extends BillingDataRow {
       return 0
     } else {
       const quantity = parseInt(resultArr[0])
-      let unitValue = 0
-      const unit = resultArr[1]
-      if (unit == '万') {
-        unitValue = 10000
-      } else {
-        unitValue = 100000000
-      }
+      const unitValue = mapToArabic(resultArr[1])
       return (quantity * unitValue) / 3600
     }
   }
@@ -144,41 +132,16 @@ export default class AliCalculateRow extends BillingDataRow {
   }
 
   private getUsage(servicePeriod: string, servicePeriodUnit: string) {
-    let ratio = 1
-    switch (servicePeriodUnit) {
-      case '秒':
-        {
-          ratio = 1 / 3600
-        }
-        break
-      case '分':
-        {
-          ratio = 1 / 60
-        }
-        break
-      case '时':
-        {
-          ratio = 1
-        }
-        break
-      case '天':
-        {
-          ratio = 24
-        }
-        break
-      case '月':
-        {
-          ratio = 24 * 30
-        }
-        break
-      case '年':
-        {
-          ratio = 24 * 30 * 12
-        }
-        break
-      default:
-        break
+    const servicePeriodUnitRatios = {
+      秒: 1 / 3600,
+      分: 1 / 60,
+      时: 1,
+      天: 24,
+      月: 24 * 30,
+      年: 24 * 30 * 12,
     }
+
+    const ratio = servicePeriodUnitRatios[servicePeriodUnit] || 1
     return parseInt(servicePeriod) * ratio
   }
 

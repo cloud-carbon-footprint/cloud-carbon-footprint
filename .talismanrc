@@ -120,7 +120,7 @@ fileignoreconfig:
 - filename: packages/ali/src/lib/AliCalculateRow.ts
   checksum: 77997e1e88c3fe9bbafbda63d4c1c9b83df439417664cf0d080488b01c8c0c51
 - filename: packages/api/.env.template
-  checksum: b9441ffab35ccf38716f30ef928830197ab87aa3a8693028a73caa53d6763e6d
+  checksum: 024d92688cbbca7a345f9c9ee53e86d377ec6df92ddb746dce90c57b2a5c988f
 - filename: packages/api/CHANGELOG.md
   checksum: 70538ae254f51f772d64e42ddb9f2c6393fc49969ea0be0cc5c91a6447204032
 - filename: packages/api/create_docker_secrets.sh

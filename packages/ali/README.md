@@ -1,6 +1,6 @@
 # @cloud-carbon-footprint/ali
 
-This package provides the core logic to get cloud usage data and estimate energy and carbon emissions from Amazon Web Services.
+This package provides the core logic to get cloud usage data and estimate energy and carbon emissions from Aliyun (Alibaba Cloud).
 
 ## Installation
 
