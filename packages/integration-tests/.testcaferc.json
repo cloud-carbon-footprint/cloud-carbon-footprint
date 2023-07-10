@@ -2,7 +2,6 @@
   "clientScripts": [
     { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
   ],
-  "src": "tests/*test.js",
   "browsers": ["chrome:headless"],
   "concurrency": 3,
   "selectorTimeout": 5000,

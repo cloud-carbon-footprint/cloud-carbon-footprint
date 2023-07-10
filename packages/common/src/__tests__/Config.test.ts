@@ -92,5 +92,12 @@ describe('Config', () => {
         expect(config.AZURE.RESOURCE_TAG_NAMES).toEqual(['Environment'])
       })
     })
+
+    it('loads list of Azure subscriptions from environment variables', () => {
+      withEnvironment('AZURE_SUBSCRIPTIONS', `["sub-1", "sub-2"]`, () => {
+        const config = getConfig()
+        expect(config.AZURE.SUBSCRIPTIONS).toEqual(['sub-1', 'sub-2'])
+      })
+    })
   })
 })

@@ -345,7 +345,7 @@ describe('Recommendations Table', () => {
 
     const firstRow = actualRowData[0]
 
-    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560')
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2,560')
 
     const table = within(getByRole('grid'))
 
@@ -395,7 +395,7 @@ describe('Recommendations Table', () => {
       ['us-west-1', true, 1, Co2eUnit.MetricTonnes],
       ['Modify', true, 1, Co2eUnit.MetricTonnes],
       [2.539, true, 1, Co2eUnit.MetricTonnes],
-      [2539, true, 1, Co2eUnit.Kilograms],
+      ['2,539', true, 1, Co2eUnit.Kilograms],
       ['pizza', undefined, 0, Co2eUnit.MetricTonnes],
       [6.2, undefined, 0, Co2eUnit.MetricTonnes],
     ]

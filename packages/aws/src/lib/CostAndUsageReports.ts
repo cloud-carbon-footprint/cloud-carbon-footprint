@@ -545,6 +545,21 @@ export default class CostAndUsageReports {
     )
     const endDate = new Date(moment.utc(end).endOf('day') as unknown as Date)
 
+    const hasCpuColumn = await this.checkIfColumnExists('product_vcpu')
+
+    const optionalColumns = []
+    let optionalColumnSelects = ''
+
+    // Optionally adds product_vcpu in query if it exists in the schema. If there are more optional columns, we can modify this to check and for multiple columns.
+    if (hasCpuColumn) {
+      optionalColumns.push('product_vcpu')
+      optionalColumnSelects += 'product_vcpu as vCpus,\n'
+    } else {
+      this.costAndUsageReportsLogger.warn(
+        `'product_vcpu' column could not be verified in Athena table schema. This may occur if there was an error fetching the schema or when there is no historical CPU usage (i.e. EC2) for the configured account. The CPU column will be excluded from Athena Query`,
+      )
+    }
+
     const tagColumnNames = tagNames.map(tagNameToAthenaColumn)
 
     const tagSelectionExpression = tagColumnNames
@@ -560,18 +575,17 @@ export default class CostAndUsageReports {
       'line_item_product_code',
       'line_item_usage_type',
       'pricing_unit',
-      'product_vcpu',
+      ...optionalColumns,
       ...tagColumnNames,
     ].join(', ')
 
-    const params = {
-      QueryString: `SELECT ${dateExpression} AS timestamp,
+    const queryString = `SELECT ${dateExpression} AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,
                         line_item_usage_type as usageType,
                         pricing_unit as usageUnit,
-                        product_vcpu as vCpus,
+                        ${optionalColumnSelects}
                         SUM(line_item_usage_amount) as usageAmount,
                         SUM(line_item_blended_cost) as cost
                         ${tagSelectionExpression}
@@ -580,9 +594,12 @@ export default class CostAndUsageReports {
                       AND line_item_usage_start_date BETWEEN from_iso8601_timestamp('${moment
                         .utc(startDate)
                         .toISOString()}') AND from_iso8601_timestamp('${moment
-        .utc(endDate)
-        .toISOString()}')
-                    GROUP BY ${groupByColumnNames}`,
+      .utc(endDate)
+      .toISOString()}')
+                    GROUP BY ${groupByColumnNames}`
+
+    const params = {
+      QueryString: queryString,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },
@@ -746,6 +763,29 @@ export default class CostAndUsageReports {
       cost,
       tags,
     )
+  }
+
+  /**
+   * Uses AWS Glue to get the schema of the Athena table and check if a given column is present
+   * @param columnName  The name of the column to check (i.e. 'product_vcpu')
+   * @private
+   */
+  private async checkIfColumnExists(columnName: string): Promise<boolean> {
+    try {
+      const athenaTableDescription =
+        await this.serviceWrapper.getAthenaTableDescription({
+          DatabaseName: this.dataBaseName,
+          Name: this.tableName,
+        })
+      const columns = athenaTableDescription.Table?.StorageDescriptor?.Columns
+      return columns?.some((column) => column.Name === columnName)
+    } catch (error) {
+      this.costAndUsageReportsLogger.error(
+        `Error verifying schema for Athena table: "${this.tableName}"`,
+        error,
+      )
+      return false
+    }
   }
 }
 

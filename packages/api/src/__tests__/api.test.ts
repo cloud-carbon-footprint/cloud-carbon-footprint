@@ -11,7 +11,7 @@ import {
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
-import { createRouter } from './api'
+import { createRouter } from '../api'
 
 const mockGetCostAndEstimates = jest.fn()
 const mockGetEmissionsFactors = jest.fn()

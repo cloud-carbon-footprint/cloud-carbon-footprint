@@ -1,5 +1,25 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.13.1
+
+### Patch Changes
+
+- 4683b86f: bug fix for gcp package
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
+## 0.13.0
+
+### Minor Changes
+
+- 42b2359e: Updates emissions factors and PUE constants to latest published values
+
+### Patch Changes
+
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/common@1.11.0
+
 ## 0.12.0
 
 ### Minor Changes

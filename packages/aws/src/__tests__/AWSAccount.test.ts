@@ -41,6 +41,7 @@ describe('AWSAccount', () => {
   const CloudWatchLogs = jest.fn()
   const Athena = jest.fn()
   const S3Service = jest.fn()
+  const GlueService = jest.fn()
   let expectedCredentials: Credentials
 
   beforeEach(() => {
@@ -51,6 +52,7 @@ describe('AWSAccount', () => {
         CloudWatchLogs: CloudWatchLogs,
         Athena: Athena,
         S3: S3Service,
+        Glue: GlueService,
       }
     })
 

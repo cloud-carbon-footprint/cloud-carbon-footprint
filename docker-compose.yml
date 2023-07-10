@@ -30,7 +30,13 @@ services:
       - AZURE_CLIENT_ID
       - AZURE_CLIENT_SECRET
       - AZURE_TENANT_ID
+      - MONGODB_URI
+      - MONGODB_CREDENTIALS
+      # uncomment to define this as the certificate file for your MongoDB
+      #- x509-cert-mongodb.pem
     environment:
+      # set the CACHE_MODE to MONGODB to use MongoDB
+      - CACHE_MODE=LOCAL
       - AWS_USE_BILLING_DATA=true
       - AWS_TARGET_ACCOUNT_ROLE_NAME=/run/secrets/AWS_TARGET_ACCOUNT_ROLE_NAME
       - AWS_ATHENA_DB_NAME=/run/secrets/AWS_ATHENA_DB_NAME
@@ -49,7 +55,10 @@ services:
       - AZURE_CLIENT_ID=/run/secrets/AZURE_CLIENT_ID
       - AZURE_CLIENT_SECRET=/run/secrets/AZURE_CLIENT_SECRET
       - AZURE_TENANT_ID=/run/secrets/AZURE_TENANT_ID
-
+      # uncomment to enable MongoDB
+      #- MONGODB_URI=/run/secrets/MONGODB_URI
+      #- MONGODB_CREDENTIALS=/run/secrets/MONGODB_CREDENTIALS
+      #- x509-cert-mongodb.pem=/run/secrets/x509-cert-mongodb.pem
 secrets:
   AWS_TARGET_ACCOUNT_ROLE_NAME:
     file: ~/.docker/secrets/AWS_TARGET_ACCOUNT_ROLE_NAME
@@ -77,3 +86,10 @@ secrets:
     file: ~/.docker/secrets/AZURE_CLIENT_SECRET
   AZURE_TENANT_ID:
     file: ~/.docker/secrets/AZURE_TENANT_ID
+  MONGODB_URI:
+    file: ~/.docker/secrets/MONGODB_URI
+  MONGODB_CREDENTIALS:
+    file: ~/.docker/secrets/MONGODB_CREDENTIALS
+  # uncomment to refer to your MongoDB cert file
+  #x509-cert-mongodb.pem:
+  #  file: ~/.docker/secrets/x509-cert-mongodb.pem

@@ -151,6 +151,11 @@ export default class ServiceWrapper {
               `GCP Recommendations API quota exceeded. Retrying after ${RETRY_AFTER} seconds.`,
             )
             await wait(RETRY_AFTER * 1000)
+          } else {
+            this.serviceWrapperLogger.warn(
+              `Failed to get recommendations for GCP recommender ID: ${recommenderId}. Error: ${err.message}`,
+            )
+            inProcess = false
           }
         }
       }

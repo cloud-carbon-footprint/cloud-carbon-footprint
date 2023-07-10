@@ -4,36 +4,55 @@
 
 import moment, { Moment } from 'moment'
 import { MongoClient, ServerApiVersion } from 'mongodb'
-import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  configLoader,
+  EstimationResult,
+  Logger,
+} from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
 import { getDatesWithinRequestTimeFrame } from './common/helpers'
 
 export default class MongoDbCacheManager extends CacheManager {
-  mongoClient: MongoClient
+  static mongoClient: MongoClient
   mongoDbName: string
+
   constructor() {
     super()
     this.mongoDbName = 'ccf'
   }
 
-  async createDbConnection() {
+  /**
+   * Creates a connection to the MongoDB client using the provided URI and any credentials.
+   * If no credentials are provided, the connection will be made without SSL.
+   * This function needs to be invoked before using this MongoDbCacheManager and making any requests to the MongoDB client.
+   * @returns {Promise<void>} A Promise that resolves when the connection is established.
+   */
+  static async createDbConnection() {
+    const logger = new Logger('MongoDB')
     const mongoURI = configLoader().MONGODB.URI
     const mongoCredentials = configLoader().MONGODB.CREDENTIALS
+
     if (mongoCredentials && mongoURI) {
-      this.mongoClient = new MongoClient(mongoURI, {
+      MongoDbCacheManager.mongoClient = new MongoClient(mongoURI, {
         sslKey: mongoCredentials,
         sslCert: mongoCredentials,
         serverApi: ServerApiVersion.v1,
       })
-      this.cacheLogger.debug('Successfully connected to the mongoDB client')
     } else if (mongoURI) {
-      this.mongoClient = new MongoClient(mongoURI)
-      this.cacheLogger.debug('Successfully connected to the mongoDB client')
+      MongoDbCacheManager.mongoClient = new MongoClient(mongoURI)
     } else {
-      this.cacheLogger.warn(
-        `There was an error connecting to the MongoDB client, please provide a valid URI`,
+      logger.error(
+        'There was an error connecting to the MongoDB client',
+        new Error('Please provide a valid URI'),
       )
+    }
+
+    try {
+      await MongoDbCacheManager.mongoClient.connect()
+      logger.info('Successfully connected to the MongoDB client')
+    } catch (error) {
+      logger.error('There was an error connecting to the MongoDB client', error)
     }
   }
 
@@ -82,13 +101,9 @@ export default class MongoDbCacheManager extends CacheManager {
   ): Promise<EstimationResult[]> {
     let savedEstimates: EstimationResult[] = []
     try {
-      await this.createDbConnection()
-      // Connect the client to the server
-      await this.mongoClient.connect()
-
       // Specify a database to query
       const collectionName = `estimates-by-${grouping}`
-      const database = this.mongoClient.db(this.mongoDbName)
+      const database = MongoDbCacheManager.mongoClient.db(this.mongoDbName)
 
       const estimates = await this.loadEstimates(
         database,
@@ -101,9 +116,6 @@ export default class MongoDbCacheManager extends CacheManager {
       this.cacheLogger.warn(
         `There was an error getting estimates from MongoDB: ${e.message}`,
       )
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await this.mongoClient.close()
     }
     return savedEstimates
   }
@@ -113,11 +125,8 @@ export default class MongoDbCacheManager extends CacheManager {
     grouping: string,
   ): Promise<void> {
     try {
-      await this.createDbConnection()
-      await this.mongoClient.connect()
-
       const collectionName = `estimates-by-${grouping}`
-      const database = this.mongoClient.db(this.mongoDbName)
+      const database = MongoDbCacheManager.mongoClient.db(this.mongoDbName)
       const collection = database.collection(collectionName)
 
       const newEstimates: any[] = []
@@ -137,9 +146,6 @@ export default class MongoDbCacheManager extends CacheManager {
       this.cacheLogger.warn(
         `There was an error setting estimates from MongoDB: ${e.message}`,
       )
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await this.mongoClient.close()
     }
   }
 
@@ -155,11 +161,8 @@ export default class MongoDbCacheManager extends CacheManager {
     }
 
     try {
-      await this.createDbConnection()
-      await this.mongoClient.connect()
-
       const collectionName = `estimates-by-${grouping}`
-      const database = this.mongoClient.db(this.mongoDbName)
+      const database = MongoDbCacheManager.mongoClient.db(this.mongoDbName)
 
       const aggResult: any = await new Promise((resolve, reject) => {
         database

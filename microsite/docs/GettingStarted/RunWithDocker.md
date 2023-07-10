@@ -2,7 +2,7 @@
 id: run-with-docker
 title: Run with Docker
 slug: /run-with-docker
-sidebar_position: 5
+sidebar_position: 7
 ---
 
 If you would like to run with Docker, you'll need install docker and docker-compose:
@@ -32,7 +32,7 @@ If you would like to run with Docker, you'll need install docker and docker-comp
 If you would like to only run the API as a docker container, for example to deploy this as a service for your organization, you can pull and run it with these commands:
 
     docker pull cloudcarbonfootprint/api
-    
+
     docker run \
         --env-file packages/api/.env \
         --env GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/service-account-keys.json \
@@ -48,7 +48,7 @@ Then you can access the API at: http://localhost:4000/api/footprint?start=2021-0
 If you would like to run the client as a docker container, you can pull and run it with these commands after running API as a docker container:
 
     docker pull cloudcarbonfootprint/client:latest
-    
+
     docker run \
         -p 80:80 \
         -v ${PWD}/docker/nginx.conf:/etc/nginx/nginx.conf \

@@ -1,0 +1,85 @@
+# Schemas used for Swagger Documentation (follows OpenAPI Specs)
+# These represent types that are defined in the Common package and will need to be updated when its counterpart is changed
+
+components:
+  schemas:
+    FootprintResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        serviceEstimates:
+          type: array
+          items:
+            type: object
+            properties:
+              cloudProvider:
+                type: string
+                enum: [aws, gcp, azure]
+              kilowattHours:
+                type: number
+              co2e:
+                type: number
+              cost:
+                type: number
+              usesAverageCPUConstant?:
+                type: boolean
+              accountId:
+                type: string
+              accountName:
+                type: string
+              serviceName:
+                type: string
+              region:
+                type: string
+              tags:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: string
+        periodStartDate:
+          type: string
+        periodEndDate:
+          type: string
+        groupBy:
+          type: string
+    EmissionResponse:
+      type: object
+      properties:
+        cloudProvider:
+          type: string
+        region:
+          type: string
+        mtPerKwHour:
+          type: number
+          description: metric ton co2e per kilowatt-hour
+    RecommendationsResponse:
+      type: object
+      properties:
+        cloudProvider:
+          type: string
+          enum: [aws, gcp, azure]
+        accountId:
+          type: string
+        accountName:
+          type: string
+        region:
+          type: string
+        recommendationType:
+          type: string
+        recommendationDetail?:
+          type: string
+        resourceId?:
+          type: string
+        instanceName?:
+          type: string
+        kilowattHourSavings:
+          type: number
+        costSavings:
+          type: number
+        co2eSavings:
+          type: number
+        recommendationOptions?:
+          type: object

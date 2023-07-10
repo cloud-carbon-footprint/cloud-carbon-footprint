@@ -8,6 +8,7 @@ import {
   CloudWatchLogs,
   CostExplorer,
   Credentials,
+  Glue,
   S3 as S3Service,
 } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
@@ -206,6 +207,7 @@ export default class AWSAccount extends CloudProviderAccount {
       }),
       new S3Service(options),
       new Athena(options),
+      new Glue(options),
     )
   }
 

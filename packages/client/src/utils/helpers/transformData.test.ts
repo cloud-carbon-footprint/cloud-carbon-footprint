@@ -418,7 +418,7 @@ describe('tableFormatRawCo2e', () => {
     [0.00099, Co2eUnit.MetricTonnes, '0.001'],
     [0.00099, Co2eUnit.Kilograms, '0.99'],
     [1, Co2eUnit.MetricTonnes, '1'],
-    [1, Co2eUnit.Kilograms, '1000'],
+    [1, Co2eUnit.Kilograms, '1,000'],
   ]
   each(a).it(
     ' formats Co2e properly',

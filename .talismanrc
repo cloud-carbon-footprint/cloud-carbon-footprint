@@ -99,6 +99,8 @@ fileignoreconfig:
   checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
 - filename: microsite/docs/ClassifyingUsageTypes.md
   checksum: f4b232851337efec90c4a88271cdf4cde2a9d732f0f69824223f1dcf7c6b8aaa
+- filename: microsite/docs/ConfigurationOptions/PerformanceConsiderations.md
+  checksum: f98b207c28550e3f44b27a47ebb0a5553c28318edaaf2f490ba94856a082badb
 - filename: microsite/docs/CreatingALookupTable.md
   checksum: 71905a04532ef57e9eab56fefd1c1e43dfd48fabb928a044bbb7c5100640fe5c
 - filename: microsite/docs/EmbodiedEmissions.md
@@ -113,10 +115,16 @@ fileignoreconfig:
   checksum: 4271fca662d95372f0f1439c4a5f82424a06e2c38790a8806e1031dc74387016
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
+- filename: packages/ali/src/__tests__/AliCostAndUsageService.test.ts
+  checksum: 5f7313007ca6a4eae2a608faa11dbb0be97712371703b618e28093138a345363
+- filename: packages/ali/src/lib/AliCalculateRow.ts
+  checksum: 77997e1e88c3fe9bbafbda63d4c1c9b83df439417664cf0d080488b01c8c0c51
 - filename: packages/api/.env.template
-  checksum: ec94dc4f50d599e64405562c74b0ba2d1f49781dba1d0fbc9f5011eeea7e2101
+  checksum: b9441ffab35ccf38716f30ef928830197ab87aa3a8693028a73caa53d6763e6d
+- filename: packages/api/CHANGELOG.md
+  checksum: 70538ae254f51f772d64e42ddb9f2c6393fc49969ea0be0cc5c91a6447204032
 - filename: packages/api/create_docker_secrets.sh
-  checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
+  checksum: 6413d65edef7f51e4a0def0f8f5eb665f389e30cf19d3b02f71ae9f9cd7aa500
 - filename: packages/api/create_server_env_file.sh
   checksum: b6a9b46936e31ca0690ea2fc7080f4c6b5eac0e807c6a71e9dabc13ff8a2d026
 - filename: packages/api/estimates.cache-uscs.json
@@ -129,6 +137,8 @@ fileignoreconfig:
   checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
 - filename: packages/api/src/api.test.ts
   checksum: 860db73e7ff2f960dd5de86d49d09d629fdaccba4b1c85724dace7efd5791943
+- filename: packages/app/CHANGELOG.md
+  checksum: 55548743013fe54dcb1b59e301992d92326b18ee9f74a71d1ceff6af13818aeb
 - filename: packages/app/src/Cache.ts
   checksum: e1ebd94bd8b823c4c3e94a547bceb82d1f37f73c03cdf5d32fd4f9c1effff68e
 - filename: packages/app/src/CreateValidRequest.ts
@@ -170,15 +180,19 @@ fileignoreconfig:
 - filename: packages/azure/package.json
   checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
 - filename: packages/azure/src/__tests__/AzureAccount.test.ts
-  checksum: aaae306bc2bf8a39f34e31f41e7e7c9fd98321fcefc72aca0e126500446ccbfb
+  checksum: b1a4309f63a2831c0664290f2ee6c4dbbb7cc3b3eb7ed1288ad0a8abadd3b452
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
   checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
   checksum: 68f9a8c23d08e892511e99356f39c010b8e8959fd012aaa51e999cd51e51181b
+- filename: packages/azure/src/application/AzureCredentialsProvider.ts
+  checksum: 08ea921d8cf6e05dd55183b8c9c338dee64bcb3a77d875c276455f79e3034c4e
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 42fc6ed4df06fb61f5077f3192d8b8aa8162016621da79f369247fac612afbd6
 - filename: packages/cli/.env.template
-  checksum: 698cfcaab558a76335309ee251a2180312cdf93214c371afe0dc6f8254ccd7b6
+  checksum: e3d3b374e2680bc5f346eb243c96ec94ca7e08e449a1cbc5e6cf9561490d7082
+- filename: packages/cli/CHANGELOG.md
+  checksum: 21834ba3691c0d05ea8d60ccaae74695a0e7a1f73c762d2692a5e2e2bb7c5c93
 - filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
   checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
@@ -195,6 +209,8 @@ fileignoreconfig:
   checksum: 89d6331e5be615cc6caefb8537aab159edaf16ca4f19efaaf38c411b667285a6
 - filename: packages/client/create_client_env_file.sh
   checksum: 2ebf0978d768edd6423a9f5f3b0f3fcdbe2c484d69152c6125575ff93e9708f4
+- filename: packages/client/src/Config.ts
+  checksum: a1c04f96a9be8e217e535f25a61a5cae1c40933129a05dac81243bb2caa92c60
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
 - filename: packages/client/src/common/FilterBar/utils/DropdownConstants.test.ts
@@ -317,10 +333,12 @@ fileignoreconfig:
   checksum: 39e68fa8eeb0706e881d900f8cf69d9859131b087b1555a51015faded40f6504
 - filename: packages/core/src/unknown/UnknownEstimator.ts
   checksum: 4033fa577fb1b42245c0471ce7da72f76713d394370a17695c022eb22ca7c42c
+- filename: packages/create-app/CHANGELOG.md
+  checksum: a64d71c2fc2e45bccba7b7bdb9bcac70825eb78882799e789c130b60cae4558e
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
   checksum: 6a3a9348d74dd6df5978cc0aa6a2fa0c5b51cb62484735614eb5338ccdb6458e
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template
-  checksum: 7663594e66cc73a1906c4195e8860d3bec17d17ce3a582d2095638702dda9db4
+  checksum: 5445657c548050959e00d0b6ea0c05551679bf9b4f2bc3859d6f4fbb1501de37
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
   checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts
@@ -425,12 +443,6 @@ fileignoreconfig:
   checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
-- filename: packages/client/src/Config.ts
-  checksum: a1c04f96a9be8e217e535f25a61a5cae1c40933129a05dac81243bb2caa92c60
-- filename: packages/ali/src/lib/AliCalculateRow.ts
-  checksum: 77997e1e88c3fe9bbafbda63d4c1c9b83df439417664cf0d080488b01c8c0c51
-- filename: packages/ali/src/__tests__/AliCostAndUsageService.test.ts
-  checksum: 5f7313007ca6a4eae2a608faa11dbb0be97712371703b618e28093138a345363
 scopeconfig:
 - scope: node
 version: "1.0"
