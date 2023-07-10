@@ -115,7 +115,10 @@ export const AZURE_REGIONS = {
   US_CANADA: { name: 'canada', options: ['canada'] },
   US_CANADA_CENTRAL: { name: 'canadacentral', options: ['canadacentral'] },
   US_CANADA_EAST: { name: 'canadaeast', options: ['canadaeast'] },
-  US_CENTRAL: { name: 'CentralUS', options: ['CentralUS', 'US Central', 'centralus', 'CENTRALUS'] },
+  US_CENTRAL: {
+    name: 'CentralUS',
+    options: ['CentralUS', 'US Central', 'centralus', 'CENTRALUS'],
+  },
   US_CENTRAL_EUAP: { name: 'centraluseuap', options: ['centraluseuap'] },
   US_CENTRAL_STAGE: { name: 'centralusstage', options: ['centralusstage'] },
   US_EAST: {
@@ -123,7 +126,10 @@ export const AZURE_REGIONS = {
     options: ['EastUS', 'EASTUS', 'USEast', 'useast', 'US East', 'eastus'],
   },
   US_EAST_STAGE: { name: 'eastusstage', options: ['eastusstage'] },
-  US_EAST_2: { name: 'EastUS2', options: ['EastUS2', 'useast2', 'US East 2', 'eastus2', 'EASTUS2'] },
+  US_EAST_2: {
+    name: 'EastUS2',
+    options: ['EastUS2', 'useast2', 'US East 2', 'eastus2', 'EASTUS2'],
+  },
   US_EAST_2_EUAP: { name: 'eastus2euap', options: ['eastus2euap'] },
   US_EAST_2_STAGE: { name: 'eastus2stage', options: ['eastus2stage'] },
   US_EAST_3: { name: 'EastUS3', options: ['EastUS3'] },
@@ -135,7 +141,10 @@ export const AZURE_REGIONS = {
     name: 'northcentralusstage',
     options: ['northcentralusstage'],
   },
-  US_SOUTH_CENTRAL: { name: 'SouthCentralUS', options: ['SouthCentralUS', 'southcentralus'] },
+  US_SOUTH_CENTRAL: {
+    name: 'SouthCentralUS',
+    options: ['SouthCentralUS', 'southcentralus'],
+  },
   US_SOUTH_CENTRAL_STAGE: {
     name: 'southcentralusstage',
     options: ['southcentralusstage'],
@@ -144,7 +153,12 @@ export const AZURE_REGIONS = {
   US_US_EAP: { name: 'unitedstateseuap', options: ['unitedstateseuap'] },
   US_WEST_CENTRAL: {
     name: 'WestCentralUS',
-    options: ['WestCentralUS', 'westcentralus', 'US West Central', 'WESTCENTRALUS'],
+    options: [
+      'WestCentralUS',
+      'westcentralus',
+      'US West Central',
+      'WESTCENTRALUS',
+    ],
   },
   US_NORTH: { name: 'USNorth', options: ['USNorth'] },
   US_WEST: { name: 'WestUS', options: ['WestUS', 'westus', 'US West'] },
