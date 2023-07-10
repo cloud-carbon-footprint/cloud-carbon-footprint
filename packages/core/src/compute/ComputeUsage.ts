@@ -44,7 +44,7 @@ export class ComputeUsageBuilder {
       : this.constants.avgCpuUtilization
     return {
       timestamp: new Date(this.timestamp),
-      cpuUtilizationAverage,
+      cpuUtilizationAverage: cpuUtilizationAverage as number,
       vCpuHours: this.vCpuHours,
       usesAverageCPUConstant: !hasMeasurements,
     }
@@ -58,14 +58,15 @@ export interface RawComputeUsage {
 }
 
 type GroupedComputeUsages = { [timestamp: string]: ComputeUsageBuilder }
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const extractRawComputeUsages: (
   mdr: MetricDataResult,
 ) => RawComputeUsage[] = (metricData: MetricDataResult) =>
-  metricData.Timestamps.map((timestamp, i) => ({
+  metricData.Timestamps?.map((timestamp, i) => ({
     timestamp: new Date(timestamp).toISOString(),
-    id: metricData.Id,
-    value: metricData.Values[i],
+    id: metricData.Id ?? 'id',
+    value: metricData.Values ? metricData.Values[i] : 0,
   }))
 
 const mergeUsageByTimestamp = (

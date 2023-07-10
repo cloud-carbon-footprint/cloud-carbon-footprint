@@ -23,19 +23,17 @@ export default class RightsizingRecommendation {
   }
 
   public parseInstanceType(): string {
-    let parsedInstanceType
     if (this.instanceType.includes('Spot'))
-      parsedInstanceType = this.instanceType.replace(' Spot', '')
-    if (this.instanceType.includes('/'))
-      parsedInstanceType = this.instanceType.split('/')[0]
+      return this.instanceType.replace(' Spot', '')
+    if (this.instanceType.includes('/')) return this.instanceType.split('/')[0]
     if (this.instanceType.includes('_')) {
       let instanceTypeSplit = this.instanceType.split('_')
       if (instanceTypeSplit[0].includes('Standard')) {
         instanceTypeSplit = instanceTypeSplit.slice(1)
       }
-      parsedInstanceType = instanceTypeSplit.join(' ')
+      return instanceTypeSplit.join(' ')
     }
-    return parsedInstanceType
+    return ''
   }
 
   public getSeriesFromInstanceType(): string {

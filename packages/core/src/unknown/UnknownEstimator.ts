@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * © 2021 Thoughtworks, Inc.
  */
@@ -16,7 +17,14 @@ export enum EstimateUnknownUsageBy {
   COST = 'cost',
   USAGE_AMOUNT = 'usageAmount',
 }
-
+const kwHdefault = {
+  service: {
+    usageUnit: {
+      cost: 50,
+      kilowattHours: 20,
+    },
+  },
+}
 export default class UnknownEstimator implements IFootprintEstimator {
   constructor(private estimateKilowattHoursBy: EstimateUnknownUsageBy) {}
 
@@ -29,7 +37,7 @@ export default class UnknownEstimator implements IFootprintEstimator {
     return data.map((data: UnknownUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data,
-        constants.kilowattHoursByServiceAndUsageUnit,
+        constants.kilowattHoursByServiceAndUsageUnit || kwHdefault,
       )
       const estimatedCo2eEmissions = estimateCo2(
         estimatedKilowattHours,
@@ -41,7 +49,7 @@ export default class UnknownEstimator implements IFootprintEstimator {
         kilowattHours: estimatedKilowattHours,
         co2e: estimatedCo2eEmissions,
         usesAverageCPUConstant: false,
-      }
+      } as FootprintEstimate
     })
   }
 
@@ -50,16 +58,18 @@ export default class UnknownEstimator implements IFootprintEstimator {
     kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   ): number {
     const serviceAndUsageUnit =
-      kilowattHoursByServiceAndUsageUnit[unknownUsage.service] &&
-      kilowattHoursByServiceAndUsageUnit[unknownUsage.service][
+      kilowattHoursByServiceAndUsageUnit[unknownUsage.service || 'service'] &&
+      kilowattHoursByServiceAndUsageUnit[unknownUsage.service || 'service'][
         unknownUsage.usageUnit
       ]
 
     if (serviceAndUsageUnit)
       return (
         (serviceAndUsageUnit.kilowattHours /
-          serviceAndUsageUnit[this.estimateKilowattHoursBy]) *
-        unknownUsage[this.estimateKilowattHoursBy]
+          // @ts-ignore: Object is possibly 'undefined'.
+          serviceAndUsageUnit![this.estimateKilowattHoursBy]) *
+        // @ts-ignore: Object is possibly 'undefined'.
+        unknownUsage![this.estimateKilowattHoursBy]
       )
 
     const totalForUsageUnit =
@@ -68,7 +78,9 @@ export default class UnknownEstimator implements IFootprintEstimator {
     if (totalForUsageUnit)
       return (
         (totalForUsageUnit.kilowattHours /
-          totalForUsageUnit[this.estimateKilowattHoursBy]) *
+          // @ts-ignore: Object is possibly 'undefined'.
+          totalForUsageUnit![this.estimateKilowattHoursBy]) *
+        // @ts-ignore: Object is possibly 'undefined'.
         unknownUsage[this.estimateKilowattHoursBy]
       )
     return 0

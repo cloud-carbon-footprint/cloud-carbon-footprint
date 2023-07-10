@@ -40,7 +40,7 @@ export default class EmbodiedEmissionsEstimator implements IFootprintEstimator {
         co2e: estimatedCO2Emissions,
         timestamp: data.timestamp,
         kilowattHours: estimatedKilowattHours,
-      }
+      } as FootprintEstimate
     })
   }
   private estimateCo2e(

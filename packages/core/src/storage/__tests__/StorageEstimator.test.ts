@@ -80,6 +80,26 @@ describe('StorageEstimator', () => {
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
       expect(results[0].co2e).toEqual(3.0672325125e-7)
     })
+
+    it('will work with default power usage effectiveness constant value', () => {
+      const awsConstants2 = {
+        replicationFactor: 1,
+      }
+
+      const result2: FootprintEstimate[] = estimator.estimate(
+        [
+          {
+            terabyteHours: 1.0,
+            timestamp: new Date('1998-01-01'),
+          },
+        ],
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants2,
+      )
+
+      expect(result2[0].kilowattHours).toEqual(0.00065)
+    })
   })
 
   describe('estimating multiple results', () => {

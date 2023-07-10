@@ -146,5 +146,18 @@ describe('ComputeUsage', () => {
     ]
 
     expect(result).toEqual(expectedResults)
+
+    const metricDataResultNoId: MetricDataResult = {
+      Timestamps: [new Date('2021-01-01'), new Date('2021-01-02')],
+      Values: [10, 20],
+    }
+    const resultNoId = extractRawComputeUsages(metricDataResultNoId)
+
+    const expectedResultsNoId: RawComputeUsage[] = [
+      { id: 'id', timestamp: '2021-01-01T00:00:00.000Z', value: 10 },
+      { id: 'id', timestamp: '2021-01-02T00:00:00.000Z', value: 20 },
+    ]
+
+    expect(resultNoId).toEqual(expectedResultsNoId)
   })
 })

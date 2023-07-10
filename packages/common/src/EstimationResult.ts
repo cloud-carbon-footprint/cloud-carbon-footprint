@@ -63,13 +63,15 @@ export const reduceByTimestamp = (
     {
       timestamp: undefined,
       serviceEstimates: [],
-      periodStartDate: undefined,
-      periodEndDate: undefined,
-      groupBy: undefined,
+      periodStartDate: new Date(),
+      periodEndDate: new Date(),
+      groupBy: GroupBy.day,
     },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     getTimeOfEstimate,
     estimationResults,
   )
 
-  return Object.values(result)
+  return Object.values(result) as EstimationResult[]
 }

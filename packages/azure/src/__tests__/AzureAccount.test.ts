@@ -4,6 +4,7 @@
 import {
   EstimationResult,
   GroupBy,
+  Logger,
   LookupTableInput,
   LookupTableOutput,
   RecommendationResult,
@@ -14,6 +15,7 @@ import AzureAccount from '../application/AzureAccount'
 import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
+import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 const mockListSubscriptions = { list: jest.fn(), get: jest.fn() }
 
@@ -380,6 +382,11 @@ describe('Azure Account', () => {
         usageUnit: '10 Hours',
       },
     ]
+    AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT = undefined
+    AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT = undefined
+    AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT = undefined
+    AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT = undefined
+    //AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN = undefined
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const AWSAccount = require('../application/AzureAccount').default
@@ -403,11 +410,108 @@ describe('Azure Account', () => {
     const apiError = new Error(errorMessage)
 
     ;(createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
-
+    AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT = undefined
+    AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT = undefined
     const azureAccount = new AzureAccount()
 
     await expect(() => azureAccount.initializeAccount()).rejects.toThrow(
       `Azure initializeAccount failed. Reason: ${errorMessage}`,
     )
+  })
+
+  it('Throws an warning when no subscriptions are available ', async () => {
+    const mockCredentials = {
+      clientId: 'test-client-id',
+      secret: 'test-client-secret',
+      domain: 'test-tenant-id',
+    }
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+    mockListSubscriptions.list.mockReturnValue([])
+
+    const azureAccount = new AzureAccount()
+    await azureAccount.initializeAccount()
+    await azureAccount.getDataFromAdvisorManagement()
+
+    expect(Logger.prototype.warn).toBeCalled
+  })
+
+  it('Throws an warning when it cant get Advisor recommendation for subscription ', async () => {
+    const mockCredentials = {
+      clientId: 'test-client-id',
+      secret: 'test-client-secret',
+      domain: 'test-tenant-id',
+    }
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+    mockListSubscriptions.list.mockReturnValue([{ subscriptionId: 'sub-1' }])
+    ;(getRecommendationsSpy as jest.Mock).mockRejectedValue({
+      message: 'error getting recommendation',
+    })
+
+    const azureAccount = new AzureAccount()
+    await azureAccount.initializeAccount()
+    await azureAccount.getDataFromAdvisorManagement()
+
+    expect(Logger.prototype.warn).toBeCalled
+  })
+
+  it('Throws an warning when it cant get data recommendation for subscription ', async () => {
+    const mockCredentials = {
+      clientId: 'test-client-id',
+      secret: 'test-client-secret',
+      domain: 'test-tenant-id',
+    }
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+    mockListSubscriptions.list.mockReturnValue([{ subscriptionId: 'sub-1' }])
+    ;(getEstimatesSpy as jest.Mock).mockRejectedValue({
+      message: 'error getting recommendation',
+    })
+
+    const azureAccount = new AzureAccount()
+    await azureAccount.initializeAccount()
+    await azureAccount.getDataFromConsumptionManagement(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    expect(Logger.prototype.warn).toBeCalled
+  })
+
+  it('can use consumption chunk days config', async () => {
+    const mockCredentials = {
+      clientId: 'test-client-id',
+      secret: 'test-client-secret',
+      domain: 'test-tenant-id',
+    }
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+    mockListSubscriptions.list.mockReturnValue([{ subscriptionId: 'sub-1' }])
+    ;(getEstimatesSpy as jest.Mock).mockRejectedValue({
+      message: 'error getting recommendation',
+    })
+
+    const azureAccount = new AzureAccount()
+    await azureAccount.initializeAccount()
+    jest.mock('@cloud-carbon-footprint/common', () => ({
+      configLoader: jest.fn().mockImplementation(() => {
+        return {
+          AZURE: {
+            CONSUMPTION_CHUNKS_DAYS: 3,
+          },
+        }
+      }),
+    }))
+
+    await azureAccount.getDataFromConsumptionManagement(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    expect(Logger.prototype.warn).toBeCalled
+    expect(Logger.prototype.info).toBeCalled
   })
 })

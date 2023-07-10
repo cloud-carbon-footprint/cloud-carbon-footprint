@@ -77,4 +77,35 @@ describe('ComputeEstimator', () => {
       },
     ])
   })
+
+  it('do estimates for AWS South Africa with default cloud constants values', () => {
+    const input = [
+      {
+        timestamp: new Date('2020-01-01'),
+        cpuUtilizationAverage: 1.0,
+        vCpuHours: 1.0,
+        usesAverageCPUConstant: false,
+      },
+    ]
+    const awsAfSouth1Region = 'af-south-1'
+    const awsEmissionsFactors = {
+      [awsAfSouth1Region]: 0.000928,
+    }
+    const awsConstants: CloudConstants = {}
+    const result = new ComputeEstimator().estimate(
+      input,
+      awsAfSouth1Region,
+      awsEmissionsFactors,
+      awsConstants,
+    )
+
+    expect(result).toEqual([
+      {
+        co2e: 0,
+        timestamp: new Date('2020-01-01T00:00:00.000Z'),
+        kilowattHours: 0,
+        usesAverageCPUConstant: false,
+      },
+    ])
+  })
 })

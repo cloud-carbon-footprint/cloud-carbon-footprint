@@ -21,15 +21,15 @@ const getRecommendationDetails = (
 ) => {
   const recommendationDetails: Partial<RightsizingRecommendation> = {
     subscriptionId:
-      rightsizingRecommendationData.extendedProperties.subscriptionId,
-    type: rightsizingRecommendationData.extendedProperties.recommendationType,
-    region: rightsizingRecommendationData.extendedProperties.regionId,
-    instanceName: rightsizingRecommendationData.extendedProperties.roleName,
-    instanceType: rightsizingRecommendationData.extendedProperties.currentSku,
-    resourceId: rightsizingRecommendationData.resourceMetadata.resourceId,
+      rightsizingRecommendationData.extendedProperties?.subscriptionId,
+    type: rightsizingRecommendationData.extendedProperties?.recommendationType,
+    region: rightsizingRecommendationData.extendedProperties?.regionId,
+    instanceName: rightsizingRecommendationData.extendedProperties?.roleName,
+    instanceType: rightsizingRecommendationData.extendedProperties?.currentSku,
+    resourceId: rightsizingRecommendationData.resourceMetadata?.resourceId,
     costSavings:
       parseFloat(
-        rightsizingRecommendationData.extendedProperties.savingsAmount,
+        rightsizingRecommendationData.extendedProperties?.savingsAmount || '0',
       ) || 0,
   }
   return recommendationDetails
