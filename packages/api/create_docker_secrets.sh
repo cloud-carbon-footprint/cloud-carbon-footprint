@@ -19,7 +19,7 @@ while IFS= read -r line; do
     elif [[ $line == " "* ]]; then # line is a value
         if (( inside_secrets )); then
             key=$(echo "$line" | awk -F: '{print $1}' | sed 's/^[ \t]*//;s/[ \t]*$//')
-            [[ ${key} == "file" ]] && continue # skip 'file:' entries
+            [[ ${key} == "file" || ${key} =~ ^# ]] && continue # skip 'file:' entries
             touch $HOME/.docker/secrets/$key
         fi
     else
@@ -29,12 +29,10 @@ done < ../../docker-compose.yml
 
 # Fill secrets with values from .env file
 while read line; do
-  keyValue=(${line//=/ })
-  key=${keyValue[0]}
-  value=${keyValue[1]}
-
-  # skip commented out variables
-  [[ -z $key || $key == \#* ]] && continue
-
-  echo $value > $HOME/.docker/secrets/$key
+  # skip commented out variables and lines without '='
+  if [[ ! ${line} =~ ^# && "${line}" == *"="* ]]; then
+    key=${line%%=*}
+    value=${line#*=}
+    echo ${value} > ${HOME}/.docker/secrets/${key}
+  fi
 done < .env
