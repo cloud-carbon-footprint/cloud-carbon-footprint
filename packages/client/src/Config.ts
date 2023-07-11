@@ -46,6 +46,7 @@ const appConfig: ClientConfig = {
     { key: 'aws', name: 'AWS' },
     { key: 'gcp', name: 'GCP' },
     { key: 'azure', name: 'Azure' },
+    { key: 'alicloud', name: 'AliCloud' },
   ],
   PREVIOUS_YEAR_OF_USAGE: previousYearOfUsage,
   DATE_RANGE: {

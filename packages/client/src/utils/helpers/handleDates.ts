@@ -1,3 +1,7 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
 import moment, { Moment, unitOfTime } from 'moment'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'

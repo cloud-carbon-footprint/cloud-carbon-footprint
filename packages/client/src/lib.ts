@@ -1,3 +1,7 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
 export { default as HeaderBar } from './layout/HeaderBar'
 
 export { default as useFilters } from './common/FilterBar/utils/FilterHook'

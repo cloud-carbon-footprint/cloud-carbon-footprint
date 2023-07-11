@@ -44,3 +44,11 @@ export const getPeriodEndDate = (startDate: Date, grouping: GroupBy): Date => {
 
   return periodGrouping[grouping]
 }
+
+export const mapToArabic = (unit: string): number => {
+  if (unit == '万') {
+    return 10000
+  } else {
+    return 100000000
+  }
+}

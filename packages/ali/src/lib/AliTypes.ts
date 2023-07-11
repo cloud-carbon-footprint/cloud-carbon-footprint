@@ -1,0 +1,245 @@
+/*
+ * © 2023 Thoughtworks, Inc.
+ */
+
+import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
+
+export const SPECIFICATION_FAMILY_COMPUTE_PROCESSOR_MAPPING: {
+  [series: string]: string[]
+} = {
+  'ecs.g8ae': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN],
+  'ecs.g7se': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.g7a': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN],
+  'ecs.g7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.g7t': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.g7nex': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.g6t': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.g6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.g6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.sn2ne': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.g5': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.g5ne': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.c8ae': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN],
+  'ecs.c7re': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.c7se': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.c7nex': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.c7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.c7t': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.c6t': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.c6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.c6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.c5': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.ic5': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.sn1ne': [
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+    COMPUTE_PROCESSOR_TYPES.BROADWELL,
+  ],
+  'ecs.r8ae': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN],
+  'ecs.re7p': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.r7p': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.r7se': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.r7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.r7t': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.re6p': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.r6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.r6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.re6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.r5': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.re4': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.re4e': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.se1ne': [
+    COMPUTE_PROCESSOR_TYPES.BROADWELL,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
+  'ecs.se1': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.d3s': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.d3c': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.d2c': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.d2s': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.d1ne': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.d1': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.i4': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.i4g': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.i4r': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.i4p': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.i3g': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.i3': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.i2': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.i2g': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.i2ne': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.i2gne': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.i1': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.hfc6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.hfg6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.hfr6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.hfc5': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.hfg5': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.sgn7i-vws': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.vgn7i-vws': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.gn7s': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.gn7e': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.gn7i': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.gn7': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.vgn6i': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.gn6i': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.gn6e': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.gn6v': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.vgn5i': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.gn5': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.gn5i': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.f5': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.f3': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebman1': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmg7se': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmg7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmg6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmg6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmc7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmc6me': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmc6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmc6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmr7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmr6e': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmr6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmre6p': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmre6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmhfg6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmhfc6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmhfr6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmi2g': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmgn7ex': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmgn7i': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.ebmgn7': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.ebmgn6e': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmgn6v': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmgn6i': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmg5s': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmg5': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.ebmc4': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'ecs.ebmr5s': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.sccg7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.sccc7': [COMPUTE_PROCESSOR_TYPES.ICELAKE],
+  'ecs.scchfc6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.scchfg6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.scchfr6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.scch5': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.sccg5': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.sccgn6e': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.sccgn6': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+  'ecs.t6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  'ecs.s6': [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+}
+
+export const GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING: {
+  [series: string]: string[]
+} = {
+  'ecs.sgn7i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G],
+  'ecs.gn7r': [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G],
+  'ecs.gn7i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G],
+  'ecs.vgn6i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_T4],
+  'ecs.gn6i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100],
+  'ecs.gn6v': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100],
+  'ecs.vgn5i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4],
+  'ecs.gn5': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100],
+  'ecs.gn5i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4],
+}
+
+export const INSTANCE_SPECIFICATION_MAPPING: {
+  [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, memory, scope3 emissions ]
+} = {
+  'ecs.g8ae': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7se': {
+    large: [2, 8, 1.2],
+    xlarge: [4, 16, 1.2],
+    '2xlarge': [8, 32, 1.2],
+    '3xlarge': [12, 48, 1.2],
+    '4xlarge': [16, 64, 1.2],
+    '6xlarge': [24, 96, 1.2],
+    '8xlarge': [32, 128, 1.2],
+    '16xlarge': [64, 256, 1.2],
+    '32xlarge': [128, 512, 1.2],
+  },
+  'ecs.g7': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7t': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7ne': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '12xlarge': [48, 192, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g6': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '13xlarge': [52, 192, 1.1],
+    '26xlarge': [104, 384, 1.1],
+  },
+}
+
+export const SSD_MANAGED_DISKS_STORAGE_GB: {
+  [diskType: string]: number
+} = {}
+
+export const HDD_MANAGED_DISKS_STORAGE_GB: {
+  [diskType: string]: number
+} = {}
+
+export const STORAGE_USAGE_TYPES: string[] = []
+
+export const NETWORKING_USAGE_TYPES: string[] = []
+
+export const UNKNOWN_SERVICES: string[] = []
+
+export const UNKNOWN_USAGE_TYPES: string[] = []

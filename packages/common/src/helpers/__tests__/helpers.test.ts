@@ -8,8 +8,9 @@ import {
   containsAny,
   endsWithAny,
   getHoursInMonth,
-  wait,
   getPeriodEndDate,
+  mapToArabic,
+  wait,
 } from '../helpers'
 
 jest.useFakeTimers()
@@ -75,6 +76,16 @@ describe('Helpers', () => {
         grouping,
       )
 
+      expect(result).toEqual(expectedResult)
+    })
+  })
+
+  describe('converts chinese to arabic', () => {
+    each([
+      ['万', 10000],
+      ['亿', 100000000],
+    ]).it('should get period end date for %s', (unit, expectedResult) => {
+      const result = mapToArabic(unit)
       expect(result).toEqual(expectedResult)
     })
   })

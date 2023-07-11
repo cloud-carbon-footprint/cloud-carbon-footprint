@@ -4,6 +4,7 @@
 import fs from 'fs'
 import dotenv from 'dotenv'
 import { AWS_RECOMMENDATIONS_SERVICES } from './RecommendationsService'
+
 dotenv.config()
 
 export interface CCFConfig {
@@ -61,6 +62,13 @@ export interface CCFConfig {
     CONSUMPTION_CHUNKS_DAYS?: number
     SUBSCRIPTION_CHUNKS?: number
     SUBSCRIPTIONS: string[]
+  }
+  ALI?: {
+    NAME?: string
+    authentication?: {
+      accessKeyId: string
+      accessKeySecret: string
+    }
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string
@@ -150,9 +158,9 @@ const getEnvVar = (envVar: string): string => {
 
 const getConfig = (): CCFConfig => ({
   AWS: {
-    INCLUDE_ESTIMATES: process.env.AWS_INCLUDE_ESTIMATES
-      ? !!process.env.AWS_INCLUDE_ESTIMATES
-      : true,
+    INCLUDE_ESTIMATES:
+      !!process.env.AWS_INCLUDE_ESTIMATES &&
+      process.env.AWS_INCLUDE_ESTIMATES !== 'false',
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
       process.env.AWS_USE_BILLING_DATA !== 'false',
@@ -238,9 +246,9 @@ const getConfig = (): CCFConfig => ({
     USE_CARBON_FREE_ENERGY_PERCENTAGE:
       !!process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE &&
       process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE !== 'false',
-    INCLUDE_ESTIMATES: process.env.GCP_INCLUDE_ESTIMATES
-      ? !!process.env.GCP_INCLUDE_ESTIMATES
-      : true,
+    INCLUDE_ESTIMATES:
+      !!process.env.GCP_INCLUDE_ESTIMATES &&
+      process.env.GCP_INCLUDE_ESTIMATES !== 'false',
     USE_BILLING_DATA:
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
@@ -255,9 +263,9 @@ const getConfig = (): CCFConfig => ({
     RESOURCE_TAG_NAMES: JSON.parse(getGCPResourceTagNames()),
   },
   AZURE: {
-    INCLUDE_ESTIMATES: process.env.AZURE_INCLUDE_ESTIMATES
-      ? !!process.env.AZURE_INCLUDE_ESTIMATES
-      : true,
+    INCLUDE_ESTIMATES:
+      !!process.env.AZURE_INCLUDE_ESTIMATES &&
+      process.env.AZURE_INCLUDE_ESTIMATES !== 'false',
     USE_BILLING_DATA:
       !!process.env.AZURE_USE_BILLING_DATA &&
       process.env.AZURE_USE_BILLING_DATA !== 'false',
@@ -275,6 +283,13 @@ const getConfig = (): CCFConfig => ({
       getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '10',
     ),
     SUBSCRIPTIONS: JSON.parse(getAzureSubscriptions()) || [],
+  },
+  ALI: {
+    NAME: 'AliCloud',
+    authentication: {
+      accessKeyId: process.env.ALI_ACCESS_KEY,
+      accessKeySecret: process.env.ALI_ACCESS_SECRET,
+    },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',

@@ -1,3 +1,7 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
 import { Logger } from '@cloud-carbon-footprint/common'
 import request from 'supertest'
 import express from 'express'
