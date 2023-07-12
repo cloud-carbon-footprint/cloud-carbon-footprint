@@ -12,16 +12,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@alicloud/bssopenapi20171214@npm:^1.0.12":
-  version: 1.0.13
-  resolution: "@alicloud/bssopenapi20171214@npm:1.0.13"
+"@alicloud/bssopenapi20171214@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "@alicloud/bssopenapi20171214@npm:1.0.14"
   dependencies:
     "@alicloud/endpoint-util": ^0.0.1
     "@alicloud/openapi-client": ^0.4.4
     "@alicloud/openapi-util": ^0.3.1
     "@alicloud/tea-typescript": ^1.7.1
     "@alicloud/tea-util": ^1.4.5
-  checksum: fd8f76937e4cc909b962f41c6b3d4b748246719ba72984d1aa37672d2f8c028240e253c57132498e3885b9ca546559c16960b2197e1b77bead992865aeca467b
+  checksum: 42c7b4142d2d201fe4b92630a744db435237afdee923a1a3155c0199906f249e1551580eba72b313af1fed5f84618c928a75996ad2e68a08320cdded78596a76
   languageName: node
   linkType: hard
 
@@ -2352,9 +2352,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/ali@workspace:packages/ali"
   dependencies:
-    "@alicloud/bssopenapi20171214": ^1.0.12
-    "@cloud-carbon-footprint/common": ^1.9.0
-    "@cloud-carbon-footprint/core": ^0.17.0
+    "@alicloud/bssopenapi20171214": ^1.0.14
+    "@cloud-carbon-footprint/common": ^1.10.0
+    "@cloud-carbon-footprint/core": ^0.17.3
     "@google-cloud/iam-credentials": ^1.1.1
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0
@@ -2641,7 +2641,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/common@^1.10.0, @cloud-carbon-footprint/common@^1.12.0, @cloud-carbon-footprint/common@^1.8.0, @cloud-carbon-footprint/common@^1.9.0, @cloud-carbon-footprint/common@workspace:packages/common":
+"@cloud-carbon-footprint/common@^1.10.0, @cloud-carbon-footprint/common@^1.12.0, @cloud-carbon-footprint/common@^1.8.0, @cloud-carbon-footprint/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/common@workspace:packages/common"
   dependencies:
