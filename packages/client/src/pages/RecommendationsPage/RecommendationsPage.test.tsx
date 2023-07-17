@@ -12,13 +12,15 @@ import {
 import RecommendationsPage from './RecommendationsPage'
 import { generateEstimations, mockRecommendationData } from '../../utils/data'
 import { useRemoteRecommendationsService } from '../../utils/hooks'
+import configLoader from '../../ConfigLoader'
 import { ServiceResult } from '../../Types'
+import * as helpers from '../../utils/helpers/handleDates'
 
 jest.mock('../../utils/hooks/RecommendationsServiceHook')
 jest.mock('../../utils/hooks/FootprintServiceHook')
 jest.mock('../../ConfigLoader', () => ({
   __esModule: true,
-  default: () => ({
+  default: jest.fn().mockImplementation(() => ({
     CURRENT_PROVIDERS: [
       { key: 'aws', name: 'AWS' },
       { key: 'gcp', name: 'GCP' },
@@ -29,7 +31,8 @@ jest.mock('../../ConfigLoader', () => ({
       TYPE: 'days',
     },
     BASE_URL: '/api',
-  }),
+    GROUP_BY: 'day',
+  })),
 }))
 
 const mockedUseRecommendationsService =
@@ -57,10 +60,24 @@ describe('Recommendations Page', () => {
     mockedUseRecommendationsService.mockReturnValue(
       mockRecommendationsReturnValue,
     )
+    ;(configLoader as jest.Mock).mockImplementation(() => ({
+      CURRENT_PROVIDERS: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+      PREVIOUS_YEAR_OF_USAGE: true,
+      DATE_RANGE: {
+        VALUE: '7',
+        TYPE: 'days',
+      },
+      BASE_URL: '/api',
+      GROUP_BY: 'day',
+    }))
   })
 
   afterEach(() => {
     mockedUseRecommendationsService.mockClear()
+    jest.clearAllMocks()
   })
 
   it('renders an error message for forecast when missing emissions data', () => {
@@ -125,5 +142,39 @@ describe('Recommendations Page', () => {
     )
 
     expect(getByTestId('toggle')).toBeInTheDocument()
+  })
+
+  it('skips checking for missing dates if forecast validation is disabled', () => {
+    ;(configLoader as jest.Mock).mockImplementation(() => ({
+      CURRENT_PROVIDERS: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+      PREVIOUS_YEAR_OF_USAGE: true,
+      DATE_RANGE: {
+        VALUE: '7',
+        TYPE: 'days',
+      },
+      BASE_URL: '/api',
+      DISABLE_FORECAST_VALIDATION: 'true',
+      GROUP_BY: 'day',
+    }))
+
+    const mockSmallFootprintData: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: generateEstimations(moment.utc(), 1),
+      error: null,
+    }
+
+    const checkDatesSpy = jest.spyOn(helpers, 'checkFootprintDates')
+
+    render(
+      <RecommendationsPage
+        onApiError={null}
+        footprint={mockSmallFootprintData}
+      />,
+    )
+
+    expect(checkDatesSpy).not.toHaveBeenCalled()
   })
 })

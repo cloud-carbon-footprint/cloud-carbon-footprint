@@ -39,6 +39,7 @@ jobs:
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
           REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
           REACT_APP_MINIMAL_DATE_AGE: ${{ secrets.REACT_APP_MINIMAL_DATE_AGE }}
+          REACT_APP_DISABLE_FORECAST_VALIDATION: ${{ secrets.REACT_APP_DISABLE_FORECAST_VALIDATION }}
         run: |
           cd packages/client
           ./create_client_env_file.sh
