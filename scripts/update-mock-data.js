@@ -20,10 +20,15 @@ async function update() {
     updatedMonth = getPreviousMonth(updatedMonth)
 
     footprint.serviceEstimates.forEach((serviceEstimate) => {
-      const regionObj = mockData.emissions.find(o => o.region === serviceEstimate.region)
-      const { mtPerKwHour } = regionObj
-      const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour
-      serviceEstimate.co2e = updatedC02e
+      // TODO: Remove this until we have AliCloud mock Emissions data
+      if (serviceEstimate.cloudProvider !== 'AliCloud') {
+        const regionObj = mockData.emissions.find(
+          (o) => o.region === serviceEstimate.region,
+        )
+        const { mtPerKwHour } = regionObj
+        const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour
+        serviceEstimate.co2e = updatedC02e
+      }
     })
   })
 
