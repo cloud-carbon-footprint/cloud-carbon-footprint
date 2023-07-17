@@ -1,4 +1,10 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
 export { default as HeaderBar } from './layout/HeaderBar'
+
+export { default as useFilters } from './common/FilterBar/utils/FilterHook'
 
 export { default as RecommendationsFilterBar } from './pages/RecommendationsPage/RecommendationsFilterBar'
 export { default as RecommendationsSidePanel } from './pages/RecommendationsPage/RecommendationsSidePanel'
@@ -16,3 +22,4 @@ export type { ClientConfig } from './Config'
 export * from './Types'
 export * from './utils/hooks'
 export * from './utils/themes'
+export * from './utils/helpers'

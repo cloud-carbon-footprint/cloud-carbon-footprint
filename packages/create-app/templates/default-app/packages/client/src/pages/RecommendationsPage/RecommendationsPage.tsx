@@ -17,7 +17,7 @@ import { FootprintData } from '../../utils/hooks'
 import {
   checkFootprintDates,
   sliceFootprintDataByLastMonth,
-} from '../../utils/helpers/handleDates'
+} from '../../utils/helpers'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
@@ -35,9 +35,14 @@ const RecommendationsPage = ({
   const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
 
   const groupBy = config.GROUP_BY
+  const hasForecastValidationDisabled = config.DISABLE_FORECAST_VALIDATION
+
+  let forecastDetails = { missingDates: [], groupBy }
 
   const slicedFootprint = sliceFootprintDataByLastMonth(footprint.data, groupBy)
-  const forecastDetails = checkFootprintDates(slicedFootprint, groupBy)
+  if (!hasForecastValidationDisabled) {
+    forecastDetails = checkFootprintDates(slicedFootprint, groupBy)
+  }
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,
@@ -60,7 +65,7 @@ const RecommendationsPage = ({
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
           <RecommendationsTable
-            emissionsData={recommendations.filteredEmissionsData}
+            emissionsData={slicedFootprint}
             recommendations={recommendations.filteredRecommendationData}
             co2eUnit={co2eUnit}
             forecastDetails={forecastDetails}

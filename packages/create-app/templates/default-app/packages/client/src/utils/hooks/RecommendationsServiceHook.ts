@@ -8,7 +8,6 @@ import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from '../../Types'
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 import { FootprintData } from './FootprintDataHook'
-
 export interface UseRemoteRecommendationServiceParams {
   baseUrl: string | null
   onApiError?: (e: Error) => void
