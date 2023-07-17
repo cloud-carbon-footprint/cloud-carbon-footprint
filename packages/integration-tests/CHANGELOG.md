@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/integration-tests
 
-## 1.1.8
-
-### Patch Changes
-
-- 6d4ce5f2: Fixes failing recommendations test
-
 ## 1.1.7
 
 ### Patch Changes

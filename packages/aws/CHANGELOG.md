@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/aws
 
-## 0.14.5
-
-### Patch Changes
-
-- 7fe74989: Fixes Athena query column error for accounts without EC2 hours/usage
-
 ## 0.14.4
 
 ### Patch Changes
