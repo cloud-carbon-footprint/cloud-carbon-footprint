@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.5.0
+
+### Minor Changes
+
+- e1a603a2: Adds config for disabling forecast date validation
+
 ## 2.4.0
 
 ### Minor Changes
