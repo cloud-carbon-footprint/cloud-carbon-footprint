@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/client
 
-## 4.2.0
-
-### Minor Changes
-
-- e1a603a2: Adds config for disabling forecast date validation
-
 ## 4.1.3
 
 ### Patch Changes
