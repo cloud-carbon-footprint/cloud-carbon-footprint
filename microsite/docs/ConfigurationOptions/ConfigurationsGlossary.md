@@ -7,7 +7,7 @@ sidebar_position: 4
 
 ## Api/cli Packages
 
-### Variables for both estimation approaches with AWS:
+### Variables for both estimation approaches with AWS
 
 | Variable                     | Example Value                 | Type   | Notes                                                                                                                                                                                                                          |
 | ---------------------------- | ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -15,7 +15,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with AWS:
+### Variables needed for the Billing Data (Holistic) approach with AWS
 
 | Variable                         | Example Value                           | Type    | Notes                                                                                                  |
 | -------------------------------- | --------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
@@ -30,7 +30,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Cloud Usage API (Higher Accuracy) approach with AWS:
+### Variables needed for the Cloud Usage API (Higher Accuracy) approach with AWS
 
 | Variable     | Example Value                                        | Type  | Notes                                                                                                                                                |     |
 | ------------ | ---------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
@@ -38,7 +38,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these AWS variables:
+### Optionally set these AWS variables
 
 | Variable                     | Example Value            | Type   | Notes                                                                                                                                                                                                                                                                                                                                            |
 | ---------------------------- | ------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -50,7 +50,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with GCP:
+### Variables needed for the Billing Data (Holistic) approach with GCP
 
 | Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                                                                                                                 |
 | ------------------------------ | ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -63,7 +63,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Cloud Usage API (Higher Accuracy) approach with GCP:
+### Variables needed for the Cloud Usage API (Higher Accuracy) approach with GCP
 
 | Variable     | Example Value                                            | Type  | Notes                                                                                                                                                |
 | ------------ | -------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,7 +71,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these GCP variables:
+### Optionally set these GCP variables
 
 | Variable                                 | Example Value | Type    | Notes                                                                                                                                                                                                                                                                                                                                                                                           |
 | ---------------------------------------- | ------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -81,7 +81,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with Azure:
+### Variables needed for the Billing Data (Holistic) approach with Azure
 
 | Variable                | Example Value            | Type    | Notes                                                                                                   |     |
 | ----------------------- | ------------------------ | ------- | ------------------------------------------------------------------------------------------------------- | --- |
@@ -93,7 +93,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager:
+### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager
 
 | Variable        | Example Value | Type   | Notes                                                                                                                                                                                                                                                 |
 | --------------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -107,7 +107,7 @@ sidebar_position: 4
 | ------------------------ | -------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------- | --- |
 | AZURE_RESOURCE_TAG_NAMES | ["resourceGroup","project","customer"] | array:string | Azure resource tag names to include if present, include resourceGroup as a tag name if needed. |
 
-### Optionally set this to customize usage data fetch behavior. See [Azure Performance Considerations](./PerformanceConsiderations.md#azure-performance-considerations) for more information.
+### Optionally set this to customize usage data fetch behavior. See [Azure Performance Considerations](./PerformanceConsiderations.md#azure-performance-considerations) for more information
 
 | Variable                     | Example Value                        | Type         | Notes                                                                                                        |     |
 | ---------------------------- | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------ | --- |
@@ -139,20 +139,25 @@ sidebar_position: 4
 
 ### Optionally set these variables to configure CORS
 
-| Varibale          | Example Value                            | Type    | Notes                                                                                                      |
+| Variable          | Example Value                            | Type    | Notes                                                                                                      |
 | ----------------- | ---------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
 | ENABLE_CORS       | true                                     | boolean | Enables default CORS headers on all API requests. By default all origins, methods and headers are allowed. |
-| CORS_ALLOW_ORIGIN | https://example.com,https://example2.com | string  | A list of one or more origins to allow for CORS requests, comma separated.                                 |
+| CORS_ALLOW_ORIGIN | <https://example.com,https://example2.com> | string  | A list of one or more origins to allow for CORS requests, comma separated.                                 |
 
 <br />
 
 ## Client Package - all variables are optional
 
-| Variable                         | Example Value           | Type    | Notes                                                                                                                                               |
+| Variable                         | Example Value           | Type     Notes                                                                                                                                                |
 | -------------------------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | REACT_APP_PREVIOUS_YEAR_OF_USAGE | true                    | boolean | Use this to ensure the application requests usage data from the entire previous calendar year to today. Unset to make this false. Defaults to true. |
 | REACT_APP_GROUP_BY               | month                   | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year). Defaults to day.                                 |
-| REACT_APP_DATE_RANGE_VALUE       | 1                       | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                                                                               |
-| REACT_APP_DATE_RANGE_TYPE        | year                    | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)                                                    |
-| REACT_APP_MINIMAL_DATE_AGE       | 1                       | number  | The amount of days to subtract from current date as end date.                                                                                       |
-| REACT_APP_BASE_URL               | https://example.com/api | string  | The base URL used to make API requests.                                                                                                             |
+| REACT_APP_START_DATE             | 01-01-2022              | string  | The date range to query data based on custom start/end timestamps (takes precedence over legacy config). Defaults to current data                   |
+| REACT_APP_END_DATE               | 06-01-2022              | string  | Set the date range to query data based on custom start/end timestamps. Defaults to 30 days prior                                                    |
+| REACT_APP_DATE_RANGE_VALUE       | 1                       | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.    (Legacy date range config)                                                                 |
+| REACT_APP_DATE_RANGE_TYPE        | year                    | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)  (Legacy date range config)                        |
+| REACT_APP_MINIMAL_DATE_AGE       | 1                       | number  | The amount of days to subtract from current date as end date. (Legacy date range config)                                                            |
+| REACT_APP_BASE_URL               | <https://example.com/api> | string  | The base URL used to make API requests.                                                                                                           |
+| REACT_APP_DISABLE_CACHE          | true                    | boolean | Set to true to disable caching. Defaults to false.                                                                                                  |
+| REACT_APP_DISABLE_FORECAST_VALIDATION | true               | boolean | Set to true to disable recommendations forecast validation. Defaults to false. (For accurate forecasts, it is recommended to keep this enabled)     |
+| REACT_APP_PAGE_LIMIT             | 50000                   | number  | The pagination limit for fetched estimates per request. Defaults to 50000. (MongoDB Only, recommended to not exceed 50000)                          |
