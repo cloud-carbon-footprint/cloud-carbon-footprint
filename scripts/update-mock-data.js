@@ -27,16 +27,22 @@ async function update() {
         )
         const { mtPerKwHour } = regionObj
         const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour
+        const updatedCost = serviceEstimate.co2e / 0.0024 // Sample cost:co2e ratio
         serviceEstimate.co2e = updatedC02e
+        serviceEstimate.cost = updatedCost
       }
     })
   })
 
   mockData.recommendations.forEach((recommendation) => {
-    const regionObj = mockData.emissions.find(o => o.region === recommendation.region)
+    const regionObj = mockData.emissions.find(
+      (o) => o.region === recommendation.region,
+    )
     const { mtPerKwHour } = regionObj
     const updatedC02e = recommendation.kilowattHourSavings * mtPerKwHour
+    const updatingCostSavings = recommendation.co2eSavings / 0.0024 // Sample cost:co2e ratio
     recommendation.co2eSavings = updatedC02e
+    recommendation.costSavings = updatingCostSavings
   })
 
   fs.writeFileSync(
