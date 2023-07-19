@@ -27,7 +27,7 @@ async function update() {
         )
         const { mtPerKwHour } = regionObj
         const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour
-        const updatedCost = serviceEstimate.co2e / 0.0024 // Sample cost:co2e ratio
+        const updatedCost = (updatedC02e / 0.0024) * 100 // Sample cost:co2e ratio
         serviceEstimate.co2e = updatedC02e
         serviceEstimate.cost = updatedCost
       }
@@ -40,7 +40,7 @@ async function update() {
     )
     const { mtPerKwHour } = regionObj
     const updatedC02e = recommendation.kilowattHourSavings * mtPerKwHour
-    const updatingCostSavings = recommendation.co2eSavings / 0.0024 // Sample cost:co2e ratio
+    const updatingCostSavings = updatedC02e / 0.0024 // Sample cost:co2e ratio
     recommendation.co2eSavings = updatedC02e
     recommendation.costSavings = updatingCostSavings
   })
