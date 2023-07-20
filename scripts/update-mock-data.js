@@ -26,7 +26,7 @@ async function update() {
           (o) => o.region === serviceEstimate.region,
         )
         const { mtPerKwHour } = regionObj
-        const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour
+        const updatedC02e = serviceEstimate.kilowattHours * mtPerKwHour * 10
         const updatedCost = (updatedC02e / 0.0024) * 100 // Sample cost:co2e ratio
         serviceEstimate.co2e = updatedC02e
         serviceEstimate.cost = updatedCost
