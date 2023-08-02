@@ -1,7 +1,7 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { Selector, ClientFunction } from 'testcafe'
+import { ClientFunction } from 'testcafe'
 import waitOn from 'wait-on'
 import page from './page-model'
 const getLocation = ClientFunction(() => document.location.href)
@@ -32,14 +32,11 @@ test('filter components render with correct data when app loads', async (t) => {
 })
 
 test('card components render with data when app loads', async (t) => {
-  // commented out because the error message is not always present
-  // await t.expect(page.errorMessage.exists).ok()
-  await t.expect(page.forecastErrorMessage.exists).ok()
-  // await t.expect(page.lastThirtyDayTotal.exists).ok()
-  // await t.expect(page.projectedThirtyDayTotal.exists).ok()
-  // await t.expect(page.forecastEquivalencyCard.exists).ok()
-  // await t.expect(page.treeSeedlingsGrown.exists).ok()
-  // await t.expect(page.costSavingsPerMonth.exists).ok()
+  await t.expect(page.lastThirtyDayTotal.exists).ok()
+  await t.expect(page.projectedThirtyDayTotal.exists).ok()
+  await t.expect(page.forecastEquivalencyCard.exists).ok()
+  await t.expect(page.treeSeedlingsGrown.exists).ok()
+  await t.expect(page.costSavingsPerMonth.exists).ok()
 })
 
 test('table components renders with data when app loads', async (t) => {
@@ -48,10 +45,6 @@ test('table components renders with data when app loads', async (t) => {
 })
 
 test('toggle changes unit of measure', async (t) => {
-  //check projected totals
-  // commented out because the error message is not always present
-  // await t.expect(page.errorMessage.exists).ok()
-
   //check first cell
   await t
     .expect(page.tableSavingsColumn.textContent)
@@ -59,17 +52,17 @@ test('toggle changes unit of measure', async (t) => {
   await t.expect(page.firstSavingsCell.exists).ok()
   //click kilogram toggle
   await t.click(page.toggle, { isTrusted: true })
-  //recheck data in - kg instead of metric tons, so 1000
-  // await t
-  //   .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
-  //   .eql('Kilograms CO2e')
-  // await t
-  //   .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
-  //   .eql('Kilograms CO2e')
-  // await t.expect(page.co2eSavingsLastThirtyDayTotal.exists).ok()
-  // await t.expect(page.co2eSavingsProjectedThirtyDayTotal.exists).ok()
-  // await t.expect(page.costSavingsLastThirtyDayTotal.exists).ok()
-  // await t.expect(page.costSavingsProjectedThirtyDayTotal.exists).ok()
+  // recheck data in - kg instead of metric tons, so 1000
+  await t
+    .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
+    .eql('Kilograms CO2e')
+  await t
+    .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
+    .eql('Kilograms CO2e')
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.co2eSavingsProjectedThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsProjectedThirtyDayTotal.exists).ok()
   await t
     .expect(page.tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (kg)')

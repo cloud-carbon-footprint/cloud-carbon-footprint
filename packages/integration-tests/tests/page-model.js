@@ -30,18 +30,6 @@ class Page {
 
     //co2 amount dropdowns
     this.totalCo2Amount = Selector('#metric-one')
-    this.cloudProviderDropDown = Selector('#cloud-provider-filter')
-      .sibling('div')
-      .child('button')
-    this.accountsDropDown = Selector('#accounts-filter')
-      .sibling('div')
-      .child('button')
-    this.servicesDropDown = Selector('#services-filter')
-      .sibling('div')
-      .child('button')
-    this.awsDropdownItem = Selector('#cloud-provider-filter-option-1')
-    this.accountsDropdownItem = Selector('#accounts-filter-option-1')
-    this.servicesDropdownItem = Selector('#services-filter-option-1')
 
     //emissions breakdown
     this.flightsButton = Selector('#flights')
@@ -74,22 +62,39 @@ class Page {
     )
     this.recAccounts = Selector('span').withText('Accounts')
 
-    //forecast card components (subcomponents not included due to conditional rendering)
-    // this.lastThirtyDayTotal = Selector(
-    //   "[data-testid='forecast-card-last-thirty-day-total']",
-    // )
-    // this.projectedThirtyDayTotal = Selector(
-    //   "[data-testid='forecast-card-projected-thirty-day-total']",
-    // )
-    // this.forecastEquivalencyCard = Selector(
-    //   "[data-testid='forecast-equivalency-card']",
-    // )
-    // this.treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
-    // this.costSavingsPerMonth = Selector(
-    //   "[data-testid='cost-savings-per-month']",
-    // )
-    this.forecastErrorMessage = Selector(
-      "[data-testid='forecast-error-message']",
+    // forecast card components
+    this.lastThirtyDayTotal = Selector(
+      "[data-testid='forecast-card-last-thirty-day-total']",
+    )
+    this.projectedThirtyDayTotal = Selector(
+      "[data-testid='forecast-card-projected-thirty-day-total']",
+    )
+    this.forecastEquivalencyCard = Selector(
+      "[data-testid='forecast-equivalency-card']",
+    )
+    this.treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
+    this.costSavingsPerMonth = Selector(
+      "[data-testid='cost-savings-per-month']",
+    )
+
+    //units of measure
+    this.unitOfMeasureLastThirtyDayTotal = Selector(
+      "[data-testid='unit-of-measure-last-thirty-day-total']",
+    )
+    this.unitOfMeasureProjectedThirtyDayTotal = Selector(
+      "[data-testid='unit-of-measure-projected-thirty-day-total']",
+    )
+    this.co2eSavingsLastThirtyDayTotal = Selector(
+      "[data-testid='co2e-savings-last-thirty-day-total'",
+    )
+    this.co2eSavingsProjectedThirtyDayTotal = Selector(
+      "[data-testid='co2e-savings-projected-thirty-day-total'",
+    )
+    this.costSavingsLastThirtyDayTotal = Selector(
+      "[data-testid='cost-savings-last-thirty-day-total'",
+    )
+    this.costSavingsProjectedThirtyDayTotal = Selector(
+      "[data-testid='cost-savings-projected-thirty-day-total'",
     )
 
     //table components

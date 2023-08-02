@@ -42,7 +42,7 @@ if (process.env.REACT_APP_TEST_MODE === 'true') {
   baseUrl = 'http://127.0.0.1:3000/api'
   endDate = null
   minDateAge = '0'
-  disableForecastValidation = false
+  disableForecastValidation = true
 }
 
 const appConfig: ClientConfig = {
