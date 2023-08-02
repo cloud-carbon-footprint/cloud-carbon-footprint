@@ -83,7 +83,9 @@ export enum NETWORKING_USAGE_UNITS {
 }
 
 export enum MEMORY_USAGE_UNITS {
+  GB_SECOND_1 = '1 GB Second',
   GB_SECONDS_50000 = '50000 GB Seconds',
+  GB_HOUR_1 = '1 GB Hour',
   GB_HOURS_1000 = '1000 GB Hours',
 }
 

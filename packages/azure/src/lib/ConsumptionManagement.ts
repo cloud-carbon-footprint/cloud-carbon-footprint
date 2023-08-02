@@ -495,7 +495,9 @@ export default class ConsumptionManagementService {
           powerUsageEffectiveness,
           emissionsFactors,
         )
+      case MEMORY_USAGE_UNITS.GB_SECOND_1:
       case MEMORY_USAGE_UNITS.GB_SECONDS_50000:
+      case MEMORY_USAGE_UNITS.GB_HOUR_1:
       case MEMORY_USAGE_UNITS.GB_HOURS_1000:
         return this.getMemoryFootprintEstimate(
           consumptionDetailRow,
@@ -749,8 +751,13 @@ export default class ConsumptionManagementService {
   private getUsageAmountInGigabyteHours(
     consumptionDetailRow: ConsumptionDetailRow,
   ): number {
-    if (consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECONDS_50000)
+    if (
+      consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECONDS_50000 ||
+      consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECOND_1
+    )
       return consumptionDetailRow.usageAmount / 3600
+    if (consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_HOUR_1)
+      return consumptionDetailRow.usageAmount
     return this.getGigabyteHoursFromInstanceTypeAndProcessors(
       consumptionDetailRow.usageType,
       consumptionDetailRow.usageAmount,
