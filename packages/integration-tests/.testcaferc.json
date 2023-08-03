@@ -3,7 +3,7 @@
     { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
   ],
   "browsers": ["chrome:headless"],
-  "concurrency": 3,
+  "concurrency": 2,
   "selectorTimeout": 5000,
   "assertionTimeout": 5000,
   "appCommand": "yarn start",

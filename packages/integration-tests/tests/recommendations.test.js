@@ -51,7 +51,7 @@ test('toggle changes unit of measure', async (t) => {
     .eql('Potential Carbon Savings (t)')
   await t.expect(page.firstSavingsCell.exists).ok()
   //click kilogram toggle
-  await t.click(page.toggle, { isTrusted: true })
+  await t.click(page.toggle)
   // recheck data in - kg instead of metric tons, so 1000
   await t
     .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
