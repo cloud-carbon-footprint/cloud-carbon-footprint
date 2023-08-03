@@ -123,7 +123,7 @@ const concatenateResults = (estimates, newEstimates) => {
     )
 
     if (newDateExists) {
-      const elementIndex = updatedEstimates.find((estimate) =>
+      const elementIndex = updatedEstimates.findIndex((estimate) =>
         moment
           .utc(estimate.timestamp)
           .isSame(moment.utc(newEstimate.timestamp)),

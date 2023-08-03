@@ -293,6 +293,10 @@ describe('FootprintServiceHook', () => {
         loading: false,
         error: null,
       })
+      expect(result.current.data[0].serviceEstimates.length).toEqual(2)
+      expect(result.current.data[0].serviceEstimates[1]).toEqual(
+        mockEstimateTwo.serviceEstimates[0],
+      )
     })
   })
 })
