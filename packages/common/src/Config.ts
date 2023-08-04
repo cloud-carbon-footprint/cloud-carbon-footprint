@@ -158,9 +158,10 @@ const getEnvVar = (envVar: string): string => {
 
 const getConfig = (): CCFConfig => ({
   AWS: {
-    INCLUDE_ESTIMATES:
+    INCLUDE_ESTIMATES: !(
       !!process.env.AWS_INCLUDE_ESTIMATES &&
-      process.env.AWS_INCLUDE_ESTIMATES !== 'false',
+      process.env.AWS_INCLUDE_ESTIMATES === 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
       process.env.AWS_USE_BILLING_DATA !== 'false',
@@ -246,9 +247,10 @@ const getConfig = (): CCFConfig => ({
     USE_CARBON_FREE_ENERGY_PERCENTAGE:
       !!process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE &&
       process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE !== 'false',
-    INCLUDE_ESTIMATES:
+    INCLUDE_ESTIMATES: !(
       !!process.env.GCP_INCLUDE_ESTIMATES &&
-      process.env.GCP_INCLUDE_ESTIMATES !== 'false',
+      process.env.GCP_INCLUDE_ESTIMATES !== 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
@@ -263,9 +265,10 @@ const getConfig = (): CCFConfig => ({
     RESOURCE_TAG_NAMES: JSON.parse(getGCPResourceTagNames()),
   },
   AZURE: {
-    INCLUDE_ESTIMATES:
+    INCLUDE_ESTIMATES: !(
       !!process.env.AZURE_INCLUDE_ESTIMATES &&
-      process.env.AZURE_INCLUDE_ESTIMATES !== 'false',
+      process.env.AZURE_INCLUDE_ESTIMATES !== 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.AZURE_USE_BILLING_DATA &&
       process.env.AZURE_USE_BILLING_DATA !== 'false',
