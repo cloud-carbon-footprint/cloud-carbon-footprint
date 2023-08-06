@@ -562,6 +562,44 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     resourceLocation: 'ukwest',
     resourceGroup: 'test-resource-group',
   },
+  {
+    id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: {},
+
+    date: new Date('2020-11-04'),
+    quantity: 12.0185,
+    cost: 10,
+    meterDetails: {
+      meterName: 'Standard Execution Time',
+      unitOfMeasure: '1 GB Second',
+      meterCategory: 'Functions',
+    },
+    subscriptionName: 'test-subscription',
+    resourceLocation: 'EastUS',
+    resourceGroup: 'test-resource-group',
+  },
+  {
+    id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: {},
+
+    date: new Date('2020-11-04'),
+    quantity: 2546.8697512514464,
+    cost: 7,
+    meterDetails: {
+      meterName: 'Standard Memory Duration',
+      unitOfMeasure: '1 GB Hour',
+      meterCategory: 'Container Instances',
+    },
+    subscriptionName: 'test-subscription',
+    resourceLocation: 'CentralUS',
+    resourceGroup: 'test-resource-group',
+  },
 ]
 
 export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
