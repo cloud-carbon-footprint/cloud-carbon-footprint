@@ -540,6 +540,42 @@ describe('Azure Consumption Management Service', () => {
         periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
         periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
+      {
+        timestamp: new Date('2020-11-04'),
+        serviceEstimates: [
+          {
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            cloudProvider: 'AZURE',
+            co2e: 5.878553215277167e-10,
+            cost: 10,
+            region: 'EastUS',
+            serviceName: 'Functions',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.0000015507871166666667,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
+          },
+          {
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            cloudProvider: 'AZURE',
+            co2e: 0.0005042891453706233,
+            cost: 7,
+            region: 'CentralUS',
+            serviceName: 'Container Instances',
+            usesAverageCPUConstant: false,
+            kilowattHours: 1.1830719368513218,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
+      },
     ]
     expect(result).toEqual(expectedResult)
   })
