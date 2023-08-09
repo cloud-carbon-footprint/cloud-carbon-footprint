@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/cli
 
+## 1.11.1
+
+### Patch Changes
+
+- 056c0c8b: Changes seed-cache-file request splitting frequency to be based on groupBy parameter
+
 ## 1.11.0
 
 ### Minor Changes
