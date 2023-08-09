@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/azure
 
+## 1.4.1
+
+### Patch Changes
+
+- c515ba60: Adds aditional aliases for Azure regions
+
 ## 1.4.0
 
 ### Minor Changes

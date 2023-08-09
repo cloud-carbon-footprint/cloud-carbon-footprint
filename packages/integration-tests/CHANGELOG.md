@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 2.0.0
+
+### Major Changes
+
+- 35b0030e: Migrates to Testcafe version 3, and reduces test concurrency
+
+### Minor Changes
+
+- 8a8482c8: Integration tests now disable forecast validation for testing, along with improved assertions
+
+### Patch Changes
+
+- 6bf5745d: Fixes failing recommendations test
+
 ## 1.1.7
 
 ### Patch Changes

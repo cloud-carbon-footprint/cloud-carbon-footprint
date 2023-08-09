@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/client
 
+## 4.2.0
+
+### Minor Changes
+
+- 6bf5745d: Adds config for disabling forecast date validation
+
+### Patch Changes
+
+- cd3da603: Fix issue with concatentation of data from multiple footprint requests
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/1194/commits/65f76245d4947cd0bb1b7e4a5b761868dd9c6da0).
+
 ## 4.1.3
 
 ### Patch Changes
