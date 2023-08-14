@@ -22,10 +22,7 @@ describe('Config', () => {
   }
 
   it('get environment variable from `process.env`', () => {
-    const fsSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {
-      throw new Error()
-    })
-
+    const fsSpy = jest.spyOn(fs, 'readFileSync')
     const billingId = 'ezb1'
 
     withEnvironment('AWS_BILLING_ACCOUNT_ID', billingId, () => {
@@ -98,6 +95,25 @@ describe('Config', () => {
         const config = getConfig()
         expect(config.AZURE.SUBSCRIPTIONS).toEqual(['sub-1', 'sub-2'])
       })
+    })
+  })
+
+  describe('INCLUDE_ESTIMATES', () => {
+    const cloudProviders = ['AWS', 'GCP', 'AZURE', 'ALI'] as const
+    cloudProviders.forEach((provider) => {
+      it.each([
+        [true, 'true'],
+        [false, 'false'],
+        [true, ''],
+      ])(
+        `sets ${provider}_INCLUDE_ESTIMATES to %s for INCLUDE_ESTIMATES=%s`,
+        (expected: boolean, value: any) => {
+          withEnvironment(`${provider}_INCLUDE_ESTIMATES`, value, () => {
+            const config = getConfig()
+            expect(config[provider].INCLUDE_ESTIMATES).toBe(expected)
+          })
+        },
+      )
     })
   })
 })
