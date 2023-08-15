@@ -754,7 +754,9 @@ export const buildTagQuery = (columnName: string, keys: string[]): string[] => {
     propertyJoins = `\nLEFT JOIN\n UNNEST(${
       columnName === 'projectLabels' ? 'project.label' : columnName
     }) AS ${columnName}\n`
-    const keyJoins = keys.map((tag) => `tags.key = "${tag}"`).join(' OR ')
+    const keyJoins = keys
+      .map((tag) => `${columnName}.key = "${tag}"`)
+      .join(' OR ')
     propertyJoins += `ON ${keyJoins}`
   }
   return [propertySelections, propertyJoins]
