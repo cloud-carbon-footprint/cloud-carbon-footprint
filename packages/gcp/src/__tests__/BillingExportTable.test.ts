@@ -1658,4 +1658,18 @@ LEFT JOIN
  UNNEST(tags) AS tags
 ON tags.key = "environment"`)
   })
+
+  it('returns query parts for multiple tags', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('tags', [
+      'environment',
+      'project',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(tags.key, ": ", tags.value), ", ") AS tags',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(tags) AS tags
+ON tags.key = "environment" OR tags.key = "project"`)
+  })
 })
