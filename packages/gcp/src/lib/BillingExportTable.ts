@@ -613,7 +613,7 @@ export default class BillingExportTable {
     )
     const endDate = new Date(moment.utc(end).endOf('day') as unknown as Date)
 
-    const [tags, labels, projectLabels] = this.tagNamesToQueryColumns(tagNames)
+    const [tags, projectLabels, labels] = this.tagNamesToQueryColumns(tagNames)
 
     const [tagPropertySelections, tagPropertyJoins] = buildTagQuery(
       'tags',
