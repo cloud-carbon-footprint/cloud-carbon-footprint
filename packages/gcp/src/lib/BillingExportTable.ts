@@ -615,16 +615,16 @@ export default class BillingExportTable {
 
     const [tags, labels, projectLabels] = this.tagNamesToQueryColumns(tagNames)
 
-    const [tagPropertySelections, tagPropertyJoins] = this.buildTagQuery(
+    const [tagPropertySelections, tagPropertyJoins] = buildTagQuery(
       'tags',
       tags,
     )
-    const [labelPropertySelections, labelPropertyJoins] = this.buildTagQuery(
+    const [labelPropertySelections, labelPropertyJoins] = buildTagQuery(
       'labels',
       labels,
     )
     const [projectLabelPropertySelections, projectLabelPropertyJoins] =
-      this.buildTagQuery('projectLabels', projectLabels)
+      buildTagQuery('projectLabels', projectLabels)
 
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
@@ -742,19 +742,19 @@ export default class BillingExportTable {
 
     return parsedTags
   }
+}
 
-  private buildTagQuery(columnName: string, keys: string[]): string[] {
-    let propertySelections = '',
-      propertyJoins = ''
+export const buildTagQuery = (columnName: string, keys: string[]): string[] => {
+  let propertySelections = '',
+    propertyJoins = ''
 
-    if (keys.length > 0) {
-      propertySelections = `, STRING_AGG(DISTINCT CONCAT(${columnName}.key, ": ", ${columnName}.value), ", ") AS ${columnName}`
+  if (keys.length > 0) {
+    propertySelections = `, STRING_AGG(DISTINCT CONCAT(${columnName}.key, ": ", ${columnName}.value), ", ") AS ${columnName}`
 
-      propertyJoins = `\nLEFT JOIN\n UNNEST(${
-        columnName === 'projectLabels' ? 'project.label' : columnName
-      }) AS ${columnName}\n`
-      propertyJoins += keys.map((tag) => `ON tags.key = "${tag}"`).join(' OR ')
-    }
-    return [propertySelections, propertyJoins]
+    propertyJoins = `\nLEFT JOIN\n UNNEST(${
+      columnName === 'projectLabels' ? 'project.label' : columnName
+    }) AS ${columnName}\n`
+    propertyJoins += keys.map((tag) => `ON tags.key = "${tag}"`).join(' OR ')
   }
+  return [propertySelections, propertyJoins]
 }
