@@ -752,7 +752,7 @@ export const buildTagQuery = (columnName: string, keys: string[]): string[] => {
     propertySelections = `, STRING_AGG(DISTINCT CONCAT(${columnName}.key, ": ", ${columnName}.value), ", ") AS ${columnName}`
 
     propertyJoins = `\nLEFT JOIN\n UNNEST(${
-      columnName === 'projectLabels' ? 'project.label' : columnName
+      columnName === 'projectLabels' ? 'project.labels' : columnName
     }) AS ${columnName}\n`
     const keyJoins = keys
       .map((tag) => `${columnName}.key = "${tag}"`)
