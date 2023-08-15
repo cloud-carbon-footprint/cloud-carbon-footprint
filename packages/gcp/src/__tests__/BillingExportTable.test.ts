@@ -20,7 +20,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 
 import { GCP_CLOUD_CONSTANTS } from '../domain'
-import BillingExportTable from '../lib/BillingExportTable'
+import BillingExportTable, { buildTagQuery } from '../lib/BillingExportTable'
 import {
   mockQueryAppEngineComputeUnknownRegion,
   mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
@@ -1642,5 +1642,20 @@ describe('GCP BillingExportTable Service', () => {
     ).rejects.toThrow(
       `BigQuery create Query Job failed. Reason: ${mockErrorDetails.reason}, Location: ${mockErrorDetails.location}, Message: ${mockErrorDetails.message}`,
     )
+  })
+})
+
+describe('Creating Tag queries', () => {
+  it('returns query parts for a single tag', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('tags', [
+      'environment',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(tags.key, ": ", tags.value), ", ") AS tags',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(tags) AS tags
+ON tags.key = "environment"`)
   })
 })
