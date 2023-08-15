@@ -1685,4 +1685,17 @@ LEFT JOIN
  UNNEST(labels) AS labels
 ON labels.key = "environment"`)
   })
+
+  it('returns query parts for project labels', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('projectLabels', [
+      'environment',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(projectLabels.key, ": ", projectLabels.value), ", ") AS projectLabels',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(project.labels) AS projectLabels
+ON projectLabels.key = "environment"`)
+  })
 })
