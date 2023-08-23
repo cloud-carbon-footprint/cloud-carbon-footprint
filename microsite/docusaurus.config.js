@@ -45,6 +45,11 @@ module.exports = {
           className: 'navbar__link',
         },
         {
+          to: 'blog',
+          label: 'Blog',
+          position: 'left',
+        },
+        {
           to: 'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
           label: 'Github',
           position: 'left',
@@ -81,12 +86,11 @@ module.exports = {
         docs: {
           sidebarCollapsible: true,
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        // },
+        blog: {
+          showReadingTime: true,
+          editUrl:
+            'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
+        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
