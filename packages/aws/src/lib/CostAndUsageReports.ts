@@ -156,58 +156,67 @@ export default class CostAndUsageReports {
   getEstimatesFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
-    const result: LookupTableOutput[] = []
-    const unknownRows: CostAndUsageReportsRow[] = []
+    const result: LookupTableOutput[] = [];
+    const unknownRows: CostAndUsageReportsRow[] = [];
 
     inputData.map((inputDataRow: LookupTableInput) => {
-      const costAndUsageReportRow = new CostAndUsageReportsRow(
-        null,
-        '',
-        '',
-        inputDataRow.region,
-        inputDataRow.serviceName,
-        inputDataRow.usageType,
-        inputDataRow.usageUnit,
-        inputDataRow.vCpus != '' ? parseFloat(inputDataRow.vCpus) : null,
-        1,
-        1,
-        {},
-      )
+      try {
+          const costAndUsageReportRow = new CostAndUsageReportsRow(
+            null,
+            '',
+            '',
+            inputDataRow.region,
+            inputDataRow.serviceName,
+            inputDataRow.usageType,
+            inputDataRow.usageUnit,
+            inputDataRow.vCpus != '' ? parseFloat(inputDataRow.vCpus) : null,
+            1,
+            1,
+            {},
+          );
 
-      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
-        costAndUsageReportRow,
-        unknownRows,
-      )
+          const footprintEstimate = this.getFootprintEstimateFromUsageRow(
+            costAndUsageReportRow,
+            unknownRows,
+          );
 
-      if (footprintEstimate) {
-        result.push({
-          serviceName: inputDataRow.serviceName,
-          region: inputDataRow.region,
-          usageType: inputDataRow.usageType,
-          vCpus: inputDataRow.vCpus,
-          kilowattHours: footprintEstimate.kilowattHours,
-          co2e: footprintEstimate.co2e,
-        })
+          if (footprintEstimate) {
+            result.push({
+              serviceName: inputDataRow.serviceName,
+              region: inputDataRow.region,
+              usageType: inputDataRow.usageType,
+              vCpus: inputDataRow.vCpus,
+              kilowattHours: footprintEstimate.kilowattHours,
+              co2e: footprintEstimate.co2e,
+            });
+          }
+      } catch (error) {
+          console.error(`Error processing inputDataRow: ${JSON.stringify(inputDataRow)}. Error: ${error.message}`);
       }
-    })
+    });
 
     if (result.length > 0) {
       unknownRows.map((inputDataRow: CostAndUsageReportsRow) => {
-        const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow)
-        if (footprintEstimate)
-          result.push({
-            serviceName: inputDataRow.serviceName,
-            region: inputDataRow.region,
-            usageType: inputDataRow.usageType,
-            vCpus: inputDataRow.vCpus,
-            kilowattHours: footprintEstimate.kilowattHours,
-            co2e: footprintEstimate.co2e,
-          })
-      })
+        try {
+            const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow);
+            if (footprintEstimate)
+              result.push({
+                serviceName: inputDataRow.serviceName,
+                region: inputDataRow.region,
+                usageType: inputDataRow.usageType,
+                vCpus: inputDataRow.vCpus,
+                kilowattHours: footprintEstimate.kilowattHours,
+                co2e: footprintEstimate.co2e,
+              });
+        } catch (error) {
+            console.error(`Error processing unknownRow: ${JSON.stringify(inputDataRow)}. Error: ${error.message}`);
+        }
+      });
     }
 
-    return result
-  }
+    return result;
+}
+
 
   private getFootprintEstimateFromUsageRow(
     costAndUsageReportRow: CostAndUsageReportsRow,
