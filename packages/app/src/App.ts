@@ -25,11 +25,13 @@ import {
   AWSAccount,
 } from '@cloud-carbon-footprint/aws'
 import { GCPAccount, getGCPEmissionsFactors } from '@cloud-carbon-footprint/gcp'
+import { AliAccount } from '@cloud-carbon-footprint/ali'
 import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
 import { includeCloudProviders } from './common/helpers'
+import { ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/ali'
 
 export const recommendationsMockPath = 'recommendations.mock.json'
 
@@ -43,7 +45,7 @@ export default class App {
     const grouping = request.groupBy as GroupBy
     const config = configLoader()
     includeCloudProviders(cloudProviderToSeed, config)
-    const { AWS, GCP, AZURE } = config
+    const { AWS, GCP, AZURE, ALI } = config
     if (process.env.TEST_MODE) {
       return []
     }
@@ -114,11 +116,25 @@ export default class App {
       appLogger.info('Finished Azure Estimations')
     }
 
+    const AliEstimates: EstimationResult[][] = []
+    if (ALI.INCLUDE_ESTIMATES && ALI.authentication?.accessKeyId) {
+      appLogger.info('Starting Ali Cloud Estimations')
+      const aliAccount = new AliAccount()
+      const estimates = await aliAccount.getDataFromCostAndUsageReports(
+        startDate,
+        endDate,
+        grouping,
+      )
+      AliEstimates.push(estimates)
+      appLogger.info('Finished Ali Cloud Estimations')
+    }
+
     return reduceByTimestamp(
       AWSEstimatesByRegion.flat()
         .flat()
         .concat(GCPEstimatesByRegion.flat())
-        .concat(AzureEstimatesByRegion.flat()),
+        .concat(AzureEstimatesByRegion.flat())
+        .concat(AliEstimates.flat()),
     )
   }
 
@@ -127,6 +143,7 @@ export default class App {
       AWS: AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       GCP: getGCPEmissionsFactors(),
       AZURE: AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      ALI: ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
     }
 
     return Object.entries(

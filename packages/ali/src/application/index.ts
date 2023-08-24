@@ -1,4 +1,4 @@
 /*
  * © 2023 Thoughtworks, Inc.
  */
-export { default as ALIAccount } from './AliAccount'
+export { default as AliAccount } from './AliAccount'

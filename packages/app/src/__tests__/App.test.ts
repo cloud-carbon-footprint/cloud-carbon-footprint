@@ -22,6 +22,7 @@ import {
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
 import { GCPAccount } from '@cloud-carbon-footprint/gcp'
 import { AzureAccount } from '@cloud-carbon-footprint/azure'
+import { AliAccount } from '@cloud-carbon-footprint/ali'
 import App from '../App'
 import { EstimationRequest, RecommendationRequest } from '../CreateValidRequest'
 import cache from '../Cache'
@@ -43,9 +44,9 @@ const initializeAzureAccount = jest.spyOn(
   AzureAccount.prototype,
   'initializeAccount',
 )
-const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
-const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
+const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
+const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 const defaultAWSConfigLoader = {
   INCLUDE_ESTIMATES: true,
   accounts: [{ id: '12345678', name: 'test AWS account' }],
@@ -74,6 +75,14 @@ const defaultGCPConfigLoader = {
   CACHE_BUCKET_NAME: 'test-bucket-name',
 }
 
+const defaultAliConfigLoader = {
+  NAME: 'AliCloud',
+  authentication: {
+    accessKeyId: 'test-access-key-id',
+    accessKeySecret: 'test-access-key-secret',
+  },
+}
+
 jest.mock('../Cache')
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
@@ -90,6 +99,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     return {
       AWS: defaultAWSConfigLoader,
       GCP: defaultGCPConfigLoader,
+      ALI: defaultAliConfigLoader,
     }
   }),
 }))
@@ -127,6 +137,17 @@ jest.mock('@cloud-carbon-footprint/azure', () => ({
   },
 }))
 
+jest.mock('@cloud-carbon-footprint/ali', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/ali') as Record<
+    string,
+    unknown
+  >),
+  ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
+    aliRegion1: 4,
+    aliRegion2: 2,
+  },
+}))
+
 const testRegions = ['us-east-1', 'us-east-2']
 
 describe('App', () => {
@@ -147,6 +168,8 @@ describe('App', () => {
   const testGcpAccountIdTwo = '11223344'
   const testGcpAccountNameOne = 'test GCP account'
   const testGcpAccountNameTwo = 'test GCP account 2'
+  const testAliAccountId = 'test-account-id'
+  const testAliAccountName = 'test-account-name'
 
   beforeEach(() => {
     app = new App()
@@ -157,6 +180,7 @@ describe('App', () => {
       ...configLoader(),
       AWS: defaultAWSConfigLoader,
       GCP: defaultGCPConfigLoader,
+      ALI: defaultAliConfigLoader,
     })
   })
 
@@ -193,6 +217,16 @@ describe('App', () => {
         region: 'azureRegion2',
         mtPerKwHour: 6,
       },
+      {
+        cloudProvider: 'ALI',
+        region: 'aliRegion1',
+        mtPerKwHour: 4,
+      },
+      {
+        cloudProvider: 'ALI',
+        region: 'aliRegion2',
+        mtPerKwHour: 2,
+      },
     ]
     // when
     const response = app.getEmissionsFactors()
@@ -206,7 +240,7 @@ describe('App', () => {
       const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
         jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetEstimates],
         ['serviceOne'],
         [jest.fn().mockResolvedValue([])],
@@ -300,7 +334,7 @@ describe('App', () => {
       const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
 
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetEstimates, mockGetEstimates2],
         ['serviceOne', 'serviceTwo'],
         [mockGetCostPerService1, mockGetCostPerService2],
@@ -430,7 +464,7 @@ describe('App', () => {
       const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
         jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetAWSEstimates],
         ['serviceOne'],
         [jest.fn().mockResolvedValue([])],
@@ -658,6 +692,10 @@ describe('App', () => {
           INCLUDE_ESTIMATES: false,
           CURRENT_REGIONS: ['us-east1'],
         },
+        ALI: {
+          ...defaultAliConfigLoader,
+          INCLUDE_ESTIMATES: false,
+        },
       })
     })
 
@@ -667,7 +705,7 @@ describe('App', () => {
       > = jest.fn()
       const mockGetCostPerService: jest.Mock<Promise<Cost[]>> = jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetCostAndEstimatesPerService],
         ['ebs'],
         [mockGetCostPerService],
@@ -734,7 +772,7 @@ describe('App', () => {
       const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
       const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetEstimates1, mockGetEstimates2],
         ['serviceOne', 'serviceTwo'],
         [mockGetCostPerService1, mockGetCostPerService2],
@@ -819,7 +857,7 @@ describe('App', () => {
       const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
         jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetEstimates],
         ['serviceOne'],
         [jest.fn().mockResolvedValue([])],
@@ -875,7 +913,7 @@ describe('App', () => {
         Promise<FootprintEstimate[]>
       > = jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetCostAndEstimatesPerService],
         ['ebs'],
         [jest.fn().mockResolvedValue([])],
@@ -891,7 +929,7 @@ describe('App', () => {
         Promise<FootprintEstimate[]>
       > = jest.fn()
       setUpServices(
-        getServices as jest.Mock,
+        getAWSServices as jest.Mock,
         [mockGetCostAndEstimatesPerService],
         ['ebs'],
         [jest.fn().mockResolvedValue([])],
@@ -942,6 +980,70 @@ describe('App', () => {
       )
 
       expect(estimationResult).toEqual(expectedEstimationResults)
+    })
+
+    // TODO: Refactor tests to be separated by cloud providers + usage approaches
+    describe('AliCloud', () => {
+      it('gets cost and estimates using billing data', async () => {
+        ;(configLoader as jest.Mock).mockReturnValue({
+          ...configLoader(),
+          AWS: {
+            INCLUDE_ESTIMATES: false,
+          },
+          GCP: {
+            INCLUDE_ESTIMATES: false,
+          },
+          ALI: {
+            ...defaultAliConfigLoader,
+            INCLUDE_ESTIMATES: true,
+          },
+        })
+
+        const mockEstimationResults: EstimationResult[] = [
+          {
+            timestamp: new Date(startDate),
+            serviceEstimates: [
+              {
+                accountId: testAliAccountId,
+                accountName: testAliAccountName,
+                cloudProvider: 'AliCloud',
+                co2e: 0,
+                cost: 0,
+                region: 'CN_HANGZHOU',
+                serviceName: 'ECS',
+                usesAverageCPUConstant: false,
+                kilowattHours: 0,
+              },
+            ],
+            groupBy: grouping,
+            periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+            periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
+          },
+        ]
+
+        const mockGetDataFromCostAndUsageReports = jest
+          .spyOn(AliAccount.prototype, 'getDataFromCostAndUsageReports')
+          .mockResolvedValue(mockEstimationResults)
+
+        const start = moment(startDate).toDate()
+        const end = moment(startDate).add(1, 'day').toDate()
+        const request: EstimationRequest = {
+          startDate: start,
+          endDate: end,
+          ignoreCache: false,
+          groupBy: grouping,
+        }
+
+        const result = await app.getCostAndEstimates(request)
+
+        expect(mockGetDataFromCostAndUsageReports).toHaveBeenCalledWith(
+          request.startDate,
+          request.endDate,
+          request.groupBy,
+        )
+
+        expect(result).toEqual(mockEstimationResults)
+      })
     })
   })
 
