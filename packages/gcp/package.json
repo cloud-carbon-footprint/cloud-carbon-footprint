@@ -66,7 +66,7 @@
     "jest-when": "^3.5.0",
     "lint-staged": "^12.1.7",
     "onchange": "^7.1.0",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.2",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
     "ts-jest": "^27.1.2",

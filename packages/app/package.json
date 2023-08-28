@@ -62,7 +62,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^27.4.7",
     "lint-staged": "^12.1.7",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",

@@ -115,7 +115,7 @@
     "json-server": "^0.17.0",
     "lint-staged": "^12.1.7",
     "mockdate": "^3.0.5",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.2",
     "rimraf": "^3.0.2"
   },
   "lint-staged": {
