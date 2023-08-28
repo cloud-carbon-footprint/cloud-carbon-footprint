@@ -40,6 +40,7 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
+    "@cloud-carbon-footprint/ali": "^0.1.1",
     "@cloud-carbon-footprint/aws": "^0.14.4",
     "@cloud-carbon-footprint/azure": "^1.4.0",
     "@cloud-carbon-footprint/common": "^1.12.0",

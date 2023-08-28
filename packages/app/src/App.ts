@@ -25,13 +25,15 @@ import {
   AWSAccount,
 } from '@cloud-carbon-footprint/aws'
 import { GCPAccount, getGCPEmissionsFactors } from '@cloud-carbon-footprint/gcp'
-import { AliAccount } from '@cloud-carbon-footprint/ali'
+import {
+  ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  AliAccount,
+} from '@cloud-carbon-footprint/ali'
 import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
 import { includeCloudProviders } from './common/helpers'
-import { ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/ali'
 
 export const recommendationsMockPath = 'recommendations.mock.json'
 
