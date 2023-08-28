@@ -7,4 +7,5 @@
     "skipLibCheck": true,
   },
   "include": ["./src"],
+  "noImplicitAny": false, // <-- Added because AliCloud SDK does not support implicit any. TODO: Find a workaround for this
 }
