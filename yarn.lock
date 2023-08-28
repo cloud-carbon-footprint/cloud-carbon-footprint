@@ -12,6 +12,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adobe/css-tools@npm:^4.3.0-rc.1":
+  version: 4.3.1
+  resolution: "@adobe/css-tools@npm:4.3.1"
+  checksum: ad43456379ff391132aff687ece190cb23ea69395e23c9b96690eeabe2468da89a4aaf266e4f8b6eaab53db3d1064107ce0f63c3a974e864f4a04affc768da3f
+  languageName: node
+  linkType: hard
+
 "@alicloud/bssopenapi20171214@npm:^1.0.14":
   version: 1.0.14
   resolution: "@alicloud/bssopenapi20171214@npm:1.0.14"
@@ -2781,7 +2788,7 @@ __metadata:
     eslint-plugin-testcafe: ^0.2.1
     lint-staged: ^12.1.7
     prettier: ^2.5.1
-    testcafe: ^3.1.0
+    testcafe: ^3.2.0
     wait-on: ^6.0.0
   languageName: unknown
   linkType: soft
@@ -3003,12 +3010,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devexpress/error-stack-parser@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "@devexpress/error-stack-parser@npm:2.0.6"
+"@devexpress/callsite-record@npm:^4.1.6":
+  version: 4.1.7
+  resolution: "@devexpress/callsite-record@npm:4.1.7"
   dependencies:
-    stackframe: ^1.1.1
-  checksum: c1e51823aacc1eaa5a4a8bbab3cf9bc510cc4d35763f52eae61b46e8ed651aae2da88e6629bb9f1797560ec2cd4016f5343df7e771f879722fad095ed377ccbe
+    "@types/lodash": ^4.14.72
+    callsite: ^1.0.0
+    chalk: ^2.4.0
+    error-stack-parser: ^2.1.4
+    highlight-es: ^1.0.0
+    lodash: 4.6.1 || ^4.16.1
+    pinkie-promise: ^2.0.0
+  checksum: 91c7b0f0786891852aa2cc8b38433a57a1c33a594fd2b43b0deead2ca090d70decf1de8f4ce9ee5923a839982240bacbc48792673f454752ade305272404f008
   languageName: node
   linkType: hard
 
@@ -5958,15 +5971,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/error-stack-parser@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@types/error-stack-parser@npm:2.0.0"
-  dependencies:
-    error-stack-parser: "*"
-  checksum: 108188a619437b481dd67225bd6d420dd3bd6b38ff96c96ce0ce542497cbc7cab68fe773c2ecaaa282bb007f3c978b659104a0c97482a3488d3dd58bb1ca0331
-  languageName: node
-  linkType: hard
-
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.4
   resolution: "@types/eslint-scope@npm:3.7.4"
@@ -8555,22 +8559,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"callsite-record@npm:^4.0.0":
-  version: 4.1.4
-  resolution: "callsite-record@npm:4.1.4"
-  dependencies:
-    "@devexpress/error-stack-parser": ^2.0.6
-    "@types/error-stack-parser": ^2.0.0
-    "@types/lodash": ^4.14.72
-    callsite: ^1.0.0
-    chalk: ^2.4.0
-    highlight-es: ^1.0.0
-    lodash: 4.6.1 || ^4.16.1
-    pinkie-promise: ^2.0.0
-  checksum: f38b3cec28485d6fabfb08a2af6d9b9a085f3a59a6ed4b39532a7c8786abb447952f910d5a2eeac8346e8ea12e085c80959417fcaf9e244570261370f42923a6
-  languageName: node
-  linkType: hard
-
 "callsite@npm:^1.0.0":
   version: 1.0.0
   resolution: "callsite@npm:1.0.0"
@@ -10973,6 +10961,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"entities@npm:^4.4.0":
+  version: 4.5.0
+  resolution: "entities@npm:4.5.0"
+  checksum: 853f8ebd5b425d350bffa97dd6958143179a5938352ccae092c62d1267c4e392a039be1bae7d51b6e4ffad25f51f9617531fedf5237f15df302ccfb452cbf2d7
+  languageName: node
+  linkType: hard
+
 "entities@npm:~2.1.0":
   version: 2.1.0
   resolution: "entities@npm:2.1.0"
@@ -11022,21 +11017,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"error-stack-parser@npm:*, error-stack-parser@npm:^2.0.6":
+"error-stack-parser@npm:^2.0.6, error-stack-parser@npm:^2.1.4":
   version: 2.1.4
   resolution: "error-stack-parser@npm:2.1.4"
   dependencies:
     stackframe: ^1.3.4
   checksum: 3b916d2d14c6682f287c8bfa28e14672f47eafe832701080e420e7cdbaebb2c50293868256a95706ac2330fe078cf5664713158b49bc30d7a5f2ac229ded0e18
-  languageName: node
-  linkType: hard
-
-"error-stack-parser@npm:^1.3.6":
-  version: 1.3.6
-  resolution: "error-stack-parser@npm:1.3.6"
-  dependencies:
-    stackframe: ^0.3.1
-  checksum: 0bfbb5e234a8b23091c34f796697f4e7b4f805ca90bdc8b57d144f79051b834c8590917f5167a8f49c0f90206c8fb986bf5b28fe3ea8efa201f09caf3f0a7af2
   languageName: node
   linkType: hard
 
@@ -17963,6 +17949,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse5@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "parse5@npm:7.1.2"
+  dependencies:
+    entities: ^4.4.0
+  checksum: 59465dd05eb4c5ec87b76173d1c596e152a10e290b7abcda1aecf0f33be49646ea74840c69af975d7887543ea45564801736356c568d6b5e71792fd0f4055713
+  languageName: node
+  linkType: hard
+
 "parseurl@npm:~1.3.2, parseurl@npm:~1.3.3":
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
@@ -21663,14 +21658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stackframe@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "stackframe@npm:0.3.1"
-  checksum: 510123ec2d9a02dba8153091f0b0c760141ae4ec4be9512e74b83333e39a762380f13d9afcb469fd9ce978bc07fb5181d6f28970a18ae4070bf21d1e4caa4698
-  languageName: node
-  linkType: hard
-
-"stackframe@npm:^1.1.1, stackframe@npm:^1.3.4":
+"stackframe@npm:^1.3.4":
   version: 1.3.4
   resolution: "stackframe@npm:1.3.4"
   checksum: bae1596873595c4610993fa84f86a3387d67586401c1816ea048c0196800c0646c4d2da98c2ee80557fd9eff05877efe33b91ba6cd052658ed96ddc85d19067d
@@ -22518,15 +22506,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcafe-hammerhead@npm:31.4.11":
-  version: 31.4.11
-  resolution: "testcafe-hammerhead@npm:31.4.11"
+"testcafe-hammerhead@npm:31.4.15":
+  version: 31.4.15
+  resolution: "testcafe-hammerhead@npm:31.4.15"
   dependencies:
+    "@adobe/css-tools": ^4.3.0-rc.1
     "@electron/asar": ^3.2.3
     acorn-hammerhead: 0.6.2
     bowser: 1.6.0
     crypto-md5: ^1.0.0
-    css: 2.2.3
     debug: 4.3.1
     esotope-hammerhead: 0.6.4
     http-cache-semantics: ^4.1.0
@@ -22540,14 +22528,14 @@ __metadata:
     mustache: ^2.1.1
     nanoid: ^3.1.12
     os-family: ^1.0.0
-    parse5: 2.2.3
+    parse5: ^7.1.2
     pinkie: 2.0.4
     read-file-relative: ^1.2.0
     semver: 7.5.3
     tough-cookie: 4.1.3
     tunnel-agent: 0.6.0
     ws: ^7.4.6
-  checksum: b1085d24ba09fbf412b11d8b4d6113b84d0270bf9d0817a881cde83d91bf41709002914757c88c874f11664de78f0dcf083bed3042f299312e25ce1bbc0fc6ec
+  checksum: 182470a3c709c32747996008e2fa0857a6658f3a59ec6018bd10172fd6c9d442d0300fe3019156b6bc57f605e75f567ee5b690fbde4a513245697c09826c21a0
   languageName: node
   linkType: hard
 
@@ -22654,9 +22642,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcafe@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "testcafe@npm:3.1.0"
+"testcafe@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "testcafe@npm:3.2.0"
   dependencies:
     "@babel/core": ^7.12.1
     "@babel/plugin-proposal-async-generator-functions": ^7.12.1
@@ -22675,13 +22663,13 @@ __metadata:
     "@babel/preset-react": ^7.12.1
     "@babel/runtime": ^7.12.5
     "@devexpress/bin-v8-flags-filter": ^1.3.0
+    "@devexpress/callsite-record": ^4.1.6
     "@types/node": ^12.20.10
     async-exit-hook: ^1.1.2
     babel-plugin-module-resolver: ^5.0.0
     babel-plugin-syntax-trailing-function-commas: ^6.22.0
     bowser: ^2.8.1
     callsite: ^1.0.0
-    callsite-record: ^4.0.0
     chai: 4.3.4
     chalk: ^2.3.0
     chrome-remote-interface: ^0.32.2
@@ -22696,7 +22684,7 @@ __metadata:
     email-validator: ^2.0.4
     emittery: ^0.4.1
     endpoint-utils: ^1.0.2
-    error-stack-parser: ^1.3.6
+    error-stack-parser: ^2.1.4
     execa: ^4.0.3
     get-os-info: ^1.0.2
     globby: ^11.0.4
@@ -22739,7 +22727,7 @@ __metadata:
     source-map-support: ^0.5.16
     strip-bom: ^2.0.0
     testcafe-browser-tools: 2.0.26
-    testcafe-hammerhead: 31.4.11
+    testcafe-hammerhead: 31.4.15
     testcafe-legacy-api: 5.1.6
     testcafe-reporter-json: ^2.1.0
     testcafe-reporter-list: ^2.2.0
@@ -22756,7 +22744,7 @@ __metadata:
     url-to-options: ^2.0.0
   bin:
     testcafe: bin/testcafe-with-v8-flag-filter.js
-  checksum: 668b368f0c1b17cceb0db85a84217c5d681014fa05ffdf167a40fed5fe34c70d3aac91659bee28f7360d7a1c24082b3ca4872e7742c7ef29610cb688c71fc3e0
+  checksum: 9b6ad78f3f93c7660d5bb1cecb341b18cf94b00c755fb0710b937e8b92d3a320440083d68f440e065d974fbb91f1be25ef41666d69acc2058e854db88100e63c
   languageName: node
   linkType: hard
 
