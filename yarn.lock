@@ -2355,7 +2355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloud-carbon-footprint/ali@workspace:packages/ali":
+"@cloud-carbon-footprint/ali@^0.1.1, @cloud-carbon-footprint/ali@workspace:packages/ali":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/ali@workspace:packages/ali"
   dependencies:
@@ -2436,6 +2436,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
   dependencies:
+    "@cloud-carbon-footprint/ali": ^0.1.1
     "@cloud-carbon-footprint/aws": ^0.14.4
     "@cloud-carbon-footprint/azure": ^1.4.0
     "@cloud-carbon-footprint/common": ^1.12.0
