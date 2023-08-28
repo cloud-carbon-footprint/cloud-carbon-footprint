@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
@@ -18,5 +17,5 @@
     "declaration": true,
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
+  "exclude": ["./node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
 }

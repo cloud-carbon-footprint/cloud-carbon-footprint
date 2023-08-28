@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "skipLibCheck": true,
-    "noImplicitAny": false, // <-- Added because AliCloud SDK does not support implicit any. TODO: Find a workaround for this
   },
-  "include": ["./src"]
+  "include": ["./src"],
 }
