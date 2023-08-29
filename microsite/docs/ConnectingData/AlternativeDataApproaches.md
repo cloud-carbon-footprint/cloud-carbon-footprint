@@ -2,7 +2,7 @@
 id: alternative-data-approaches
 title: Alternative Data Approaches
 slug: /alternative-data-approaches
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 ## Cloud Provider Usage and Cost Data
