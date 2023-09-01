@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/cli
 
+## 1.11.2
+
+### Patch Changes
+
+- Updated dependencies [bc06b861]
+- Updated dependencies [7630768d]
+- Updated dependencies [dd98c8cb]
+  - @cloud-carbon-footprint/common@1.12.1
+  - @cloud-carbon-footprint/app@1.4.0
+
 ## 1.11.1
 
 ### Patch Changes

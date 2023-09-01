@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.13.2
+
+### Patch Changes
+
+- 53812d8d: Fix syntax errors in GCP Queries when using tags/labels
+- Updated dependencies [bc06b861]
+- Updated dependencies [7630768d]
+  - @cloud-carbon-footprint/common@1.12.1
+
 ## 0.13.1
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/app
 
+## 1.4.0
+
+### Minor Changes
+
+- dd98c8cb: Enables Ali Cloud ECS estimates in the CCF Application
+
+### Patch Changes
+
+- Updated dependencies [bc06b861]
+- Updated dependencies [7630768d]
+- Updated dependencies [dd98c8cb]
+- Updated dependencies [53812d8d]
+  - @cloud-carbon-footprint/common@1.12.1
+  - @cloud-carbon-footprint/ali@0.1.2
+  - @cloud-carbon-footprint/gcp@0.13.2
+
 ## 1.3.0
 
 ### Minor Changes

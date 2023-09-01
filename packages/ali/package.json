@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/ali",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Alibaba Cloud (Aliyun).",
   "main": "src/index.ts",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@alicloud/bssopenapi20171214": "^1.0.14",
-    "@cloud-carbon-footprint/common": "^1.10.0",
+    "@cloud-carbon-footprint/common": "^1.12.1",
     "@cloud-carbon-footprint/core": "^0.17.3",
     "@google-cloud/iam-credentials": "^1.1.1",
     "csvtojson": "^2.0.10",
