@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[4857],{8494:o=>{o.exports=JSON.parse('{"label":"deployment","permalink":"/blog/tags/deployment","allTagsPath":"/blog/tags","count":1}')}}]);

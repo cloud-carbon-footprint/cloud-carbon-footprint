@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[2535],{5641:n=>{n.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Running and Deploying CCF in a Virtual Machine","permalink":"/blog/ccf-on-vm"}]}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[1713],{3457:o=>{o.exports=JSON.parse('[{"label":"thoughtworks","permalink":"/blog/tags/thoughtworks","count":1},{"label":"deployment","permalink":"/blog/tags/deployment","count":1}]')}}]);
