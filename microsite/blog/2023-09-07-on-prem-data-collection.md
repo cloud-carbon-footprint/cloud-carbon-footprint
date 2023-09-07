@@ -42,7 +42,7 @@ Endpoint data can also come from some unlikely places. If you are finding yourse
 The list goes on and on. There are countless tools currently available for organizations to perform a wide range of tasks related to endpoint management, monitoring, and protection. The wonderful thing about tooling such as this is that they also rely on large amounts of data related to the endpoint. Antivirus tools need to know if the machine has been online and communicating with the management console for updates and status information. Monitoring tools rely solely on doing exactly what their name suggests–monitoring endpoints. CMDB tools are directly responsible for endpoint and inventory management. Many IT departments consider CMDB tooling a source of endpoint and inventory truth. Data here is likely to be very accurate.
 
 <font size="1">
-    *NOTE*: Keep in mind the permissions needed to access these data sources, and ensure you’re following your company's best practices on the retrieval and storage of this data. Where possible, always partner with the data source owner to ensure you’re not only getting the best data, but handling it in a manner that doesn’t expose your company to unnecessary risks or security incidents.
+    NOTE: Keep in mind the permissions needed to access these data sources, and ensure you’re following your company's best practices on the retrieval and storage of this data. Where possible, always partner with the data source owner to ensure you’re not only getting the best data, but handling it in a manner that doesn’t expose your company to unnecessary risks or security incidents.
 </font>
 
 <br/>
@@ -135,7 +135,7 @@ A number of fields in the On-premise Data Model, represent uptime hours of your 
 
 Each uptime counter represents a historical period of time. Daily, weekly, yearly, as well as perhaps 30, 60, 90 day increments. These fields may be present in your data source from day one, but perhaps you may need to create and calculate these.
 
-![Workflow Diagram](../static/img/ccf_on_prem_blog_img_2.png)
+![Uptime Diagram](../static/img/ccf_on_prem_blog_img_2.png)
 
 In the diagram above is an oversimplified view of a data collection event for a single endpoint. Let's say for instance the counter you're incrementing is the **dailyUptime** counter. As data about the endpoint comes in it’s determined that the endpoint has been online in the last 1 hour. To increment the daily counter we first need to check the timestamp of when the counter was last reset. If the counter is less than 24 hours old, then we can increment the counter by 1 hour. If it is older than 24 hours we should reset the counter to 1. Additionally you should also reset the timestamp to a current date and time.
 
@@ -143,11 +143,11 @@ Here is a quick sample of pseudo code to illustrate a couple of these use cases.
 
 **Increment Daily Uptime Counters**
 
-![Workflow Diagram](../static/img/ccf_on_prem_blog_img_5.png)
+![Daily Uptime Code Snippet](../static/img/ccf_on_prem_blog_img_5.png)
 
 **Increment 30 Day Uptime Counters**
 
-![Workflow Diagram](../static/img/ccf_on_prem_blog_img_6.png)
+![Monthly Uptime Code Snippet](../static/img/ccf_on_prem_blog_img_6.png)
 
 This same principle applies to all other values related to uptime. **weeklyUptime**, **monthlyUptime**, and **yearlyUptime** can all be calculated this way. You can also add additional uptime counters as you see fit; however ensure that the required uptime fields from the On-premise Data Model are present.
 
@@ -159,6 +159,6 @@ Collecting on-premise data for activities such as patching, inventory, and lifec
 
 Even though you may not have a fit for purpose tool to collect on-premise data, that doesn’t mean you can’t still get the data you need. This data most likely already exists in many other tools already in use by your organization. The Anti-Virus used in this post is clearly not meant for this task, but with a bit of trial and error, it can do exactly what is needed to gather all of the necessary data. Be creative and keep an open mind. Data exists everywhere.
 
-_<font size ="1">
-This paper represents an exploratory project undertaken by EA employees to explore ways to leverage existing data and automate methods to calculate electricity use and emissions associated with on-premise endpoints. The statements and opinions expressed in this article are those of the author and do not represent how EA calculates emissions and do not constitute or imply an endorsement of a product, process or service.
-</font>_
+<font size ="1">
+    This paper represents an exploratory project undertaken by EA employees to explore ways to leverage existing data and automate methods to calculate electricity use and emissions associated with on-premise endpoints. The statements and opinions expressed in this article are those of the author and do not represent how EA calculates emissions and do not constitute or imply an endorsement of a product, process or service.
+</font>
