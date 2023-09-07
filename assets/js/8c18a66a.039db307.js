@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[8683],{8033:o=>{o.exports=JSON.parse('{"permalink":"/blog/tags/electronicarts","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

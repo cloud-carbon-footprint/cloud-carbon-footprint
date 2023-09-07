@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"CCF Data Collection: On-Premise","permalink":"/blog/on-prem-data-collection"},{"title":"Running and Deploying CCF in a Virtual Machine","permalink":"/blog/ccf-on-vm"}]}')}}]);

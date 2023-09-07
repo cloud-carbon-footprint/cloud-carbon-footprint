@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwww_cloudcarbonfootprint_org=self.webpackChunkwww_cloudcarbonfootprint_org||[]).push([[425],{1189:o=>{o.exports=JSON.parse('{"permalink":"/blog/tags/on-premise","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
