@@ -14,7 +14,7 @@ Embarking on the journey of collecting data for your on-premise resources can at
 
 ### The On-premise data model
 
-The CCF CLI takes in on-premise data using a predefined model. This model dictates the type, content, and format of the data needed in order to facilitate and proper and accurate data import and manipulation. You can view the current custom data mode, as well as methodology write ups in the [On-Premise](https://www.cloudcarbonfootprint.org/docs/on-premise/) parts of the CCF docs . The data model contains a lot of common fields such as CPU cores, memory, and where in the world a particular machine is located. We’ll cover these in more detail as we continue on, however just keep in mind that we need all of this data for each endpoint to provide accurate estimates.
+The CCF CLI takes in on-premise data using a predefined model. This model dictates the type, content, and format of the data needed in order to facilitate and proper and accurate data import and manipulation. You can view the current custom data model, as well as methodology write ups in the [On-Premise](https://www.cloudcarbonfootprint.org/docs/on-premise/) parts of the CCF docs . The data model contains a lot of common fields such as CPU cores, memory, and where in the world a particular machine is located. We’ll cover these in more detail as we continue on, however just keep in mind that we need all of this data for each endpoint to provide accurate estimates.
 
 ### Data Sources
 
