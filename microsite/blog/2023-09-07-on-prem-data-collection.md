@@ -1,11 +1,10 @@
 ---
 slug: on-prem-data-collection
 title: 'CCF Data Collection: On-Premise'
+description: Using enterprise tooling to collect and populate the CCF Data Model
 authors: ksambrook
 tags: [electronicarts, data, on-premise]
 ---
-
-### Using enterprise tooling to collect and populate the CCF Data Model
 
 ## Forward
 
