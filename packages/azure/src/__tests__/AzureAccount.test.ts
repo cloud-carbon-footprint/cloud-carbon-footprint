@@ -371,7 +371,7 @@ describe('Azure Account', () => {
     expect(getRecommendationsSpy).toHaveBeenCalledTimes(2)
   })
 
-  it('should getDataFromConsumptionManagementInputData', () => {
+  it('should getDataFromConsumptionManagementInputData', async () => {
     const inputData: LookupTableInput[] = [
       {
         serviceName: 'Virtual Machines',
@@ -383,8 +383,9 @@ describe('Azure Account', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const AWSAccount = require('../application/AzureAccount').default
-    const result =
-      AWSAccount.getDataFromConsumptionManagementInputData(inputData)
+    const result = await AWSAccount.getDataFromConsumptionManagementInputData(
+      inputData,
+    )
 
     const expectedResult: LookupTableOutput[] = [
       {

@@ -78,7 +78,7 @@ export default async function createLookupTable(
     )
     validateInputData(azureInputData)
     const azureEstimatesData: LookupTableOutput[] =
-      new App().getAzureEstimatesFromInputData(azureInputData)
+      await new App().getAzureEstimatesFromInputData(azureInputData)
     await writeToCsv(azureOutputFile, azureEstimatesData)
   }
 }

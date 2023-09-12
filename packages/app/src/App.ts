@@ -249,10 +249,12 @@ export default class App {
     return await GCPAccount.getBillingExportDataFromInputData(inputData)
   }
 
-  getAzureEstimatesFromInputData(
+  async getAzureEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
-    return AzureAccount.getDataFromConsumptionManagementInputData(inputData)
+  ): Promise<LookupTableOutput[]> {
+    return await AzureAccount.getDataFromConsumptionManagementInputData(
+      inputData,
+    )
   }
 
   getOnPremiseEstimatesFromInputData(

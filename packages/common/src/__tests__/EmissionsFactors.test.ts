@@ -1,3 +1,7 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
 import fetch from 'node-fetch'
 import {
   getElectricityMapsData,
