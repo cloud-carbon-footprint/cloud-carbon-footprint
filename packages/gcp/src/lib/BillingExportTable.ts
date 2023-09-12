@@ -12,6 +12,7 @@ import {
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   EstimationResult,
+  getEmissionsFactors,
   GroupBy,
   Logger,
   LookupTableInput,
@@ -63,6 +64,7 @@ import {
 import BillingExportRow from './BillingExportRow'
 import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
+import { GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from './GCPRegions'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -95,12 +97,24 @@ export default class BillingExportTable {
     const unknownRows: BillingExportRow[] = []
 
     this.billingExportTableLogger.info('Mapping over Usage Rows')
-    usageRows.map((usageRow) => {
+
+    for (const usageRow of usageRows) {
       usageRow.tags = this.rawTagsToTagCollection(usageRow)
       const billingExportRow = new BillingExportRow(usageRow)
+
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          billingExportRow.region,
+          billingExportRow.timestamp.toISOString(),
+          getGCPEmissionsFactors(),
+          GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.billingExportTableLogger,
+        )
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
         unknownRows,
+        emissionsFactors,
       )
       if (footprintEstimate)
         appendOrAccumulateEstimatesByDay(
@@ -110,7 +124,7 @@ export default class BillingExportTable {
           grouping,
           tagNames,
         )
-    })
+    }
 
     if (results.length > 0) {
       unknownRows.map((rowData: BillingExportRow) => {
@@ -128,13 +142,14 @@ export default class BillingExportTable {
     return results
   }
 
-  getEstimatesFromInputData(
+  async getEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
+  ): Promise<LookupTableOutput[]> {
     const results: LookupTableOutput[] = []
     const unknownRows: BillingExportRow[] = []
 
-    inputData.map((inputDataRow: LookupTableInput) => {
+    // inputData.map((inputDataRow: LookupTableInput) => {
+    for (const inputDataRow of inputData) {
       const usageRow = {
         serviceName: inputDataRow.serviceName,
         usageAmount: 3600,
@@ -157,9 +172,20 @@ export default class BillingExportTable {
         billingExportRow.vCpuHours = instancevCpu * billingExportRow.vCpuHours
       }
 
+      const dateTime = new Date().toISOString()
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          billingExportRow.region,
+          dateTime,
+          getGCPEmissionsFactors(),
+          GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.billingExportTableLogger,
+        )
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
         unknownRows,
+        emissionsFactors,
       )
       if (footprintEstimate)
         results.push({
@@ -170,7 +196,7 @@ export default class BillingExportTable {
           kilowattHours: footprintEstimate.kilowattHours,
           co2e: footprintEstimate.co2e,
         })
-    })
+    }
 
     if (results.length > 0) {
       unknownRows.map((billingExportRow: BillingExportRow) => {
@@ -193,6 +219,7 @@ export default class BillingExportTable {
   private getFootprintEstimateFromUsageRow(
     billingExportRow: BillingExportRow,
     unknownRows: BillingExportRow[],
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate | void {
     if (this.isUnsupportedUsage(billingExportRow.usageType)) return
 
@@ -201,15 +228,18 @@ export default class BillingExportTable {
       return
     }
 
-    return this.getEstimateByUsageUnit(billingExportRow, unknownRows)
+    return this.getEstimateByUsageUnit(
+      billingExportRow,
+      unknownRows,
+      emissionsFactors,
+    )
   }
 
   private getEstimateByUsageUnit(
     billingExportRow: BillingExportRow,
     unknownRows: BillingExportRow[],
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate | void {
-    const emissionsFactors: CloudConstantsEmissionsFactors =
-      getGCPEmissionsFactors()
     const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
       billingExportRow.region,
     )

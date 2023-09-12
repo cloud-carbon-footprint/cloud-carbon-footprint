@@ -243,10 +243,10 @@ export default class App {
     return await AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
   }
 
-  getGcpEstimatesFromInputData(
+  async getGcpEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
-    return GCPAccount.getBillingExportDataFromInputData(inputData)
+  ): Promise<LookupTableOutput[]> {
+    return await GCPAccount.getBillingExportDataFromInputData(inputData)
   }
 
   getAzureEstimatesFromInputData(

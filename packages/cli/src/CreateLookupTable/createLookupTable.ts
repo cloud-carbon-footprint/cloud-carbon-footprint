@@ -68,7 +68,7 @@ export default async function createLookupTable(
     const gcpInputData: LookupTableInput[] = await csv().fromFile(gcpInputFile)
     validateInputData(gcpInputData)
     const gcpEstimatesData: LookupTableOutput[] =
-      new App().getGcpEstimatesFromInputData(gcpInputData)
+      await new App().getGcpEstimatesFromInputData(gcpInputData)
     await writeToCsv(gcpOutputFile, gcpEstimatesData)
   }
 
