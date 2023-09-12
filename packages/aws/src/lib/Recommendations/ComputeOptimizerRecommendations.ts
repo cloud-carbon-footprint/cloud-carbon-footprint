@@ -141,11 +141,13 @@ export default class ComputeOptimizerRecommendations
                   const [currentComputeFootprint, currentMemoryFootprint] =
                     await this.getComputeAndMemoryFootprintEstimates(
                       currentComputeOptimizerRecommendation,
+                      this.recommendationsLogger,
                     )
 
                   const [targetComputeFootprint, targetMemoryFootprint] =
                     await this.getComputeAndMemoryFootprintEstimates(
                       targetComputeOptimizerRecommendation,
+                      this.recommendationsLogger,
                     )
 
                   kilowattHourSavings =
@@ -218,6 +220,7 @@ export default class ComputeOptimizerRecommendations
 
   private async getComputeAndMemoryFootprintEstimates(
     computeOptimizerRecommendation: EC2CurrentComputeOptimizerRecommendation,
+    logger: Logger,
   ) {
     const dateTime = new Date().toISOString()
     const emissionsFactors: CloudConstantsEmissionsFactors =
@@ -226,6 +229,7 @@ export default class ComputeOptimizerRecommendations
         dateTime,
         AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+        logger,
       )
     const computeFootprint = new AWSComputeEstimatesBuilder(
       computeOptimizerRecommendation,
