@@ -2288,7 +2288,7 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it(' successfully return lookup table data from getEstimatesFromInputData function', () => {
+  it(' successfully return lookup table data from getEstimatesFromInputData function', async () => {
     // given
     const inputData: LookupTableInput[] = [
       {
@@ -2312,8 +2312,9 @@ describe('CostAndUsageReports Service', () => {
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
     )
-    const result =
-      costAndUsageReportsService.getEstimatesFromInputData(inputData)
+    const result = await costAndUsageReportsService.getEstimatesFromInputData(
+      inputData,
+    )
 
     // then
     const expectedResult: LookupTableOutput[] = [

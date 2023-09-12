@@ -206,7 +206,7 @@ describe('AWSAccount', () => {
     expect(result).toEqual(expectedEstimatesResult)
   })
 
-  it('should getCostAndUsageReportsDataFromInputData', () => {
+  it('should getCostAndUsageReportsDataFromInputData', async () => {
     const inputData: LookupTableInput[] = [
       {
         serviceName: 'AmazonEC2',
@@ -218,7 +218,9 @@ describe('AWSAccount', () => {
     ]
 
     const AWSAccount = require('../application/AWSAccount').default
-    const result = AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
+    const result = await AWSAccount.getCostAndUsageReportsDataFromInputData(
+      inputData,
+    )
 
     const expectedResult: LookupTableOutput[] = [
       {

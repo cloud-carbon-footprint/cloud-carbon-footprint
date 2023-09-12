@@ -41,3 +41,4 @@ export {
 } from './RecommendationsService'
 export * from './helpers'
 export type { GoogleAuthClient } from './Types'
+export * from './EmissionsFactors'

@@ -48,6 +48,8 @@ export default class App {
     const config = configLoader()
     includeCloudProviders(cloudProviderToSeed, config)
     const { AWS, GCP, AZURE, ALI } = config
+    if (configLoader().ELECTRICITY_MAPS_TOKEN)
+      appLogger.info('Using Electricity Maps')
     if (process.env.TEST_MODE) {
       return []
     }
@@ -235,10 +237,10 @@ export default class App {
     return allRecommendations.flat()
   }
 
-  getAwsEstimatesFromInputData(
+  async getAwsEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
-    return AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
+  ): Promise<LookupTableOutput[]> {
+    return await AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
   }
 
   getGcpEstimatesFromInputData(

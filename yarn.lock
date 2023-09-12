@@ -2666,6 +2666,7 @@ __metadata:
     jest: ^27.4.7
     lint-staged: ^12.1.7
     moment: ^2.29.1
+    node-fetch: ^2.6.1
     prettier: ^2.5.1
     rimraf: ^3.0.2
     ts-jest: ^27.1.2

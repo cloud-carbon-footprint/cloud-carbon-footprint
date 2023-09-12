@@ -60,7 +60,7 @@ export default async function createLookupTable(
     const awsInputData: LookupTableInput[] = await csv().fromFile(awsInputFile)
     validateInputData(awsInputData)
     const awsEstimatesData: LookupTableOutput[] =
-      new App().getAwsEstimatesFromInputData(awsInputData)
+      await new App().getAwsEstimatesFromInputData(awsInputData)
     await writeToCsv(awsOutputFile, awsEstimatesData)
   }
 

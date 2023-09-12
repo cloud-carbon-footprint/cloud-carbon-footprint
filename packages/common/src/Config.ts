@@ -91,6 +91,7 @@ export interface CCFConfig {
     URI?: string
     CREDENTIALS?: string
   }
+  ELECTRICITY_MAPS_TOKEN?: string
 }
 
 export interface AWSAccount {
@@ -313,6 +314,7 @@ const getConfig = (): CCFConfig => ({
     URI: getEnvVar('MONGODB_URI') || '',
     CREDENTIALS: getEnvVar('MONGODB_CREDENTIALS') || '',
   },
+  ELECTRICITY_MAPS_TOKEN: getEnvVar('ELECTRICITY_MAPS_TOKEN') || '',
 })
 
 export default getConfig

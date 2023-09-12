@@ -132,7 +132,7 @@ export default class AWSAccount extends CloudProviderAccount {
     )
   }
 
-  getDataFromCostAndUsageReports(
+  async getDataFromCostAndUsageReports(
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
@@ -154,12 +154,16 @@ export default class AWSAccount extends CloudProviderAccount {
         ),
       ),
     )
-    return costAndUsageReportsService.getEstimates(startDate, endDate, grouping)
+    return await costAndUsageReportsService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
   }
 
-  static getCostAndUsageReportsDataFromInputData(
+  static async getCostAndUsageReportsDataFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
+  ): Promise<LookupTableOutput[]> {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
@@ -171,7 +175,7 @@ export default class AWSAccount extends CloudProviderAccount {
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
     )
-    return costAndUsageReportsService.getEstimatesFromInputData(inputData)
+    return await costAndUsageReportsService.getEstimatesFromInputData(inputData)
   }
 
   private getService(

@@ -4,12 +4,17 @@
 
 import moment from 'moment'
 import {
+  CloudConstantsEmissionsFactors,
   ComputeEstimator,
   ICloudRecommendationsService,
   MemoryEstimator,
   StorageEstimator,
 } from '@cloud-carbon-footprint/core'
-import { Logger, RecommendationResult } from '@cloud-carbon-footprint/common'
+import {
+  getEmissionsFactors,
+  Logger,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
 import {
   EBSCurrentComputeOptimizerRecommendation,
@@ -24,6 +29,8 @@ import AWSStorageEstimatesBuilder from '../AWSStorageEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import { SSD_USAGE_TYPES } from '../CostAndUsageTypes'
 import ComputeOptimizerRecommendation from './ComputeOptimizer/ComputeOptimizerRecommendation'
+import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../../domain'
+import { AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from '../AWSRegions'
 
 export default class ComputeOptimizerRecommendations
   implements ICloudRecommendationsService
@@ -74,7 +81,8 @@ export default class ComputeOptimizerRecommendations
               params,
             )
 
-          parsedRecommendations.forEach((recommendation) => {
+          for (let i = 0; i < parsedRecommendations.length; i++) {
+            const recommendation = parsedRecommendations[i]
             const recommendationType = recommendation.finding
 
             if (
@@ -131,12 +139,12 @@ export default class ComputeOptimizerRecommendations
                     currentStorageFootprint.co2e - targetStorageFootprint.co2e
                 } else {
                   const [currentComputeFootprint, currentMemoryFootprint] =
-                    this.getComputeAndMemoryFootprintEstimates(
+                    await this.getComputeAndMemoryFootprintEstimates(
                       currentComputeOptimizerRecommendation,
                     )
 
                   const [targetComputeFootprint, targetMemoryFootprint] =
-                    this.getComputeAndMemoryFootprintEstimates(
+                    await this.getComputeAndMemoryFootprintEstimates(
                       targetComputeOptimizerRecommendation,
                     )
 
@@ -182,7 +190,7 @@ export default class ComputeOptimizerRecommendations
                 })
               }
             }
-          })
+          }
         }
       }
       return recommendationsResult
@@ -208,17 +216,27 @@ export default class ComputeOptimizerRecommendations
     return `Save cost by changing ${modifyType[service]} from ${currentRecommendation.description} to ${targetRecommendation.description}.`
   }
 
-  private getComputeAndMemoryFootprintEstimates(
+  private async getComputeAndMemoryFootprintEstimates(
     computeOptimizerRecommendation: EC2CurrentComputeOptimizerRecommendation,
   ) {
+    const dateTime = new Date().toISOString()
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      await getEmissionsFactors(
+        computeOptimizerRecommendation.region,
+        dateTime,
+        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+      )
     const computeFootprint = new AWSComputeEstimatesBuilder(
       computeOptimizerRecommendation,
       this.computeEstimator,
+      emissionsFactors,
     ).computeFootprint
 
     const memoryFootprint = new AWSMemoryEstimatesBuilder(
       computeOptimizerRecommendation,
       this.memoryEstimator,
+      emissionsFactors,
     ).memoryFootprint
 
     return [computeFootprint, memoryFootprint]

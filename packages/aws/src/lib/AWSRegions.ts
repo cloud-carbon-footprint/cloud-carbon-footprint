@@ -2,6 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { mappedRegionsToElectricityMapZones } from '@cloud-carbon-footprint/common'
+
 export enum AWS_REGIONS {
   US_EAST_1 = 'us-east-1',
   US_EAST_2 = 'us-east-2',
@@ -62,3 +64,35 @@ export const AWS_MAPPED_REGION_NAMES_TO_CODES: { [key: string]: string } = {
   'China (Beijing)': AWS_REGIONS.CN_NORTH_1,
   'China (Ningxia)': AWS_REGIONS.CN_NORTHWEST_1,
 }
+
+export const AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES: mappedRegionsToElectricityMapZones =
+  {
+    [AWS_REGIONS.US_EAST_1]: 'US-MIDA-PJM',
+    [AWS_REGIONS.US_EAST_2]: 'US-MIDA-PJM',
+    [AWS_REGIONS.US_WEST_1]: 'US-CAL-CISO',
+    [AWS_REGIONS.US_WEST_2]: 'US-NW-PACW',
+    [AWS_REGIONS.AF_SOUTH_1]: 'ZA',
+    [AWS_REGIONS.AP_EAST_1]: null,
+    [AWS_REGIONS.AP_SOUTH_1]: 'IN-WE',
+    [AWS_REGIONS.AP_NORTHEAST_3]: 'JP-KN',
+    [AWS_REGIONS.AP_NORTHEAST_2]: 'KR',
+    [AWS_REGIONS.AP_SOUTHEAST_1]: 'SG',
+    [AWS_REGIONS.AP_SOUTHEAST_2]: 'AU-NSW',
+    [AWS_REGIONS.AP_NORTHEAST_1]: 'JP-TK',
+    [AWS_REGIONS.AP_SOUTHEAST_3]: 'ID',
+    [AWS_REGIONS.CA_CENTRAL_1]: 'CA-QC',
+    [AWS_REGIONS.CN_NORTH_1]: null,
+    [AWS_REGIONS.CN_NORTHWEST_1]: null,
+    [AWS_REGIONS.EU_CENTRAL_1]: 'DE',
+    [AWS_REGIONS.EU_WEST_1]: 'IE',
+    [AWS_REGIONS.EU_WEST_2]: 'GB',
+    [AWS_REGIONS.EU_SOUTH_1]: 'IT-NO',
+    [AWS_REGIONS.EU_WEST_3]: 'FR',
+    [AWS_REGIONS.EU_NORTH_1]: 'SE-SE3',
+    [AWS_REGIONS.ME_SOUTH_1]: null,
+    [AWS_REGIONS.ME_CENTRAL_1]: null,
+    [AWS_REGIONS.SA_EAST_1]: 'BR-CS',
+    [AWS_REGIONS.US_GOV_EAST_1]: 'US-MIDA-PJM',
+    [AWS_REGIONS.US_GOV_WEST_1]: 'US-NW-PACW',
+    [AWS_REGIONS.UNKNOWN]: null,
+  }
