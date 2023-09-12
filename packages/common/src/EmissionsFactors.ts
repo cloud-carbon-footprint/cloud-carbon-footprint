@@ -3,7 +3,7 @@
  */
 
 import fetch from 'node-fetch'
-import { configLoader } from './index'
+import { configLoader, Logger } from './index'
 import { CloudConstantsEmissionsFactors } from '@cloud-carbon-footprint/core'
 
 export type mappedRegionsToElectricityMapZones = {
@@ -18,6 +18,7 @@ export const getEmissionsFactors = async (
   dateTime: string,
   emissionsFactors: CloudConstantsEmissionsFactors,
   mappedRegionsToElectricityMapZones: mappedRegionsToElectricityMapZones,
+  logger: Logger,
 ): Promise<CloudConstantsEmissionsFactors> => {
   const electricityMapsToken = configLoader().ELECTRICITY_MAPS_TOKEN
 
@@ -25,6 +26,11 @@ export const getEmissionsFactors = async (
 
   // if there is no zone for the region, or no token, return the default emissions factor
   if (!electricityMapsToken || !electricityMapsZone) {
+    if (!electricityMapsZone) {
+      logger.warn(
+        `Electricity Maps zone not found for ${region}. Using default emissions factors.`,
+      )
+    }
     return emissionsFactors
   }
 
@@ -40,11 +46,18 @@ export const getEmissionsFactors = async (
   try {
     response = await getElectricityMapsData(electricityMapsZone, dateTime)
   } catch (e) {
-    throw new Error(`Electricity Maps request failed 1. Reason ${e.message}.`)
+    throw new Error(
+      `Failed to get data from Electricity Maps. Reason ${e.message}.`,
+    )
   }
 
   // if there is no response, return the default emissions factor
   if (!response?.carbonIntensity) {
+    // add a warning if there is no response
+    logger.warn(
+      `Electricity Maps zone data was not found for ${region}. Using default emissions factors.`,
+    )
+
     return emissionsFactors
   }
 

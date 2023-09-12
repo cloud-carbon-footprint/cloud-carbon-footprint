@@ -4,6 +4,7 @@ import {
   getEmissionsFactors,
   zoneIntensityFactors,
 } from '../EmissionsFactors'
+import { Logger } from '../index'
 
 jest.mock('node-fetch', () => jest.fn())
 const { Response } = jest.requireActual('node-fetch')
@@ -20,6 +21,8 @@ describe('getEmissionsFactors', () => {
   const emissionsFactors = { default: 0.5 }
   const mappedRegionsToElectricityMapZones = { 'region-1': 'zone-1' }
 
+  const logger = { warn: jest.fn() } as unknown as Logger
+
   beforeEach(() => {
     jest.clearAllMocks()
     // Clear the cache before each test
@@ -34,6 +37,7 @@ describe('getEmissionsFactors', () => {
       '2022-01-01T00:00:00.000Z',
       emissionsFactors,
       mappedRegionsToElectricityMapZones,
+      logger,
     )
     expect(result).toEqual(emissionsFactors)
   })
@@ -45,6 +49,7 @@ describe('getEmissionsFactors', () => {
       '2022-01-01T00:00:00.000Z',
       emissionsFactors,
       mappedRegionsToElectricityMapZones,
+      logger,
     )
     expect(result).toEqual({ 'region-1': 0.1 })
   })
@@ -66,6 +71,7 @@ describe('getEmissionsFactors', () => {
       '2022-01-01T00:00:00.000Z',
       emissionsFactors,
       mappedRegionsToElectricityMapZones,
+      logger,
     )
 
     expect(result).toEqual({ 'region-1': 0.3 })

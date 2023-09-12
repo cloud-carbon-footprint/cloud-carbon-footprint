@@ -156,6 +156,7 @@ export default class RightsizingRecommendations
         dateTime,
         AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+        this.recommendationsLogger,
       )
     const computeFootprint = new AWSComputeEstimatesBuilder(
       rightsizingRecommendation,

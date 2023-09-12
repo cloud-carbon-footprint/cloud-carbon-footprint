@@ -129,6 +129,7 @@ export default class CostAndUsageReports {
           costAndUsageReportRow.timestamp.toISOString(),
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
           AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.costAndUsageReportsLogger,
         )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
@@ -192,6 +193,7 @@ export default class CostAndUsageReports {
           dateTime,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
           AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.costAndUsageReportsLogger,
         )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
