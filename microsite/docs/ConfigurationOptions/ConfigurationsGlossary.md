@@ -146,6 +146,14 @@ sidebar_position: 4
 
 <br />
 
+### Optionally set Electricity Map API token
+
+| Variable               | Example Value | Type   | Notes                                                                                                                 |
+|------------------------|---------------|--------|-----------------------------------------------------------------------------------------------------------------------|
+| ELECTRICITY_MAPS_TOKEN | your-token    | string | Enable the use of Electricity Maps API for realtime carbon intensity emissions factors instead of the default values. |
+
+<br />
+
 ## Client Package - all variables are optional
 
 | Variable                         | Example Value           | Type     Notes                                                                                                                                                |
