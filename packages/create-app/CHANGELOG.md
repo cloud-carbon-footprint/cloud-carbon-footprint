@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.5.1
+
+### Patch Changes
+
+- fb11e65c: updates package json deps. template updates [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/e7c1f76622155dce304f7a08ad30ab86401adebe).
+- 6ffe7497: adds electricity maps api handling. For CLI create-app template changes, refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/2749723c00343865c7453fea29609ea6dad4b5e9).
+
 ## 2.5.0
 
 ### Minor Changes

@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.14.0
+
+### Minor Changes
+
+- 6ffe7497: adds electricity maps api handling. For CLI create-app template changes, refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/2749723c00343865c7453fea29609ea6dad4b5e9).
+
+### Patch Changes
+
+- 53812d8d: Fix syntax errors in GCP Queries when using tags/labels
+- Updated dependencies [bc06b861]
+- Updated dependencies [7630768d]
+- Updated dependencies [6ffe7497]
+  - @cloud-carbon-footprint/common@1.13.0
+
 ## 0.13.1
 
 ### Patch Changes
