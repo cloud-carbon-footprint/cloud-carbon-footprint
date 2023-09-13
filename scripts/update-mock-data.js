@@ -41,10 +41,10 @@ async function update() {
     )
     const { mtPerKwHour } = regionObj
     const updatedC02e = recommendation.kilowattHourSavings * mtPerKwHour
-    let updatingCostSavings = updatedC02e / 0.0024 // Sample cost:co2e ratio
+    let updatedCostSavings = updatedC02e / 0.0024 // Sample cost:co2e ratio
     updatedCostSavings *= Math.floor(Math.random() * (10 - 2 + 1) + 2) // Increase magnitude
     recommendation.co2eSavings = updatedC02e
-    recommendation.costSavings = updatingCostSavings
+    recommendation.costSavings = updatedCostSavings
   })
 
   fs.writeFileSync(
