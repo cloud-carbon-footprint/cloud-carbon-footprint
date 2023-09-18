@@ -3,7 +3,7 @@ import Overview from './overview'
 import ValueProp from './valueProp'
 import Differentiator from './differentiator'
 import InnovationPartners from './innovationPartners'
-import FooterImage from './footerImage'
+import DiscussionGroup from './discussionGroup'
 import MetaData from './headMetaData'
 
 export {
@@ -12,6 +12,6 @@ export {
   ValueProp,
   Differentiator,
   InnovationPartners,
-  FooterImage,
+  DiscussionGroup,
   MetaData,
 }

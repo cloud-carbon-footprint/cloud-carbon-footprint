@@ -4,10 +4,12 @@
 import fs from 'fs'
 import dotenv from 'dotenv'
 import { AWS_RECOMMENDATIONS_SERVICES } from './RecommendationsService'
+
 dotenv.config()
 
 export interface CCFConfig {
   AWS?: {
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     BILLING_ACCOUNT_ID?: string
     BILLING_ACCOUNT_NAME?: string
@@ -15,15 +17,14 @@ export interface CCFConfig {
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
+    IS_AWS_GLOBAL?: boolean
     NAME?: string
     RECOMMENDATIONS_SERVICE?: AWS_RECOMMENDATIONS_SERVICES
     COMPUTE_OPTIMIZER_BUCKET?: string
     CURRENT_SERVICES?: { key: string; name: string }[]
     CURRENT_REGIONS?: string[]
-    accounts?: {
-      id: string
-      name?: string
-    }[]
+    RESOURCE_TAG_NAMES?: string[]
+    accounts?: AWSAccount[]
     authentication?: {
       mode: string
       options?: Record<string, string>
@@ -38,6 +39,7 @@ export interface CCFConfig {
       name?: string
     }[]
     USE_CARBON_FREE_ENERGY_PERCENTAGE?: boolean
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     BIG_QUERY_TABLE?: string
     BILLING_PROJECT_ID?: string
@@ -45,8 +47,10 @@ export interface CCFConfig {
     CACHE_BUCKET_NAME?: string
     VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT?: number
     VCPUS_PER_GKE_CLUSTER?: number
+    RESOURCE_TAG_NAMES?: string[]
   }
   AZURE?: {
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     authentication?: {
       mode: string
@@ -54,9 +58,19 @@ export interface CCFConfig {
       clientSecret?: string
       tenantId?: string
     }
+    RESOURCE_TAG_NAMES?: string[]
+    CONSUMPTION_CHUNKS_DAYS?: number
+    SUBSCRIPTION_CHUNKS?: number
+    SUBSCRIPTIONS: string[]
+  }
+  ALI?: {
+    NAME?: string
+    authentication?: {
+      accessKeyId: string
+      accessKeySecret: string
+    }
   }
   LOGGING_MODE?: string
-  GROUP_QUERY_RESULTS_BY?: GroupBy
   CACHE_MODE?: string
   ON_PREMISE?: {
     SERVER?: {
@@ -72,6 +86,15 @@ export interface CCFConfig {
       AVERAGE_WATTS?: number
     }
   }
+  MONGODB?: {
+    URI?: string
+    CREDENTIALS?: string
+  }
+}
+
+export interface AWSAccount {
+  id: string
+  name?: string
 }
 
 export enum GroupBy {
@@ -86,12 +109,42 @@ export type QUERY_DATE_TYPES = {
   [key in GroupBy]: string
 }
 
+// this check allows for aws auth to determine how to correctly partition by region when credentializing
+const checkAthenaRegionISAWSGlobal = (athena_region: string): boolean => {
+  const AWS_CN_REGIONS = ['cn-north-1', 'cn-northwest-1']
+  return !AWS_CN_REGIONS.includes(athena_region)
+}
+
 const getAWSAccounts = () => {
   return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
 }
 
+const getAWSResourceTagNames = () => {
+  return process.env.AWS_RESOURCE_TAG_NAMES
+    ? process.env.AWS_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
+const getGCPResourceTagNames = () => {
+  return process.env.GCP_RESOURCE_TAG_NAMES
+    ? process.env.GCP_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
+const getAzureResourceTagNames = () => {
+  return process.env.AZURE_RESOURCE_TAG_NAMES
+    ? process.env.AZURE_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
 const getGCPProjects = () => {
   return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
+}
+
+const getAzureSubscriptions = () => {
+  return process.env.AZURE_SUBSCRIPTIONS
+    ? process.env.AZURE_SUBSCRIPTIONS
+    : '[]'
 }
 
 // This function allows support for using Docker Secrets.
@@ -105,6 +158,10 @@ const getEnvVar = (envVar: string): string => {
 
 const getConfig = (): CCFConfig => ({
   AWS: {
+    INCLUDE_ESTIMATES: !(
+      !!process.env.AWS_INCLUDE_ESTIMATES &&
+      process.env.AWS_INCLUDE_ESTIMATES === 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
       process.env.AWS_USE_BILLING_DATA !== 'false',
@@ -115,6 +172,7 @@ const getConfig = (): CCFConfig => ({
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
     ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
+    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION')),
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
@@ -130,6 +188,7 @@ const getConfig = (): CCFConfig => ({
         getEnvVar('AWS_RECOMMENDATIONS_SERVICE') as AWS_RECOMMENDATIONS_SERVICES
       ],
     COMPUTE_OPTIMIZER_BUCKET: getEnvVar('AWS_COMPUTE_OPTIMIZER_BUCKET') || '',
+    RESOURCE_TAG_NAMES: JSON.parse(getAWSResourceTagNames()),
     CURRENT_REGIONS: [
       'us-east-1',
       'us-east-2',
@@ -188,6 +247,10 @@ const getConfig = (): CCFConfig => ({
     USE_CARBON_FREE_ENERGY_PERCENTAGE:
       !!process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE &&
       process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE !== 'false',
+    INCLUDE_ESTIMATES: !(
+      !!process.env.GCP_INCLUDE_ESTIMATES &&
+      process.env.GCP_INCLUDE_ESTIMATES !== 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
@@ -199,8 +262,13 @@ const getConfig = (): CCFConfig => ({
     BILLING_PROJECT_ID: getEnvVar('GCP_BILLING_PROJECT_ID') || '',
     BILLING_PROJECT_NAME: getEnvVar('GCP_BILLING_PROJECT_NAME') || '',
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
+    RESOURCE_TAG_NAMES: JSON.parse(getGCPResourceTagNames()),
   },
   AZURE: {
+    INCLUDE_ESTIMATES: !(
+      !!process.env.AZURE_INCLUDE_ESTIMATES &&
+      process.env.AZURE_INCLUDE_ESTIMATES !== 'false'
+    ),
     USE_BILLING_DATA:
       !!process.env.AZURE_USE_BILLING_DATA &&
       process.env.AZURE_USE_BILLING_DATA !== 'false',
@@ -210,12 +278,23 @@ const getConfig = (): CCFConfig => ({
       clientSecret: getEnvVar('AZURE_CLIENT_SECRET') || '',
       tenantId: getEnvVar('AZURE_TENANT_ID') || '',
     },
+    RESOURCE_TAG_NAMES: JSON.parse(getAzureResourceTagNames()),
+    CONSUMPTION_CHUNKS_DAYS: parseInt(
+      getEnvVar('AZURE_CONSUMPTION_CHUNKS_DAYS') || '0',
+    ),
+    SUBSCRIPTION_CHUNKS: parseInt(
+      getEnvVar('AZURE_SUBSCRIPTION_CHUNKS') || '10',
+    ),
+    SUBSCRIPTIONS: JSON.parse(getAzureSubscriptions()) || [],
+  },
+  ALI: {
+    NAME: 'AliCloud',
+    authentication: {
+      accessKeyId: process.env.ALI_ACCESS_KEY,
+      accessKeySecret: process.env.ALI_ACCESS_SECRET,
+    },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
-  GROUP_QUERY_RESULTS_BY:
-    GroupBy[
-      (process.env.GROUP_QUERY_RESULTS_BY || 'day') as keyof typeof GroupBy
-    ],
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
   ON_PREMISE: {
     SERVER: {
@@ -236,6 +315,10 @@ const getConfig = (): CCFConfig => ({
       ),
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
+  },
+  MONGODB: {
+    URI: getEnvVar('MONGODB_URI') || '',
+    CREDENTIALS: getEnvVar('MONGODB_CREDENTIALS') || '',
   },
 })
 

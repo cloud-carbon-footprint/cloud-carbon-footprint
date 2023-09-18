@@ -1,5 +1,94 @@
 # @cloud-carbon-footprint/api
 
+## 1.7.0
+
+### Minor Changes
+
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+- 045ef419: Adds OpenAPI spec documentation and Swagger portal
+
+### Patch Changes
+
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [fedf79c0]
+  - @cloud-carbon-footprint/common@1.12.0
+  - @cloud-carbon-footprint/app@1.3.0
+
+## 1.6.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 1.6.1
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/app@1.2.1
+
+## 1.6.0
+
+### Minor Changes
+
+- 689c973e: Add support for Azure Tags and resource groups
+
+### Patch Changes
+
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
+## 1.5.1
+
+### Patch Changes
+
+- c1684f40: updates for handling CORS. Please refer to create app template updates [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/9afbcf704797f20867b54c6a627415674f49db96)
+- Updated dependencies [40a8f3d1]
+- Updated dependencies [692d6aaf]
+- Updated dependencies [09e72585]
+- Updated dependencies [222bfed3]
+  - @cloud-carbon-footprint/app@1.1.0
+
+## 1.5.0
+
+### Minor Changes
+
+- 24c76730: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [e9e57da7]
+  - @cloud-carbon-footprint/app@1.0.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 1.4.3
+
+### Patch Changes
+
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/app@0.7.0
+  - @cloud-carbon-footprint/common@1.7.0
+
+## 1.4.2
+
+### Patch Changes
+
+- Updated dependencies [dcc33152]
+  - @cloud-carbon-footprint/app@0.6.0
+
 ## 1.4.1
 
 ### Patch Changes

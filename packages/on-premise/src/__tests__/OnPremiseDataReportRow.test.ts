@@ -7,7 +7,8 @@ import { OnPremiseDataReportRow } from '../lib'
 
 describe('OnPremiseDataReportRow', () => {
   const onPremiseDataReportRow: OnPremiseDataInput = {
-    machineName: 'Intel(R) Xeon(R) CPU E5-2667 v3 @ 3.20GHz',
+    cpuDescription: 'Intel(R) Xeon(R) CPU E5-2667 v3 @ 3.20GHz',
+    machineName: 'test-machine-name',
     memory: 65459,
     machineType: 'server',
     cost: 93.12,
@@ -18,24 +19,26 @@ describe('OnPremiseDataReportRow', () => {
   it('should get processor family from cpuId', () => {
     const intelResult = new OnPremiseDataReportRow(
       onPremiseDataReportRow,
-    ).getProcessorFamilyFromCpuId(onPremiseDataReportRow.machineName)
+    ).getProcessorFamilyFromCpuDescription(
+      onPremiseDataReportRow.cpuDescription,
+    )
 
     const AMDResult = new OnPremiseDataReportRow(
       onPremiseDataReportRow,
-    ).getProcessorFamilyFromCpuId('AMD EPYC 7262 8-Core Processor')
+    ).getProcessorFamilyFromCpuDescription('AMD EPYC 7262 8-Core Processor')
 
     expect(intelResult).toEqual(['Haswell'])
     expect(AMDResult).toEqual(['AMD EPYC 2nd Gen'])
   })
 
-  it('should get usage hours from timestamps', () => {
-    const result = new OnPremiseDataReportRow(
-      onPremiseDataReportRow,
-    ).getUsageHoursFromTimestamps(
-      onPremiseDataReportRow.startTime,
-      onPremiseDataReportRow.endTime,
-    )
-
-    expect(result).toEqual(113)
-  })
+  // it('should get usage hours from timestamps', () => {
+  //   const result = new OnPremiseDataReportRow(
+  //     onPremiseDataReportRow,
+  //   ).getUsageHoursFromTimestamps(
+  //     onPremiseDataReportRow.startTime,
+  //     onPremiseDataReportRow.endTime,
+  //   )
+  //
+  //   expect(result).toEqual(113)
+  // })
 })

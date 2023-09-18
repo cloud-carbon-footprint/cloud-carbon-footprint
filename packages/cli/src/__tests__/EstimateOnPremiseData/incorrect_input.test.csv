@@ -1,2 +1,2 @@
-incorrectMachineName,memory,machineType,startTime,endTime,country,region,cost,cpuUtilization,powerUsageEffectiveness
-Intel(R) Xeon(R) CPU E5-2667 v3 @ 3.20GHz,65459,server,2020-11-02T00:53:03Z,2020-11-06T18:22:30.135082Z,United States,Texas,93.12
+incorrectCpuDescription,machineName,memory,machineType,startTime,endTime,country,region,cost,cpuUtilization,powerUsageEffectiveness,dailyUptime,weeklyUptime,monthlyUptime,annualUptime
+Intel(R) Xeon(R) CPU E5-2667 v3 @ 3.20GHz,65459,server,2020-11-02T00:53:03Z,2020-11-06T18:22:30.135082Z,United States,Texas,93.12,,,4,12,36,36

@@ -1,5 +1,131 @@
 # @cloud-carbon-footprint/azure
 
+## 1.4.1
+
+### Patch Changes
+
+- c515ba60: Adds aditional aliases for Azure regions
+
+## 1.4.0
+
+### Minor Changes
+
+- c82bf5fd: Adds config support for chunking/splitting azure requests by subscription
+- 1a5d7636: Adds support for listing Azure subscription IDs to fetch
+
+### Patch Changes
+
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
+## 1.3.0
+
+### Minor Changes
+
+- 5b5a0ac5: Updates support to version 9.2 of the @azure/arm-consumption package
+- b98fd6d1: updates azure recs to support skuchange
+
+### Patch Changes
+
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
+## 1.2.0
+
+### Minor Changes
+
+- 3f17990d: Add option to chunk time range in azure requests to avoid infinite rate limit retries
+
+### Patch Changes
+
+- 11559bff: Add missing usage types and region aliases with logging messages for easy expansion
+- 5f8ff432: fixes broken azure recommendations tests
+- Updated dependencies [9e929f03]
+- Updated dependencies [1d297700]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/core@0.17.1
+  - @cloud-carbon-footprint/common@1.10.0
+
+## 1.1.0
+
+### Minor Changes
+
+- 689c973e: Add support for Azure Tags and resource groups
+
+### Patch Changes
+
+- 689c973e: Fixes parsing issue with some Azure Storage service that was causing invalid estimation results
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
+## 1.0.0
+
+### Major Changes
+
+- a1ad994d: Updates Azure SDK and usageRow pagination to latest version (v9)
+
+  For updates to create-app (CLI) templates, please review this [commit.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6e943bc74851b093d372b14ccb38981053e36bf5)
+
+### Minor Changes
+
+- 692d6aaf: implements advisor recommendations for azure package
+
+### Patch Changes
+
+- b4bf5bbb: fixes incorrect redis/c0 size
+- 441ec2fe: Adds additional usage type for B DTU Storage
+
+## 0.12.0
+
+### Minor Changes
+
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 0.11.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+- a7a79c83: removes grouping date logic from azure to cache decorator
+- a7a79c83: updates groupby logic for azure date range
+
+### Patch Changes
+
+- a7a79c83: Add new azure Storage usage
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
+## 0.10.1
+
+### Patch Changes
+
+- 7b9a4fc4: Add suport for Azure regions. See [here for details](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/823)
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/common@1.6.0
+
+## 0.10.0
+
+### Minor Changes
+
+- dcc33152: Adds support for Azure in lookup table
+
 ## 0.9.2
 
 ### Patch Changes

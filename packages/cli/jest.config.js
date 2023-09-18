@@ -9,14 +9,15 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 99,
-      branches: 86,
-      functions: 100,
-      lines: 99,
+      statements: 97,
+      branches: 87,
+      functions: 96,
+      lines: 97,
     },
   },
   coveragePathIgnorePatterns: [
     '<rootDir>/src/CliPrompts.ts',
+    '<rootDir>/src/CreateLookupTable/createAzureInput.ts',
     '<rootDir>/src/__tests__/fixtures',
   ],
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],

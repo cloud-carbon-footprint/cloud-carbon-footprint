@@ -6,9 +6,14 @@ import {
   getHoursInMonth,
 } from '@cloud-carbon-footprint/common'
 import { EC2ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
-import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
+import {
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
+} from '../../AWSInstanceTypes'
+import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
+import ComputeOptimizerRecommendationWithProcessors from './ComputeOptimizerRecommendationWithProcessors'
 
-export default class EC2TargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
+export default class EC2TargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendationWithProcessors {
   public instanceName: string
   public vCpuHours: number
   public instanceType: string
@@ -65,5 +70,21 @@ export default class EC2TargetComputeOptimizerRecommendation extends ComputeOpti
     this.costSavings = parseFloat(optimalRecommendation.costSavings)
     this.vCpuHours = this.getVCpuHours(this.targetVcpus, this.instanceType)
     this.usageAmount = getHoursInMonth()
+  }
+
+  public getComputeProcessors(): string[] {
+    return (
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[this.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
+  }
+
+  public getGPUComputeProcessors(): string[] {
+    return (
+      INSTANCE_TYPE_GPU_PROCESSOR_MAPPING[this.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
   }
 }

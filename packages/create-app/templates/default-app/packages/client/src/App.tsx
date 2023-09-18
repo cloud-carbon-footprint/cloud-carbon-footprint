@@ -3,6 +3,8 @@
  */
 
 import React, { ReactElement, useCallback, useState } from 'react'
+import { Moment } from 'moment'
+import { AxiosError } from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Route, Routes, useNavigate } from 'react-router-dom'
@@ -11,23 +13,44 @@ import RecommendationsPage from './pages/RecommendationsPage/'
 import ErrorPage from './layout/ErrorPage'
 import HeaderBar from './layout/HeaderBar'
 import MobileWarning from './layout/MobileWarning'
-import { AxiosError } from 'axios'
 import { formatAxiosError } from './layout/ErrorPage/ErrorPage'
 import { ClientConfig } from './Config'
 import loadConfig from './ConfigLoader'
+import { useFootprintData } from './utils/hooks'
+import { getEmissionDateRange } from './utils/helpers/handleDates'
+import LoadingMessage from './common/LoadingMessage'
 
 interface AppProps {
   config?: ClientConfig
 }
 export function App({ config = loadConfig() }: AppProps): ReactElement {
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
   const onApiError = useCallback(
     (e: AxiosError) => {
       console.error(e)
+      setErrorMessage(e.response.data)
       navigate('/error', { state: formatAxiosError(e) })
     },
     [navigate],
   )
+
+  const endDate: Moment = getEmissionDateRange({
+    config: loadConfig(),
+  }).end
+  const startDate: Moment = getEmissionDateRange({
+    config: loadConfig(),
+  }).start
+
+  const footprint = useFootprintData({
+    baseUrl: config.BASE_URL,
+    startDate,
+    endDate,
+    onApiError,
+    groupBy: config.GROUP_BY,
+    limit: parseInt(config.PAGE_LIMIT as unknown as string),
+    ignoreCache: config.DISABLE_CACHE,
+  })
 
   const [mobileWarningEnabled, setMobileWarningEnabled] = useState(
     window.innerWidth < 768,
@@ -55,6 +78,14 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     )
   }
 
+  if (footprint.loading)
+    return (
+      <>
+        <HeaderBar />
+        <LoadingMessage message="Loading cloud data. This may take a while..." />
+      </>
+    )
+
   return (
     <>
       <HeaderBar />
@@ -63,16 +94,28 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
           <Route
             path="/"
             element={
-              <EmissionsMetricsPage config={config} onApiError={onApiError} />
+              // If checkDataLoad true show loading message
+              <EmissionsMetricsPage
+                config={config}
+                onApiError={onApiError}
+                footprint={footprint}
+              />
             }
           />
           <Route
             path="/recommendations"
             element={
-              <RecommendationsPage config={config} onApiError={onApiError} />
+              <RecommendationsPage
+                config={config}
+                onApiError={onApiError}
+                footprint={footprint}
+              />
             }
           />
-          <Route path="/error" element={<ErrorPage />} />
+          <Route
+            path="/error"
+            element={<ErrorPage errorMessage={errorMessage} />}
+          />
         </Routes>
       </Container>
     </>

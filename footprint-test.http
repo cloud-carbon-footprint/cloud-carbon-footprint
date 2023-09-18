@@ -1,0 +1,3 @@
+GET http://127.0.0.1:4000/api/footprint?start=2022-07-01&end=2022-07-02&ignoreCache=true&groupBy=day&limit=1000&skip=0
+
+Accept: application/json, text/plain, */*

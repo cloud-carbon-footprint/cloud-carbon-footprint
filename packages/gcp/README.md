@@ -1,4 +1,4 @@
-# @cloud-carbon-footprint/core
+# @cloud-carbon-footprint/gcp
 
 This package provides the core logic to get cloud usage data and estimate energy and carbon emissions from Google Cloud Platform.
 

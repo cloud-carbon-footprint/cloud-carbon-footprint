@@ -2,13 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 import moment, { unitOfTime } from 'moment'
-import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import {
-  LegacyUsageDetail,
-  UsageDetailsListResult,
-} from '@azure/arm-consumption/esm/models'
-
+  ConsumptionManagementClient,
+  UsageDetailUnion,
+} from '@azure/arm-consumption'
+import { PagedAsyncIterableIterator } from '@azure/core-paging'
 import {
+  configLoader,
   containsAny,
   convertGigaBytesToTerabyteHours,
   convertTerabytesToGigabytes,
@@ -69,6 +69,8 @@ import {
   UNKNOWN_SERVICES,
   UNKNOWN_USAGE_TYPES,
   UNSUPPORTED_USAGE_TYPES,
+  UsageDetailResult,
+  UsageRowPageErrorResponse,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -82,6 +84,7 @@ export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
   private readonly consumptionManagementRateLimitRemainingHeader: string
   private readonly consumptionManagementRetryAfterHeader: string
+
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
@@ -105,21 +108,20 @@ export default class ConsumptionManagementService {
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
-    const allUsageRows = await this.pageThroughUsageRows(usageRows)
     const results: MutableEstimationResult[] = []
     const unknownRows: ConsumptionDetailRow[] = []
 
-    allUsageRows
+    usageRows
       .filter(
-        (consumptionRow: LegacyUsageDetail) =>
+        (consumptionRow) =>
           new Date(consumptionRow.date) >= startDate &&
           new Date(consumptionRow.date) <= endDate,
       )
-      .map((consumptionRow: LegacyUsageDetail) => {
+      .map((consumptionRow) => {
         const consumptionDetailRow: ConsumptionDetailRow =
           new ConsumptionDetailRow(consumptionRow)
 
-        this.updateTimestampByWeek(grouping, consumptionDetailRow)
+        this.updateTimestampByGrouping(grouping, consumptionDetailRow)
 
         const footprintEstimate = this.getFootprintEstimateFromUsageRow(
           consumptionDetailRow,
@@ -132,6 +134,7 @@ export default class ConsumptionManagementService {
             consumptionDetailRow,
             footprintEstimate,
             grouping,
+            [],
           )
         }
         return []
@@ -146,6 +149,7 @@ export default class ConsumptionManagementService {
             rowData,
             footprintEstimate,
             grouping,
+            [],
           )
       })
     }
@@ -153,7 +157,7 @@ export default class ConsumptionManagementService {
     return results
   }
 
-  getEstimatesFromInputData(
+  public getEstimatesFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const result: LookupTableOutput[] = []
@@ -161,6 +165,11 @@ export default class ConsumptionManagementService {
 
     inputData.map((inputDataRow: LookupTableInput) => {
       const usageRow = {
+        id: '',
+        name: '',
+        type: '',
+        tags: {},
+        kind: 'legacy' as const,
         date: new Date(''),
         quantity: 1,
         cost: 1,
@@ -168,11 +177,9 @@ export default class ConsumptionManagementService {
           meterName: inputDataRow.usageType,
           unitOfMeasure: inputDataRow.usageUnit,
           meterCategory: inputDataRow.serviceName,
+          subscriptionName: '',
+          resourceLocation: inputDataRow.region,
         },
-        subscriptionId: '',
-        subscriptionName: '',
-        resourceLocation: inputDataRow.region,
-        kind: 'legacy' as const,
       }
 
       const consumptionDetailRow = new ConsumptionDetailRow(usageRow)
@@ -187,7 +194,6 @@ export default class ConsumptionManagementService {
           serviceName: inputDataRow.serviceName,
           region: inputDataRow.region,
           usageType: inputDataRow.usageType,
-          usageUnit: inputDataRow.usageUnit,
           kilowattHours: footprintEstimate.kilowattHours,
           co2e: footprintEstimate.co2e,
         })
@@ -203,7 +209,6 @@ export default class ConsumptionManagementService {
             serviceName: inputDataRow.serviceName,
             region: inputDataRow.region,
             usageType: inputDataRow.usageType,
-            usageUnit: inputDataRow.usageUnit,
             kilowattHours: footprintEstimate.kilowattHours,
             co2e: footprintEstimate.co2e,
           })
@@ -227,99 +232,173 @@ export default class ConsumptionManagementService {
     }
   }
 
-  private updateTimestampByWeek(
+  private updateTimestampByGrouping(
     grouping: GroupBy,
     consumptionDetailRow: ConsumptionDetailRow,
   ): void {
     const startOfType: string = AZURE_QUERY_GROUP_BY[grouping]
-    const firstDayOfWeek = moment
+    const firstDayOfGrouping = moment
       .utc(consumptionDetailRow.timestamp)
       .startOf(startOfType as unitOfTime.StartOf)
-    consumptionDetailRow.timestamp = new Date(firstDayOfWeek.toISOString())
-  }
-
-  private async pageThroughUsageRows(
-    usageRows: UsageDetailsListResult,
-  ): Promise<UsageDetailsListResult> {
-    const allUsageRows = [...usageRows]
-    let retry = false
-    while (usageRows.nextLink) {
-      try {
-        const nextUsageRows =
-          await this.consumptionManagementClient.usageDetails.listNext(
-            usageRows.nextLink,
-          )
-        allUsageRows.push(...nextUsageRows)
-        usageRows = nextUsageRows
-      } catch (e) {
-        // check to see if error is from exceeding the rate limit and grab retry time value
-        const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
-        const rateLimitRemainingValue = this.getConsumptionTenantValue(
-          e,
-          'remaining',
-        )
-        const errorMsg =
-          'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
-        if (rateLimitRemainingValue == 0) {
-          this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
-          this.consumptionManagementLogger.info(
-            `Retrying after ${retryAfterValue} seconds`,
-          )
-          retry = true
-          await wait(retryAfterValue * 1000)
-        } else {
-          throw new Error(`${errorMsg} ${e.message}`)
-        }
-      }
-    }
-    retry &&
-      this.consumptionManagementLogger.info(
-        'Retry Successful! Continuing grabbing estimates...',
-      )
-    return allUsageRows
+    consumptionDetailRow.timestamp = new Date(firstDayOfGrouping.toISOString())
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getConsumptionTenantValue(e: any, type: string) {
+  private getConsumptionTenantValue(
+    e: UsageRowPageErrorResponse,
+    type: 'retry' | 'remaining',
+  ) {
     const tenantHeaders: TenantHeaders = {
       retry: this.consumptionManagementRetryAfterHeader,
       remaining: this.consumptionManagementRateLimitRemainingHeader,
     }
-    return e.response.headers._headersMap[tenantHeaders[type]]?.value
+    return e.response.headers._headersMap.get(tenantHeaders[type])?.value
+  }
+
+  private async waitIfRateLimitExceeded(
+    errorResponse: UsageRowPageErrorResponse,
+    errorMsg: string,
+  ) {
+    // check to see if error is from exceeding the rate limit and grab retry time value
+    const retryAfterValue = this.getConsumptionTenantValue(
+      errorResponse,
+      'retry',
+    )
+    const rateLimitRemainingValue = this.getConsumptionTenantValue(
+      errorResponse,
+      'remaining',
+    )
+    if (rateLimitRemainingValue == 0) {
+      this.consumptionManagementLogger.warn(
+        `${errorMsg} ${errorResponse.message}`,
+      )
+      this.consumptionManagementLogger.info(
+        `Retrying after ${retryAfterValue} seconds`,
+      )
+      await wait(retryAfterValue * 1000)
+    } else {
+      throw new Error(`${errorMsg} ${errorResponse.message}`)
+    }
+  }
+
+  private async pageThroughUsageRows(
+    usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
+  ): Promise<Array<UsageDetailResult>> {
+    const usageRowDetails: Array<UsageDetailResult> = []
+    let currentRow
+    let hasNextPage = true
+    try {
+      while (hasNextPage) {
+        currentRow = await usageRows.next()
+        if (currentRow?.value) {
+          usageRowDetails.push(currentRow.value as UsageDetailResult)
+        }
+        hasNextPage = !currentRow.done
+      }
+    } catch (error) {
+      throw error
+    }
+    return usageRowDetails
+  }
+
+  private async queryConsumptionUsageDetails(
+    startDate: Date,
+    endDate: Date,
+    includeStart = true,
+    includeEnd = true,
+    maxRetries = 10,
+  ): Promise<Array<UsageDetailResult>> {
+    let currentTry = 0
+
+    const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow ${
+      configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS ? 'paging' : 'query'
+    } for time range ${startDate.toISOString()} to ${endDate.toISOString()} failed. Reason:`
+
+    while (currentTry <= maxRetries) {
+      currentTry++
+      try {
+        const options = {
+          expand: 'properties/meterDetails',
+          filter: `properties/usageStart ${
+            includeStart ? 'ge' : 'gt'
+          } '${startDate.toISOString()}' AND properties/usageEnd ${
+            includeEnd ? 'le' : 'lt'
+          } '${endDate.toISOString()}'`,
+        }
+        if (configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS) {
+          this.consumptionManagementLogger.debug(
+            `Querying consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()} for ${
+              this.consumptionManagementClient.subscriptionId
+            }`,
+          )
+        }
+        const usageRows = this.consumptionManagementClient.usageDetails.list(
+          `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
+          options,
+        )
+        return await this.pageThroughUsageRows(usageRows)
+      } catch (e) {
+        await this.waitIfRateLimitExceeded(e, errorMsg)
+      }
+    }
+
+    const err = new Error(
+      `${errorMsg} max retries of ${maxRetries} exceeded, consider setting a smaller chunk size using AZURE_CONSUMPTION_CHUNKS_DAYS`,
+    )
+    this.consumptionManagementLogger.error(err.message, err)
+    throw err
   }
 
   private async getConsumptionUsageDetails(
     startDate: Date,
     endDate: Date,
-  ): Promise<UsageDetailsListResult> {
-    try {
-      const options = {
-        expand: 'properties/meterDetails',
-        filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
-      }
-      return await this.consumptionManagementClient.usageDetails.list(
-        `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
-        options,
-      )
-    } catch (e) {
-      const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
-      const rateLimitRemainingValue = this.getConsumptionTenantValue(
-        e,
-        'remaining',
-      )
-      const errorMsg =
-        'Azure ConsumptionManagementClient.usageDetails.list failed. Reason:'
-      if (rateLimitRemainingValue == 0) {
-        this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
-        this.consumptionManagementLogger.info(
-          `Retrying after ${retryAfterValue} seconds`,
-        )
-        await wait(retryAfterValue * 1000)
-        return this.getConsumptionUsageDetails(startDate, endDate)
-      } else {
-        throw new Error(`${errorMsg} ${e.message}`)
-      }
+  ): Promise<Array<UsageDetailResult>> {
+    this.consumptionManagementLogger.info(
+      `Getting consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()}`,
+    )
+    const AZURE = configLoader().AZURE
+
+    // no chunking is wished for
+    if (!AZURE.CONSUMPTION_CHUNKS_DAYS) {
+      return await this.queryConsumptionUsageDetails(startDate, endDate)
     }
+
+    this.consumptionManagementLogger.info(
+      `Time range will be requested in chunks of ${AZURE.CONSUMPTION_CHUNKS_DAYS} days`,
+    )
+
+    const stepMs = AZURE.CONSUMPTION_CHUNKS_DAYS * 24 * 60 * 60 * 1000 // step size in ms to request at once
+
+    const result: UsageDetailResult[] = []
+    let currentStartDate = new Date(startDate)
+
+    let last = false
+
+    while (currentStartDate <= endDate) {
+      let currentEndDate = new Date(
+        // do not overstep end date
+        Math.min(currentStartDate.getTime() + stepMs, endDate.getTime()),
+      )
+      if (currentEndDate >= endDate) last = true
+
+      if (!last) {
+        // subtract 1 ms to get the end of the day before
+        // this avoid duplicate results in the azure query
+        currentEndDate = new Date(currentEndDate.getTime() - 1)
+      }
+
+      const usageRowDetails = await this.queryConsumptionUsageDetails(
+        currentStartDate,
+        currentEndDate,
+        true,
+        last, // if this is the last time slice, the end date should be included
+      )
+      result.push(...usageRowDetails)
+
+      currentStartDate = new Date(currentStartDate.getTime() + stepMs)
+    }
+
+    return result
   }
 
   private getEstimateByPricingUnit(
@@ -418,7 +497,9 @@ export default class ConsumptionManagementService {
           powerUsageEffectiveness,
           emissionsFactors,
         )
+      case MEMORY_USAGE_UNITS.GB_SECOND_1:
       case MEMORY_USAGE_UNITS.GB_SECONDS_50000:
+      case MEMORY_USAGE_UNITS.GB_HOUR_1:
       case MEMORY_USAGE_UNITS.GB_HOURS_1000:
         return this.getMemoryFootprintEstimate(
           consumptionDetailRow,
@@ -672,8 +753,13 @@ export default class ConsumptionManagementService {
   private getUsageAmountInGigabyteHours(
     consumptionDetailRow: ConsumptionDetailRow,
   ): number {
-    if (consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECONDS_50000)
+    if (
+      consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECONDS_50000 ||
+      consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECOND_1
+    )
       return consumptionDetailRow.usageAmount / 3600
+    if (consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_HOUR_1)
+      return consumptionDetailRow.usageAmount
     return this.getGigabyteHoursFromInstanceTypeAndProcessors(
       consumptionDetailRow.usageType,
       consumptionDetailRow.usageAmount,
@@ -691,10 +777,11 @@ export default class ConsumptionManagementService {
       this.isSSDStorage(consumptionDetailRow) &&
       this.isManagedDiskStorage(consumptionDetailRow)
     ) {
+      // Extract disk type according to pattern of Managed SSD names
+      const matchingDiskType =
+        consumptionDetailRow.usageType.match(/(P|E)\d{1,2}/)[0]
       return convertGigaBytesToTerabyteHours(
-        SSD_MANAGED_DISKS_STORAGE_GB[
-          consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
-        ],
+        SSD_MANAGED_DISKS_STORAGE_GB[matchingDiskType],
       )
     }
 

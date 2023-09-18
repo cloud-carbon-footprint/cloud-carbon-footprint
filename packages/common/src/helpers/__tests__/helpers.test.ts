@@ -8,14 +8,12 @@ import {
   containsAny,
   endsWithAny,
   getHoursInMonth,
-  wait,
   getPeriodEndDate,
+  mapToArabic,
+  wait,
 } from '../helpers'
 
 jest.useFakeTimers()
-jest.mock('moment', () => {
-  return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
-})
 
 describe('Helpers', () => {
   it('contains any', () => {
@@ -51,12 +49,18 @@ describe('Helpers', () => {
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitTime)
+    jest.clearAllTimers()
   })
 
   it('converts days in a month to hours in a month', () => {
-    const expected = 720
+    // Mock date for fixed test case
+    Date.now = jest.fn(() =>
+      new Date('2020-05-13T12:33:37.000Z').getMilliseconds(),
+    )
+    const expected = 744
 
     expect(getHoursInMonth()).toEqual(expected)
+    jest.clearAllMocks()
   })
 
   describe('gets period end date for various grouping options', () => {
@@ -67,8 +71,21 @@ describe('Helpers', () => {
       [GroupBy.quarter, new Date('2020-07-01T00:59:59.000Z')],
       [GroupBy.year, new Date('2021-03-31T23:59:59.000Z')],
     ]).it('should get period end date for %s', (grouping, expectedResult) => {
-      const result = getPeriodEndDate(new Date(), grouping)
+      const result = getPeriodEndDate(
+        new Date('2020-04-01T00:00:00.000Z'),
+        grouping,
+      )
 
+      expect(result).toEqual(expectedResult)
+    })
+  })
+
+  describe('converts chinese to arabic', () => {
+    each([
+      ['万', 10000],
+      ['亿', 100000000],
+    ]).it('should get period end date for %s', (unit, expectedResult) => {
+      const result = mapToArabic(unit)
       expect(result).toEqual(expectedResult)
     })
   })

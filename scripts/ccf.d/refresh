@@ -1,0 +1,24 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Refresh package after changes"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} PACKAGE
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (app) 
+    in_cyan "building app\n"
+    ccf build app
+    in_cyan "installing into api\n"
+    ccf install api
+    in_cyan "building api\n"
+    ccf build api
+  ;;
+  (*)
+    ccf refresh app
+  ;;
+esac
+

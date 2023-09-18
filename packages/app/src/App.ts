@@ -2,11 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { promises as fs } from 'fs'
 import {
   configLoader,
   EmissionRatioResult,
   EstimationResult,
   GroupBy,
+  Logger,
   LookupTableInput,
   LookupTableOutput,
   OnPremiseDataInput,
@@ -22,12 +24,12 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   AWSAccount,
 } from '@cloud-carbon-footprint/aws'
-import { getGCPEmissionsFactors, GCPAccount } from '@cloud-carbon-footprint/gcp'
+import { GCPAccount, getGCPEmissionsFactors } from '@cloud-carbon-footprint/gcp'
 import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
-import { promises as fs } from 'fs'
+import { includeCloudProviders } from './common/helpers'
 
 export const recommendationsMockPath = 'recommendations.mock.json'
 
@@ -36,41 +38,30 @@ export default class App {
   async getCostAndEstimates(
     request: EstimationRequest,
   ): Promise<EstimationResult[]> {
-    const startDate = request.startDate
-    const endDate = request.endDate
-    const grouping =
-      (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
+    const appLogger = new Logger('App')
+    const { startDate, endDate, cloudProviderToSeed } = request
+    const grouping = request.groupBy as GroupBy
     const config = configLoader()
-    const AWS = config.AWS
-    const GCP = config.GCP
-    const AZURE = config.AZURE
+    includeCloudProviders(cloudProviderToSeed, config)
+    const { AWS, GCP, AZURE } = config
+    if (process.env.TEST_MODE) {
+      return []
+    }
 
-    if (request.region) {
-      const estimatesForAccounts: EstimationResult[][] = []
-      for (const account of AWS.accounts) {
-        const estimates: EstimationResult[] = await Promise.all(
-          await new AWSAccount(
-            account.id,
-            account.name,
-            AWS.CURRENT_REGIONS,
-          ).getDataForRegion(request.region, startDate, endDate, grouping),
-        )
-        estimatesForAccounts.push(estimates)
-      }
-      return estimatesForAccounts.flat()
-    } else {
-      const AWSEstimatesByRegion: EstimationResult[][] = []
-      if (AWS.USE_BILLING_DATA) {
+    const AWSEstimatesByRegion: EstimationResult[][] = []
+    if (AWS?.INCLUDE_ESTIMATES) {
+      appLogger.info('Starting AWS Estimations')
+      if (AWS?.USE_BILLING_DATA) {
         const estimates = await new AWSAccount(
           AWS.BILLING_ACCOUNT_ID,
           AWS.BILLING_ACCOUNT_NAME,
           [AWS.ATHENA_REGION],
         ).getDataFromCostAndUsageReports(startDate, endDate, grouping)
         AWSEstimatesByRegion.push(estimates)
-      } else {
+      } else if (AWS?.accounts.length) {
         // Resolve AWS Estimates synchronously in order to avoid hitting API limits
         for (const account of AWS.accounts) {
-          const estimates: EstimationResult[] = await Promise.all(
+          const estimates = await Promise.all(
             await new AWSAccount(
               account.id,
               account.name,
@@ -80,47 +71,55 @@ export default class App {
           AWSEstimatesByRegion.push(estimates)
         }
       }
-      let GCPEstimatesByRegion: EstimationResult[][] = []
-      if (GCP.USE_BILLING_DATA) {
+      appLogger.info('Finished AWS Estimations')
+    }
+
+    const GCPEstimatesByRegion: EstimationResult[][] = []
+    if (GCP?.INCLUDE_ESTIMATES) {
+      appLogger.info('Starting GCP Estimations')
+      if (GCP?.USE_BILLING_DATA) {
         const estimates = await new GCPAccount(
           GCP.BILLING_PROJECT_ID,
           GCP.BILLING_PROJECT_NAME,
           [],
         ).getDataFromBillingExportTable(startDate, endDate, grouping)
         GCPEstimatesByRegion.push(estimates)
-      } else {
+      } else if (GCP?.projects.length) {
         // Resolve GCP Estimates asynchronously
-        GCPEstimatesByRegion = await Promise.all(
-          GCP.projects
-            .map((project) => {
-              return new GCPAccount(
-                project.id,
-                project.name,
-                GCP.CURRENT_REGIONS,
-              ).getDataForRegions(startDate, endDate, grouping)
-            })
-            .flat(),
-        )
+        for (const project of GCP.projects) {
+          const estimates = await Promise.all(
+            await new GCPAccount(
+              project.id,
+              project.name,
+              GCP.CURRENT_REGIONS,
+            ).getDataForRegions(startDate, endDate, grouping),
+          )
+          GCPEstimatesByRegion.push(estimates)
+        }
       }
-      const AzureEstimatesByRegion: EstimationResult[][] = []
-      if (AZURE?.USE_BILLING_DATA) {
-        const azureAccount = new AzureAccount()
-        await azureAccount.initializeAccount()
-        const estimates = await azureAccount.getDataFromConsumptionManagement(
-          startDate,
-          endDate,
-          grouping,
-        )
-        AzureEstimatesByRegion.push(estimates)
-      }
-
-      return reduceByTimestamp(
-        AWSEstimatesByRegion.flat()
-          .flat()
-          .concat(GCPEstimatesByRegion.flat())
-          .concat(AzureEstimatesByRegion.flat()),
-      )
+      appLogger.info('Finished GCP Estimations')
     }
+
+    const AzureEstimatesByRegion: EstimationResult[][] = []
+    if (AZURE?.INCLUDE_ESTIMATES && AZURE?.USE_BILLING_DATA) {
+      appLogger.info('Starting Azure Estimations')
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const estimates = await azureAccount.getDataFromConsumptionManagement(
+        startDate,
+        endDate,
+        grouping,
+      )
+      AzureEstimatesByRegion.push(estimates)
+      appLogger.info('Finished Azure Estimations')
+    }
+
+    return reduceByTimestamp(
+      AWSEstimatesByRegion.flat()
+        .flat()
+        .concat(GCPEstimatesByRegion.flat())
+        .concat(AzureEstimatesByRegion.flat()),
+    )
   }
 
   getEmissionsFactors(): EmissionRatioResult[] {
@@ -158,7 +157,8 @@ export default class App {
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
-    const recommendations: RecommendationResult[][] = []
+    const AZURE = config.AZURE
+    const allRecommendations: RecommendationResult[][] = []
 
     const AWSRecommendations: RecommendationResult[][] = []
     if (AWS.USE_BILLING_DATA) {
@@ -181,7 +181,7 @@ export default class App {
         AWSRecommendations.push(recommendations)
       }
     }
-    recommendations.push(AWSRecommendations.flat())
+    allRecommendations.push(AWSRecommendations.flat())
 
     let GCPRecommendations: RecommendationResult[][] = []
     if (GCP.USE_BILLING_DATA) {
@@ -202,9 +202,18 @@ export default class App {
         ),
       )
     }
-    recommendations.push(GCPRecommendations.flat())
+    allRecommendations.push(GCPRecommendations.flat())
 
-    return recommendations.flat()
+    const AzureRecommendations: RecommendationResult[][] = []
+    if (AZURE?.USE_BILLING_DATA) {
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const recommendations = await azureAccount.getDataFromAdvisorManagement()
+      AzureRecommendations.push(recommendations)
+    }
+    allRecommendations.push(AzureRecommendations.flat())
+
+    return allRecommendations.flat()
   }
 
   getAwsEstimatesFromInputData(

@@ -1,0 +1,25 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Execute a command on a package folder"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} PACKAGE CMD
+
+This will just cd into PACKAGE directory and execute
+a CMD
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (*) 
+    if [[ -n ${1} && -n ${2} ]]; then
+      dir=${CCF_PROJ_ROOT_DIR}/packages/${1}
+      [[ -d ${dir} ]] || error "can't find ${dir}"
+      (cd ${dir}; ${(@)=*[2,${#@}]})
+    else
+      help
+    fi
+  ;;
+esac
+

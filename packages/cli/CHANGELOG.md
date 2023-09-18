@@ -1,5 +1,155 @@
 # @cloud-carbon-footprint/cli
 
+## 1.11.1
+
+### Patch Changes
+
+- 056c0c8b: Changes seed-cache-file request splitting frequency to be based on groupBy parameter
+
+## 1.11.0
+
+### Minor Changes
+
+- c82bf5fd: Adds config support for chunking/splitting azure requests by subscription
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+### Patch Changes
+
+- 1a5d7636: Adds support for listing Azure subscription IDs to fetch
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [fedf79c0]
+  - @cloud-carbon-footprint/common@1.12.0
+  - @cloud-carbon-footprint/app@1.3.0
+
+## 1.10.2
+
+### Patch Changes
+
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/common@1.11.0
+  - @cloud-carbon-footprint/app@1.2.2
+
+## 1.10.1
+
+### Patch Changes
+
+- 65386330: bumps ramda dependency
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/app@1.2.1
+
+## 1.10.0
+
+### Minor Changes
+
+- 793ccd53: Adds option to seed cache file using split requests (ideal for large usage data)
+
+  For updates to the create-app templates, please see this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8e91fd704096d3a786c857d4e82f6935c236ef1b)
+
+- 003c8892: removes regions from request parameter and updates app logic
+- 3e84626a: Adds MongoDB config option for the guided installation
+
+### Patch Changes
+
+- Updated dependencies [84fa2da1]
+- Updated dependencies [1d297700]
+- Updated dependencies [003c8892]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/app@1.2.0
+  - @cloud-carbon-footprint/common@1.10.0
+
+## 1.9.1
+
+### Patch Changes
+
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
+## 1.9.0
+
+### Minor Changes
+
+- 40a8f3d1: updates cli and app for seed cache file with csp and updates create app templates
+  Refer to create app changes [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/618bf389d373743212f5b6615d00ba4665c8f491) and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c821b98e14d6fb31e9da8319ba441b0603400c91)
+- a1ad994d: Updates Azure SDK and usageRow pagination to latest version (v9)
+
+  For updates to create-app (CLI) templates, please review this [commit.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6e943bc74851b093d372b14ccb38981053e36bf5)
+
+### Patch Changes
+
+- 381b7872: Fixes groupBy param missing from CLI estimation request, inadvertently causing memory errors when parsing dates during estimation process.
+
+  For updates the create-app template, please see look at this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d388be0f34c0002d04edbd885b4714c36f181fab).
+
+- Updated dependencies [40a8f3d1]
+- Updated dependencies [692d6aaf]
+- Updated dependencies [09e72585]
+- Updated dependencies [222bfed3]
+  - @cloud-carbon-footprint/app@1.1.0
+
+## 1.8.0
+
+### Minor Changes
+
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- a6423a68: updates cli on prem validation - please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/fd4843c3954d7f28723f2ebeffef7f3bb90e4f0b)
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [e9e57da7]
+  - @cloud-carbon-footprint/app@1.0.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 1.7.0
+
+### Minor Changes
+
+- a7a79c83: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/app@0.7.0
+  - @cloud-carbon-footprint/common@1.7.0
+
+## 1.6.0
+
+### Minor Changes
+
+- cd239fc2: updates on-premise usage hours up time approach. Update create-app templates referenced [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/common@1.6.0
+  - @cloud-carbon-footprint/app@0.6.1
+
+## 1.5.0
+
+### Minor Changes
+
+- 6178cb7a: Adds support for Azure in the Lookup Table
+
+### Patch Changes
+
+- Updated dependencies [dcc33152]
+  - @cloud-carbon-footprint/app@0.6.0
+
 ## 1.4.1
 
 ### Patch Changes

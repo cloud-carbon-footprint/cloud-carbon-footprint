@@ -1,5 +1,63 @@
 # @cloud-carbon-footprint/common
 
+## 1.12.0
+
+### Minor Changes
+
+- 1a5d7636: Adds support for listing Azure subscription IDs to fetch
+- c82bf5fd: Adds config support for chunking/splitting azure requests by subscription
+
+## 1.11.0
+
+### Minor Changes
+
+- 0d20b32c: Adds support for Google Cloud resource tags to configuration options
+
+## 1.10.0
+
+### Minor Changes
+
+- 3f17990d: Add option to chunk time range in azure requests to avoid infinite rate limit retries
+
+### Patch Changes
+
+- 1d297700: adds support for aws china during aws account authorization
+
+## 1.9.0
+
+### Minor Changes
+
+- 689c973e: Add support for Azure Tags and resource groups
+
+### Patch Changes
+
+- 689c973e: Adds config and default values for including individual cloud providers
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+
+## 1.8.0
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- a6423a68: Correctly calculate period end date when the local timezone switched into or out of DST during the period
+
+## 1.7.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+
+## 1.6.0
+
+### Minor Changes
+
+- cd239fc2: updates on-premise usage hours up time approach. Update create-app templates referenced [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
 ## 1.5.1
 
 ### Patch Changes

@@ -6,7 +6,6 @@ import {
   CloudConstants,
   FootprintEstimate,
   MemoryUsage,
-  COMPUTE_PROCESSOR_TYPES,
   ComputeUsage,
   StorageUsage,
 } from '.'
@@ -35,18 +34,5 @@ export default abstract class FootprintEstimatesDataBuilder {
 
   protected constructor(init: Partial<FootprintEstimatesDataBuilder>) {
     Object.assign(this, init)
-  }
-
-  public getComputeProcessors(
-    instanceType: string,
-    INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
-      [key: string]: string[]
-    },
-  ): string[] {
-    return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
-      ]
-    )
   }
 }

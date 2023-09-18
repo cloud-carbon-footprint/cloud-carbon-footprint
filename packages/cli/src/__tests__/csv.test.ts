@@ -117,8 +117,6 @@ describe('csv test', () => {
     start,
     '--endDate',
     end,
-    '--region',
-    'us-east-1',
   ]
 
   let outputFilePath: string

@@ -20,10 +20,7 @@ Parameters:
     AllowedValues: ["True", "False"]
 
 Conditions:
-  USWest2: !Equals [ !Ref "AWS::Region", 'us-west-2' ]
-  CreateCentralBucketCond: !And
-    - !Equals [ !Ref CreateCentralBucket, "True" ]
-    - !Condition USWest2
+  CreateCentralBucketCond: !Equals [ !Ref CreateCentralBucket, "True" ]
 Resources:
   centralBucket:
     Condition: CreateCentralBucketCond
@@ -47,7 +44,7 @@ Resources:
         RestrictPublicBuckets: True
       BucketName: !Ref CentralBucketName
   centralBucketPolicy:
-    DependsOn: centralBucket
+    Condition: CreateCentralBucketCond
     Type: 'AWS::S3::BucketPolicy'
     Properties:
       Bucket: !Ref centralBucket
@@ -56,18 +53,29 @@ Resources:
         Statement:
           - Effect: "Allow"
             Principal:
-              AWS: "arn:aws:iam::${AWS::AccountId}:role/${CCFRoleName}"
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:role/${CCFRoleName}"
             Action:
               - "s3:ListBucket"
               - "s3:GetObject"
             Resource:
               - !Sub "arn:aws:s3:::${CentralBucketName}"
               - !Sub "arn:aws:s3:::${CentralBucketName}/*"
+          - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
+            Effect: "Deny"
+            Principal: "*"
+            Action:
+              - "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::${CentralBucketName}"
+              - !Sub "arn:aws:s3:::${CentralBucketName}/*"
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
   LambdaExecutionRole:
-    Condition: USWest2
     Type: AWS::IAM::Role
     Properties:
       RoleName: ComputeOptimizerExportRole
+      ManagedPolicyArns: ["arn:aws:iam::aws:policy/ComputeOptimizerReadOnlyAccess"]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -77,7 +85,6 @@ Resources:
           Action: "sts:AssumeRole"
       Path: "/"
   LambdaPolicy:
-    Condition: USWest2
     Type: AWS::IAM::Policy
     Properties:
       Roles:
@@ -88,11 +95,21 @@ Resources:
         Statement:
           - Action: "logs:CreateLogGroup"
             Effect: "Allow"
-            Resource: "*"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*'
           - Effect: "Allow"
             Action:
               - "logs:CreateLogStream"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*'
+          - Effect: "Allow"
+            Action:
               - "logs:PutLogEvents"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*:log-stream:*'
+          - Effect: "Allow"
+            Action:
+              - "compute-optimizer:ExportLambdaFunctionRecommendations"
+              - "compute-optimizer:ExportEC2InstanceRecommendations"
+              - "compute-optimizer:ExportAutoScalingGroupRecommendations"
+              - "compute-optimizer:ExportEBSVolumeRecommendations"
             Resource: "*"
           - Effect: "Allow"
             Action:
@@ -100,21 +117,10 @@ Resources:
               - "xray:PutTelemetryRecords"
             Resource: "*"
           - Action:
-              - "compute-optimizer:*"
-              - "ec2:DescribeInstances"
-              - "ec2:DescribeVolumes"
-              - "lambda:ListFunctions"
-              - "lambda:ListProvisionedConcurrencyConfigs"
-              - "autoscaling:DescribeAutoScalingGroups"
-              - "cloudwatch:GetMetricData"
-              - "organizations:ListAccounts"
-              - "organizations:DescribeOrganization"
-              - "organizations:DescribeAccount"
-              - "organizations:EnableAWSServiceAccess"
-            Effect: "Allow"
-            Resource: "*"
-          - Action:
-              - "s3:*"
+              - "s3:GetBucketPolicyStatus"
+              - "s3:PutObject"
+              - "s3:GetObject"
+              - "s3:GetBucketAcl"
             Effect: "Allow"
             Resource:
               - !Sub 'arn:aws:s3:::${BucketNamePrefix}-*'
@@ -126,7 +132,7 @@ Resources:
     Properties:
       Runtime: nodejs14.x
       Timeout: 300
-      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Role: !GetAtt LambdaExecutionRole.Arn
       Handler: index.handler
       Code:
         ZipFile: |
@@ -197,7 +203,7 @@ Resources:
     Properties:
       Runtime: nodejs14.x
       Timeout: 300
-      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Role: !GetAtt LambdaExecutionRole.Arn
       Handler: index.handler
       Code:
         ZipFile: |

@@ -2,17 +2,17 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import * as common from '../../GuidedInstall/common'
-import * as external from '../../GuidedInstall/external'
+import * as common from '../../common'
+import * as external from '../../common/external'
 import { GuidedInstall } from '../../GuidedInstall/runner'
 
-jest.mock('../../GuidedInstall/common')
+jest.mock('../../common')
 const mockListPrompt: jest.Mock = common.listPrompt as jest.Mock
 const mockConfirmPrompt: jest.Mock = common.confirmPrompt as jest.Mock
 const mockInputPrompt: jest.Mock = common.inputPrompt as jest.Mock
 const mockCreateEnvFile: jest.Mock = common.createEnvFile as jest.Mock
 
-jest.mock('../../GuidedInstall/external')
+jest.mock('../../common/external')
 const mockLog: jest.Mock = external.log as jest.Mock
 const mockRunCmd: jest.Mock = external.runCmd as jest.Mock
 
@@ -233,6 +233,56 @@ describe('GuidedInstall', () => {
 
         expect(mockLog.mock.calls).toMatchSnapshot()
       })
+    })
+  })
+
+  describe('MongoDB', () => {
+    describe('with auth certificate', () => {
+      beforeEach(() => {
+        mockListPrompt.mockResolvedValue('MongoDB')
+        mockConfirmPrompt
+          .mockResolvedValueOnce(true)
+          .mockResolvedValueOnce(true)
+          .mockResolvedValueOnce(true)
+        mockInputPrompt.mockResolvedValueOnce('mongodb://localhost:27017')
+        mockInputPrompt.mockResolvedValueOnce('~/keys/mongodb-certificate.pem')
+      })
+
+      it('creates an env file for cli and api with the given config', async () => {
+        await GuidedInstall()
+
+        const expectedEnv = {
+          CACHE_MODE: 'MONGODB',
+          MONGODB_URI: 'mongodb://localhost:27017',
+          MONGODB_CREDENTIALS: '~/keys/mongodb-certificate.pem',
+        }
+
+        expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)
+        expect(mockCreateEnvFile).toHaveBeenCalledWith('../api/', expectedEnv)
+      })
+    })
+  })
+
+  describe('without auth certificate', () => {
+    beforeEach(() => {
+      mockListPrompt.mockResolvedValue('MongoDB')
+      mockConfirmPrompt
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false)
+      mockInputPrompt.mockResolvedValueOnce('mongodb://localhost:27017')
+    })
+
+    it('creates an env file for cli and api with the given config', async () => {
+      await GuidedInstall()
+
+      const expectedEnv = {
+        CACHE_MODE: 'MONGODB',
+        MONGODB_URI: 'mongodb://localhost:27017',
+      }
+
+      expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)
+      expect(mockCreateEnvFile).toHaveBeenCalledWith('../api/', expectedEnv)
     })
   })
 })

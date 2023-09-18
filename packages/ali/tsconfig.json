@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "noImplicitAny": false // <-- Added because AliCloud SDK does not support implicit any. TODO: Find a workaround for this
+  },  
+  "include": ["./src"],
+}

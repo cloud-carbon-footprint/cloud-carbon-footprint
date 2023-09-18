@@ -6,12 +6,15 @@ import { OnPremiseDataInput } from '@cloud-carbon-footprint/common'
 export const validateInputData = (inputData: OnPremiseDataInput[]) => {
   inputData.map((inputRow: OnPremiseDataInput) => {
     if (
-      !inputRow.machineName ||
+      !inputRow.cpuDescription ||
       !inputRow.machineType ||
       !inputRow.memory ||
       !inputRow.startTime ||
       !inputRow.endTime ||
-      !inputRow.cost
+      !inputRow.dailyUptime ||
+      !inputRow.weeklyUptime ||
+      !inputRow.monthlyUptime ||
+      !inputRow.annualUptime
     ) {
       throw new Error(
         'Input data is incorrect. Please check your input data file and try again.',

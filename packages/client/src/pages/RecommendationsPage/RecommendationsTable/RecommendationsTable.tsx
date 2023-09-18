@@ -16,7 +16,7 @@ import {
   GridOverlay,
   GridRowParams,
   MuiEvent,
-} from '@material-ui/data-grid'
+} from '@mui/x-data-grid'
 import {
   RecommendationResult,
   ServiceData,
@@ -27,22 +27,24 @@ import useStyles from './recommendationsTableStyles'
 import DateRange from '../../../common/DateRange'
 import Tooltip from '../../../common/Tooltip'
 import SearchBar from '../SearchBar'
-import Forecast from './Forecast/Forecast'
+import Forecast, { ForecastDetails } from './Forecast/Forecast'
 import CustomPagination from './CustomPagination'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
 } from '../../../utils/helpers/transformData'
-import { RecommendationRow } from '../../../Types'
+import { Co2eUnit, RecommendationRow } from '../../../Types'
 import RecommendationsSidePanel from '../RecommendationsSidePanel'
+import { co2eUnitAbbreviation } from '../../../utils/helpers'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
-  useKilograms: boolean
+  co2eUnit: Co2eUnit
+  forecastDetails: ForecastDetails
 }
 
-const getColumns = (useKilograms: boolean): GridColDef[] => [
+const getColumns = (co2eUnit: Co2eUnit): GridColDef[] => [
   {
     field: 'cloudProvider',
     headerName: 'Cloud Provider',
@@ -77,12 +79,10 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
   },
   {
     field: 'co2eSavings',
-    headerName: useKilograms
-      ? 'Potential Carbon Savings (kg)'
-      : 'Potential Carbon Savings (t)',
+    headerName: `Potential Carbon Savings (${co2eUnitAbbreviation[co2eUnit]})`,
     renderCell: (params: GridCellParams) => {
       if (typeof params.value === 'number') {
-        return tableFormatRawCo2e(useKilograms, params.value)
+        return tableFormatRawCo2e(co2eUnit, params.value)
       } else {
         return '-'
       }
@@ -94,7 +94,8 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
-  useKilograms,
+  co2eUnit,
+  forecastDetails,
 }): ReactElement => {
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
@@ -120,7 +121,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           const recommendationRow = {
             ...recommendation,
             id: index,
-            useKilograms,
+            co2eUnit: co2eUnit,
             co2eSavings: recommendation.co2eSavings,
           }
           // Replace any undefined values and round numbers to thousandth decimal
@@ -163,7 +164,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           if (!fieldsToNotFilter.includes(field)) {
             let value = row[field]
             if (field === 'co2eSavings') {
-              value = tableFormatRawCo2e(useKilograms, value)
+              value = tableFormatRawCo2e(co2eUnit, value)
             } else if (field === 'costSavings') {
               value = tableFormatNearZero(value)
             }
@@ -177,7 +178,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   useEffect(() => {
     requestSearch(searchBarValue)
-  }, [useKilograms])
+  }, [co2eUnit])
 
   useEffect(() => {
     requestSearch(searchBarValue)
@@ -219,7 +220,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           <Forecast
             emissionsData={emissionsData}
             recommendations={recommendations}
-            useKilograms={useKilograms}
+            co2eUnit={co2eUnit}
+            forecastDetails={forecastDetails}
           />
           <div className={classes.recommendationsContainer}>
             <Typography className={classes.title}>Recommendations</Typography>
@@ -241,7 +243,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               <DataGrid
                 autoHeight
                 rows={rows}
-                columns={getColumns(useKilograms)}
+                columns={getColumns(co2eUnit)}
                 columnBuffer={6}
                 hideFooterSelectedRowCount={true}
                 classes={{

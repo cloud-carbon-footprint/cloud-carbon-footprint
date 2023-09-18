@@ -12,3 +12,11 @@ export {
   useFilterDataFromEstimates,
   getMaxOfDataSeries,
 } from './transformData'
+
+export {
+  co2eUnitMultiplier,
+  co2eUnitLabel,
+  co2eUnitAbbreviation,
+} from './units'
+
+export * from './handleDates'

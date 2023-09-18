@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cloud-carbon-footprint
+description: 'Application for Cloud Carbon Footprint'
+type: application
+version: 0.1.0

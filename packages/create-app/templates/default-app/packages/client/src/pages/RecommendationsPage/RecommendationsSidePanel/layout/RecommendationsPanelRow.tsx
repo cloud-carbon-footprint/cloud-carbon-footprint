@@ -18,7 +18,7 @@ const RecommendationsPanelRow: FunctionComponent<
   return (
     <Grid
       container
-      justify="space-between"
+      justifyContent="space-between"
       spacing={2}
       className={classes.content}
     >

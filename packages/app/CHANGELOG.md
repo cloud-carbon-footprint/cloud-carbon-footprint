@@ -1,5 +1,155 @@
 # @cloud-carbon-footprint/app
 
+## 1.3.0
+
+### Minor Changes
+
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+### Patch Changes
+
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+- Updated dependencies [4683b86f]
+  - @cloud-carbon-footprint/azure@1.4.0
+  - @cloud-carbon-footprint/common@1.12.0
+  - @cloud-carbon-footprint/gcp@0.13.1
+
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [42b2359e]
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/gcp@0.13.0
+  - @cloud-carbon-footprint/common@1.11.0
+
+## 1.2.1
+
+### Patch Changes
+
+- 65386330: bumps ramda dependency
+- Updated dependencies [e0299c2c]
+- Updated dependencies [2510e2a7]
+- Updated dependencies [efbcad00]
+- Updated dependencies [5b5a0ac5]
+- Updated dependencies [56273914]
+- Updated dependencies [65386330]
+- Updated dependencies [b98fd6d1]
+  - @cloud-carbon-footprint/gcp@0.12.0
+  - @cloud-carbon-footprint/aws@0.14.4
+  - @cloud-carbon-footprint/azure@1.3.0
+
+## 1.2.0
+
+### Minor Changes
+
+- 84fa2da1: Adds boundary for MongoDB pagination limit and fixes aggregations error on large timestamp estimates.
+- 003c8892: removes regions from request parameter and updates app logic
+
+### Patch Changes
+
+- Updated dependencies [11559bff]
+- Updated dependencies [1d297700]
+- Updated dependencies [5f8ff432]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/azure@1.2.0
+  - @cloud-carbon-footprint/aws@0.14.3
+  - @cloud-carbon-footprint/common@1.10.0
+
+## 1.1.0
+
+### Minor Changes
+
+- 40a8f3d1: updates cli and app for seed cache file with csp and updates create app templates
+  Refer to create app changes [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/618bf389d373743212f5b6615d00ba4665c8f491) and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c821b98e14d6fb31e9da8319ba441b0603400c91)
+- 692d6aaf: implements advisor recommendations for azure package
+- 09e72585: adds include estimates variable and logic to include estimations based on csp seed value
+
+### Patch Changes
+
+- 222bfed3: Updates to get integration tests running locally and on CI
+- Updated dependencies [b4bf5bbb]
+- Updated dependencies [a1ad994d]
+- Updated dependencies [692d6aaf]
+- Updated dependencies [441ec2fe]
+- Updated dependencies [f9123277]
+- Updated dependencies [fd4ec19b]
+  - @cloud-carbon-footprint/azure@1.0.0
+  - @cloud-carbon-footprint/aws@0.14.1
+
+## 1.0.0
+
+### Major Changes
+
+- e9e57da7: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/aws@0.14.0
+  - @cloud-carbon-footprint/azure@0.12.0
+  - @cloud-carbon-footprint/common@1.8.0
+  - @cloud-carbon-footprint/gcp@0.11.0
+  - @cloud-carbon-footprint/on-premise@0.1.1
+
+## 0.7.0
+
+### Minor Changes
+
+- a7a79c83: Updates logic for cache management for better extensibility of services
+- a7a79c83: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/aws@0.13.0
+  - @cloud-carbon-footprint/azure@0.11.0
+  - @cloud-carbon-footprint/common@1.7.0
+  - @cloud-carbon-footprint/gcp@0.10.0
+
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependencies [7b9a4fc4]
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/azure@0.10.1
+  - @cloud-carbon-footprint/common@1.6.0
+  - @cloud-carbon-footprint/on-premise@0.1.0
+
+## 0.6.0
+
+### Minor Changes
+
+- dcc33152: Adds support for Azure in lookup table
+
+### Patch Changes
+
+- Updated dependencies [dcc33152]
+  - @cloud-carbon-footprint/azure@0.10.0
+
 ## 0.5.1
 
 ### Patch Changes

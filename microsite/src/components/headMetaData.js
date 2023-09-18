@@ -6,14 +6,11 @@ function MetaData() {
     'Cloud Carbon Footprint - An open source tool to measure and analyze cloud carbon emissions'
   const description =
     'An open source tool to measure and analyze cloud carbon emissions'
+
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <img
-        src="https://www.cloudcarbonfootprint.org/img/social-share-image.png"
-        alt="Cloud carbon footprint tool screen capture"
-      />
       <meta property="og:title" content={title}></meta>
       <meta property="og:type" content="website"></meta>
       <meta

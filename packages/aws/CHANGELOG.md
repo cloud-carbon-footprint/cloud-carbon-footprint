@@ -1,5 +1,81 @@
 # @cloud-carbon-footprint/aws
 
+## 0.14.5
+
+### Patch Changes
+
+- 6bf5745d: Fixes Athena query column error for accounts without EC2 hours/usage
+
+## 0.14.4
+
+### Patch Changes
+
+- 2510e2a7: Adds support for additional usage types
+- 65386330: bumps ramda dependency
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
+## 0.14.3
+
+### Patch Changes
+
+- 1d297700: adds support for aws china during aws account authorization
+- Updated dependencies [9e929f03]
+- Updated dependencies [1d297700]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/core@0.17.1
+  - @cloud-carbon-footprint/common@1.10.0
+
+## 0.14.2
+
+### Patch Changes
+
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
+## 0.14.1
+
+### Patch Changes
+
+- f9123277: adds usage types to aws
+- fd4ec19b: Adds new AWS regions and emissions factors for ap-southeast-3 and me-central-1
+
+## 0.14.0
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- a6423a68: Correctly calculate emissions for AWS Lambda when using ARM architecture.
+- a6423a68: Updates the S3 standard replication factor to 6
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 0.13.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+- a7a79c83: Add ECS Credentials AWS authentication option
+
+### Patch Changes
+
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 0.11.1
 
 ### Patch Changes

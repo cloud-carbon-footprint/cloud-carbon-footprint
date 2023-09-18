@@ -4,10 +4,14 @@
 
 export { default as App } from './App'
 export {
-  CreateValidFootprintRequest,
-  CreateValidRecommendationsRequest,
+  createValidFootprintRequest,
+  createValidRecommendationsRequest,
 } from './CreateValidRequest'
 export {
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
+  Tags,
 } from './RawRequest'
+export { default as MongoDbCacheManager } from './MongoDbCacheManager'
+export { default as LocalCacheManager } from './LocalCacheManager'
+export { default as GoogleCloudCacheManager } from './GoogleCloudCacheManager'

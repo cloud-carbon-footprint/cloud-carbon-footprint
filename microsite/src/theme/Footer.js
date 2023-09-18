@@ -1,11 +1,10 @@
-import { Link } from '@material-ui/core'
 import React from 'react'
-import FooterImage from '../components/footerImage'
 import styles from './footer.module.css'
 
-function FooterLink({ link, text }) {
+function FooterLink({ link, text, className }) {
+  const customClassName = styles.footerLicenseLink + ' ' + className
   return (
-    <a className={styles.footerLicenseLink} target="_blank" href={link}>
+    <a className={customClassName} target="_blank" href={link}>
       {text}
     </a>
   )
@@ -14,8 +13,12 @@ function FooterLink({ link, text }) {
 function Footer() {
   return (
     <div>
-      <FooterImage />
       <div className={styles.footerLicenseContainer}>
+        <FooterLink
+        link="https://www.thoughtworks.com"
+        text="Made for the 🌎 by Thoughtworks"
+        className={styles.signature}
+        />
         <p>
           Cloud Carbon Footprint is an open-source project, sponsored by
           Thoughtworks Inc. under the&nbsp;

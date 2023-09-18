@@ -1,5 +1,30 @@
 # @cloud-carbon-footprint/on-premise
 
+## 0.1.1
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 0.1.0
+
+### Minor Changes
+
+- cd239fc2: updates on-premise usage hours up time approach. Update create-app templates referenced [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/common@1.6.0
+
 ## 0.0.2
 
 ### Patch Changes

@@ -1,6 +1,9 @@
 #!/bin/bash
+#
+# © 2022 Thoughtworks, Inc.
+# 
 
-copyright="© 2021 Thoughtworks, Inc."
+copyright="© 202[1-3] Thoughtworks, Inc."
 errorCode=0
 domain=`git config user.email`
 
@@ -12,9 +15,10 @@ else
     if [[ $file = *"CHANGELOG"* ]]; then continue; fi
     if [[ $file = *".changeset"* ]]; then continue; fi
     if [[ $file = *"microsite/"* ]]; then continue; fi
+    if [[ $file = *".adr/"* ]]; then continue; fi
     holder=$(echo $file | grep -E "^.*\.(ts|tsx|js|jsx|md|sh)$" | wc -l)
     if [ $holder -eq 0 ]; then continue; fi
-    if grep "$copyright" $file; then continue; fi
+    if grep -E "$copyright" $file; then continue; fi
 
     echo "ERROR: \"$copyright\" not in file: ${file}"
     exit 1

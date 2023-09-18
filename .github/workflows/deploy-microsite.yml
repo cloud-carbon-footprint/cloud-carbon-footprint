@@ -7,14 +7,16 @@ on:
     paths:
       - '.github/workflows/deploy-microsite.yml'
       - 'microsite/**'
-
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   deploy-microsite:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     env:
       CI: true

@@ -4,8 +4,8 @@
 
 export type LookupTableInput = {
   id: string
-  cost: string
-  usageAmount: string
+  cost: number
+  usageAmount: number
   serviceName: string
   region: string
   usageType: string
@@ -19,7 +19,6 @@ export type LookupTableOutput = {
   serviceName: string
   region: string
   usageType: string
-  usageUnit: string
   vCpus?: string | number
   machineType?: string
   kilowattHours: number

@@ -20,4 +20,5 @@ export {
   wait,
   getHoursInMonth,
   getPeriodEndDate,
+  mapToArabic,
 } from './helpers'

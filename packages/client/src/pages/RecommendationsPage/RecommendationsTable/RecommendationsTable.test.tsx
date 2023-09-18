@@ -2,11 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { fireEvent, render, within, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import each from 'jest-each'
 import moment from 'moment'
+import { act } from 'react-dom/test-utils'
+import React from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from '../../../Types'
+import { Co2eUnit, ServiceResult } from '../../../Types'
 import {
   generateEstimations,
   mockData,
@@ -14,8 +16,6 @@ import {
 } from '../../../utils/data'
 import RecommendationsTable from './RecommendationsTable'
 import { useRemoteFootprintService } from '../../../utils/hooks'
-import { act } from 'react-dom/test-utils'
-import React from 'react'
 
 jest.mock('../../../utils/hooks/FootprintServiceHook')
 
@@ -29,7 +29,11 @@ const testProps = {
   ),
   recommendations: [],
   handleRowClick: jest.fn(),
-  useKilograms: false,
+  co2eUnit: Co2eUnit.MetricTonnes,
+  forecastDetails: {
+    missingDates: [],
+    groupBy: 'day',
+  },
 }
 
 describe('Recommendations Table', () => {
@@ -211,7 +215,7 @@ describe('Recommendations Table', () => {
       within(row).getAllByRole('cell'),
     )
 
-    actualRowData[0].forEach((cell) => expect(cell.innerHTML).toBe('-'))
+    actualRowData[0].forEach((cell) => expect(cell.innerHTML).toContain('-'))
   })
 
   const co2eSavingsToBeRounded = [
@@ -243,7 +247,7 @@ describe('Recommendations Table', () => {
               kilowattHourSavings: null,
             },
           ]}
-          useKilograms={false}
+          co2eUnit={Co2eUnit.MetricTonnes}
         />,
       )
 
@@ -290,7 +294,7 @@ describe('Recommendations Table', () => {
               kilowattHourSavings: null,
             },
           ]}
-          useKilograms={true}
+          co2eUnit={Co2eUnit.Kilograms}
         />,
       )
 
@@ -328,7 +332,7 @@ describe('Recommendations Table', () => {
       <RecommendationsTable
         {...testProps}
         recommendations={mockRecommendations}
-        useKilograms={true}
+        co2eUnit={Co2eUnit.Kilograms}
       />,
     )
 
@@ -341,7 +345,7 @@ describe('Recommendations Table', () => {
 
     const firstRow = actualRowData[0]
 
-    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560')
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2,560')
 
     const table = within(getByRole('grid'))
 
@@ -386,24 +390,24 @@ describe('Recommendations Table', () => {
     })
 
     const searchedRecommendationsRows = [
-      ['test-b', true, 1, false],
-      ['AWS', true, 2, false],
-      ['us-west-1', true, 1, false],
-      ['Modify', true, 1, false],
-      [2.539, true, 1, false],
-      [2539, true, 1, true],
-      ['pizza', undefined, 0, false],
-      [6.2, undefined, 0, false],
+      ['test-b', true, 1, Co2eUnit.MetricTonnes],
+      ['AWS', true, 2, Co2eUnit.MetricTonnes],
+      ['us-west-1', true, 1, Co2eUnit.MetricTonnes],
+      ['Modify', true, 1, Co2eUnit.MetricTonnes],
+      [2.539, true, 1, Co2eUnit.MetricTonnes],
+      ['2,539', true, 1, Co2eUnit.Kilograms],
+      ['pizza', undefined, 0, Co2eUnit.MetricTonnes],
+      [6.2, undefined, 0, Co2eUnit.MetricTonnes],
     ]
 
     each(searchedRecommendationsRows).it(
       'should filter according to search bar value %s',
-      (searchValue, expectedResult, rowsLength, useKilograms) => {
+      (searchValue, expectedResult, rowsLength, co2eUnit) => {
         const { getByRole, getAllByRole, getByLabelText } = render(
           <RecommendationsTable
             {...testProps}
             recommendations={mockRecommendationData}
-            useKilograms={useKilograms}
+            co2eUnit={co2eUnit}
           />,
         )
 

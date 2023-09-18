@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -13,8 +16,8 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/preset-classic": "2.0.0-alpha.70",
+    "@docusaurus/core": "latest",
+    "@docusaurus/preset-classic": "latest",
     "@material-ui/core": "^4.11.3",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",

@@ -1,9 +1,14 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
-import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
-import { APIEndpoint } from 'googleapis-common'
+import {
+  AddressesClient,
+  DisksClient,
+  ImagesClient,
+  InstancesClient,
+  MachineTypesClient,
+} from '@google-cloud/compute'
+import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { ProjectsClient } from '@google-cloud/resource-manager'
 import {
@@ -32,21 +37,21 @@ import {
   mockDeleteAddressRecommendationsEast,
 } from './fixtures/recommender.fixtures'
 import {
-  mockedAddressesResultItems,
-  mockedDisksResultItems,
+  mockAddressesResultItems,
+  mockDisksResultItems,
   mockedInstanceGetItems,
   mockedInstanceGetItemsCurrent,
   mockedInstanceGetItemsWithBothDisks,
   mockedInstanceGetItemsWithHDDDisks,
-  mockedInstanceResultItems,
+  mockInstanceResultItems,
   mockedMachineTypesGetItems,
   mockedMachineTypesGetItemsNew,
   mockedMachineTypesGetItemsCurrent,
   mockedDisksGetSSDDetails,
   mockedDisksGetHDDDetails,
   mockedImageGetDetails,
-  mockedInstanceGlobalResultItems,
-  mockedInstanceRegionsResultItems,
+  mockInstanceGlobalResultItems,
+  mockInstanceRegionsResultItems,
   mockedAddressGetDetails,
 } from './fixtures/googleapis.fixtures'
 
@@ -70,10 +75,12 @@ jest.mock('@google-cloud/recommender', () => ({
 }))
 
 describe('GCP Recommendations Service', () => {
-  let googleAuthClient: GoogleAuthClient
-  let googleComputeClient: APIEndpoint
+  let googleAuthClient: GoogleAuthClient,
+    serviceWrapper: ServiceWrapper,
+    mockGoogleCompute: any
 
   beforeEach(async () => {
+    const googleAuth = new GoogleAuth()
     const getClientSpy = jest.spyOn(googleAuth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
@@ -81,29 +88,47 @@ describe('GCP Recommendations Service', () => {
     googleAuthClient = await googleAuth.getClient({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
-    googleComputeClient = googleCompute('v1')
+
+    mockGoogleCompute = {
+      instances: new InstancesClient(),
+      machineTypes: new MachineTypesClient(),
+      disks: new DisksClient(),
+      images: new ImagesClient(),
+      addresses: new AddressesClient(),
+    }
 
     setupSpy(
-      googleComputeClient.instances,
-      'aggregatedList',
-      mockedInstanceResultItems,
+      mockGoogleCompute.instances,
+      'aggregatedListAsync',
+      mockInstanceResultItems(),
     )
     setupSpy(
-      googleComputeClient.disks,
-      'aggregatedList',
-      mockedDisksResultItems,
+      mockGoogleCompute.disks,
+      'aggregatedListAsync',
+      mockDisksResultItems(),
     )
     setupSpy(
-      googleComputeClient.addresses,
-      'aggregatedList',
-      mockedAddressesResultItems,
+      mockGoogleCompute.addresses,
+      'aggregatedListAsync',
+      mockAddressesResultItems(),
+    )
+
+    serviceWrapper = new ServiceWrapper(
+      new ProjectsClient(),
+      googleAuthClient,
+      mockGoogleCompute.instances,
+      mockGoogleCompute.disks,
+      mockGoogleCompute.addresses,
+      mockGoogleCompute.images,
+      mockGoogleCompute.machineTypes,
+      new RecommenderClient(),
     )
   })
 
   describe('Stop VM Recommendations', () => {
     beforeEach(() => {
       setupSpy(
-        googleComputeClient.machineTypes,
+        mockGoogleCompute.machineTypes,
         'get',
         mockedMachineTypesGetItems,
       )
@@ -113,18 +138,13 @@ describe('GCP Recommendations Service', () => {
       mockListRecommendations
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -138,8 +158,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.0045358859520000004,
+          kilowattHourSavings: 58.41792000000001,
+          co2eSavings: 0.003505075200000001,
           costSavings: 15,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -156,24 +176,19 @@ describe('GCP Recommendations Service', () => {
         )
         .mockResolvedValue([[]])
 
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       setupSpy(
-        googleComputeClient.instances,
-        'aggregatedList',
-        mockedInstanceGlobalResultItems,
+        mockGoogleCompute.instances,
+        'aggregatedListAsync',
+        mockInstanceGlobalResultItems(),
       )
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -188,7 +203,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.41792000000001,
-          co2eSavings: 0.024046546771602437,
+          co2eSavings: 0.0185270715092137,
           costSavings: 55,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -203,24 +218,19 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
 
-      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+      setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
 
       setupSpy(
-        googleComputeClient.instances,
-        'aggregatedList',
-        mockedInstanceRegionsResultItems,
+        mockGoogleCompute.instances,
+        'aggregatedListAsync',
+        mockInstanceRegionsResultItems(),
       )
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -234,8 +244,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.0045358859520000004,
+          kilowattHourSavings: 58.41792000000001,
+          co2eSavings: 0.003505075200000001,
           costSavings: 15,
           instanceName: 'test-resource-name',
           resourceId: '12456789012',
@@ -250,19 +260,14 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
 
-      const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+      const targetFunctionSpy = jest.spyOn(mockGoogleCompute.instances, 'get')
       ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -292,22 +297,17 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
       setupSpy(
-        googleComputeClient.instances,
+        mockGoogleCompute.instances,
         'get',
         mockedInstanceGetItemsWithHDDDisks,
       )
-      setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
+      setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetHDDDetails)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -321,8 +321,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.1626332,
-          co2eSavings: 0.0045366853896,
+          kilowattHourSavings: 58.428216000000006,
+          co2eSavings: 0.003505692960000001,
           costSavings: 15,
           instanceName: 'test-instance-name',
           resourceId: '12456789012',
@@ -337,13 +337,13 @@ describe('GCP Recommendations Service', () => {
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
       setupSpy(
-        googleComputeClient.instances,
+        mockGoogleCompute.instances,
         'get',
         mockedInstanceGetItemsWithBothDisks,
       )
 
       setupSpyWithMultipleValues(
-        googleComputeClient.disks,
+        mockGoogleCompute.disks,
         'get',
         mockedDisksGetSSDDetails,
         mockedDisksGetHDDDetails,
@@ -353,12 +353,7 @@ describe('GCP Recommendations Service', () => {
         new ComputeEstimator(),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new ServiceWrapper(
-          new ProjectsClient(),
-          googleAuthClient,
-          googleComputeClient,
-          new RecommenderClient(),
-        ),
+        serviceWrapper,
       )
 
       const recommendations = await recommendationsService.getRecommendations()
@@ -372,8 +367,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.18155480000001,
-          co2eSavings: 0.004538161274400001,
+          kilowattHourSavings: 58.44722400000001,
+          co2eSavings: 0.003506833440000001,
           costSavings: 15,
           instanceName: 'test-instance-name',
           resourceId: '12456789012',
@@ -390,28 +385,19 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValue([[]])
 
     setupSpyWithMultipleValues(
-      googleComputeClient.machineTypes,
+      mockGoogleCompute.machineTypes,
       'get',
       mockedMachineTypesGetItemsCurrent,
       mockedMachineTypesGetItemsNew,
     )
 
-    setupSpy(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsCurrent,
-    )
+    setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItemsCurrent)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -425,8 +411,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'CHANGE_MACHINE_TYPE',
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
-        kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.00013229154899999999,
+        kilowattHourSavings: 1.7037900000000001,
+        co2eSavings: 0.00010222740000000001,
         costSavings: 20,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -442,25 +428,20 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValue([[]])
 
     setupSpyWithMultipleValues(
-      googleComputeClient.machineTypes,
+      mockGoogleCompute.machineTypes,
       'get',
       mockedMachineTypesGetItemsCurrent,
       mockedMachineTypesGetItemsNew,
     )
 
-    const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+    const targetFunctionSpy = jest.spyOn(mockGoogleCompute.instances, 'get')
     ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -474,8 +455,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'CHANGE_MACHINE_TYPE',
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
-        kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.00013229154899999999,
+        kilowattHourSavings: 1.7037900000000001,
+        co2eSavings: 0.00010222740000000001,
         costSavings: 20,
         resourceId: '',
         instanceName: 'instance-name',
@@ -490,18 +471,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteDiskRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetSSDDetails)
+    setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetSSDDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -515,8 +491,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_DISK',
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
-        kilowattHourSavings: 0.0189216,
-        co2eSavings: 0.0000014758848,
+        kilowattHourSavings: 0.019008000000000004,
+        co2eSavings: 0.0000011404800000000002,
         costSavings: 50,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -531,18 +507,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockSnapshotAndDeleteDiskRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
+    setupSpy(mockGoogleCompute.disks, 'get', mockedDisksGetHDDDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -556,8 +527,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'SNAPSHOT_AND_DELETE_DISK',
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
-        kilowattHourSavings: 0.010249200000000002,
-        co2eSavings: 7.994376000000002e-7,
+        kilowattHourSavings: 0.010296000000000003,
+        co2eSavings: 6.177600000000002e-7,
         costSavings: 50,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -572,18 +543,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteImageRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
+    setupSpy(mockGoogleCompute.images, 'get', mockedImageGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -596,8 +562,8 @@ describe('GCP Recommendations Service', () => {
         region: 'us-west1',
         recommendationType: 'DELETE_IMAGE',
         recommendationDetail: "Save cost by deleting idle image 'test-image'.",
-        kilowattHourSavings: 0.0002771527420842647,
-        co2eSavings: 2.1617913882572647e-8,
+        kilowattHourSavings: 0.0002784182797193527,
+        co2eSavings: 1.6705096783161164e-8,
         costSavings: 30,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
@@ -612,18 +578,13 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteAddressRecommendationsResults)
       .mockResolvedValue([[]])
 
-    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+    setupSpy(mockGoogleCompute.addresses, 'get', mockedAddressGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -654,24 +615,15 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValueOnce(mockDeleteAddressRecommendationsEast)
       .mockResolvedValue([[]])
 
-    setupSpy(
-      googleComputeClient.machineTypes,
-      'get',
-      mockedMachineTypesGetItems,
-    )
-    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
-    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+    setupSpy(mockGoogleCompute.machineTypes, 'get', mockedMachineTypesGetItems)
+    setupSpy(mockGoogleCompute.instances, 'get', mockedInstanceGetItems)
+    setupSpy(mockGoogleCompute.addresses, 'get', mockedAddressGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()
@@ -684,8 +636,8 @@ describe('GCP Recommendations Service', () => {
         region: 'us-west1',
         recommendationType: 'STOP_VM',
         recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 58.152384000000005,
-        co2eSavings: 0.0045358859520000004,
+        kilowattHourSavings: 58.41792000000001,
+        co2eSavings: 0.003505075200000001,
         costSavings: 15,
         instanceName: 'test-resource-name',
         resourceId: '12456789012',
@@ -698,8 +650,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_ADDRESS',
         recommendationDetail:
           "Save cost by deleting idle address 'test-address'.",
-        kilowattHourSavings: 155.07302400000003,
-        co2eSavings: 0.012095695872000002,
+        kilowattHourSavings: 155.78112000000002,
+        co2eSavings: 0.009346867200000001,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',
@@ -712,8 +664,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_ADDRESS',
         recommendationDetail:
           "Save cost by deleting idle address 'test-address'.",
-        kilowattHourSavings: 155.07302400000003,
-        co2eSavings: 0.07443505152000002,
+        kilowattHourSavings: 155.78112000000002,
+        co2eSavings: 0.06760900608,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',
@@ -732,12 +684,7 @@ describe('GCP Recommendations Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     const recommendations = await recommendationsService.getRecommendations()

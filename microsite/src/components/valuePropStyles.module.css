@@ -8,10 +8,17 @@
   }
 }
 
+
 .valuePropCard {
   flex-basis: 100%;
-  margin: 1rem;
+  margin: 1rem 0;
   padding-bottom: 2rem;
+}
+
+@media screen and (min-width: 900px) {
+  .valuePropCard {
+    margin: 1rem;
+  }
 }
 
 @media screen and (max-width: 1280px) {
@@ -29,7 +36,6 @@
 .valuePropCardHeaderContainer {
   display: flex;
   align-items: flex-start;
-  height: 5rem;
   margin-top: 1rem;
 }
 
@@ -56,6 +62,13 @@
 
   .valuePropCardHeaderContainer {
     height: 4rem;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+
+  .valuePropCardHeaderContainer {
+    height: 6rem;
   }
 }
 

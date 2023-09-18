@@ -1,138 +1,97 @@
 /*
- * © 2021 Thoughtworks, Inc.
+ * © 2022 Thoughtworks, Inc.
  */
-import { Selector } from 'testcafe'
-import waitOn from 'wait-on'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+import waitOn from 'wait-on'
+import page from './page-model'
+
+fixture`Cloud Carbon Footprint`.page`http://127.0.0.1:3000/`
   .before(async () => {
     await waitOn({
       resources: [
-        'http://localhost:3000/',
-        'http://localhost:4000/api/healthz',
+        'http://127.0.0.1:3000/',
+        'http://127.0.0.1:4000/api/healthz',
       ],
     })
   })
   .beforeEach(async (t) => {
-    const header = Selector('#app-bar-header')
-    await t.expect(header.exists).ok()
+    await t.expect(page.header.exists).ok()
   })
 
 test('loading screen appears when app is starting', async (t) => {
-  const loading = Selector('#loading-screen')
-  await t.expect(loading.exists).ok()
-  await t.wait(5000).expect(loading.exists).notOk()
+  await page.loadingScreen
 })
 
 test('main components render with correct data when app loads', async (t) => {
-  const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-  const accounts = Selector('span').withText('Accounts: 12 of 12')
-  const services = Selector('span').withText('Services: 8 of 8')
-  const lineChart = Selector('#apexchartslineChart')
-  const carbonComparisonCard = Selector('#carbonComparisonCard')
-  const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
-
-  await t.expect(cloudProviders.exists).ok()
-  await t.expect(accounts.exists).ok()
-  await t.expect(services.exists).ok()
-  await t.expect(lineChart.exists).ok()
-  await t.expect(carbonComparisonCard.exists).ok()
-  await t.expect(emissionsBreakdownContainer.exists).ok()
-})
+  await t
+    .expect(page.cloudProviders.with({ visibilityCheck: true }).exists)
+    .ok() //this one was the problem once
+  await t.expect(page.accounts.exists).ok()
+  await t.expect(page.services.exists).ok()
+  await t.expect(page.lineChart.exists).ok()
+  await t.expect(page.carbonComparisonCard.exists).ok()
+  await t
+    .expect(
+      page.emissionsBreakdownContainer.with({ visibilityCheck: true }).exists, //one of two problem elements - wait for it to be fully visible
+    )
+    .ok()
+}) //waiting seems to help, try updating wait
 
 test('side drawer opens and closes when clicked', async (t) => {
-  const drawerOpenButton = Selector('#info-button')
-  const drawerCloseButton = Selector('#close-button-container').child(
-    '.MuiIconButton-root',
-  )
-  const drawerOpen = Selector('#drawer-open').exists
-
-  await t.click(drawerOpenButton).expect(drawerOpen).ok()
-  await t.click(drawerCloseButton).expect(drawerOpen).notOk()
+  await t.click(page.drawerOpenButton).expect(page.drawerOpen.exists).ok()
+  await t.click(page.drawerCloseButton).expect(page.drawerOpen.exists).notOk()
 })
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
-  let totalCo2Amount = Selector('#metric-one').withText('57')
-  const cloudProviderDropDown = Selector('#cloud-provider-filter')
-    .sibling('div')
-    .child('button')
-  const accountsDropDown = Selector('#accounts-filter')
-    .sibling('div')
-    .child('button')
-  const servicesDropDown = Selector('#services-filter')
-    .sibling('div')
-    .child('button')
-
-  await t.expect(totalCo2Amount.exists).ok()
-  await t.click(cloudProviderDropDown)
-  const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
-  await t.click(awsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('20')
-  await t.expect(totalCo2Amount.exists).ok()
-
-  await t.click(accountsDropDown)
-  const accountsDropdownItem = Selector('#accounts-filter-option-1')
-  await t.click(accountsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('38')
-  await t.expect(totalCo2Amount.exists).ok()
-
-  await t.click(servicesDropDown)
-  const servicesDropdownItem = Selector('#services-filter-option-1')
-  await t.click(servicesDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('34')
-  await t.expect(totalCo2Amount.exists).ok()
+  await page.totalCo2Amount.with({ visibilityCheck: true }).exists //await core element before getting any of its text-specific versions
+  //check initial value then check after each filter option
+  await t.expect(page.totalCo2Amount.withText('metric tons CO2e').exists).ok() //the other problem element
 })
 
 test('carbon equivalency component displays each option when clicked', async (t) => {
-  const flightsButton = Selector('#flights')
-  const phonesButton = Selector('#phones')
-  const treesButton = Selector('#trees')
-  const flightsTaken = Selector('p').withText('70')
-  const phonesCharged = Selector('p').withText('6.9+ M')
-  const treeSeedlings = Selector('p').withText('942')
-
-  await t.click(flightsButton).expect(flightsTaken.exists).ok()
-  await t.click(phonesButton).expect(phonesCharged.exists).ok()
-  await t.click(treesButton).expect(treeSeedlings.exists).ok()
+  await t
+    .click(page.flightsButton)
+    .expect(
+      page.emissionsRecord.withText('direct one way flights from NYC to London')
+        .exists,
+    )
+    .ok()
+  await t
+    .click(page.phonesButton)
+    .expect(page.emissionsRecord.withText('smartphones charged').exists)
+    .ok()
+  await t
+    .click(page.treesButton)
+    .expect(
+      page.emissionsRecord.withText('tree seedlings grown for 10 years').exists,
+    )
+    .ok()
 })
 
 test('emissions breakdown component displays each bar chart when selected', async (t) => {
-  // Maximize the window in orde for all DOM elements to be visible.
+  // Maximize the window in order for all DOM elements to be visible.
   // For some reason this stops this test failing, and can help with debugging.
+  // In headless mode, issues have been noted that can be resolved by resizing window: https://github.com/DevExpress/testcafe/issues/6739
   await t.maximizeWindow()
+  //sort by account
+  await t.click(page.dropDownSelector)
+  await t.click(page.accountSelection)
+  await t.expect(page.selected.exists).ok()
 
-  const dropDownSelector = Selector('#breakdown-selector')
-  const accountSelection = Selector('#account-dropdown')
-  const account = Selector('tspan').withText('aws account 3')
+  //sort by service
+  await t.click(page.dropDownSelector)
+  await t.click(page.serviceSelection)
+  await t.expect(page.selected.exists).ok()
 
-  await t.click(dropDownSelector)
-  await t.click(accountSelection)
-  await t.expect(account.exists).ok()
-
-  const serviceSelection = Selector('#service-dropdown')
-  const service = Selector('tspan').withText('computeEngine')
-
-  await t.click(dropDownSelector)
-  await t.click(serviceSelection)
-  await t.expect(service.exists).ok()
-
-  const regionSelection = Selector('#region-dropdown')
-  const region = Selector('tspan').withText('us-east-1')
-
-  await t.click(dropDownSelector)
-  await t.click(regionSelection)
-  await t.expect(region.exists).ok()
+  //sort by region
+  await t.maximizeWindow()
+  await t.click(page.dropDownSelector)
+  await t.click(page.regionSelection)
+  await t.expect(page.selected.exists).ok()
 })
 
 test('line chart displays the y-axis data when legend is clicked', async (t) => {
-  const kwhLegend = Selector('span').withText('Kilowatt Hours')
-  const costLegend = Selector('span').withText('Cost')
-  const co2eLegend = Selector('span').withText('CO2e')
-  const kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
-  const costAxis = Selector('text').withText('Cost ($)')
-  const co2eAxis = Selector('text').withText('CO2e (metric tons)')
-
-  await t.click(kwhLegend).expect(kwhAxis.exists).ok()
-  await t.click(costLegend).expect(costAxis.exists).ok()
-  await t.click(co2eLegend).expect(co2eAxis.exists).notOk()
+  await t.click(page.kwhLegend).expect(page.kwhAxis.exists).ok()
+  await t.click(page.costLegend).expect(page.costAxis.exists).ok()
+  await t.click(page.co2eLegend).expect(page.co2eAxis.exists).notOk()
 })

@@ -6,19 +6,25 @@ import React from 'react'
 import { render, within } from '@testing-library/react'
 import { ServiceData } from '@cloud-carbon-footprint/common'
 import {
-  mockRecommendationData,
   mockDataWithLargeNumbers,
   mockDataWithSmallNumbers,
+  mockRecommendationData,
 } from '../../../../utils/data'
-import Forecast, { ForecastProps } from './Forecast'
+import Forecast, { ForecastDetails, ForecastProps } from './Forecast'
+import { Co2eUnit } from '../../../../Types'
 
 describe('Forecast', () => {
   const emissionsData: ServiceData[] =
     mockDataWithLargeNumbers[0].serviceEstimates
+  const forecastDetails: ForecastDetails = {
+    missingDates: [],
+    groupBy: 'day',
+  }
   const testProps: ForecastProps = {
     emissionsData,
     recommendations: mockRecommendationData,
-    useKilograms: false,
+    co2eUnit: Co2eUnit.MetricTonnes,
+    forecastDetails,
   }
 
   it('should render the title', () => {
@@ -92,5 +98,22 @@ describe('Forecast', () => {
     const current = getByText('Monthly Savings Equal To')
 
     expect(current).toBeInTheDocument()
+  })
+
+  it('should render error message instead of forecast if invalid groupBy parameter', () => {
+    const newForecastDetails: ForecastDetails = {
+      ...forecastDetails,
+      groupBy: 'year',
+    }
+    const newTestProps: ForecastProps = {
+      ...testProps,
+      forecastDetails: newForecastDetails,
+    }
+
+    const getByTextIdValue = 'forecast-error-message'
+    const { getByTestId } = render(<Forecast {...newTestProps} />)
+    const forecast = getByTestId(getByTextIdValue)
+
+    expect(forecast).toBeInTheDocument()
   })
 })

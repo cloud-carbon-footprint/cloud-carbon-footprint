@@ -6,7 +6,11 @@ import { median, reduceBy } from 'ramda'
 
 import { COMPUTE_PROCESSOR_TYPES } from './compute'
 import { BillingDataRow, CloudConstantsEmissionsFactors } from '.'
-import { GroupBy, getPeriodEndDate } from '@cloud-carbon-footprint/common'
+import {
+  GroupBy,
+  getPeriodEndDate,
+  TagCollection,
+} from '@cloud-carbon-footprint/common'
 
 export default interface FootprintEstimate {
   timestamp: Date
@@ -39,7 +43,9 @@ export const aggregateEstimatesByDay = (
     estimate.timestamp.toISOString().substr(0, 10)
 
   const accumulatingFn = (acc: FootprintEstimate, value: FootprintEstimate) => {
-    acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
+    if (acc.timestamp.getTime() === new Date(0).getTime()) {
+      acc.timestamp = new Date(getDayOfEstimate(value))
+    }
     acc.kilowattHours += value.kilowattHours
     acc.co2e += value.co2e
     if (value.usesAverageCPUConstant) {
@@ -54,7 +60,7 @@ export const aggregateEstimatesByDay = (
     {
       kilowattHours: 0,
       co2e: 0,
-      timestamp: undefined,
+      timestamp: new Date(0),
       usesAverageCPUConstant: false,
     },
     getDayOfEstimate,
@@ -80,6 +86,7 @@ export interface MutableServiceEstimate {
   cost: number
   region: string
   usesAverageCPUConstant: boolean
+  tags?: TagCollection
 }
 
 export const accumulateKilowattHours = (
@@ -135,8 +142,10 @@ const setOrAccumulateByServiceAndUsageUnit = (
 
   // Usage unit exists for service - accumulate
   if (kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit]) {
-    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][accumulateBy] +=
-      accumValue
+    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][accumulateBy] =
+      (kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][
+        accumulateBy
+      ] || 0) + accumValue
     kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit].kilowattHours +=
       kilowattHours
   }
@@ -150,7 +159,8 @@ const setOrAccumulateUsageUnitTotals = (
 ): void => {
   const { usageUnit, [accumulateBy]: accumValue } = billingDataRow
   if (kilowattHoursByServiceAndUsageUnit.total[usageUnit]) {
-    kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] +=
+    kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] =
+      (kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] || 0) +
       accumValue
     kilowattHoursByServiceAndUsageUnit.total[usageUnit].kilowattHours +=
       kilowattHours
@@ -167,50 +177,52 @@ export const appendOrAccumulateEstimatesByDay = (
   rowData: BillingDataRow,
   footprintEstimate: FootprintEstimate,
   grouping: GroupBy,
+  tagNames: string[],
 ): void => {
   const serviceEstimate: MutableServiceEstimate = {
     cloudProvider: rowData.cloudProvider,
     kilowattHours: footprintEstimate.kilowattHours,
     co2e: footprintEstimate.co2e,
-    usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
+    usesAverageCPUConstant: !!footprintEstimate?.usesAverageCPUConstant,
     serviceName: rowData.serviceName,
     accountId: rowData.accountId,
     accountName: rowData.accountName,
     region: rowData.region,
     cost: rowData.cost,
+    tags: rowData.tags,
   }
 
-  if (dayExistsInEstimates(results, rowData.timestamp)) {
-    const estimatesForDay = results.find(
-      (estimate) =>
-        estimate.timestamp.getTime() === rowData.timestamp.getTime(),
-    )
+  const dayFoundInEstimate = results.find(
+    (estimate) => estimate.timestamp.getTime() === rowData.timestamp.getTime(),
+  )
 
-    if (
-      estimateExistsForRegionAndServiceAndAccount(
-        results,
-        rowData.timestamp,
-        serviceEstimate,
-      )
-    ) {
-      const estimateToAcc = estimatesForDay.serviceEstimates.find(
-        (estimateForDay) => {
-          return hasSameRegionAndServiceAndAccount(
-            estimateForDay,
-            serviceEstimate,
-          )
-        },
-      )
-      estimateToAcc.kilowattHours += serviceEstimate.kilowattHours
-      estimateToAcc.co2e += serviceEstimate.co2e
-      estimateToAcc.cost += serviceEstimate.cost
+  if (dayFoundInEstimate) {
+    const estimateFoundWithSameRegionAndServiceAccountAndTags =
+      dayFoundInEstimate.serviceEstimates.find((estimateForDay) => {
+        return hasSameRegionAndServiceAndAccountAndTags(
+          estimateForDay,
+          serviceEstimate,
+          tagNames,
+        )
+      })
+
+    if (estimateFoundWithSameRegionAndServiceAccountAndTags) {
+      estimateFoundWithSameRegionAndServiceAccountAndTags.kilowattHours +=
+        serviceEstimate.kilowattHours
+
+      estimateFoundWithSameRegionAndServiceAccountAndTags.co2e +=
+        serviceEstimate.co2e
+
+      estimateFoundWithSameRegionAndServiceAccountAndTags.cost +=
+        serviceEstimate.cost
+
       if (serviceEstimate.usesAverageCPUConstant) {
-        estimateToAcc.usesAverageCPUConstant =
-          estimateToAcc.usesAverageCPUConstant ||
+        estimateFoundWithSameRegionAndServiceAccountAndTags.usesAverageCPUConstant =
+          estimateFoundWithSameRegionAndServiceAccountAndTags.usesAverageCPUConstant ||
           serviceEstimate.usesAverageCPUConstant
       }
     } else {
-      estimatesForDay.serviceEstimates.push(serviceEstimate)
+      dayFoundInEstimate.serviceEstimates.push(serviceEstimate)
     }
   } else {
     results.push({
@@ -223,37 +235,28 @@ export const appendOrAccumulateEstimatesByDay = (
   }
 }
 
-function dayExistsInEstimates(
-  results: MutableEstimationResult[],
-  timestamp: Date,
-): boolean {
-  return results.some(
-    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
-  )
-}
-
-function estimateExistsForRegionAndServiceAndAccount(
-  results: MutableEstimationResult[],
-  timestamp: Date,
-  serviceEstimate: MutableServiceEstimate,
-): boolean {
-  const estimatesForDay = results.find(
-    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
-  )
-  return estimatesForDay.serviceEstimates.some((estimateForDay) => {
-    return hasSameRegionAndServiceAndAccount(estimateForDay, serviceEstimate)
-  })
-}
-
-function hasSameRegionAndServiceAndAccount(
+function hasSameRegionAndServiceAndAccountAndTags(
   estimateOne: MutableServiceEstimate,
   estimateTwo: MutableServiceEstimate,
+  tagNames: string[],
 ): boolean {
-  return (
-    estimateOne.region === estimateTwo.region &&
-    estimateOne.serviceName === estimateTwo.serviceName &&
-    estimateOne.accountId === estimateTwo.accountId
-  )
+  if (
+    estimateOne.region != estimateTwo.region ||
+    estimateOne.serviceName != estimateTwo.serviceName ||
+    estimateOne.accountId != estimateTwo.accountId
+  ) {
+    return false
+  }
+
+  for (const tagIndex in tagNames) {
+    const tagName = tagNames[tagIndex]
+
+    if (estimateOne.tags[tagName] != estimateTwo.tags[tagName]) {
+      return false
+    }
+  }
+
+  return true
 }
 
 // When we have a group of compute processor types, by we default calculate the average for this group of processors.
@@ -282,7 +285,7 @@ export function getAverage(nums: number[]): number {
 export function estimateCo2(
   estimatedKilowattHours: number,
   region: string,
-  emissionsFactors?: CloudConstantsEmissionsFactors,
+  emissionsFactors: CloudConstantsEmissionsFactors,
 ): number {
   return (
     estimatedKilowattHours *
@@ -293,7 +296,7 @@ export function estimateCo2(
 export function estimateKwh(
   estimatedCo2e: number,
   region: string,
-  emissionsFactors?: CloudConstantsEmissionsFactors,
+  emissionsFactors: CloudConstantsEmissionsFactors,
   replicationFactor = 1,
 ): number {
   return (

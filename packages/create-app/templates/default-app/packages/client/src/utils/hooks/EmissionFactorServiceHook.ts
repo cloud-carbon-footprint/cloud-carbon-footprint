@@ -40,6 +40,7 @@ const useRemoteEmissionService = (
           setData(res.data)
         }
       } catch (e) {
+        console.error(e.message, e)
         setError(e)
       } finally {
         if (_isMounted.current) {

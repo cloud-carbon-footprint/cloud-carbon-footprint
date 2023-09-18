@@ -2,7 +2,14 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Athena, CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import {
+  Athena,
+  CloudWatch,
+  CloudWatchLogs,
+  CostExplorer,
+  Glue,
+  S3,
+} from 'aws-sdk'
 import csv from 'csvtojson'
 import { path } from 'ramda'
 import {
@@ -27,6 +34,7 @@ export class ServiceWrapper {
     private readonly costExplorer: CostExplorer,
     private readonly s3: S3,
     private readonly athena?: Athena,
+    private readonly glue?: Glue,
   ) {}
 
   private async getCostAndUsageResponse(
@@ -169,6 +177,12 @@ export class ServiceWrapper {
     const stream = this.s3.getObject(params).createReadStream()
     const parsedCsv = await csv().fromStream(stream)
     return JSON.parse(JSON.stringify(parsedCsv))
+  }
+
+  public async getAthenaTableDescription(
+    params: Glue.Types.GetTableRequest,
+  ): Promise<Glue.GetTableResponse> {
+    return await this.glue.getTable(params).promise()
   }
 }
 

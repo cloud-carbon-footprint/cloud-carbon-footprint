@@ -6,8 +6,12 @@ import {
   SubscriptionClient,
   Subscription,
 } from '@azure/arm-resources-subscriptions'
-import { ClientSecretCredential } from '@azure/identity'
+import {
+  ClientSecretCredential,
+  WorkloadIdentityCredential,
+} from '@azure/identity'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
+import { AdvisorManagementClient } from '@azure/arm-advisor'
 
 import {
   ComputeEstimator,
@@ -19,18 +23,21 @@ import {
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
+  configLoader,
   EstimationResult,
   GroupBy,
   Logger,
   LookupTableInput,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
+import R from 'ramda'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
-
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
+import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 export default class AzureAccount extends CloudProviderAccount {
-  private credentials: ClientSecretCredential
+  private credentials: ClientSecretCredential | WorkloadIdentityCredential
   private subscriptionClient: SubscriptionClient
   private logger: Logger
 
@@ -49,11 +56,62 @@ export default class AzureAccount extends CloudProviderAccount {
     }
   }
 
+  public async getDataFromAdvisorManagement(): Promise<RecommendationResult[]> {
+    const subscriptions = await this.getSubscriptions()
+    const recommendations = await Promise.all(
+      subscriptions.map(async (subscription: Subscription) => {
+        try {
+          return await this.getRecommendationsForSubscription(
+            subscription.subscriptionId,
+          )
+        } catch (e) {
+          this.logger.warn(
+            `Unable to get Advisor recommendations data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+          )
+          return []
+        }
+      }),
+    )
+    return recommendations.flat()
+  }
+
   public async getDataFromConsumptionManagement(
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
+    const AZURE = configLoader().AZURE
+
+    const subscriptions = AZURE.SUBSCRIPTIONS?.length
+      ? await this.getSubscriptionsByIds(AZURE.SUBSCRIPTIONS)
+      : await this.getSubscriptions()
+
+    const requests = this.createSubscriptionRequests(
+      subscriptions,
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    // Fetch subscriptions in configured chunks or 10 at a time by default.
+    const chunkedRequests = AZURE.SUBSCRIPTION_CHUNKS
+      ? R.splitEvery(AZURE.SUBSCRIPTION_CHUNKS, requests)
+      : [requests]
+    this.logger.debug(
+      `Fetching Azure consumption data with ${AZURE.SUBSCRIPTION_CHUNKS} chunk(s)`,
+    )
+
+    const estimationResults = []
+    for (const requests of chunkedRequests) {
+      estimationResults.push(
+        await Promise.all(requests.map(async (request) => request())),
+      )
+    }
+
+    return R.flatten(estimationResults)
+  }
+
+  public async getSubscriptions(): Promise<Subscription[]> {
     const subscriptions = []
     for await (const subscription of this.subscriptionClient.subscriptions.list()) {
       subscriptions.push(subscription)
@@ -66,25 +124,28 @@ export default class AzureAccount extends CloudProviderAccount {
       )
     }
 
-    const estimationResults = await Promise.all(
-      subscriptions.map(async (subscription: Subscription) => {
-        try {
-          this.logger.info(`Getting data for ${subscription.displayName}...`)
-          return await this.getDataForSubscription(
-            startDate,
-            endDate,
-            subscription.subscriptionId,
-            grouping,
-          )
-        } catch (e) {
-          this.logger.warn(
-            `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
-          )
-          return []
-        }
-      }),
-    )
-    return estimationResults.flat()
+    return subscriptions
+  }
+
+  private async getSubscriptionsByIds(
+    subscriptionIds: string[],
+  ): Promise<Subscription[]> {
+    const subscriptions = []
+
+    for (const subscriptionId of subscriptionIds) {
+      try {
+        const subscription = await this.subscriptionClient.subscriptions.get(
+          subscriptionId,
+        )
+        subscriptions.push(subscription)
+      } catch (error) {
+        this.logger.warn(
+          `Unable to fetch subscription details for: "${subscriptionId}". Reason: ${error.message}`,
+        )
+      }
+    }
+
+    return subscriptions
   }
 
   static getDataFromConsumptionManagementInputData(
@@ -102,6 +163,15 @@ export default class AzureAccount extends CloudProviderAccount {
       ),
     )
     return consumptionManagementService.getEstimatesFromInputData(inputData)
+  }
+
+  private async getRecommendationsForSubscription(subscriptionId: string) {
+    const advisorRecommendations = new AdvisorRecommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new AdvisorManagementClient(this.credentials, subscriptionId),
+    )
+    return advisorRecommendations.getRecommendations()
   }
 
   private async getDataForSubscription(
@@ -127,5 +197,41 @@ export default class AzureAccount extends CloudProviderAccount {
       endDate,
       grouping,
     )
+  }
+
+  /**
+   * Creates an array of functions that each return a promise for EstimationResults.
+   * Each Promise corresponds to a mapped getDataForSubscription result for that subscription.
+   *
+   * @param {Subscription[]} subscriptions - An array of subscription information to retrieve data for.
+   * @param {Date} startDate - The start date for the estimation request period.
+   * @param {Date} endDate - The end date for the estimation request period.
+   * @param {GroupBy} grouping - The grouping method used intended for the estimation request.
+   * @returns {(() => Promise<EstimationResult[]>)[]} An array of functions that each return a promise for an array of estimation results.
+   */
+  private createSubscriptionRequests(
+    subscriptions: Subscription[],
+    startDate: Date,
+    endDate: Date,
+    grouping: GroupBy,
+  ): (() => Promise<EstimationResult[]>)[] {
+    return subscriptions.map((subscription) => {
+      return async () => {
+        try {
+          this.logger.info(`Getting data for ${subscription.displayName}...`)
+          return await this.getDataForSubscription(
+            startDate,
+            endDate,
+            subscription.subscriptionId,
+            grouping,
+          )
+        } catch (e) {
+          this.logger.warn(
+            `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+          )
+          return []
+        }
+      }
+    })
   }
 }

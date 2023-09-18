@@ -1,4 +1,3 @@
-
 name: CI
 on:
   workflow_dispatch:
@@ -13,22 +12,23 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
+# concurrency: ${{ github.workflow || github.run_id }}
 jobs:
   lint-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: setup node 14
+      - name: setup node 16
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
       - name: find location of global yarn cache
         id: yarn-cache
@@ -59,17 +59,20 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
           bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
           bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
+      - name: integration tests
+        run: yarn test:integration
+        continue-on-error: true # Temporarily allow continue on failure till we've seen the tests consistently pass on CI
   build:
     needs: lint-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-            # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
-            fetch-depth: 0
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
@@ -102,6 +105,7 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
           REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+          REACT_APP_MINIMAL_DATE_AGE: ${{ secrets.REACT_APP_MINIMAL_DATE_AGE }}
         run: |
           cd packages/client
           ./create_client_env_file.sh
@@ -127,10 +131,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
-      - name: use node.js 14
+      - name: use node.js 16
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: '16'
           registry-url: https://registry.npmjs.org/ # Needed for auth
       - name: cache all node_modules
         id: cache-modules
@@ -234,6 +238,7 @@ jobs:
       AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
       AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
       AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
       GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
@@ -241,6 +246,7 @@ jobs:
       GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
       GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
       GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
+      GCP_USE_BILLING_DATA: ${{ secrets.GCP_USE_BILLING_DATA }}
       AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -249,6 +255,8 @@ jobs:
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -260,13 +268,15 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
-          apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl
+          apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
@@ -298,7 +308,7 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.13
+      image: node:16.19-alpine3.17
     environment:
       name: production
     env:
@@ -313,6 +323,7 @@ jobs:
       AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
       AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
       AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
       GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
@@ -320,6 +331,7 @@ jobs:
       GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
       GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
       GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
+      GCP_USE_BILLING_DATA: ${{ secrets.GCP_USE_BILLING_DATA }}
       AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -328,6 +340,8 @@ jobs:
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -339,13 +353,15 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
-          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-production.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
 

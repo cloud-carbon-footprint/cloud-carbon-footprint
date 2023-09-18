@@ -21,5 +21,14 @@ describe('ErrorPage', () => {
   test('renders when there is an error', () => {
     const { getByTestId } = render(<ErrorPage />)
     expect(getByTestId('error-page')).toBeInTheDocument()
+    expect(getByTestId('error-page')).toHaveTextContent('internal error')
+    expect(getByTestId('error-page')).toHaveTextContent('500')
+  })
+
+  test('shows error message on the error page', () => {
+    const { getByTestId } = render(
+      <ErrorPage errorMessage={'test-error-message'} />,
+    )
+    expect(getByTestId('error-message')).toHaveTextContent('test-error-message')
   })
 })

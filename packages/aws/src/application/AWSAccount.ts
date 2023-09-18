@@ -8,6 +8,7 @@ import {
   CloudWatchLogs,
   CostExplorer,
   Credentials,
+  Glue,
   S3 as S3Service,
 } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
@@ -199,11 +200,14 @@ export default class AWSAccount extends CloudProviderAccount {
       new CloudWatch(options),
       new CloudWatchLogs(options),
       new CostExplorer({
-        region: 'us-east-1',
+        region: configLoader().AWS.IS_AWS_GLOBAL
+          ? 'us-east-1'
+          : 'cn-northwest-1',
         credentials: options.credentials,
       }),
       new S3Service(options),
       new Athena(options),
+      new Glue(options),
     )
   }
 

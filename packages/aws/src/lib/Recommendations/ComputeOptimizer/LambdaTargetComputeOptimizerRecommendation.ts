@@ -6,9 +6,10 @@ import {
   getHoursInMonth,
   LambdaRecommendationOption,
 } from '@cloud-carbon-footprint/common'
-import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
+import ComputeOptimizerRecommendationWithProcessors from './ComputeOptimizerRecommendationWithProcessors'
+import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
 
-export default class LambdaTargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
+export default class LambdaTargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendationWithProcessors {
   public functionVersion: string
   public memorySize: string
   public vCpus: string
@@ -65,5 +66,14 @@ export default class LambdaTargetComputeOptimizerRecommendation extends ComputeO
 
   public getVcpusForLambda(memorySize: string) {
     return (parseFloat(memorySize) / 1769).toString() //memory(MB) equivalent to 1 vcpu
+  }
+
+  // FIXME: this assumes that the lambda is running on x86, not ARM
+  public getComputeProcessors(): string[] {
+    return [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+  }
+
+  public getGPUComputeProcessors(): string[] {
+    return [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
   }
 }

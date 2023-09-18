@@ -1,5 +1,128 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.5.0
+
+### Minor Changes
+
+- 6bf5745d: Adds config for disabling forecast date validation
+
+### Patch Changes
+
+- cd3da603: Fix issue with concatentation of data from multiple footprint requests
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/1194/commits/65f76245d4947cd0bb1b7e4a5b761868dd9c6da0).
+
+## 2.4.0
+
+### Minor Changes
+
+- d217e11e: Adds OpenAPI spec documentation and Swagger portal
+- fedf79c0: API and CLI processes now persist connection to mongodb client when enabled as cache
+
+  For Create-App changes, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8995b8a7f29fb06f8a437166d32e75b1ed147870).
+
+### Patch Changes
+
+- 7688b086: Updates env templates with new configuration options
+
+## 2.3.5
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 2.3.4
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- 5e897485: Removes version locks for azure sdk
+- 65386330: bumps ramda dependency
+
+## 2.3.3
+
+### Patch Changes
+
+- 0339a2fe: Fixes client template tsconfig
+
+## 2.3.2
+
+### Patch Changes
+
+- bb8bf10b: Fix resolved package versions
+
+## 2.3.1
+
+### Patch Changes
+
+- 4872bc98: Fix incompatible @azure/arm-consumption version
+
+## 2.3.0
+
+### Minor Changes
+
+- 793ccd53: Adds option to seed cache file using split requests (ideal for large usage data)
+
+  For updates to the create-app templates, please see this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8e91fd704096d3a786c857d4e82f6935c236ef1b)
+
+- 3e84626a: Adds MongoDB config option for the guided installation
+
+### Patch Changes
+
+- ea0bb5bd: Updates styling for Forecast component errors and warnings
+- 003c8892: removes regions from request parameter and updates app logic
+
+## 2.2.1
+
+### Patch Changes
+
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- 689c973e: Fix outdated dependencies in create-app client template
+
+  To see which dependencies to bump in your created app, please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/996bd98f17094bd5826bbd6b47382858943d940e`).
+
+## 2.2.0
+
+### Minor Changes
+
+- a1ad994d: Updates Azure SDK and usageRow pagination to latest version (v9)
+
+  For updates to create-app (CLI) templates, please review this [commit.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6e943bc74851b093d372b14ccb38981053e36bf5)
+
+### Patch Changes
+
+- 40a8f3d1: updates cli and app for seed cache file with csp and updates create app templates
+  Refer to create app changes [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/618bf389d373743212f5b6615d00ba4665c8f491) and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c821b98e14d6fb31e9da8319ba441b0603400c91)
+- 7afae983: Refactors useKilograms to an enum for Co2e unit (for easier extensibility of units)
+
+  For updates to your create-app template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/55cc6dcd3de97a245265634c8b2c1806ff934907).
+
+- 874dd490: Fixes groupBy param missing from CLI estimation req……uest, inadvertently causing memory errors when parsing dates during estimation process.
+- c1684f40: updates for handling CORS. Please refer to create app template updates [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/9afbcf704797f20867b54c6a627415674f49db96)
+- fd4ec19b: Adds new AWS regions and emissions factors for ap-southeast-3 and me-central-1
+
+## 2.1.0
+
+### Minor Changes
+
+- 2999c971: adds mongodb filter params and pagination to templates
+
+  Please refer to these commits:
+
+  - [e700bc76a0d8d27c01f30cf4d646e189cdd224b5](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/e700bc76a0d8d27c01f30cf4d646e189cdd224b5)
+  - [e23b9b42b265d2c1be517a4b6d148a9dc1e9e8e5](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/e23b9b42b265d2c1be517a4b6d148a9dc1e9e8e5)
+
+### Patch Changes
+
+- a6423a68: updates cli on prem validation - please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/fd4843c3954d7f28723f2ebeffef7f3bb90e4f0b)
+
+## 2.0.2
+
+### Patch Changes
+
+- 1a1dfd17: updates package json version and scripts for templates
+- a7a79c83: updates dep in templates
+
 ## 2.0.1
 
 ### Patch Changes

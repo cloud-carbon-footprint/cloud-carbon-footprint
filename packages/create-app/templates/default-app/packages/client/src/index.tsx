@@ -2,8 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Root } from './Root'
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+const container = document.getElementById('root')
+const root = createRoot(container)
+root.render(<Root />)

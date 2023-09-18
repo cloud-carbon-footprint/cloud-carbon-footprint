@@ -3,9 +3,9 @@
  */
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
-import { GCP_REGIONS } from './GCPRegions'
 import { BigQueryDate } from '@google-cloud/bigquery'
 import { configLoader, containsAny } from '@cloud-carbon-footprint/common'
+import { GCP_REGIONS } from './GCPRegions'
 import { SERVICES_TO_OVERRIDE_USAGE_UNIT_AS_UNKNOWN } from './BillingExportTypes'
 import { SHARED_CORE_PROCESSORS } from './MachineTypes'
 
@@ -17,6 +17,7 @@ export default class BillingExportRow extends BillingDataRow {
     this.vCpuHours = this.getVCpuHours()
     this.gpuHours = this.usageAmount / 3600
     this.timestamp = new Date((init.timestamp as unknown as BigQueryDate).value)
+
     // These service have very large amount of usage with units 'seconds' and 'requests'.
     // This significantly overestimates their footprint, so override their usage unit to take this into account.
     if (

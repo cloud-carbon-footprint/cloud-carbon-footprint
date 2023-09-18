@@ -2,15 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { sum } from 'ramda'
-
 import CloudConstants, {
   CloudConstantsEmissionsFactors,
 } from '../CloudConstantsTypes'
 import FootprintEstimate, {
   estimateCo2,
   KilowattHoursByServiceAndUsageUnit,
-  KilowattHourTotals,
 } from '../FootprintEstimate'
 import IFootprintEstimator from '../IFootprintEstimator'
 import UnknownUsage from './UnknownUsage'
@@ -74,29 +71,6 @@ export default class UnknownEstimator implements IFootprintEstimator {
           totalForUsageUnit[this.estimateKilowattHoursBy]) *
         unknownUsage[this.estimateKilowattHoursBy]
       )
-    const totalKiloWattHours = this.getTotalFor(
-      'kilowattHours',
-      kilowattHoursByServiceAndUsageUnit,
-    )
-    const totalCost = this.getTotalFor(
-      this.estimateKilowattHoursBy,
-      kilowattHoursByServiceAndUsageUnit,
-    )
-
-    return (
-      (totalKiloWattHours / totalCost) *
-      unknownUsage[this.estimateKilowattHoursBy]
-    )
-  }
-
-  private getTotalFor(
-    type: keyof KilowattHourTotals,
-    kilowattHoursPerCost: KilowattHoursByServiceAndUsageUnit,
-  ) {
-    return sum(
-      Object.values(kilowattHoursPerCost.total).map(
-        (costAndKilowattHourTotals) => costAndKilowattHourTotals[type],
-      ),
-    )
+    return 0
   }
 }

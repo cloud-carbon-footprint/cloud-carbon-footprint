@@ -1,0 +1,14 @@
+# vim: ft=zsh
+
+# function to include other libraries
+# always use this function as first 
+# function on your command
+function use() {
+  readonly lib="${1?Missing library}"
+  log "requiring: ${lib}"
+  [[ -f ${SUBCOMMANDS_DIR}/_${lib} ]] || error "Library ${lib} not found\n"
+  . ${SUBCOMMANDS_DIR}/_${lib}
+}
+
+CCF_PROJ_ROOT_DIR=${ROOT_DIR:h}
+CCF_CORE_PACKAGES=('aws' 'gcp' 'azure' 'app' 'api' 'client')

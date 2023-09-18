@@ -1,0 +1,20 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Execute docker-compose up on environment"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [ENV]
+
+ENV is the current environment you want to start CCF. If
+ENV is not defined it is assumed to be 'local'.
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (*) 
+    local env="${1:-local}"
+    docker-compose -f docker-compose.${env}.yml up --build --force-recreate 
+  ;;
+esac
+

@@ -66,7 +66,7 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
     'e2-standard-16': [16, 1.2303],
     'e2-standard-32': [32, 1.2303],
   },
-  'e2-highmen': {
+  'e2-highmem': {
     'e2-highmem-2': [2, 1.2303],
     'e2-highmem-4': [4, 1.2303],
     'e2-highmem-8': [8, 1.2303],
@@ -94,7 +94,7 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
   'n2-highmem': {
     'n2-highmem-2': [2, 2.3761],
     'n2-highmem-4': [4, 2.3761],
-    'n2-highmem-8	': [8, 2.3761],
+    'n2-highmem-8': [8, 2.3761],
     'n2-highmem-16': [16, 2.3761],
     'n2-highmem-32': [32, 2.3761],
     'n2-highmem-48': [48, 2.3761],
@@ -197,13 +197,13 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
     'c2-standard-60': [60, 1.5107],
   },
   'c2d-standard': {
-    'c2-standard-2': [2, 1.6991],
-    'c2-standard-4': [4, 1.6991],
-    'c2-standard-8': [8, 1.6991],
-    'c2-standard-16': [16, 1.6991],
-    'c2-standard-32': [32, 1.6991],
-    'c2-standard-56': [56, 1.6991],
-    'c2-standard-112': [112, 1.6991],
+    'c2d-standard-2': [2, 1.6991],
+    'c2d-standard-4': [4, 1.6991],
+    'c2d-standard-8': [8, 1.6991],
+    'c2d-standard-16': [16, 1.6991],
+    'c2d-standard-32': [32, 1.6991],
+    'c2d-standard-56': [56, 1.6991],
+    'c2d-standard-112': [112, 1.6991],
   },
   'm1-ultramem': {
     'm1-ultramem-40': [40, 1.1],

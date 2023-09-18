@@ -35,9 +35,9 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
     <div data-testid="filterBar" className={classes.filterHeader}>
       <Grid
         container
-        direction={'row'}
-        justify={'center'}
-        alignItems={'center'}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
       >
         <Grid item xs={12} sm={'auto'}>
           <div className={classes.filterContainer}>

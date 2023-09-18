@@ -1,6 +1,9 @@
 {
   "name": "root-template",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "concurrently": "^7.0.0",

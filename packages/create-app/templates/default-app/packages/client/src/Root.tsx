@@ -12,10 +12,8 @@ export function Root() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <React.StrictMode>
-          <CssBaseline />
-          <App config={config} />
-        </React.StrictMode>
+        <CssBaseline />
+        <App config={config} />
       </ThemeProvider>
     </BrowserRouter>
   )

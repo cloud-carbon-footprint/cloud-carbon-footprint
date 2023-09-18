@@ -1,0 +1,35 @@
+{{- if .Values.client.pdb.enabled }}
+{{- if gt (.Values.client.deployment.replicaCount | int ) 1 }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-client
+  labels:
+    {{- include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: client
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: client
+{{- end }}
+{{- end }}
+---
+{{- if .Values.api.pdb.enabled }}
+{{- if gt (.Values.api.deployment.replicaCount | int ) 1 }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-api
+  labels:
+    {{- include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+{{- end }}
+{{- end }}

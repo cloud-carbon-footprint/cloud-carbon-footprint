@@ -41,6 +41,7 @@ describe('AWSAccount', () => {
   const CloudWatchLogs = jest.fn()
   const Athena = jest.fn()
   const S3Service = jest.fn()
+  const GlueService = jest.fn()
   let expectedCredentials: Credentials
 
   beforeEach(() => {
@@ -51,6 +52,7 @@ describe('AWSAccount', () => {
         CloudWatchLogs: CloudWatchLogs,
         Athena: Athena,
         S3: S3Service,
+        Glue: GlueService,
       }
     })
 
@@ -223,10 +225,9 @@ describe('AWSAccount', () => {
         serviceName: 'AmazonEC2',
         region: 'us-east-1',
         usageType: 'USE2-BoxUsage:t2.micro',
-        usageUnit: 'Hrs',
         vCpus: '2',
-        kilowattHours: 0.013198543918379168,
-        co2e: 0.000005487360626785731,
+        kilowattHours: 0.014425250356994983,
+        co2e: 0.000005468165227575731,
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -569,6 +570,8 @@ function expectAWSService(key: string) {
   setConfig({
     AWS: {
       CURRENT_SERVICES: [{ key: key, name: '' }],
+      ATHENA_REGION: 'us-east-1',
+      IS_AWS_GLOBAL: true,
     },
   })
   const testRegion = 'some-region'

@@ -50,22 +50,37 @@ export default class OnPremiseDataReport {
   public getEstimates(usageRows: OnPremiseDataInput[]): OnPremiseDataOutput[] {
     const results: OnPremiseDataOutput[] = []
 
-    usageRows.map((onPremiseDataRow: OnPremiseDataReportRow) => {
+    usageRows.map((onPremiseDataRow: OnPremiseDataInput) => {
       const onPremiseDataReportRow: OnPremiseDataReportRow =
         new OnPremiseDataReportRow(onPremiseDataRow)
 
-      const footprintEstimate = this.getFootprintEstimate(
-        onPremiseDataReportRow,
-      )
-
-      if (footprintEstimate) {
+      const upTimeEstimates: { [key: string]: { [key: string]: number } } = {}
+      Object.keys(onPremiseDataReportRow.upTime).map((key) => {
+        const footprintEstimate = this.getFootprintEstimate(
+          onPremiseDataReportRow,
+          onPremiseDataReportRow.upTime[key],
+        )
         const { kilowattHours, co2e } = footprintEstimate
-        const { usageHours } = onPremiseDataReportRow
+
+        upTimeEstimates[key] = {
+          [`${key}KilowattHours`]: kilowattHours,
+          [`${key}Co2e`]: co2e,
+        }
+      })
+
+      if (upTimeEstimates) {
+        const { daily, weekly, monthly, annual } = upTimeEstimates
+
         const appendedRows = {
           ...onPremiseDataRow,
-          usageHours,
-          kilowattHours,
-          co2e,
+          dailyKilowattHours: daily['dailyKilowattHours'],
+          dailyCo2e: daily['dailyCo2e'],
+          weeklyKilowattHours: weekly['weeklyKilowattHours'],
+          weeklyCo2e: weekly['weeklyCo2e'],
+          monthlyKilowattHours: monthly['monthlyKilowattHours'],
+          monthlyCo2e: monthly['monthlyCo2e'],
+          annualKilowattHours: annual['annualKilowattHours'],
+          annualCo2e: annual['annualCo2e'],
         }
         results.push(appendedRows)
       }
@@ -77,6 +92,7 @@ export default class OnPremiseDataReport {
 
   private getFootprintEstimate(
     onPremiseDataReportRow: OnPremiseDataReportRow,
+    upTime: number,
   ): Partial<FootprintEstimate> {
     const emissionsFactors: CloudConstantsEmissionsFactors =
       ON_PREMISE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
@@ -89,12 +105,14 @@ export default class OnPremiseDataReport {
       onPremiseDataReportRow,
       powerUsageEffectiveness,
       emissionsFactors,
+      upTime,
     )
 
     const memoryFootprint = this.getMemoryFootprintEstimate(
       onPremiseDataReportRow,
       powerUsageEffectiveness,
       emissionsFactors,
+      upTime,
     )
 
     if (memoryFootprint.kilowattHours) {
@@ -113,21 +131,17 @@ export default class OnPremiseDataReport {
     onPremiseDataReportRow: OnPremiseDataReportRow,
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
+    upTime: number,
   ): FootprintEstimate {
-    const {
-      region,
-      usageHours,
-      processorFamilies,
-      cpuUtilization,
-      machineType,
-    } = onPremiseDataReportRow
+    const { region, processorFamilies, cpuUtilization, machineType } =
+      onPremiseDataReportRow
 
     const { configuredCpuUtilization, averageWatts } =
       this.getConfigurableCoefficients(machineType, cpuUtilization)
 
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: configuredCpuUtilization,
-      vCpuHours: usageHours,
+      vCpuHours: upTime,
       usesAverageCPUConstant: true,
     }
 
@@ -150,16 +164,12 @@ export default class OnPremiseDataReport {
     onPremiseDataReportRow: OnPremiseDataReportRow,
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
+    upTime: number,
   ): FootprintEstimate {
-    const { region, usageHours, memory, processorFamilies } =
-      onPremiseDataReportRow
+    const { region, memory, processorFamilies } = onPremiseDataReportRow
 
     const memoryUsage: MemoryUsage = {
-      gigabyteHours: this.getGigabyteHours(
-        usageHours,
-        memory,
-        processorFamilies,
-      ),
+      gigabyteHours: this.getGigabyteHours(upTime, memory, processorFamilies),
     }
 
     const memoryConstants: CloudConstants = {
@@ -177,13 +187,13 @@ export default class OnPremiseDataReport {
   }
 
   private getGigabyteHours(
-    usageHours: number,
+    upTime: number,
     calculatedMemory: number,
     processorFamilies: string[],
   ): number {
     const processorMemory =
       ON_PREMISE_CLOUD_CONSTANTS.getMemory(processorFamilies)
-    return Math.max(0, calculatedMemory - processorMemory) * usageHours
+    return Math.max(0, calculatedMemory - processorMemory) * upTime
   }
 
   private getConfigurableCoefficients(

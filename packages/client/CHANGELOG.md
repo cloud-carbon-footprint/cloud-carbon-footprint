@@ -1,5 +1,114 @@
 # @cloud-carbon-footprint/client
 
+## 4.2.0
+
+### Minor Changes
+
+- 6bf5745d: Adds config for disabling forecast date validation
+
+### Patch Changes
+
+- cd3da603: Fix issue with concatentation of data from multiple footprint requests
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/1194/commits/65f76245d4947cd0bb1b7e4a5b761868dd9c6da0).
+
+## 4.1.3
+
+### Patch Changes
+
+- 3d7a21ff: Improves recommendations forecast accuracy, and fixes cost formatting errors for local currencies
+- e942828d: updates imports/exports for plugin compatibility
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
+## 4.1.2
+
+### Patch Changes
+
+- 93cf993f: updates mock data
+
+## 4.1.1
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+- 65386330: bumps ramda dependency
+
+## 4.1.0
+
+### Minor Changes
+
+- 003c8892: removes regions from request parameter and updates app logic
+- 877f0145: Moves footprint data to be globally shared across the app, and adds performance improvements for rendering
+
+  For updates to the create-app template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/1027/commits/37066a9f92a3fe6bdda4f16b5e372f07c3e214d5).
+
+### Patch Changes
+
+- Updated dependencies [1d297700]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/common@1.10.0
+
+## 4.0.0
+
+### Major Changes
+
+- 382814e2: Migrates to React 18
+
+  For updates to your create-app templates, please see the following [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/531c35c878ac947020ad154accd06cfa820ec009).
+
+### Minor Changes
+
+- 81aac6a8: client error page and console now shows exact error message and detail
+
+### Patch Changes
+
+- 7afae983: Refactors useKilograms to an enum for Co2e unit (for easier extensibility of units)
+
+  For updates to your create-app template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/55cc6dcd3de97a245265634c8b2c1806ff934907).
+
+- fd4ec19b: Adds new AWS regions and emissions factors for ap-southeast-3 and me-central-1
+
+## 3.3.0
+
+### Minor Changes
+
+- a6423a68: Set default value 'day' for GROUP_BY config parameter
+- e9e57da7: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+
+### Patch Changes
+
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 3.2.0
+
+### Minor Changes
+
+- a7a79c83: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- a7a79c83: Updates carbon intensity maps to reflect new emissions factors
+
+  For changes that are needed for the create-app client template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/265d49fba159612eb6cdbb09a9d2e5fd7989e67e).
+
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
+## 3.1.2
+
+### Patch Changes
+
+- 1c28bfc3: updates client to fix console errors and use update mui
+
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/37be2b6c48cbc517fa825e22346091e5a5ae6f69) for create-app template changes
+
 ## 3.1.1
 
 ### Patch Changes

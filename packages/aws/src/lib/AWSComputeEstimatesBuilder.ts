@@ -14,21 +14,17 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import {
-  GPU_INSTANCES_TYPES,
-  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-  INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
-} from './AWSInstanceTypes'
+import { GPU_INSTANCES_TYPES } from './AWSInstanceTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import RightsizingRecommendation from './Recommendations/Rightsizing/RightsizingTargetRecommendation'
-import { EC2CurrentComputeOptimizerRecommendation } from './Recommendations/ComputeOptimizer'
+import ComputeOptimizerRecommendationWithProcessors from './Recommendations/ComputeOptimizer/ComputeOptimizerRecommendationWithProcessors'
 
 export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBuilder {
   constructor(
     rowData:
       | RightsizingRecommendation
       | CostAndUsageReportsRow
-      | EC2CurrentComputeOptimizerRecommendation,
+      | ComputeOptimizerRecommendationWithProcessors,
     computeEstimator: ComputeEstimator,
   ) {
     super(rowData)
@@ -36,14 +32,8 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     this.vCpuHours = rowData.vCpuHours
     this.region = rowData.region
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(this.region)
-    this.computeProcessors = this.getComputeProcessors(
-      rowData.instanceType,
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-    )
-    this.gpuComputeProcessors = this.getComputeProcessors(
-      rowData.instanceType,
-      INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
-    )
+    this.computeProcessors = rowData.getComputeProcessors()
+    this.gpuComputeProcessors = rowData.getGPUComputeProcessors()
     this.computeConstants = this.getComputeConstants()
     this.computeFootprint = this.getComputeFootprint(
       computeEstimator,

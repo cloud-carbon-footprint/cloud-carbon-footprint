@@ -9,6 +9,7 @@ import AWS, {
   CostExplorer,
   Athena,
   S3,
+  Glue,
 } from 'aws-sdk'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
@@ -33,6 +34,7 @@ describe('aws service helper', () => {
       new CostExplorer(),
       new S3(),
       new Athena(),
+      new Glue(),
     )
 
   it('enablePagination decorator should follow CostExplorer CostAndUsage next pages', async () => {
@@ -205,6 +207,38 @@ describe('aws service helper', () => {
     )
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
+  })
+
+  it('should query AWS Glue Data Catalog for the description of a given Athena table ', async () => {
+    const glueGetTableSpy = jest.fn()
+    const mockTableDetails = {
+      Table: {
+        StorageDescriptor: {
+          Columns: [
+            {
+              Name: 'column1',
+              Type: 'string',
+            },
+            {
+              Name: 'column2',
+              Type: 'string',
+            },
+          ],
+        },
+      },
+    }
+    glueGetTableSpy.mockResolvedValueOnce(mockTableDetails)
+    AWSMock.mock('Glue', 'getTable', glueGetTableSpy)
+
+    const params = {
+      DatabaseName: 'database-name',
+      Name: 'table-name',
+    }
+
+    const result = await getServiceWrapper().getAthenaTableDescription(params)
+
+    expect(glueGetTableSpy).toHaveBeenCalledWith(params, expect.anything())
+    expect(result).toEqual(mockTableDetails)
   })
 })
 

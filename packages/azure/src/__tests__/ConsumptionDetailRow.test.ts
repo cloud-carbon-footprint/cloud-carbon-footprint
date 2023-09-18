@@ -3,7 +3,6 @@
  */
 
 import { LegacyUsageDetail } from '@azure/arm-consumption/esm/models'
-
 import ConsumptionDetailRow from '../lib/ConsumptionDetailRow'
 
 describe('ConsumptionDetailRow', () => {

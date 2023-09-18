@@ -29,6 +29,14 @@ const useStyles = makeStyles((theme) => ({
       padding: '10px 40px',
     },
   },
+  paddingHighWithMargin: {
+    ...buttonBasis,
+    padding: '14px 90px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '10px 40px',
+    },
+    marginBottom: '16px'
+  }
 }))
 
 export default useStyles

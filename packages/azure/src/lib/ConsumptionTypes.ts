@@ -2,10 +2,29 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { QUERY_DATE_TYPES, TagCollection } from '@cloud-carbon-footprint/common'
+import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
 
 export type TenantHeaders = {
   [key: string]: string
+}
+
+export type TenantHeaderMapValue = {
+  name: string
+  value: number
+}
+
+export type UsageRowPageErrorResponse = {
+  response: {
+    headers: {
+      _headersMap: Map<string, TenantHeaderMapValue>
+    }
+  }
+  message: string
+}
+
+export type UsageDetailResult = (LegacyUsageDetail | ModernUsageDetail) & {
+  tags: TagCollection
 }
 
 export const UNKNOWN_SERVICES: string[] = [
@@ -64,7 +83,9 @@ export enum NETWORKING_USAGE_UNITS {
 }
 
 export enum MEMORY_USAGE_UNITS {
+  GB_SECOND_1 = '1 GB Second',
   GB_SECONDS_50000 = '50000 GB Seconds',
+  GB_HOUR_1 = '1 GB Hour',
   GB_HOURS_1000 = '1000 GB Hours',
 }
 
@@ -80,6 +101,25 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Pay-as-you-go Data at Rest',
   'Standard Instances',
   'Node',
+  '10 DTUs',
+  'S0 DTUs',
+  'B DTUs',
+  'B DTU',
+  'eDTUs',
+  'On Premises Server Protected Instances',
+  'Standard Trial Nodes',
+  'Azure VM Protected Instances',
+  'Standard User',
+  'Multi-step Web Test',
+  'S0 Secondary Active DTUs',
+  'Resource Monitored at 5 Minute Frequency',
+  'VM Replicated to Azure',
+  'Basic User',
+  'Standard Nodes',
+  'Microsoft-hosted CI',
+  'Data Processing Unit',
+  'Pay as you go Warm Storage',
+  'Standard Unit',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -99,7 +139,7 @@ export const MEMORY_USAGE_TYPES: string[] = [
 export const CACHE_MEMORY_GB: {
   [cacheName: string]: number
 } = {
-  C0: 250,
+  C0: 0.25,
   C1: 1,
   C2: 2.5,
   C3: 6,

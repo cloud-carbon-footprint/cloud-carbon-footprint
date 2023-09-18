@@ -1,0 +1,19 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Short description of this command"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND}
+
+-a|--arg            Description of arg
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (-z|--zarg)
+    # behavior with -z or --zarg flag
+  (*) 
+    # default behavior
+  ;;
+esac

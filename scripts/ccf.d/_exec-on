@@ -1,0 +1,49 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Execute build"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [--all|-a] [--lerna-all] [PACKAGE]
+
+exec_on_root ARG           Will execute ARG in ${CCF_PROJ_ROOT_DIR}
+exec_lerna_run ARG         Will execute 'npx lerna run ARG'
+exec_on_package PKG ARG    Will execute ARG after entering PKG dir
+exec_on_core ARG           Will execute ARG on (${(@)CCF_CORE_PACKAGES}) dirs
+
+
+EOH
+)
+
+function exec_on_core() {
+  local cmd="${1}"
+  log "exec_on_core: ${cmd}"
+  for p in ${CCF_CORE_PACKAGES}; do
+    log "cwd: $(pwd), exec: ${=cmd}"
+    exec_on_package "${p}" "${cmd}"
+  done
+}
+
+function exec_lerna_run() {
+  local cmd="${1}"
+  (cd ${CCF_PROJ_ROOT_DIR};
+    log "exec_lerna_run: ${cmd}"
+    npx lerna run ${cmd})
+}
+
+function exec_on_package() {
+  local pkg="${1}"
+  local cmd="${2}"
+  (cd ${CCF_PROJ_ROOT_DIR}/packages/${pkg};
+  log "cwd:$(pwd) cmd:${=cmd}"
+  ${=cmd})
+}
+
+function exec_on_root() {
+  local cmd="${1}"
+  (cd ${CCF_PROJ_ROOT_DIR};
+  log "exec_on_root: ${=cmd}"
+    ${=cmd})
+}
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help ;;
+esac

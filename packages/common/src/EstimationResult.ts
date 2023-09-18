@@ -9,8 +9,8 @@ import { getPeriodEndDate } from './helpers'
 export interface EstimationResult {
   readonly timestamp: Date
   readonly serviceEstimates: ServiceData[]
-  periodStartDate: Date
-  periodEndDate: Date
+  periodStartDate?: Date
+  periodEndDate?: Date
   groupBy: GroupBy
 }
 
@@ -25,6 +25,11 @@ export interface ServiceData {
   accountName: string
   serviceName: string
   region: string
+  tags?: TagCollection
+}
+
+export interface TagCollection {
+  [index: string]: string
 }
 
 export const reduceByTimestamp = (

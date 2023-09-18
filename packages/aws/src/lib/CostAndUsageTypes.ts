@@ -46,6 +46,7 @@ export const SSD_USAGE_TYPES: string[] = [
   'ra3.16xlarge', // Redshift SSD
   'Storage.SSD.50', // Fsx
   'Storage.MultiAZ:SSD', // Fsx
+  'RDS:GP3-Storage', // RDS
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -97,6 +98,11 @@ export const HDD_USAGE_TYPES: string[] = [
   'WarmStorage-ByteHrs-EFS', //AWSBackup
   'WarmStorage-ByteHrs-DynamoDB', //AWSBackup
   'MagneticStore-ByteHrs', // EBS Backup
+  'ColdStorage-ByteHrs-DynamoDB', //AWSBackup
+  'WarmStorage-ByteHrs-S3', // S3
+  'AMP:MetricStorageByteHrs',
+  'TimedStorage-INT-AIA-ByteHrs', // S3 Glacier
+  'TimedStorage-GIR-ByteHrs', // S3 Glacier
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -124,6 +130,7 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'EarlyDelete-ZIA',
   'GlacierByteHrs',
   'ByteHrs-EFS',
+  'ByteHrs-DynamoDB',
 ]
 
 export const UNKNOWN_USAGE_TYPES: string[] = [
@@ -166,6 +173,12 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'SharedMsftAD-Usage',
   'Kafka.mcu.general',
   'SnapshotArchiveStorage',
+  'PaidPrivateCA',
+  'Firehose-VpcDelivery-Hours',
+  'Airflow-MediumEnvironment',
+  'IPAddressManager-IP-Hours',
+  'Gateway:VTL-Storage',
+  'Aurora:ServerlessV2Usage', // RDS Aurora
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -199,6 +212,7 @@ export enum KNOWN_USAGE_UNITS {
   GB_2 = 'GigaBytes',
   SECONDS_1 = 'seconds',
   SECONDS_2 = 'Second',
+  LAMBDA_SECONDS = 'Lambda-GB-Second',
 }
 
 export const AWS_QUERY_GROUP_BY: QUERY_DATE_TYPES = {

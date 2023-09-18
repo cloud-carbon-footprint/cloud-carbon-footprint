@@ -1,0 +1,21 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Check package.json files"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} PACKAGE
+
+By default will launch the text editor on the file.
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (*) 
+    [[ -n ${1} ]] || error "Missing package\n"
+    pdir=${CCF_PROJ_ROOT_DIR}/packages/${1}
+    [[ -d ${pdir} ]] || error "Can't find dir ${pdir}\n"
+    ${EDITOR} ${pdir}/package.json
+  ;;
+esac
+

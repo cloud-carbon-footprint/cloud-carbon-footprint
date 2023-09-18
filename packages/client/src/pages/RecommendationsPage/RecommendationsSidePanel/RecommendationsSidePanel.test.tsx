@@ -3,6 +3,7 @@
  */
 
 import { render } from '@testing-library/react'
+import { Co2eUnit } from 'src/Types'
 import { mockRecommendationData } from '../../../utils/data'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
 
@@ -11,7 +12,7 @@ describe('Recommendations Side Panel', () => {
     ...mockRecommendationData[0],
     id: 0,
     accountId: 'test-account-1-id',
-    useKilograms: false,
+    co2eUnit: Co2eUnit.MetricTonnes,
   }
   it('Renders a side panel titled "Recommendation Details"', () => {
     const { getByTestId } = render(
@@ -38,6 +39,31 @@ describe('Recommendations Side Panel', () => {
     expect(
       getByText(mockRecommendationRow.recommendationDetail),
     ).toBeInTheDocument()
+  })
+
+  it('displays the correct resource name for EBS', () => {
+    const newMockRecommendationRow = {
+      ...mockRecommendationRow,
+      recommendationType: 'Modify EBS',
+    }
+    const { getAllByText } = render(
+      <RecommendationsSidePanel recommendation={newMockRecommendationRow} />,
+    )
+    expect(
+      getAllByText(newMockRecommendationRow.resourceId)[1],
+    ).toBeInTheDocument()
+  })
+
+  it('displays the correct resource name for Lambda', () => {
+    const newMockRecommendationRow = {
+      ...mockRecommendationRow,
+      recommendationType: 'Modify Lambda',
+      resourceId: 'resourceId:test',
+    }
+    const { getByText } = render(
+      <RecommendationsSidePanel recommendation={newMockRecommendationRow} />,
+    )
+    expect(getByText('resourceId')).toBeInTheDocument()
   })
 
   it('displays the potential savings for the given recommendation', () => {

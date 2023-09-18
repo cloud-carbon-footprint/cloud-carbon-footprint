@@ -8,13 +8,15 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   deploy-demo-app:
-    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.13
+      image: node:16.19-alpine3.17
     environment:
       name: staging
     env:
@@ -22,7 +24,7 @@ jobs:
     steps:
       # Fetch and checkout the repo
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       # Run Yarn Install in the Client Package
@@ -36,6 +38,8 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
           REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+          REACT_APP_MINIMAL_DATE_AGE: ${{ secrets.REACT_APP_MINIMAL_DATE_AGE }}
+          REACT_APP_DISABLE_FORECAST_VALIDATION: ${{ secrets.REACT_APP_DISABLE_FORECAST_VALIDATION }}
         run: |
           cd packages/client
           ./create_client_env_file.sh
@@ -67,7 +71,8 @@ jobs:
           mkdir packages/client/stub-server/api
           mkdir packages/client/stub-server/api/regions
 
-          node scripts/create-client-mock-data.js
+          #  Updates the timestamps and values of the mock data files (usually for the forecast data)
+          node scripts/create-mock-data.js
 
           # Copy static build files to demo Google Cloud Bucket
           gsutil cp -r packages/client/build/* gs://${GOOGLE_DEMO_STORAGE_BUCKET}

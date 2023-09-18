@@ -1,0 +1,9 @@
+# This file registers ownership for certain parts of the Cloud Carbon Footprint code
+# Review from a member of the maintanence team or other designated owner is required for merging pull requests
+# The last matching pattern takes precedence
+# <https://help.github.com/articles/about-codeowners/>
+
+*                       @cloud-carbon-footprint/maintainers
+/microsite/*            @cloud-carbon-footprint/maintainers @ericksod
+/*.md                   @cloud-carbon-footprint/maintainers @ericksod
+packages/*              @cloud-carbon-footprint/maintainers

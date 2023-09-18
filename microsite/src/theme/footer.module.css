@@ -9,3 +9,17 @@
 .footerLicenseLink,.footerLicenseLink:hover {
     color: white;
 }
+
+.signature {
+    color: #25c2a0;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.signature:hover {
+    text-decoration: none;
+    color: #25c2a0
+}

@@ -1,5 +1,79 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.13.1
+
+### Patch Changes
+
+- 4683b86f: bug fix for gcp package
+- Updated dependencies [1a5d7636]
+- Updated dependencies [c82bf5fd]
+  - @cloud-carbon-footprint/common@1.12.0
+
+## 0.13.0
+
+### Minor Changes
+
+- 42b2359e: Updates emissions factors and PUE constants to latest published values
+
+### Patch Changes
+
+- Updated dependencies [0d20b32c]
+  - @cloud-carbon-footprint/common@1.11.0
+
+## 0.12.0
+
+### Minor Changes
+
+- e0299c2c: Replaces the use of googleapis with separate package clients
+- efbcad00: Adds support for including tags and labels in queries via config
+
+### Patch Changes
+
+- 56273914: adds DCU to gcp compute types
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
+## 0.11.1
+
+### Patch Changes
+
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
+## 0.11.0
+
+### Minor Changes
+
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
+## 0.10.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+
+### Patch Changes
+
+- a7a79c83: updates bugs for lookup table
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 0.9.1
 
 ### Patch Changes

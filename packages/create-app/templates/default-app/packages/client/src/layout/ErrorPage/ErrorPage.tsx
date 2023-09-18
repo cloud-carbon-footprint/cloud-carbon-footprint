@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     errorMessage: {
       fontSize: '18px',
+      textAlign: 'center',
     },
   }),
 )
@@ -64,10 +65,13 @@ export const formatAxiosError = (e: AxiosError): ErrorState => {
     : DEFAULT_ERROR
 }
 
-const ErrorPage = (): ReactElement => {
+interface ErrorPageProps {
+  errorMessage?: string
+}
+
+const ErrorPage = (props: ErrorPageProps): ReactElement<ErrorPageProps> => {
   const location = useLocation()
   const { statusText, status } = (location.state as ErrorState) ?? DEFAULT_ERROR
-
   const classes = useStyles()
 
   return (
@@ -76,7 +80,7 @@ const ErrorPage = (): ReactElement => {
       spacing={0}
       direction="column"
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       style={{ height: '100%' }}
     >
       <CloudOffIcon className={classes.cloudIcon} />
@@ -84,8 +88,10 @@ const ErrorPage = (): ReactElement => {
         <h1 className={classes.errorStatus}>
           {status} {statusText}
         </h1>
-        <div className={classes.errorMessage}>
-          Something has gone wrong, please try again later
+        <div data-testid="error-message" className={classes.errorMessage}>
+          {props.errorMessage
+            ? props.errorMessage
+            : 'Something has gone wrong, Please try again later'}
         </div>
       </div>
     </Grid>
