@@ -12,6 +12,7 @@ import {
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   EstimationResult,
+  getEmissionsFactors,
   GroupBy,
   Logger,
   LookupTableInput,
@@ -63,6 +64,7 @@ import {
 import BillingExportRow from './BillingExportRow'
 import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
+import { GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from './GCPRegions'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -95,12 +97,24 @@ export default class BillingExportTable {
     const unknownRows: BillingExportRow[] = []
 
     this.billingExportTableLogger.info('Mapping over Usage Rows')
-    usageRows.map((usageRow) => {
+
+    for (const usageRow of usageRows) {
       usageRow.tags = this.rawTagsToTagCollection(usageRow)
       const billingExportRow = new BillingExportRow(usageRow)
+
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          billingExportRow.region,
+          billingExportRow.timestamp.toISOString(),
+          getGCPEmissionsFactors(),
+          GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.billingExportTableLogger,
+        )
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
         unknownRows,
+        emissionsFactors,
       )
       if (footprintEstimate)
         appendOrAccumulateEstimatesByDay(
@@ -110,7 +124,7 @@ export default class BillingExportTable {
           grouping,
           tagNames,
         )
-    })
+    }
 
     if (results.length > 0) {
       unknownRows.map((rowData: BillingExportRow) => {
@@ -128,13 +142,14 @@ export default class BillingExportTable {
     return results
   }
 
-  getEstimatesFromInputData(
+  async getEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
+  ): Promise<LookupTableOutput[]> {
     const results: LookupTableOutput[] = []
     const unknownRows: BillingExportRow[] = []
 
-    inputData.map((inputDataRow: LookupTableInput) => {
+    // inputData.map((inputDataRow: LookupTableInput) => {
+    for (const inputDataRow of inputData) {
       const usageRow = {
         id: inputDataRow.id,
         serviceName: inputDataRow.serviceName,
@@ -158,9 +173,20 @@ export default class BillingExportTable {
         billingExportRow.vCpuHours = instancevCpu * billingExportRow.vCpuHours
       }
 
+      const dateTime = new Date().toISOString()
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          billingExportRow.region,
+          dateTime,
+          getGCPEmissionsFactors(),
+          GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.billingExportTableLogger,
+        )
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
         unknownRows,
+        emissionsFactors,
       )
       if (footprintEstimate)
         results.push({
@@ -172,7 +198,7 @@ export default class BillingExportTable {
           kilowattHours: footprintEstimate.kilowattHours,
           co2e: footprintEstimate.co2e,
         })
-    })
+    }
 
     if (results.length > 0) {
       unknownRows.map((billingExportRow: BillingExportRow) => {
@@ -196,6 +222,7 @@ export default class BillingExportTable {
   private getFootprintEstimateFromUsageRow(
     billingExportRow: BillingExportRow,
     unknownRows: BillingExportRow[],
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate | void {
     if (this.isUnsupportedUsage(billingExportRow.usageType)) return
 
@@ -204,15 +231,18 @@ export default class BillingExportTable {
       return
     }
 
-    return this.getEstimateByUsageUnit(billingExportRow, unknownRows)
+    return this.getEstimateByUsageUnit(
+      billingExportRow,
+      unknownRows,
+      emissionsFactors,
+    )
   }
 
   private getEstimateByUsageUnit(
     billingExportRow: BillingExportRow,
     unknownRows: BillingExportRow[],
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate | void {
-    const emissionsFactors: CloudConstantsEmissionsFactors =
-      getGCPEmissionsFactors()
     const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
       billingExportRow.region,
     )
@@ -616,18 +646,18 @@ export default class BillingExportTable {
     )
     const endDate = new Date(moment.utc(end).endOf('day') as unknown as Date)
 
-    const [tags, labels, projectLabels] = this.tagNamesToQueryColumns(tagNames)
+    const [tags, projectLabels, labels] = this.tagNamesToQueryColumns(tagNames)
 
-    const [tagPropertySelections, tagPropertyJoins] = this.buildTagQuery(
+    const [tagPropertySelections, tagPropertyJoins] = buildTagQuery(
       'tags',
       tags,
     )
-    const [labelPropertySelections, labelPropertyJoins] = this.buildTagQuery(
+    const [labelPropertySelections, labelPropertyJoins] = buildTagQuery(
       'labels',
       labels,
     )
     const [projectLabelPropertySelections, projectLabelPropertyJoins] =
-      this.buildTagQuery('projectLabels', projectLabels)
+      buildTagQuery('projectLabels', projectLabels)
 
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
@@ -745,19 +775,22 @@ export default class BillingExportTable {
 
     return parsedTags
   }
+}
 
-  private buildTagQuery(columnName: string, keys: string[]): string[] {
-    let propertySelections = '',
-      propertyJoins = ''
+export const buildTagQuery = (columnName: string, keys: string[]): string[] => {
+  let propertySelections = '',
+    propertyJoins = ''
 
-    if (keys.length > 0) {
-      propertySelections = `, STRING_AGG(DISTINCT CONCAT(${columnName}.key, ": ", ${columnName}.value), ", ") AS ${columnName}`
+  if (keys.length > 0) {
+    propertySelections = `, STRING_AGG(DISTINCT CONCAT(${columnName}.key, ": ", ${columnName}.value), ", ") AS ${columnName}`
 
-      propertyJoins = `\nLEFT JOIN\n UNNEST(${
-        columnName === 'projectLabels' ? 'project.label' : columnName
-      }) AS ${columnName}\n`
-      propertyJoins += keys.map((tag) => `ON tags.key = "${tag}"`).join(' OR ')
-    }
-    return [propertySelections, propertyJoins]
+    propertyJoins = `\nLEFT JOIN\n UNNEST(${
+      columnName === 'projectLabels' ? 'project.labels' : columnName
+    }) AS ${columnName}\n`
+    const keyJoins = keys
+      .map((tag) => `${columnName}.key = "${tag}"`)
+      .join(' OR ')
+    propertyJoins += `ON ${keyJoins}`
   }
+  return [propertySelections, propertyJoins]
 }

@@ -1231,7 +1231,7 @@ describe('Azure Consumption Management Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('successfully returns estimation for lookup table input data', () => {
+  it('successfully returns estimation for lookup table input data', async () => {
     const inputData: LookupTableInput[] = [
       {
         serviceName: 'Virtual Machines',
@@ -1253,8 +1253,9 @@ describe('Azure Consumption Management Service', () => {
       ),
     )
 
-    const result =
-      consumptionManagementService.getEstimatesFromInputData(inputData)
+    const result = await consumptionManagementService.getEstimatesFromInputData(
+      inputData,
+    )
 
     const expectedResult: LookupTableOutput[] = [
       {

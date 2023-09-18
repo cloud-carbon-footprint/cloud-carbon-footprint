@@ -8,12 +8,14 @@ import {
   RightsizingRecommendationList,
 } from 'aws-sdk/clients/costexplorer'
 import {
+  CloudConstantsEmissionsFactors,
   ComputeEstimator,
   ICloudRecommendationsService,
   MemoryEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
   AWS_RECOMMENDATIONS_TARGETS,
+  getEmissionsFactors,
   Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
@@ -25,6 +27,8 @@ import {
   RightsizingRecommendation,
   RightsizingTargetRecommendation,
 } from './Rightsizing'
+import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../../domain'
+import { AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from '../AWSRegions'
 
 export default class RightsizingRecommendations
   implements ICloudRecommendationsService
@@ -58,65 +62,66 @@ export default class RightsizingRecommendations
         results.flatMap(
           ({ RightsizingRecommendations }) => RightsizingRecommendations,
         )
+
       const recommendationsResult: RecommendationResult[] = []
-      rightsizingRecommendations.forEach(
-        (recommendation: AwsRightsizingRecommendation) => {
-          const rightsizingCurrentRecommendation =
-            new RightsizingCurrentRecommendation(recommendation)
+      for (let i = 0; i < rightsizingRecommendations.length; i++) {
+        const recommendation: AwsRightsizingRecommendation =
+          rightsizingRecommendations[i]
+        const rightsizingCurrentRecommendation =
+          new RightsizingCurrentRecommendation(recommendation)
 
-          const [currentComputeFootprint, currentMemoryFootprint] =
-            this.getFootprintEstimates(rightsizingCurrentRecommendation)
+        const [currentComputeFootprint, currentMemoryFootprint] =
+          await this.getFootprintEstimates(rightsizingCurrentRecommendation)
 
-          let kilowattHourSavings = currentComputeFootprint.kilowattHours
-          let co2eSavings = currentComputeFootprint.co2e
-          let costSavings = rightsizingCurrentRecommendation.costSavings
-          let recommendationDetail = this.getRecommendationDetail(
+        let kilowattHourSavings = currentComputeFootprint.kilowattHours
+        let co2eSavings = currentComputeFootprint.co2e
+        let costSavings = rightsizingCurrentRecommendation.costSavings
+        let recommendationDetail = this.getRecommendationDetail(
+          rightsizingCurrentRecommendation,
+        )
+
+        if (currentMemoryFootprint.co2e) {
+          kilowattHourSavings += currentMemoryFootprint.kilowattHours
+          co2eSavings += currentMemoryFootprint.co2e
+        }
+
+        if (recommendation.RightsizingType === 'Modify') {
+          this.getTargetInstance(recommendation)
+          const rightsizingTargetRecommendation =
+            new RightsizingTargetRecommendation(recommendation)
+
+          const [targetComputeFootprint, targetMemoryFootprint] =
+            await this.getFootprintEstimates(rightsizingTargetRecommendation)
+
+          kilowattHourSavings -= targetComputeFootprint.kilowattHours
+          co2eSavings -= targetComputeFootprint.co2e
+          costSavings = rightsizingTargetRecommendation.costSavings
+          recommendationDetail = this.getRecommendationDetail(
             rightsizingCurrentRecommendation,
+            rightsizingTargetRecommendation,
           )
 
-          if (currentMemoryFootprint.co2e) {
-            kilowattHourSavings += currentMemoryFootprint.kilowattHours
-            co2eSavings += currentMemoryFootprint.co2e
+          if (targetMemoryFootprint.co2e) {
+            kilowattHourSavings -= targetMemoryFootprint.kilowattHours
+            co2eSavings -= targetMemoryFootprint.co2e
           }
+        }
 
-          if (recommendation.RightsizingType === 'Modify') {
-            this.getTargetInstance(recommendation)
-            const rightsizingTargetRecommendation =
-              new RightsizingTargetRecommendation(recommendation)
-
-            const [targetComputeFootprint, targetMemoryFootprint] =
-              this.getFootprintEstimates(rightsizingTargetRecommendation)
-
-            kilowattHourSavings -= targetComputeFootprint.kilowattHours
-            co2eSavings -= targetComputeFootprint.co2e
-            costSavings = rightsizingTargetRecommendation.costSavings
-            recommendationDetail = this.getRecommendationDetail(
-              rightsizingCurrentRecommendation,
-              rightsizingTargetRecommendation,
-            )
-
-            if (targetMemoryFootprint.co2e) {
-              kilowattHourSavings -= targetMemoryFootprint.kilowattHours
-              co2eSavings -= targetMemoryFootprint.co2e
-            }
-          }
-
-          // if there are no potential savings, do not include recommendation object
-          recommendationsResult.push({
-            cloudProvider: 'AWS',
-            accountId: rightsizingCurrentRecommendation.accountId,
-            accountName: rightsizingCurrentRecommendation.accountId,
-            region: rightsizingCurrentRecommendation.region,
-            recommendationType: rightsizingCurrentRecommendation.type,
-            recommendationDetail,
-            kilowattHourSavings,
-            resourceId: rightsizingCurrentRecommendation.resourceId,
-            instanceName: rightsizingCurrentRecommendation.instanceName,
-            co2eSavings,
-            costSavings,
-          })
-        },
-      )
+        // if there are no potential savings, do not include recommendation object
+        recommendationsResult.push({
+          cloudProvider: 'AWS',
+          accountId: rightsizingCurrentRecommendation.accountId,
+          accountName: rightsizingCurrentRecommendation.accountId,
+          region: rightsizingCurrentRecommendation.region,
+          recommendationType: rightsizingCurrentRecommendation.type,
+          recommendationDetail,
+          kilowattHourSavings,
+          resourceId: rightsizingCurrentRecommendation.resourceId,
+          instanceName: rightsizingCurrentRecommendation.instanceName,
+          co2eSavings,
+          costSavings,
+        })
+      }
       return recommendationsResult
     } catch (e) {
       throw new Error(
@@ -141,17 +146,28 @@ export default class RightsizingRecommendations
     return recommendationTypes[rightsizingCurrentRecommendation.type]
   }
 
-  private getFootprintEstimates(
+  private async getFootprintEstimates(
     rightsizingRecommendation: RightsizingRecommendation,
   ) {
+    const dateTime = new Date().toISOString()
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      await getEmissionsFactors(
+        rightsizingRecommendation.region,
+        dateTime,
+        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+        this.recommendationsLogger,
+      )
     const computeFootprint = new AWSComputeEstimatesBuilder(
       rightsizingRecommendation,
       this.computeEstimator,
+      emissionsFactors,
     ).computeFootprint
 
     const memoryFootprint = new AWSMemoryEstimatesBuilder(
       rightsizingRecommendation,
       this.memoryEstimator,
+      emissionsFactors,
     ).memoryFootprint
 
     return [computeFootprint, memoryFootprint]

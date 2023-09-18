@@ -97,6 +97,8 @@ fileignoreconfig:
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
 - filename: docker/nginx.conf
   checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
+- filename: microsite/blog/2023-08-23-ccf-on-vm.md
+  checksum: 84e94d40daf06c50f7b0e26d8d73a300d967279a87612e991e417530bfb8774c
 - filename: microsite/docs/ClassifyingUsageTypes.md
   checksum: f4b232851337efec90c4a88271cdf4cde2a9d732f0f69824223f1dcf7c6b8aaa
 - filename: microsite/docs/ConfigurationOptions/PerformanceConsiderations.md
@@ -301,6 +303,10 @@ fileignoreconfig:
   checksum: fd9afa539a5991cb21416293ae9d17a57005b5bcacdd148fe9f4ce0fd3de145e
 - filename: packages/common/src/Config.ts
   checksum: 8cde1d40a5a56e3f1454534817d254a7b61baf2d28e185bf0c5093d8320c8b85
+- filename: packages/common/src/EmissionsFactors.ts
+  checksum: e28dbaf55e4a2a02ec43a1adfad5b060774a5dcd1c872b9bb5e28727e26f8de7
+- filename: packages/common/src/__tests__/EmissionsFactors.test.ts
+  checksum: b513f4119cae71648485f3f3d6795f1062f361f45028deaddfa506132a0a49cb
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
@@ -374,11 +380,11 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/stub-server/mockData.json
   checksum: 9073338cab91e48f6b789c52f415d8559926d791d80aeb2954cb2fb842202a66
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: 806ca071f5f496e5bd682f0474543f9b6e6c7f5d687e8db89cf244371393188f
+  checksum: 50397c9013f12b8b9cc457ffdeee4e5796edf2175dccc2c3aef7c7016c6fb144
 - filename: packages/gcp/src/__tests__/GCPAccount.test.ts
   checksum: 26ef0caf65177a4e013ecff94012824cee58ceed48c09b29f7710712084ab9c4
 - filename: packages/gcp/src/lib/BillingExportTable.ts
-  checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
+  checksum: 96f2b97dfa7265469d3a6958aac504414c2f298bd214364d925b3c0b65efa2a7
 - filename: packages/gcp/src/lib/BillingExportTypes.ts
   checksum: 27e7319ef9204e0c6e575ddf8bf288d2627fb8542f468ddde86439420be8c93d
 - filename: packages/gcp/src/lib/MachineTypes.ts

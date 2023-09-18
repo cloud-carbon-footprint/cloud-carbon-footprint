@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/cli
 
+## 1.12.0
+
+### Minor Changes
+
+- 6ffe7497: adds electricity maps api handling. For CLI create-app template changes, refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/2749723c00343865c7453fea29609ea6dad4b5e9).
+
+### Patch Changes
+
+- Updated dependencies [bc06b861]
+- Updated dependencies [7630768d]
+- Updated dependencies [dd98c8cb]
+- Updated dependencies [6ffe7497]
+  - @cloud-carbon-footprint/common@1.13.0
+  - @cloud-carbon-footprint/app@1.4.0
+
 ## 1.11.1
 
 ### Patch Changes

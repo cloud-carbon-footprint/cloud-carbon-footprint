@@ -4,6 +4,7 @@ import {
 } from '@azure/arm-advisor'
 import {
   calculateGigabyteHours,
+  CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
   getPhysicalChips,
@@ -12,6 +13,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 import {
   containsAny,
+  getEmissionsFactors,
   Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
@@ -28,6 +30,7 @@ import {
   AZURE_CLOUD_CONSTANTS,
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
+import { AZURE_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from './AzureRegions'
 
 export default class AdvisorRecommendations
   implements ICloudRecommendationsService
@@ -61,67 +64,71 @@ export default class AdvisorRecommendations
           recs.shortDescription.solution.includes('underutilized'),
         )
       const recommendationsResult: RecommendationResult[] = []
-      filteredRecommendations.forEach(
-        (recommendation: ResourceRecommendationBase) => {
-          const rightsizingCurrentRecommendation =
-            new RightsizingCurrentRecommendation(recommendation)
+      for (const recommendation of filteredRecommendations) {
+        const rightsizingCurrentRecommendation =
+          new RightsizingCurrentRecommendation(recommendation)
 
-          const [currentComputeFootprint, currentMemoryFootprint] =
-            this.getFootprintEstimates(rightsizingCurrentRecommendation)
-
-          let kilowattHourSavings = currentComputeFootprint.kilowattHours
-          let co2eSavings = currentComputeFootprint.co2e
-          let costSavings = rightsizingCurrentRecommendation.costSavings
-          let recommendationDetail = this.getRecommendationDetail(
+        const [currentComputeFootprint, currentMemoryFootprint] =
+          await this.getFootprintEstimates(
             rightsizingCurrentRecommendation,
+            this.recommendationsLogger,
           )
 
-          if (currentMemoryFootprint.co2e) {
-            kilowattHourSavings += currentMemoryFootprint.kilowattHours
-            co2eSavings += currentMemoryFootprint.co2e
-          }
+        let kilowattHourSavings = currentComputeFootprint.kilowattHours
+        let co2eSavings = currentComputeFootprint.co2e
+        let costSavings = rightsizingCurrentRecommendation.costSavings
+        let recommendationDetail = this.getRecommendationDetail(
+          rightsizingCurrentRecommendation,
+        )
 
-          const resizingTypes = ['Right-size', 'SkuChange']
-          if (
-            resizingTypes.includes(
-              recommendation.extendedProperties.recommendationType,
-            )
-          ) {
-            const rightsizingTargetRecommendation =
-              new RightsizingTargetRecommendation(recommendation)
+        if (currentMemoryFootprint.co2e) {
+          kilowattHourSavings += currentMemoryFootprint.kilowattHours
+          co2eSavings += currentMemoryFootprint.co2e
+        }
 
-            const [targetComputeFootprint, targetMemoryFootprint] =
-              this.getFootprintEstimates(rightsizingTargetRecommendation)
+        const resizingTypes = ['Right-size', 'SkuChange']
+        if (
+          resizingTypes.includes(
+            recommendation.extendedProperties.recommendationType,
+          )
+        ) {
+          const rightsizingTargetRecommendation =
+            new RightsizingTargetRecommendation(recommendation)
 
-            kilowattHourSavings -= targetComputeFootprint.kilowattHours
-            co2eSavings -= targetComputeFootprint.co2e
-            costSavings = rightsizingTargetRecommendation.costSavings
-            recommendationDetail = this.getRecommendationDetail(
-              rightsizingCurrentRecommendation,
+          const [targetComputeFootprint, targetMemoryFootprint] =
+            await this.getFootprintEstimates(
               rightsizingTargetRecommendation,
+              this.recommendationsLogger,
             )
 
-            if (targetMemoryFootprint.co2e) {
-              kilowattHourSavings -= targetMemoryFootprint.kilowattHours
-              co2eSavings -= targetMemoryFootprint.co2e
-            }
-          }
+          kilowattHourSavings -= targetComputeFootprint.kilowattHours
+          co2eSavings -= targetComputeFootprint.co2e
+          costSavings = rightsizingTargetRecommendation.costSavings
+          recommendationDetail = this.getRecommendationDetail(
+            rightsizingCurrentRecommendation,
+            rightsizingTargetRecommendation,
+          )
 
-          recommendationsResult.push({
-            cloudProvider: 'AZURE',
-            accountId: rightsizingCurrentRecommendation.subscriptionId,
-            accountName: rightsizingCurrentRecommendation.subscriptionId,
-            region: rightsizingCurrentRecommendation.region,
-            recommendationType: rightsizingCurrentRecommendation.type,
-            recommendationDetail,
-            kilowattHourSavings,
-            resourceId: rightsizingCurrentRecommendation.resourceId,
-            instanceName: rightsizingCurrentRecommendation.instanceName,
-            co2eSavings,
-            costSavings,
-          })
-        },
-      )
+          if (targetMemoryFootprint.co2e) {
+            kilowattHourSavings -= targetMemoryFootprint.kilowattHours
+            co2eSavings -= targetMemoryFootprint.co2e
+          }
+        }
+
+        recommendationsResult.push({
+          cloudProvider: 'AZURE',
+          accountId: rightsizingCurrentRecommendation.subscriptionId,
+          accountName: rightsizingCurrentRecommendation.subscriptionId,
+          region: rightsizingCurrentRecommendation.region,
+          recommendationType: rightsizingCurrentRecommendation.type,
+          recommendationDetail,
+          kilowattHourSavings,
+          resourceId: rightsizingCurrentRecommendation.resourceId,
+          instanceName: rightsizingCurrentRecommendation.instanceName,
+          co2eSavings,
+          costSavings,
+        })
+      }
 
       return recommendationsResult
     } catch (e) {
@@ -148,17 +155,35 @@ export default class AdvisorRecommendations
     return recommendationTypes[rightsizingCurrentRecommendation.type]
   }
 
-  private getFootprintEstimates(
+  private async getFootprintEstimates(
     rightsizingRecommendation: RightsizingRecommendation,
+    logger: Logger,
   ) {
-    const computeFootprint = this.getComputeFootprint(rightsizingRecommendation)
-    const memoryFootprint = this.getMemoryFootprint(rightsizingRecommendation)
+    const dateTime = new Date().toISOString()
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      await getEmissionsFactors(
+        rightsizingRecommendation.region,
+        dateTime,
+        AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        AZURE_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+        logger,
+      )
+
+    const computeFootprint = this.getComputeFootprint(
+      rightsizingRecommendation,
+      emissionsFactors,
+    )
+    const memoryFootprint = this.getMemoryFootprint(
+      rightsizingRecommendation,
+      emissionsFactors,
+    )
 
     return [computeFootprint, memoryFootprint]
   }
 
   private getComputeFootprint(
     rightsizingRecommendation: RightsizingRecommendation,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     const computeUsage = {
       cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
@@ -181,7 +206,7 @@ export default class AdvisorRecommendations
     const computeEstimate = this.computeEstimator.estimate(
       [computeUsage],
       rightsizingRecommendation.region,
-      AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      emissionsFactors,
       computeConstants,
     )[0]
 
@@ -209,7 +234,7 @@ export default class AdvisorRecommendations
       const gpuComputeEstimate = this.computeEstimator.estimate(
         [gpuComputeUsage],
         rightsizingRecommendation.region,
-        AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        emissionsFactors,
         gpuConstants,
       )[0]
 
@@ -227,6 +252,7 @@ export default class AdvisorRecommendations
 
   private getMemoryFootprint(
     rightsizingRecommendation: RightsizingRecommendation,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     const memoryUsage = {
       gigabyteHours: this.getGigabyteHoursFromInstanceTypeAndProcessors(
@@ -243,7 +269,7 @@ export default class AdvisorRecommendations
     return this.memoryEstimator.estimate(
       [memoryUsage],
       rightsizingRecommendation.region,
-      AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      emissionsFactors,
       memoryConstants,
     )[0]
   }

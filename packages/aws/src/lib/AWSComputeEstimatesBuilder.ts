@@ -4,16 +4,14 @@
 
 import {
   CloudConstants,
+  CloudConstantsEmissionsFactors,
   ComputeEstimator,
   ComputeUsage,
   FootprintEstimate,
   FootprintEstimatesDataBuilder,
 } from '@cloud-carbon-footprint/core'
 import { containsAny } from '@cloud-carbon-footprint/common'
-import {
-  AWS_CLOUD_CONSTANTS,
-  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 import { GPU_INSTANCES_TYPES } from './AWSInstanceTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import RightsizingRecommendation from './Recommendations/Rightsizing/RightsizingTargetRecommendation'
@@ -26,6 +24,7 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
       | CostAndUsageReportsRow
       | ComputeOptimizerRecommendationWithProcessors,
     computeEstimator: ComputeEstimator,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     super(rowData)
 
@@ -38,6 +37,7 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     this.computeFootprint = this.getComputeFootprint(
       computeEstimator,
       this.region,
+      emissionsFactors,
     )
   }
 
@@ -78,11 +78,12 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
   private getComputeFootprint(
     computeEstimator: ComputeEstimator,
     region: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeEstimate = computeEstimator.estimate(
       [this.getComputeUsage()],
       region,
-      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      emissionsFactors,
       this.getComputeConstants(),
     )[0]
 
@@ -90,7 +91,7 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
       const gpuComputeEstimate = computeEstimator.estimate(
         [this.getGpuComputeUsage()],
         region,
-        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        emissionsFactors,
         this.getGpuComputeConstants(),
       )[0]
 

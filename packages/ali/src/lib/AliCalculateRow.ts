@@ -132,7 +132,7 @@ export default class AliCalculateRow extends BillingDataRow {
   }
 
   private getUsage(servicePeriod: string, servicePeriodUnit: string) {
-    const servicePeriodUnitRatios = {
+    const servicePeriodUnitRatios: { [key: string]: number } = {
       秒: 1 / 3600,
       分: 1 / 60,
       时: 1,

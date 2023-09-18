@@ -87,11 +87,11 @@ export default class GCPAccount extends CloudProviderAccount {
     return await this.getRegionData('GCP', region, startDate, endDate, grouping)
   }
 
-  getDataFromBillingExportTable(
+  async getDataFromBillingExportTable(
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
-  ) {
+  ): Promise<EstimationResult[]> {
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
@@ -104,12 +104,16 @@ export default class GCPAccount extends CloudProviderAccount {
       ),
       new BigQuery({ projectId: this.id }),
     )
-    return billingExportTableService.getEstimates(startDate, endDate, grouping)
+    return await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
   }
 
-  static getBillingExportDataFromInputData(
+  static async getBillingExportDataFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
+  ): Promise<LookupTableOutput[]> {
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
@@ -121,7 +125,7 @@ export default class GCPAccount extends CloudProviderAccount {
         GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
     )
-    return billingExportTableService.getEstimatesFromInputData(inputData)
+    return await billingExportTableService.getEstimatesFromInputData(inputData)
   }
 
   getServices(): ICloudService[] {

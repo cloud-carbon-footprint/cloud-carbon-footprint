@@ -20,7 +20,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 
 import { GCP_CLOUD_CONSTANTS } from '../domain'
-import BillingExportTable from '../lib/BillingExportTable'
+import BillingExportTable, { buildTagQuery } from '../lib/BillingExportTable'
 import {
   mockQueryAppEngineComputeUnknownRegion,
   mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
@@ -1397,8 +1397,9 @@ describe('GCP BillingExportTable Service', () => {
       ),
     )
 
-    const result =
-      billingExportTableService.getEstimatesFromInputData(lookupTableInputData)
+    const result = await billingExportTableService.getEstimatesFromInputData(
+      lookupTableInputData,
+    )
 
     const expectedResult: LookupTableOutput[] = [
       {
@@ -1642,5 +1643,60 @@ describe('GCP BillingExportTable Service', () => {
     ).rejects.toThrow(
       `BigQuery create Query Job failed. Reason: ${mockErrorDetails.reason}, Location: ${mockErrorDetails.location}, Message: ${mockErrorDetails.message}`,
     )
+  })
+})
+
+describe('Creating Tag queries', () => {
+  it('returns query parts for a single tag', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('tags', [
+      'environment',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(tags.key, ": ", tags.value), ", ") AS tags',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(tags) AS tags
+ON tags.key = "environment"`)
+  })
+
+  it('returns query parts for multiple tags', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('tags', [
+      'environment',
+      'project',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(tags.key, ": ", tags.value), ", ") AS tags',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(tags) AS tags
+ON tags.key = "environment" OR tags.key = "project"`)
+  })
+
+  it('returns query parts for a single label', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('labels', [
+      'environment',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(labels.key, ": ", labels.value), ", ") AS labels',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(labels) AS labels
+ON labels.key = "environment"`)
+  })
+
+  it('returns query parts for project labels', () => {
+    const [propertySelections, propertyJoins] = buildTagQuery('projectLabels', [
+      'environment',
+    ])
+    expect(propertySelections).toEqual(
+      ', STRING_AGG(DISTINCT CONCAT(projectLabels.key, ": ", projectLabels.value), ", ") AS projectLabels',
+    )
+    expect(propertyJoins).toEqual(`
+LEFT JOIN
+ UNNEST(project.labels) AS projectLabels
+ON projectLabels.key = "environment"`)
   })
 })

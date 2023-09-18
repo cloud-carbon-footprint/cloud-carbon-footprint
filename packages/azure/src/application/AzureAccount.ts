@@ -28,6 +28,7 @@ import {
   GroupBy,
   Logger,
   LookupTableInput,
+  LookupTableOutput,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import R from 'ramda'
@@ -148,9 +149,9 @@ export default class AzureAccount extends CloudProviderAccount {
     return subscriptions
   }
 
-  static getDataFromConsumptionManagementInputData(
+  static async getDataFromConsumptionManagementInputData(
     inputData: LookupTableInput[],
-  ) {
+  ): Promise<LookupTableOutput[]> {
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
@@ -162,7 +163,9 @@ export default class AzureAccount extends CloudProviderAccount {
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
     )
-    return consumptionManagementService.getEstimatesFromInputData(inputData)
+    return await consumptionManagementService.getEstimatesFromInputData(
+      inputData,
+    )
   }
 
   private async getRecommendationsForSubscription(subscriptionId: string) {
@@ -192,7 +195,7 @@ export default class AzureAccount extends CloudProviderAccount {
       ),
       new ConsumptionManagementClient(this.credentials, subscriptionId),
     )
-    return consumptionManagementService.getEstimates(
+    return await consumptionManagementService.getEstimates(
       startDate,
       endDate,
       grouping,

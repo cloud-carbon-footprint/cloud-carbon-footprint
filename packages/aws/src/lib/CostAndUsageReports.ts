@@ -7,7 +7,6 @@ import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
-  Row,
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
 } from 'aws-sdk/clients/athena'
@@ -25,6 +24,7 @@ import {
   wait,
   GroupBy,
   AWSAccount,
+  getEmissionsFactors,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -72,6 +72,7 @@ import {
   EC2_INSTANCE_TYPES,
   INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING,
 } from './AWSInstanceTypes'
+import { AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from './AWSRegions'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -114,17 +115,27 @@ export default class CostAndUsageReports {
       awsConfig.accounts.map((account) => [account.id, account]),
     )
 
-    usageRows.map((rowData: Row) => {
-      const costAndUsageReportRow =
+    for (const rowData of usageRows) {
+      const costAndUsageReportRow: CostAndUsageReportsRow =
         this.convertAthenaRowToCostAndUsageReportsRow(
           rowData.Data,
           tagNames,
           accounts,
         )
 
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          costAndUsageReportRow.region,
+          costAndUsageReportRow.timestamp.toISOString(),
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+          AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.costAndUsageReportsLogger,
+        )
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
         unknownRows,
+        emissionsFactors,
       )
 
       if (footprintEstimate)
@@ -135,11 +146,12 @@ export default class CostAndUsageReports {
           grouping,
           tagNames,
         )
-    })
+    }
 
     if (results.length > 0) {
       unknownRows.map((rowData: CostAndUsageReportsRow) => {
-        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
+        const footprintEstimate: FootprintEstimate =
+          this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
           appendOrAccumulateEstimatesByDay(
             results,
@@ -153,13 +165,13 @@ export default class CostAndUsageReports {
     return results
   }
 
-  getEstimatesFromInputData(
+  async getEstimatesFromInputData(
     inputData: LookupTableInput[],
-  ): LookupTableOutput[] {
+  ): Promise<LookupTableOutput[]> {
     const result: LookupTableOutput[] = []
     const unknownRows: CostAndUsageReportsRow[] = []
 
-    inputData.map((inputDataRow: LookupTableInput) => {
+    for (const inputDataRow of inputData) {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
         null,
         '',
@@ -174,10 +186,21 @@ export default class CostAndUsageReports {
         {},
         '',
       )
+      const dateTime = new Date().toISOString()
+
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          costAndUsageReportRow.region,
+          dateTime,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+          AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.costAndUsageReportsLogger,
+        )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
         unknownRows,
+        emissionsFactors,
       )
 
       if (footprintEstimate) {
@@ -191,7 +214,7 @@ export default class CostAndUsageReports {
           co2e: footprintEstimate.co2e,
         })
       }
-    })
+    }
 
     if (result.length > 0) {
       unknownRows.map((inputDataRow: CostAndUsageReportsRow) => {
@@ -215,6 +238,7 @@ export default class CostAndUsageReports {
   private getFootprintEstimateFromUsageRow(
     costAndUsageReportRow: CostAndUsageReportsRow,
     unknownRows: CostAndUsageReportsRow[],
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate | void {
     if (this.usageTypeIsUnsupported(costAndUsageReportRow.usageType)) return
 
@@ -226,14 +250,13 @@ export default class CostAndUsageReports {
       return
     }
 
-    return this.getEstimateByUsageUnit(costAndUsageReportRow)
+    return this.getEstimateByUsageUnit(costAndUsageReportRow, emissionsFactors)
   }
 
   private getEstimateByUsageUnit(
     costAndUsageReportRow: CostAndUsageReportsRow,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
-    const emissionsFactors: CloudConstantsEmissionsFactors =
-      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
     const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
       costAndUsageReportRow.region,
     )
@@ -249,11 +272,13 @@ export default class CostAndUsageReports {
         const computeFootprint = new AWSComputeEstimatesBuilder(
           costAndUsageReportRow,
           this.computeEstimator,
+          emissionsFactors,
         ).computeFootprint
 
         const memoryFootprint = new AWSMemoryEstimatesBuilder(
           costAndUsageReportRow,
           this.memoryEstimator,
+          emissionsFactors,
         ).memoryFootprint
 
         const embodiedEmissions = this.getEmbodiedEmissions(
@@ -326,6 +351,7 @@ export default class CostAndUsageReports {
         return new AWSComputeEstimatesBuilder(
           costAndUsageReportRow,
           this.computeEstimator,
+          emissionsFactors,
         ).computeFootprint
       case KNOWN_USAGE_UNITS.GB_1:
       case KNOWN_USAGE_UNITS.GB_2:

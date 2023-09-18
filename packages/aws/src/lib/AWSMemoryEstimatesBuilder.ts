@@ -11,11 +11,9 @@ import {
   FootprintEstimatesDataBuilder,
   calculateGigabyteHours,
   getPhysicalChips,
+  CloudConstantsEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
-import {
-  AWS_CLOUD_CONSTANTS,
-  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -33,6 +31,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
       | CostAndUsageReportsRow
       | EC2CurrentComputeOptimizerRecommendation,
     memoryEstimator: MemoryEstimator,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     super(rowData)
 
@@ -49,6 +48,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
       this.memoryUsage,
       this.memoryConstants,
       this.region,
+      emissionsFactors,
     )
   }
 
@@ -135,11 +135,12 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     memoryUsage: MemoryUsage,
     memoryConstants: CloudConstants,
     region: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     return memoryEstimator.estimate(
       [memoryUsage],
       region,
-      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      emissionsFactors,
       memoryConstants,
     )[0]
   }
