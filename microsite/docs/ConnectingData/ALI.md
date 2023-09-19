@@ -39,4 +39,4 @@ Your Alibaba Cloud Account needs to be configured to allow the application to au
 
         yarn start-api
 
-_warning_ This will incur some cost. Use this sparingly if you wish to test with live data.
+_warning_ This will incur some cost. Use this sparingly if you wish to test with live data. Please refer to [Ali Docs FAQ](https://www.alibabacloud.com/help/en/openapi-explorer/latest/faqs) for more information.
