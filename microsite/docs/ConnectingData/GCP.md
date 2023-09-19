@@ -1,6 +1,7 @@
 ---
 id: gcp
-title: GCP
+title: Google Cloud (GCP)
+sidebar_label: GCP
 slug: /gcp
 sidebar_position: 2
 ---

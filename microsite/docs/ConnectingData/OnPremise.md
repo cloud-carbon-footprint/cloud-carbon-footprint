@@ -2,7 +2,7 @@
 id: on-premise
 title: On-Premise
 slug: /on-premise
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 ## Summary

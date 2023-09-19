@@ -2,7 +2,7 @@
 id: recommendations
 title: Recommendations
 slug: /recommendations
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 If users would like to view a list of recommendations to lower their energy consumption, co2e emissions as well as potential costs from their cloud usage, we have provided a `/recommendations` route to view the data in JSON format.
