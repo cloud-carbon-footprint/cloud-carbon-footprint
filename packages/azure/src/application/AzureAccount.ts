@@ -80,11 +80,15 @@ export default class AzureAccount extends CloudProviderAccount {
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
+    subscriptionIds: string[] = [],
   ): Promise<EstimationResult[]> {
     const AZURE = configLoader().AZURE
+    const defaultAzureSubscriptionIds = subscriptionIds.length
+      ? subscriptionIds
+      : AZURE.SUBSCRIPTIONS
 
-    const subscriptions = AZURE.SUBSCRIPTIONS?.length
-      ? await this.getSubscriptionsByIds(AZURE.SUBSCRIPTIONS)
+    const subscriptions = defaultAzureSubscriptionIds?.length
+      ? await this.getSubscriptionsByIds(defaultAzureSubscriptionIds)
       : await this.getSubscriptions()
 
     const requests = this.createSubscriptionRequests(
@@ -120,8 +124,7 @@ export default class AzureAccount extends CloudProviderAccount {
 
     if (subscriptions.length === 0) {
       this.logger.warn(
-        'No subscription returned for these Azure credentials, be sure the registered application has ' +
-          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
+        `No subscription returned for these Azure credentials, be sure the registered application has enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.`,
       )
     }
 
