@@ -43,7 +43,7 @@ export default class App {
     request: EstimationRequest,
   ): Promise<EstimationResult[]> {
     const appLogger = new Logger('App')
-    const { startDate, endDate, cloudProviderToSeed } = request
+    const { startDate, endDate, accounts, cloudProviderToSeed } = request
     const grouping = request.groupBy as GroupBy
     const config = configLoader()
     includeCloudProviders(cloudProviderToSeed, config)
@@ -115,6 +115,7 @@ export default class App {
         startDate,
         endDate,
         grouping,
+        accounts,
       )
       AzureEstimatesByRegion.push(estimates)
       appLogger.info('Finished Azure Estimations')

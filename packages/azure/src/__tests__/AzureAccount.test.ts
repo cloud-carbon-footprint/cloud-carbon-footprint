@@ -59,7 +59,7 @@ describe('Azure Account', () => {
         secret: 'test-client-secret',
         domain: 'test-tenant-id',
       }
-      ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+        ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
       mockListSubscriptions.list.mockReturnValue([
         { subscriptionId: 'sub-1' },
@@ -88,7 +88,7 @@ describe('Azure Account', () => {
         },
       ]
 
-      ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
       const promiseSpy = jest.spyOn(Promise, 'all')
 
@@ -160,7 +160,7 @@ describe('Azure Account', () => {
           secret: 'test-client-secret',
           domain: 'test-tenant-id',
         }
-        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
         mockListSubscriptions.list.mockReturnValue([
           { subscriptionId: 'sub-1' },
           { subscriptionId: 'sub-2' },
@@ -191,7 +191,7 @@ describe('Azure Account', () => {
           },
         ]
 
-        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
         const AZURE = configLoader().AZURE || {}
         AZURE.SUBSCRIPTION_CHUNKS = 2
@@ -222,13 +222,13 @@ describe('Azure Account', () => {
         delete AZURE.SUBSCRIPTION_CHUNKS
       })
 
-      it('fetches data only for specific subscriptions when specified subscriptions are set', async () => {
+      it('fetches data only for specific subscriptions when specified environment variable subscriptions are set', async () => {
         const mockCredentials = {
           clientId: 'test-client-id',
           secret: 'test-client-secret',
           domain: 'test-tenant-id',
         }
-        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
         const AZURE: any = configLoader().AZURE || {}
         const subscriptions = ['sub-1', 'sub-2', 'sub-3']
@@ -260,7 +260,7 @@ describe('Azure Account', () => {
           },
         ]
 
-        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
         const getDataForSubscriptionSpy = jest.spyOn(
           AzureAccount.prototype,
           'getDataForSubscription',
@@ -295,6 +295,76 @@ describe('Azure Account', () => {
         // Reset the config
         delete AZURE.SUBSCRIPTIONS
       })
+
+      it('fetches data only for specific subscriptions when specified parameter subscriptions are set', async () => {
+        const mockCredentials = {
+          clientId: 'test-client-id',
+          secret: 'test-client-secret',
+          domain: 'test-tenant-id',
+        }
+          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+        const subscriptions = ['sub-1', 'sub-2', 'sub-3']
+
+        subscriptions.forEach((subscriptionId) => {
+          mockListSubscriptions.get.mockReturnValueOnce({ subscriptionId })
+        })
+
+        const mockEstimates: EstimationResult[] = [
+          {
+            timestamp: startDate,
+            serviceEstimates: [
+              {
+                kilowattHours: 0.09313874999999999,
+                co2e: 0.000021235635,
+                usesAverageCPUConstant: true,
+                cloudProvider: 'AZURE',
+                accountId: testAccountId,
+                accountName: testAccountName,
+                serviceName: 'Virtual Machines',
+                cost: 5,
+                region: 'UK South',
+              },
+            ],
+            periodStartDate: startDate,
+            periodEndDate: endDate,
+            groupBy: grouping,
+          },
+        ]
+
+          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        const getDataForSubscriptionSpy = jest.spyOn(
+          AzureAccount.prototype,
+          'getDataForSubscription',
+        )
+
+        // when
+        const azureAccount = new AzureAccount()
+        await azureAccount.initializeAccount()
+        const results = await azureAccount.getDataFromConsumptionManagement(
+          startDate,
+          endDate,
+          grouping,
+          subscriptions,
+        )
+
+        // Results should be the same as the mockEstimates array repeated35 times
+        const expectedEstimates = Array.from(
+          { length: 3 },
+          () => mockEstimates[0],
+        )
+
+        expect(results).toEqual(expectedEstimates)
+        // getDataForSubscription should have been called 3 times (once for each given subscription ID)
+        subscriptions.forEach((subscriptionId) => {
+          expect(getDataForSubscriptionSpy).toHaveBeenCalledWith(
+            startDate,
+            endDate,
+            subscriptionId,
+            grouping,
+          )
+        })
+      })
     })
   })
 
@@ -304,7 +374,7 @@ describe('Azure Account', () => {
       secret: 'test-client-secret',
       domain: 'test-tenant-id',
     }
-    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+      ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
     mockListSubscriptions.list.mockReturnValue([
       { subscriptionId: 'sub-1' },
@@ -328,7 +398,7 @@ describe('Azure Account', () => {
       },
     ]
 
-    ;(getRecommendationsSpy as jest.Mock).mockResolvedValue(mockRecommendations)
+      ; (getRecommendationsSpy as jest.Mock).mockResolvedValue(mockRecommendations)
 
     // when
     const azureAccount = new AzureAccount()
@@ -403,7 +473,7 @@ describe('Azure Account', () => {
     const errorMessage = 'Some error'
     const apiError = new Error(errorMessage)
 
-    ;(createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
+      ; (createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
 
     const azureAccount = new AzureAccount()
 
