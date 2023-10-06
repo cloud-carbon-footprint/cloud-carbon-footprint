@@ -124,7 +124,8 @@ export default class AzureAccount extends CloudProviderAccount {
 
     if (subscriptions.length === 0) {
       this.logger.warn(
-        `No subscription returned for these Azure credentials, be sure the registered application has enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.`,
+        'No subscription returned for these Azure credentials, be sure the registered application has ' +
+          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
       )
     }
 
