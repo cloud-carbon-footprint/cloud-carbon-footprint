@@ -59,7 +59,7 @@ describe('Azure Account', () => {
         secret: 'test-client-secret',
         domain: 'test-tenant-id',
       }
-        ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+      ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
       mockListSubscriptions.list.mockReturnValue([
         { subscriptionId: 'sub-1' },
@@ -88,7 +88,7 @@ describe('Azure Account', () => {
         },
       ]
 
-        ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+      ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
       const promiseSpy = jest.spyOn(Promise, 'all')
 
@@ -160,7 +160,7 @@ describe('Azure Account', () => {
           secret: 'test-client-secret',
           domain: 'test-tenant-id',
         }
-          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
         mockListSubscriptions.list.mockReturnValue([
           { subscriptionId: 'sub-1' },
           { subscriptionId: 'sub-2' },
@@ -191,7 +191,7 @@ describe('Azure Account', () => {
           },
         ]
 
-          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
         const AZURE = configLoader().AZURE || {}
         AZURE.SUBSCRIPTION_CHUNKS = 2
@@ -228,7 +228,7 @@ describe('Azure Account', () => {
           secret: 'test-client-secret',
           domain: 'test-tenant-id',
         }
-          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
         const AZURE: any = configLoader().AZURE || {}
         const subscriptions = ['sub-1', 'sub-2', 'sub-3']
@@ -260,7 +260,7 @@ describe('Azure Account', () => {
           },
         ]
 
-          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
         const getDataForSubscriptionSpy = jest.spyOn(
           AzureAccount.prototype,
           'getDataForSubscription',
@@ -302,7 +302,7 @@ describe('Azure Account', () => {
           secret: 'test-client-secret',
           domain: 'test-tenant-id',
         }
-          ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+        ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
         const subscriptions = ['sub-1', 'sub-2', 'sub-3']
 
@@ -332,7 +332,7 @@ describe('Azure Account', () => {
           },
         ]
 
-          ; (getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+        ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
         const getDataForSubscriptionSpy = jest.spyOn(
           AzureAccount.prototype,
           'getDataForSubscription',
@@ -374,7 +374,7 @@ describe('Azure Account', () => {
       secret: 'test-client-secret',
       domain: 'test-tenant-id',
     }
-      ; (createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
     mockListSubscriptions.list.mockReturnValue([
       { subscriptionId: 'sub-1' },
@@ -398,7 +398,7 @@ describe('Azure Account', () => {
       },
     ]
 
-      ; (getRecommendationsSpy as jest.Mock).mockResolvedValue(mockRecommendations)
+    ;(getRecommendationsSpy as jest.Mock).mockResolvedValue(mockRecommendations)
 
     // when
     const azureAccount = new AzureAccount()
@@ -473,7 +473,7 @@ describe('Azure Account', () => {
     const errorMessage = 'Some error'
     const apiError = new Error(errorMessage)
 
-      ; (createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
+    ;(createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
 
     const azureAccount = new AzureAccount()
 
