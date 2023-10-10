@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/azure
 
+## 1.6.0
+
+### Minor Changes
+
+- dd3bd1bc: Add subscriptionIds as a parameter to getDataFromConsumptionManagement
+
+### Patch Changes
+
+- Updated dependencies [db1b66fe]
+  - @cloud-carbon-footprint/common@1.13.1
+
 ## 1.5.0
 
 ### Minor Changes
