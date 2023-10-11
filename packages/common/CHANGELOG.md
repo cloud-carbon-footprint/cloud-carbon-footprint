@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.13.1
+
+### Patch Changes
+
+- db1b66fe: fixes console warning in common
+
 ## 1.13.0
 
 ### Minor Changes

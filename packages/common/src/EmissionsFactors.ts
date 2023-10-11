@@ -26,7 +26,7 @@ export const getEmissionsFactors = async (
 
   // if there is no zone for the region, or no token, return the default emissions factor
   if (!electricityMapsToken || !electricityMapsZone) {
-    if (!electricityMapsZone) {
+    if (electricityMapsToken && !electricityMapsZone) {
       logger.warn(
         `Electricity Maps zone not found for ${region}. Using default emissions factors.`,
       )
