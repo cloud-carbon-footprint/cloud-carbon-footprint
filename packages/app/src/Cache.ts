@@ -158,6 +158,7 @@ const getMissingDataRequests = (
 
   return requestDates.map((dates) => {
     return {
+      ...request,
       startDate: dates.start.utc().toDate(),
       endDate: dates.end.utc().toDate(),
       ignoreCache: false,
