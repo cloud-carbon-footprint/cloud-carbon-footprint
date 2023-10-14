@@ -230,7 +230,9 @@ export default class App {
     if (AZURE?.USE_BILLING_DATA) {
       const azureAccount = new AzureAccount()
       await azureAccount.initializeAccount()
-      const recommendations = await azureAccount.getDataFromAdvisorManagement()
+      const recommendations = await azureAccount.getDataFromAdvisorManagement(
+        request.accounts,
+      )
       AzureRecommendations.push(recommendations)
     }
     allRecommendations.push(AzureRecommendations.flat())

@@ -19,6 +19,7 @@ export interface FootprintEstimatesRawRequest {
 
 export interface RecommendationsRawRequest {
   awsRecommendationTarget?: string
+  accounts?: string[]
 }
 
 export interface Tags {

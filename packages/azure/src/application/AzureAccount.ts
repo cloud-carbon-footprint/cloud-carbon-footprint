@@ -57,8 +57,10 @@ export default class AzureAccount extends CloudProviderAccount {
     }
   }
 
-  public async getDataFromAdvisorManagement(): Promise<RecommendationResult[]> {
-    const subscriptions = await this.getSubscriptions()
+  public async getDataFromAdvisorManagement(
+    subscriptionIds: string[],
+  ): Promise<RecommendationResult[]> {
+    const subscriptions = await this.getSubscriptions(subscriptionIds)
     const recommendations = await Promise.all(
       subscriptions.map(async (subscription: Subscription) => {
         try {
@@ -80,17 +82,10 @@ export default class AzureAccount extends CloudProviderAccount {
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
-    subscriptionIds: string[] = [],
+    subscriptionIds: string[],
   ): Promise<EstimationResult[]> {
     const AZURE = configLoader().AZURE
-    const defaultAzureSubscriptionIds = subscriptionIds.length
-      ? subscriptionIds
-      : AZURE.SUBSCRIPTIONS
-
-    const subscriptions = defaultAzureSubscriptionIds?.length
-      ? await this.getSubscriptionsByIds(defaultAzureSubscriptionIds)
-      : await this.getSubscriptions()
-
+    const subscriptions = await this.getSubscriptions(subscriptionIds)
     const requests = this.createSubscriptionRequests(
       subscriptions,
       startDate,
@@ -116,39 +111,54 @@ export default class AzureAccount extends CloudProviderAccount {
     return R.flatten(estimationResults)
   }
 
-  public async getSubscriptions(): Promise<Subscription[]> {
-    const subscriptions = []
-    for await (const subscription of this.subscriptionClient.subscriptions.list()) {
-      subscriptions.push(subscription)
-    }
-
-    if (subscriptions.length === 0) {
-      this.logger.warn(
-        'No subscription returned for these Azure credentials, be sure the registered application has ' +
-          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
-      )
-    }
-
-    return subscriptions
-  }
-
-  private async getSubscriptionsByIds(
-    subscriptionIds: string[],
+  private async getSubscriptions(
+    subscriptionIds: string[] = [],
   ): Promise<Subscription[]> {
-    const subscriptions = []
+    const AZURE = configLoader().AZURE
+    const defaultAzureSubscriptionIds = subscriptionIds.length
+      ? subscriptionIds
+      : AZURE.SUBSCRIPTIONS
 
-    for (const subscriptionId of subscriptionIds) {
-      try {
-        const subscription = await this.subscriptionClient.subscriptions.get(
-          subscriptionId,
-        )
+    const getSubscriptions = async (): Promise<Subscription[]> => {
+      const subscriptions = []
+      for await (const subscription of this.subscriptionClient.subscriptions.list()) {
         subscriptions.push(subscription)
-      } catch (error) {
+      }
+
+      if (subscriptions.length === 0) {
         this.logger.warn(
-          `Unable to fetch subscription details for: "${subscriptionId}". Reason: ${error.message}`,
+          'No subscription returned for these Azure credentials, be sure the registered application has ' +
+            'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
         )
       }
+
+      return subscriptions
     }
+
+    const getSubscriptionsByIds = async (
+      subscriptionIds: string[],
+    ): Promise<Subscription[]> => {
+      const subscriptions = []
+
+      for (const subscriptionId of subscriptionIds) {
+        try {
+          const subscription = await this.subscriptionClient.subscriptions.get(
+            subscriptionId,
+          )
+          subscriptions.push(subscription)
+        } catch (error) {
+          this.logger.warn(
+            `Unable to fetch subscription details for: "${subscriptionId}". Reason: ${error.message}`,
+          )
+        }
+      }
+
+      return subscriptions
+    }
+
+    const subscriptions = defaultAzureSubscriptionIds?.length
+      ? await getSubscriptionsByIds(defaultAzureSubscriptionIds)
+      : await getSubscriptions()
 
     return subscriptions
   }

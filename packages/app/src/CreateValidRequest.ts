@@ -33,6 +33,7 @@ export interface EstimationRequest {
 
 export interface RecommendationRequest {
   awsRecommendationTarget?: AWS_RECOMMENDATIONS_TARGETS
+  accounts?: string[]
 }
 
 interface FormattedEstimationRequest {
