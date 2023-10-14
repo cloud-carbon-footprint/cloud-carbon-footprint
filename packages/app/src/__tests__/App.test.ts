@@ -1285,6 +1285,43 @@ describe('App', () => {
 
       expect(result).toEqual(expectedRecommendations)
     })
+
+    it('returns recommendations for azure with billing data for only the specified subscriptions', async () => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        ...configLoader(),
+        AZURE: {
+          ...configLoader().AZURE,
+          USE_BILLING_DATA: true,
+        },
+      })
+
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AZURE',
+          accountId: 'account-id-2',
+          accountName: 'account-name',
+          region: 'useast',
+          recommendationType: 'Shutdown',
+          recommendationDetail: 'Shutdown instance: test-vm-name.',
+          kilowattHourSavings: 5,
+          co2eSavings: 20,
+          costSavings: 3,
+        },
+      ]
+
+      const newDefaultRequest = {
+        ...defaultRequest,
+        accounts: ['account-id-2'],
+      }
+
+      getDataForAWSRecommendations.mockResolvedValue([])
+      getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue(expectedRecommendations)
+      initializeAzureAccount.mockResolvedValue()
+      const result = await app.getRecommendations(newDefaultRequest)
+
+      expect(result).toEqual(expectedRecommendations)
+    })
   })
 })
 
