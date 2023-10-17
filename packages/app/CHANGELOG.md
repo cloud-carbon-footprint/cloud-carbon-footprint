@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/app
 
+## 1.6.0
+
+### Minor Changes
+
+- af506a23: Add subscriptionIds to /recommendations API for azure accounts so that we can get recommendations per account as a param, not just from an env variable
+- ef945dca: Pass through query params from cache to the end client
+
+### Patch Changes
+
+- Updated dependencies [af506a23]
+- Updated dependencies [f8b15631]
+  - @cloud-carbon-footprint/azure@1.7.0
+
 ## 1.5.0
 
 ### Minor Changes

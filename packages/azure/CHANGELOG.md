@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/azure
 
+## 1.7.0
+
+### Minor Changes
+
+- af506a23: Add subscriptionIds to /recommendations API for azure accounts so that we can get recommendations per account as a param, not just from an env variable
+- f8b15631: adds support for additional regions
+
 ## 1.6.0
 
 ### Minor Changes
