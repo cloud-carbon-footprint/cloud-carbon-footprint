@@ -28,10 +28,13 @@ export const AZURE_REGIONS = {
     name: 'australiacentral2',
     options: ['australiacentral2'],
   },
-  AP_AUSTRALIA_EAST: { name: 'australiaeast', options: ['australiaeast'] },
+  AP_AUSTRALIA_EAST: {
+    name: 'australiaeast',
+    options: ['australiaeast', 'AustraliaEast', 'AUSTRALIAEAST'],
+  },
   AP_AUSTRALIA_SOUTH_EAST: {
     name: 'australiasoutheast',
-    options: ['australiasoutheast'],
+    options: ['australiasoutheast', 'AustraliaSouthEast', 'AUSTRALIASOUTHEAST'],
   },
   AP_EAST: { name: 'apeast', options: ['apeast', 'AP East'] },
   AP_SOUTH_EAST: {
@@ -53,7 +56,12 @@ export const AZURE_REGIONS = {
   ASIA_EAST_STAGE: { name: 'eastasiastage', options: ['eastasiastage'] },
   ASIA_SOUTH_EAST: {
     name: 'southeastasia',
-    options: ['southeastasia', 'AsiaSouthEast', 'asiasoutheast'],
+    options: [
+      'southeastasia',
+      'AsiaSouthEast',
+      'asiasoutheast',
+      'SOUTHEASTASIA',
+    ],
   },
   ASIA_SOUTH_EAST_STAGE: {
     name: 'southeastasiastage',
