@@ -120,7 +120,7 @@ describe('csv test', () => {
   ]
 
   const compatibleFormattedTime =
-    process.platform === 'win32' ? '_204131' : '-20:41:41'
+    process.platform === 'win32' ? '_204131' : '-20:41:31'
   const outputFilePath = path.join(
     process.cwd(),
     `results-2020-08-05${compatibleFormattedTime}.csv`,
