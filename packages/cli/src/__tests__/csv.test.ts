@@ -119,11 +119,11 @@ describe('csv test', () => {
     end,
   ]
 
-  let outputFilePath: string
+  const compatibleFormattedTime = process.platform === 'win32' ? '_204131' : '-20:41:41'
+  const outputFilePath =  path.join(process.cwd(), `results-2020-08-05${compatibleFormattedTime}.csv`)
 
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
-    outputFilePath = path.join(process.cwd(), 'results-2020-08-05-20:41:31.csv')
     const expectedResponse: EstimationResult[] = []
     mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
   })
@@ -137,7 +137,7 @@ describe('csv test', () => {
     jest.restoreAllMocks()
   })
 
-  test('formats table into csv file', async () => {
+  it('formats table into csv file', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
 
