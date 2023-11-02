@@ -90,7 +90,8 @@ export default async function cli(argv: string[] = process.argv) {
   }
 
   if (format === 'csv') {
-    const compatibleDateTimeFormat = process.platform === 'win32' ? 'YYYY-MM-DD_HHmmss' : 'YYYY-MM-DD-HH:mm:ss'
+    const compatibleDateTimeFormat =
+      process.platform === 'win32' ? 'YYYY-MM-DD_HHmmss' : 'YYYY-MM-DD-HH:mm:ss'
     const filePath = path.join(
       process.cwd(),
       `results-${moment().utc().format(compatibleDateTimeFormat)}.csv`,

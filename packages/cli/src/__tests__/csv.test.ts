@@ -119,8 +119,12 @@ describe('csv test', () => {
     end,
   ]
 
-  const compatibleFormattedTime = process.platform === 'win32' ? '_204131' : '-20:41:41'
-  const outputFilePath =  path.join(process.cwd(), `results-2020-08-05${compatibleFormattedTime}.csv`)
+  const compatibleFormattedTime =
+    process.platform === 'win32' ? '_204131' : '-20:41:41'
+  const outputFilePath = path.join(
+    process.cwd(),
+    `results-2020-08-05${compatibleFormattedTime}.csv`,
+  )
 
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
