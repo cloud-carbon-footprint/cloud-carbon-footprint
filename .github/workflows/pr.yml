@@ -9,18 +9,18 @@ jobs:
   lint-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Ignore draft pull requests
         if: github.event.pull_request.draft
         run: exit
-      - name: setup node 16
-        uses: actions/setup-node@v2
+      - name: setup node 18
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
@@ -30,7 +30,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: cache global yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         if: steps.cache-modules.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
