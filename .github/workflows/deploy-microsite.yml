@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     env:
       CI: true
@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
 
       - name: use node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
@@ -44,8 +44,8 @@ jobs:
         working-directory: microsite
 
       - name: Deploy microsite
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: microsite/build
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: microsite/build
