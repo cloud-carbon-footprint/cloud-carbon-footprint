@@ -12,16 +12,26 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-# concurrency: ${{ github.workflow || github.run_id }}
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-test:
     runs-on: ubuntu-latest
+    # Runs tests across node 18 and node 20 environments
+    strategy: 
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+    name: Install ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v3
       - name: setup node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: ${{ matrix.node-version }}
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
@@ -65,6 +75,12 @@ jobs:
   build:
     needs: lint-test
     runs-on: ubuntu-latest
+    # Runs tests across node 18 and node 20 environments
+    strategy: 
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+    name: Build ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -131,10 +147,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
-      - name: use node.js 16
+      - name: use node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
           registry-url: https://registry.npmjs.org/ # Needed for auth
       - name: cache all node_modules
         id: cache-modules
