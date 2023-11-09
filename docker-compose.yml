@@ -34,6 +34,8 @@ services:
       - MONGODB_CREDENTIALS
       # uncomment to define this as the certificate file for your MongoDB
       #- x509-cert-mongodb.pem
+      # Uncomment to enable Electricity Maps API for Emissions Factors
+      #- ELECTRICITY_MAPS_TOKEN
     environment:
       # set the CACHE_MODE to MONGODB to use MongoDB
       - CACHE_MODE=LOCAL
@@ -93,3 +95,6 @@ secrets:
   # uncomment to refer to your MongoDB cert file
   #x509-cert-mongodb.pem:
   #  file: ~/.docker/secrets/x509-cert-mongodb.pem
+  # uncomment to refer to your Electricity Maps API token
+  # ELECTRICITY_MAPS_TOKEN
+  #   file: ~/.docker/secrets/ELECTRICITY_MAPS_TOKEN
