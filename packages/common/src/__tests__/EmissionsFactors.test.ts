@@ -58,9 +58,9 @@ describe('getEmissionsFactors', () => {
     expect(result).toEqual({ 'region-1': 0.1 })
   })
 
-  it('makes a request to electricity maps if there is no cached value for the zone', async () => {
+  it('returns carbon intensity values from Electricity Maps (gCO2eq/kWh) in t/kWh if there is no cached value for the zone', async () => {
     const response = {
-      carbonIntensity: 300,
+      carbonIntensity: 300, // gCO2eq/kWh
     }
     ;(fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(
       new Response(JSON.stringify(response), {
@@ -78,9 +78,9 @@ describe('getEmissionsFactors', () => {
       logger,
     )
 
-    expect(result).toEqual({ 'region-1': 0.3 })
+    expect(result).toEqual({ 'region-1': 0.0003 })
     expect(zoneIntensityFactors['2022-01-01T00:00:00.000Z']['zone-1']).toEqual(
-      0.3,
+      0.0003,
     )
   })
 })
@@ -127,7 +127,7 @@ describe('getElectricityMapsData', () => {
     await expect(
       getElectricityMapsData(electricityMapsZone, dateTime),
     ).rejects.toThrow(
-      `Electricity Maps request failed. Reason ${errorMessage}.`,
+      `Electricity Maps request failed. Reason: ${errorMessage}.`,
     )
   })
 })

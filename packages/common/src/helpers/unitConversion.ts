@@ -55,3 +55,7 @@ export const convertGigaBytesToTerabyteHours = (
 ): number => {
   return (usageAmount / 1000) * 24
 }
+
+export const convertGramsToMetricTons = (amount: number): number => {
+  return amount / 1000000
+}

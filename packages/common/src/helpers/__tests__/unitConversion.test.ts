@@ -11,6 +11,7 @@ import {
   convertGigaBytesToTerabyteHours,
   convertTerabytesToGigabytes,
   convertMegabytesToGigabytes,
+  convertGramsToMetricTons,
 } from '../unitConversion'
 
 describe('Calculations helpers', () => {
@@ -54,5 +55,9 @@ describe('Calculations helpers', () => {
   it('convert gigaBytes to terabyteHours', () => {
     const result = convertGigaBytesToTerabyteHours(usageAmount)
     expect(result).toEqual(0.12)
+  })
+  it('converts grams to metric tons', () => {
+    const result = convertGramsToMetricTons(411)
+    expect(result).toEqual(0.000411)
   })
 })

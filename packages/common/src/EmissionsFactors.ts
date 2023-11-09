@@ -3,8 +3,9 @@
  */
 
 import fetch from 'node-fetch'
-import { configLoader, Logger } from './index'
 import { CloudConstantsEmissionsFactors } from '@cloud-carbon-footprint/core'
+import { configLoader, Logger } from './index'
+import { convertGramsToMetricTons } from './helpers'
 
 export type mappedRegionsToElectricityMapZones = {
   [key: string]: string | null
@@ -65,11 +66,11 @@ export const getEmissionsFactors = async (
   if (zoneIntensityFactors[dateTime]) {
     // if there is a cached value for the date, add the new zone
     zoneIntensityFactors[dateTime][electricityMapsZone] =
-      response.carbonIntensity / 1000
+      convertGramsToMetricTons(response.carbonIntensity)
   } else {
     // if there is no cached value for the date, create a new entry
     zoneIntensityFactors[dateTime] = {
-      [electricityMapsZone]: response.carbonIntensity / 1000,
+      [electricityMapsZone]: convertGramsToMetricTons(response.carbonIntensity),
     }
   }
 
@@ -91,6 +92,6 @@ export const getElectricityMapsData = async (
     })
     return await res.json()
   } catch (e) {
-    throw new Error(`Electricity Maps request failed. Reason ${e.message}.`)
+    throw new Error(`Electricity Maps request failed. Reason: ${e.message}.`)
   }
 }

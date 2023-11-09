@@ -12,6 +12,7 @@ export {
   convertTerabytesToGigabytes,
   convertGigaBytesToTerabyteHours,
   convertMegabytesToGigabytes,
+  convertGramsToMetricTons,
 } from './unitConversion'
 
 export {
