@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/cli
 
+## 1.12.3
+
+### Patch Changes
+
+- 9b4f25d3: Fixes issue with incorrect characters being used in the timestamp for filenames on Windows
+- Updated dependencies [9737749f]
+  - @cloud-carbon-footprint/common@1.13.2
+
 ## 1.12.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/client
 
+## 4.2.1
+
+### Patch Changes
+
+- 7ff01c3d: Bumps dockerfile to use node18 image
+- Updated dependencies [9737749f]
+  - @cloud-carbon-footprint/common@1.13.2
+
 ## 4.2.0
 
 ### Minor Changes
