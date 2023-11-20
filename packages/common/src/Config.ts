@@ -56,6 +56,7 @@ export interface CCFConfig {
       mode: string
       clientId?: string
       clientSecret?: string
+      certificatePath?: string
       tenantId?: string
     }
     RESOURCE_TAG_NAMES?: string[]
@@ -269,6 +270,7 @@ const getConfig = (): CCFConfig => ({
       mode: getEnvVar('AZURE_AUTH_MODE') || 'default',
       clientId: getEnvVar('AZURE_CLIENT_ID') || '',
       clientSecret: getEnvVar('AZURE_CLIENT_SECRET') || '',
+      certificatePath: getEnvVar('AZURE_CERTIFICATE_PATH') || '',
       tenantId: getEnvVar('AZURE_TENANT_ID') || '',
     },
     RESOURCE_TAG_NAMES: JSON.parse(getAzureResourceTagNames()),

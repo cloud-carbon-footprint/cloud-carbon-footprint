@@ -3,6 +3,7 @@
  */
 
 import {
+  ClientCertificateCredential,
   ClientSecretCredential,
   WorkloadIdentityCredential,
 } from '@azure/identity'
@@ -12,11 +13,14 @@ import { configLoader } from '@cloud-carbon-footprint/common'
 
 export default class AzureCredentialsProvider {
   static async create(): Promise<
-    ClientSecretCredential | WorkloadIdentityCredential
+    | ClientCertificateCredential
+    | ClientSecretCredential
+    | WorkloadIdentityCredential
   > {
     const clientId = configLoader().AZURE.authentication.clientId
     const clientSecret = configLoader().AZURE.authentication.clientSecret
     const tenantId = configLoader().AZURE.authentication.tenantId
+    const certificatePath = configLoader().AZURE.authentication.certificatePath
 
     switch (configLoader().AZURE.authentication.mode) {
       case 'GCP':
@@ -33,6 +37,12 @@ export default class AzureCredentialsProvider {
           tenantId: tenantId,
           clientId: clientId,
         })
+      case 'CERTIFICATE':
+        return new ClientCertificateCredential(
+          tenantId,
+          clientId,
+          certificatePath,
+        )
       default:
         return new ClientSecretCredential(tenantId, clientId, clientSecret)
     }
