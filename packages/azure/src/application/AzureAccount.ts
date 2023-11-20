@@ -7,6 +7,7 @@ import {
   Subscription,
 } from '@azure/arm-resources-subscriptions'
 import {
+  ClientCertificateCredential,
   ClientSecretCredential,
   WorkloadIdentityCredential,
 } from '@azure/identity'
@@ -38,7 +39,10 @@ import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 export default class AzureAccount extends CloudProviderAccount {
-  private credentials: ClientSecretCredential | WorkloadIdentityCredential
+  private credentials:
+    | ClientCertificateCredential
+    | ClientSecretCredential
+    | WorkloadIdentityCredential
   private subscriptionClient: SubscriptionClient
   private logger: Logger
 
