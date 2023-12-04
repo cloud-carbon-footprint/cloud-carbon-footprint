@@ -1,7 +1,7 @@
 FROM node:18-alpine as build
 WORKDIR /app
 COPY ./package.json ./package.json
-COPY ./dist /app/build
+COPY ./build /app/build
 
 RUN yarn install --immutable
 

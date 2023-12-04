@@ -10,7 +10,7 @@ services:
     depends_on:
       - api
   api:
-    image: docker.io/cloudcarbonfootprint/api:latest
+    image: cloudcarbonfootprint/api:latest
     ports:
       - '4000:4000'
     volumes:
