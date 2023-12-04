@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/client
 
+## 4.2.2
+
+### Patch Changes
+
+- 1a50285f: Fixes incorrect build directory for docker image
+- Updated dependencies [0976d8cf]
+  - @cloud-carbon-footprint/common@1.14.0
+
 ## 4.2.1
 
 ### Patch Changes
