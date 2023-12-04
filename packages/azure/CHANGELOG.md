@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/azure
 
+## 1.8.0
+
+### Minor Changes
+
+- 0976d8cf: Add support for authenticating with Azure using an SPN and a cetificate instead of a client secret
+
+### Patch Changes
+
+- Updated dependencies [0976d8cf]
+  - @cloud-carbon-footprint/common@1.14.0
+
 ## 1.7.0
 
 ### Minor Changes
