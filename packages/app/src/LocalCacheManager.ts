@@ -72,7 +72,7 @@ export default class LocalCacheManager extends CacheManager {
   }
 
   private async loadEstimates(grouping: string): Promise<EstimationResult[]> {
-    let cachedData: EstimationResult[] | any
+    let cachedData: EstimationResult[]
     const loadedCache = process.env.TEST_MODE
       ? testCachePath
       : getCacheFileName(grouping)
@@ -81,13 +81,29 @@ export default class LocalCacheManager extends CacheManager {
       const dataStream = await fs.createReadStream(loadedCache)
       cachedData = await getCachedData(dataStream)
     } catch (error) {
-      console.warn(
-        'WARN: Unable to read cache file. Got following error: \n' + error,
-        '\n',
-        'Creating new cache file...',
-      )
-      await promises.writeFile(loadedCache, '[]', 'utf8')
+      if (error.code === 'ENOENT') {
+        await this.createCacheFile(error, loadedCache)
+      } else {
+        this.handleCacheReadError()
+      }
     }
     return cachedData
+  }
+
+  private handleCacheReadError() {
+    console.warn(
+      'WARN: There was an error parsing the cache file.',
+      '\n',
+      'Ignoring cache and fetching fresh estimates...',
+    )
+  }
+
+  private async createCacheFile(error, cacheFilePath) {
+    console.warn(
+      'WARN: Failed to open the cache file. \n' + error,
+      '\n',
+      'Creating new cache file...',
+    )
+    await promises.writeFile(cacheFilePath, '[]', 'utf8')
   }
 }

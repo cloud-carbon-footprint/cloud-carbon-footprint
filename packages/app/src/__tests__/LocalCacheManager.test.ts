@@ -106,8 +106,12 @@ describe('Local Cache Manager', () => {
   })
 
   it('will create a new empty file if fails to load cache', async () => {
+    type FSError = Error & { code: string }
     mockFs.access.mockImplementation(() => {
-      throw new Error('failed to open cache')
+      // throw new error with error code ENOENT
+      const error = new Error('failed to open cache') as FSError
+      error.code = 'ENOENT'
+      throw error
     })
 
     await cacheManager.getMissingDates({} as EstimationRequest, 'day')
@@ -116,6 +120,21 @@ describe('Local Cache Manager', () => {
       'mock-estimates.json',
       '[]',
       'utf8',
+    )
+  })
+
+  it('will ignore the cache if there is an error parsing the file', async () => {
+    const parsingErrorMessage = 'Unexpected token ] in JSON at position 0' // Happens with a corrupted file
+    mockGetCachedData.mockImplementation(() => {
+      throw new SyntaxError(parsingErrorMessage)
+    })
+
+    await cacheManager.getMissingDates({} as EstimationRequest, 'day')
+
+    expect(console.warn).toHaveBeenCalledWith(
+      `WARN: There was an error parsing the cache file.`,
+      '\n',
+      'Ignoring cache and fetching fresh estimates...',
     )
   })
 })

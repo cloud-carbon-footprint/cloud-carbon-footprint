@@ -45,14 +45,20 @@ export const writeToFile = async (
   await writeIt(CLOSE_BRACKET) // end of the cache file
 }
 
-export const getCachedData = async (dataStream: Stream) => {
+export const getCachedData = async (
+  dataStream: Stream,
+): Promise<EstimationResult[]> => {
   const delimitedStream = await new DelimitedStream(Buffer.from('\n'))
   return await new Promise((resolve, reject) => {
-    const arr: any = []
+    const arr: EstimationResult[] = []
     delimitedStream.on('data', (data) => {
-      const line = data.toString()
-      if (isNotADataDelimiter(line)) {
-        arr.push(JSON.parse(line, dateTimeReviver))
+      try {
+        const line = data.toString()
+        if (isNotADataDelimiter(line)) {
+          arr.push(JSON.parse(line, dateTimeReviver))
+        }
+      } catch (err) {
+        reject(err)
       }
     })
     delimitedStream.on('error', (err) => reject(err))
@@ -61,11 +67,12 @@ export const getCachedData = async (dataStream: Stream) => {
     })
     dataStream.pipe(delimitedStream)
   })
-  function isNotADataDelimiter(l: string) {
-    // data delimiters are [, ], or empty line
-    // and are encoded on writeToFile() function
-    return !/^[\[\],\n]$/.test(l)
-  }
+}
+
+const isNotADataDelimiter = (l: string) => {
+  // data delimiters are [, ], or empty line
+  // and are encoded on writeToFile() function
+  return !/^[\[\],\n]$/.test(l)
 }
 
 const dateTimeReviver = (key: string, value: string) => {
