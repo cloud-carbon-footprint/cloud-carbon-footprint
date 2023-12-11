@@ -82,7 +82,7 @@ export default class LocalCacheManager extends CacheManager {
       cachedData = await getCachedData(dataStream)
     } catch (error) {
       if (error.code === 'ENOENT') {
-        await this.createCacheFile(error, loadedCache)
+        await this.createCacheFile(loadedCache)
       } else {
         this.handleCacheReadError()
       }
@@ -91,19 +91,13 @@ export default class LocalCacheManager extends CacheManager {
   }
 
   private handleCacheReadError() {
-    console.warn(
-      'WARN: There was an error parsing the cache file.',
-      '\n',
-      'Ignoring cache and fetching fresh estimates...',
+    this.cacheLogger.warn(
+      'There was an error parsing the cache file. Ignoring cache and fetching fresh estimates...',
     )
   }
 
-  private async createCacheFile(error, cacheFilePath) {
-    console.warn(
-      'WARN: Failed to open the cache file. \n' + error,
-      '\n',
-      'Creating new cache file...',
-    )
-    await promises.writeFile(cacheFilePath, '[]', 'utf8')
+  private async createCacheFile(filePath) {
+    this.cacheLogger.warn('Cache file not found. Creating new cache file...')
+    await promises.writeFile(filePath, '[]', 'utf8')
   }
 }

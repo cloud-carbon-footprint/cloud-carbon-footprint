@@ -6,7 +6,7 @@ import moment from 'moment'
 import { promises } from 'fs'
 import { FileHandle } from 'fs/promises'
 import { env } from 'process'
-import { GroupBy } from '@cloud-carbon-footprint/common'
+import { GroupBy, Logger } from '@cloud-carbon-footprint/common'
 import { writeToFile, getCachedData } from '../common/helpers'
 import LocalCacheManager from '../LocalCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
@@ -107,6 +107,7 @@ describe('Local Cache Manager', () => {
 
   it('will create a new empty file if fails to load cache', async () => {
     type FSError = Error & { code: string }
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation()
     mockFs.access.mockImplementation(() => {
       // throw new error with error code ENOENT
       const error = new Error('failed to open cache') as FSError
@@ -114,8 +115,11 @@ describe('Local Cache Manager', () => {
       throw error
     })
 
+    const loggerMessage = 'Cache file not found. Creating new cache file...'
+
     await cacheManager.getMissingDates({} as EstimationRequest, 'day')
 
+    expect(Logger.prototype.warn).toHaveBeenCalledWith(loggerMessage)
     expect(mockFs.writeFile).toHaveBeenCalledWith(
       'mock-estimates.json',
       '[]',
@@ -125,16 +129,16 @@ describe('Local Cache Manager', () => {
 
   it('will ignore the cache if there is an error parsing the file', async () => {
     const parsingErrorMessage = 'Unexpected token ] in JSON at position 0' // Happens with a corrupted file
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation()
     mockGetCachedData.mockImplementation(() => {
       throw new SyntaxError(parsingErrorMessage)
     })
 
+    const loggerMessage =
+      'There was an error parsing the cache file. Ignoring cache and fetching fresh estimates...'
+
     await cacheManager.getMissingDates({} as EstimationRequest, 'day')
 
-    expect(console.warn).toHaveBeenCalledWith(
-      `WARN: There was an error parsing the cache file.`,
-      '\n',
-      'Ignoring cache and fetching fresh estimates...',
-    )
+    expect(Logger.prototype.warn).toHaveBeenCalledWith(loggerMessage)
   })
 })
