@@ -27,7 +27,7 @@ export const writeToFile = async (
 
   async function writeIt(output: string) {
     fh
-      ? await writeStream.appendFile(fh, output)
+      ? await writeStream.writeFile(fh, output)
       : await writeStream.write(output)
   }
 

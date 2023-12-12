@@ -40,7 +40,7 @@ export default class LocalCacheManager extends CacheManager {
       : getCacheFileName(grouping)
 
     const mergedEstimates = mergeEstimates(estimates, this.cachedEstimates)
-    await this.fileHandle(cacheFile, mergedEstimates)
+    await this.fileHandle(cacheFile, grouping, mergedEstimates)
   }
 
   async getMissingDates(
@@ -59,11 +59,17 @@ export default class LocalCacheManager extends CacheManager {
     return getMissingDates(filteredEstimates, request, grouping)
   }
 
-  private async fileHandle(cacheFile: string, estimates: EstimationResult[]) {
+  private async fileHandle(
+    cacheFile: string,
+    grouping: string,
+    estimates: EstimationResult[],
+  ) {
     let fh = null
     try {
       fh = await promises.open(cacheFile, 'r+')
-      await writeToFile(promises, estimates, fh)
+      const cachedData = await this.loadEstimates(grouping)
+      const mergedEstimates = mergeEstimates(estimates, cachedData)
+      await writeToFile(promises, mergedEstimates, fh)
     } catch (err) {
       console.warn(`Setting estimates error: ${err.message}`)
     } finally {
