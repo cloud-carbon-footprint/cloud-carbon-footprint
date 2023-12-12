@@ -4,6 +4,7 @@
 
 import moment, { Moment } from 'moment'
 import { Stream } from 'stream'
+import { FileHandle } from 'fs/promises'
 import { DelimitedStream } from '@sovpro/delimited-stream'
 import {
   EstimationResult,
@@ -18,7 +19,7 @@ const DATA_WINDOW_SIZE = 100 // this roughly means 100 days per loop
 export const writeToFile = async (
   writeStream: any,
   mergedData: EstimationResult[],
-  fh?: any,
+  fh?: FileHandle,
 ) => {
   const OPEN_BRACKET = '[' + '\n'
   const CLOSE_BRACKET = '\n' + ']'
@@ -210,4 +211,42 @@ export const includeCloudProviders = (
       }
     })
   }
+}
+
+/**
+ * Merges two already-sorted arrays of estimates into one array of estimates sorted by timestamp.
+ * @param estimatesOne - An array of estimates sorted by timestamp (takes priority when comparing same dates)
+ * @param estimatesTwo - An array of estimates sorted by timestamp
+ */
+export const mergeEstimates = (
+  estimatesOne: EstimationResult[],
+  estimatesTwo: EstimationResult[],
+): EstimationResult[] => {
+  const mergedData = []
+  let i = 0,
+    j = 0
+
+  while (i < estimatesOne.length && j < estimatesTwo.length) {
+    const dateOne = moment.utc(estimatesOne[i].timestamp)
+    const dateTwo = moment.utc(estimatesTwo[j].timestamp)
+
+    if (dateOne.isBefore(dateTwo)) {
+      mergedData.push(estimatesOne[i])
+      i++
+    } else if (dateTwo.isBefore(dateOne)) {
+      mergedData.push(estimatesTwo[j])
+      j++
+    } else {
+      // Prefer new estimates over existing estimates
+      // if comparing fetched vs cached, estimatesOne should be the fetched estimates
+      mergedData.push(estimatesOne[i])
+      i++
+      j++
+    }
+  }
+  // Append remaining entries from either array
+  while (i < estimatesOne.length) mergedData.push(estimatesOne[i++])
+  while (j < estimatesTwo.length) mergedData.push(estimatesTwo[j++])
+
+  return mergedData
 }

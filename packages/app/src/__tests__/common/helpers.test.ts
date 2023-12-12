@@ -8,6 +8,7 @@ import {
   getCacheFileName,
   getMissingDates,
   includeCloudProviders,
+  mergeEstimates,
 } from '../../common/helpers'
 import { Readable, Stream } from 'stream'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
@@ -124,5 +125,112 @@ describe('common/helpers.ts', () => {
     expect(config.AWS.INCLUDE_ESTIMATES).toBe(true)
     expect(config.GCP.INCLUDE_ESTIMATES).toBe(false)
     expect(config.AZURE.INCLUDE_ESTIMATES).toBe(false)
+  })
+
+  describe('merging estimates', () => {
+    const emptyArray = []
+    const singleEstimateArrayOne = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [
+          {
+            cloudProvider: 'AWS',
+            kilowattHours: 120,
+            co2e: 0.5,
+            cost: 100,
+            accountId: '1111111111',
+            accountName: 'Test Account',
+            serviceName: 'EC2',
+            region: 'us-east-1',
+          },
+        ],
+        groupBy: GroupBy.day,
+      },
+    ]
+    const singleEstimateArrayTwo = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [
+          {
+            cloudProvider: 'AWS',
+            kilowattHours: 100,
+            co2e: 0.1,
+            cost: 50,
+            accountId: '2222222222',
+            accountName: 'Other Test Account',
+            serviceName: 'EC2',
+            region: 'us-east-1',
+          },
+        ],
+        groupBy: GroupBy.day,
+      },
+    ]
+    const mockEstimatesArrayOne = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [],
+        groupBy: GroupBy.day,
+      },
+      {
+        timestamp: new Date('2022-01-03'),
+        serviceEstimates: [],
+        groupBy: GroupBy.day,
+      },
+    ]
+    const mockEstimatesArrayTwo = [
+      {
+        timestamp: new Date('2022-01-02'),
+        serviceEstimates: [],
+        groupBy: GroupBy.day,
+      },
+      {
+        timestamp: new Date('2022-01-04'),
+        serviceEstimates: [],
+        groupBy: GroupBy.day,
+      },
+    ]
+
+    const mergedEstimatesExample = [
+      mockEstimatesArrayOne[0],
+      mockEstimatesArrayTwo[0],
+      mockEstimatesArrayOne[1],
+      mockEstimatesArrayTwo[1],
+    ]
+
+    it.each([
+      [
+        'should return an empty array when both input arrays are empty',
+        emptyArray,
+        emptyArray,
+        emptyArray,
+      ],
+      [
+        'should return the first array when the second array is empty',
+        singleEstimateArrayOne,
+        emptyArray,
+        singleEstimateArrayOne,
+      ],
+      [
+        'should return the second array when the first array is empty',
+        emptyArray,
+        singleEstimateArrayOne,
+        singleEstimateArrayOne,
+      ],
+      [
+        'should return first estimate of first array when timestamps are equal',
+        singleEstimateArrayOne,
+        singleEstimateArrayTwo,
+        [...singleEstimateArrayOne],
+      ],
+      [
+        'should merge two arrays with alternating timestamps',
+        mockEstimatesArrayOne,
+        mockEstimatesArrayTwo,
+        mergedEstimatesExample,
+      ],
+    ])('%s', (_testCase, estimatesOne, estimatesTwo, expected) => {
+      const result = mergeEstimates(estimatesOne, estimatesTwo)
+      expect(result).toEqual(expected)
+    })
   })
 })
