@@ -12,6 +12,7 @@ import {
   getCachedData,
   getCacheFileName,
   getMissingDates,
+  mergeEstimates,
 } from './common/helpers'
 
 export const testCachePath = 'mock-estimates.json'
@@ -38,7 +39,8 @@ export default class LocalCacheManager extends CacheManager {
       ? testCachePath
       : getCacheFileName(grouping)
 
-    await this.fileHandle(cacheFile, this.cachedEstimates.concat(estimates))
+    const mergedEstimates = mergeEstimates(estimates, this.cachedEstimates)
+    await this.fileHandle(cacheFile, mergedEstimates)
   }
 
   async getMissingDates(
