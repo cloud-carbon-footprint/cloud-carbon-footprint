@@ -7,7 +7,7 @@ import { promises } from 'fs'
 import { FileHandle } from 'fs/promises'
 import { env } from 'process'
 import { GroupBy, Logger } from '@cloud-carbon-footprint/common'
-import { getCachedData } from '../common/helpers'
+import { getCachedData, writeToFile } from '../common/helpers'
 import LocalCacheManager from '../LocalCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
 
@@ -28,7 +28,7 @@ jest.mock('../common/helpers', () => {
   }
 })
 
-// const mockWrite = writeToFile as jest.Mocked<never>
+const mockWrite = writeToFile as jest.Mocked<never>
 const mockGetCachedData = getCachedData as jest.Mock
 const mockFs = promises as jest.Mocked<typeof promises>
 
@@ -75,15 +75,16 @@ describe('Local Cache Manager', () => {
       close: jest.fn(),
     } as unknown as FileHandle)
 
+    mockGetCachedData.mockResolvedValue([])
+
     await cacheManager.setEstimates(estimates, GroupBy.day)
 
     expect(cacheManager.fetchedEstimates).toEqual(estimates)
-    // TODO: Fix this assertion. Most likely failing due to loadEstimates now happening in fileHandle (will need to mock)
-    // await expect(mockWrite).toHaveBeenCalledWith(
-    //   expect.anything(),
-    //   estimates,
-    //   expect.anything(),
-    // )
+    expect(mockWrite).toHaveBeenCalledWith(
+      expect.anything(),
+      estimates,
+      expect.anything(),
+    )
   })
 
   it('gets missing dates', async () => {
