@@ -50,9 +50,7 @@ export default class LocalCacheManager extends CacheManager {
     this.cacheLogger.info('Using local cache file...')
 
     const estimates = await this.loadEstimates(grouping)
-    const filteredEstimates = estimates
-      ? this.filterEstimatesForRequest(request, estimates)
-      : []
+    const filteredEstimates = this.filterEstimatesForRequest(request, estimates)
 
     this.cachedEstimates = filteredEstimates
 
@@ -80,7 +78,7 @@ export default class LocalCacheManager extends CacheManager {
   }
 
   private async loadEstimates(grouping: string): Promise<EstimationResult[]> {
-    let cachedData: EstimationResult[]
+    let cachedData: EstimationResult[] = []
     const loadedCache = process.env.TEST_MODE
       ? testCachePath
       : getCacheFileName(grouping)
