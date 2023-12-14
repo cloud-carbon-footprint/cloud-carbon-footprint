@@ -211,6 +211,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/arm-costmanagement@npm:^1.0.0-beta.1":
+  version: 1.0.0-beta.1
+  resolution: "@azure/arm-costmanagement@npm:1.0.0-beta.1"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    "@azure/core-auth": ^1.3.0
+    "@azure/core-client": ^1.7.0
+    "@azure/core-lro": ^2.5.0
+    "@azure/core-paging": ^1.2.0
+    "@azure/core-rest-pipeline": ^1.8.0
+    tslib: ^2.2.0
+  checksum: e1e35854ca6240f6f171352d1c8b3973cb3593280680e3605dfcbf2acc96db5b935f13880a42008772e65e1b8804c343e51b97326a131b4ed98d8db84ac203b9
+  languageName: node
+  linkType: hard
+
 "@azure/arm-resources-subscriptions@npm:^2.0.2":
   version: 2.0.2
   resolution: "@azure/arm-resources-subscriptions@npm:2.0.2"
@@ -256,6 +271,33 @@ __metadata:
     "@azure/logger": ^1.0.0
     tslib: ^2.2.0
   checksum: 2c6af345ed7f97d7d214873cf08c2564603c659abc8950a1b866b137dfb8b68cc367f75a1c0d0ea840ac8f66a50604661f6f2569184dcda717ec4e62c3c6d977
+  languageName: node
+  linkType: hard
+
+"@azure/core-client@npm:^1.7.0":
+  version: 1.7.3
+  resolution: "@azure/core-client@npm:1.7.3"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    "@azure/core-auth": ^1.4.0
+    "@azure/core-rest-pipeline": ^1.9.1
+    "@azure/core-tracing": ^1.0.0
+    "@azure/core-util": ^1.0.0
+    "@azure/logger": ^1.0.0
+    tslib: ^2.2.0
+  checksum: 155a188b75b2d5ea783d5fde50479337c41796736f0fced1576466c8251e429195c229f2aff0bf897761f15c19d8fd0deea9a54aab514bd3584e37140e3f0cdc
+  languageName: node
+  linkType: hard
+
+"@azure/core-lro@npm:^2.5.0":
+  version: 2.5.4
+  resolution: "@azure/core-lro@npm:2.5.4"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    "@azure/core-util": ^1.2.0
+    "@azure/logger": ^1.0.0
+    tslib: ^2.2.0
+  checksum: f048b99850e8497b557cf661c2f8a384ea1227de6ea0c0e1436653851c3932e28a05056a380f7c20ebc51e4c6d7bd15d7dfabc6ecca80eddb9dc3e3339df9519
   languageName: node
   linkType: hard
 
@@ -318,6 +360,16 @@ __metadata:
   dependencies:
     tslib: ^2.2.0
   checksum: a0a9cce9452f78babb224fa2ea5566811bd946c55e5c867ca75e6ecd7fcf796b2ec2aa7424e141f03d8e14141e80f048897d0d3c227a7ff0bbaa9ba3d2fc14c9
+  languageName: node
+  linkType: hard
+
+"@azure/core-util@npm:^1.2.0":
+  version: 1.6.1
+  resolution: "@azure/core-util@npm:1.6.1"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    tslib: ^2.2.0
+  checksum: 1f8cd130993f161c98925070af863510cbcc79e0471864e4b16852afc2ee7413c9c7fabe72f20f3e521ee75c3cd7e3085661fdc8d5d0a643a6e1b1b7bf691ddd
   languageName: node
   linkType: hard
 
@@ -2508,6 +2560,7 @@ __metadata:
   dependencies:
     "@azure/arm-advisor": ^3.1.0
     "@azure/arm-consumption": ^9.2.0
+    "@azure/arm-costmanagement": ^1.0.0-beta.1
     "@azure/arm-resources-subscriptions": ^2.0.2
     "@azure/identity": ^3.2.2
     "@azure/ms-rest-js": ^2.6.6
