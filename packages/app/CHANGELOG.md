@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/app
 
+## 1.7.0
+
+### Minor Changes
+
+- 608bdcb2: Improves merging for setting estimates to the JSON cache, fixes recurring file parsing issue
+
 ## 1.6.0
 
 ### Minor Changes
