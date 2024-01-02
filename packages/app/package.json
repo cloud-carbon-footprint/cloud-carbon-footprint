@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/app",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "license": "Apache-2.0",
   "description": "The logic to bootstrap the cloud-carbon-footprint server-side application",
   "main": "src/index.ts",
