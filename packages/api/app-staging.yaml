@@ -1,3 +1,4 @@
+# Configuration for deploying API service to Google App Engine using staging label
 service: api-staging
 
 runtime: nodejs16

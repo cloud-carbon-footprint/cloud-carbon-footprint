@@ -1,0 +1,18 @@
+# Default File for App Engine Deployment. Check out the following resources for further instructions
+# https://cloud.google.com/appengine/docs/standard/nodejs/building-app
+# https://www.cloudcarbonfootprint.org/docs/deploying
+
+runtime: nodejs18
+instance_class: B2  
+
+# Scaling Configurations. Can be automatic, basic, or manual
+# https://cloud.google.com/appengine/docs/standard/how-instances-are-managed#scaling_dynamic_instances
+basic_scaling: 
+  max_instances: 1
+  idle_timeout: 30m
+
+# NPM command to run when the app starts
+entrypoint: npm run start:webprod
+
+env_variables:
+  LOGGING_MODE: "GCP"

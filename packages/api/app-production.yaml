@@ -1,3 +1,4 @@
+# Configuration for deploying API service to Google App Engine using production label
 service: api
 
 runtime: nodejs16
