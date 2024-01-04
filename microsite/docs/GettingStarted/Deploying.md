@@ -74,7 +74,7 @@ Or if you want to use GitHub Actions, you can see the configuration for this in 
 
 It will deploy to `https://<something>.appspot.com`.
 
-### Deploy to AWS
+## Deploy to AWS
 
 The application can also be deployed in AWS by making use of EC2 as the compute service to run it on. In order to do so, we provide a basic infrastructure setup that spins up all the necessary cloud resources, from the required role/policies to the actual compute resource and its provisioning (EC2 with user data).
 
