@@ -40,9 +40,8 @@ Make sure to also configure your gcloud environment to target the project where 
     * Deploy to App Engine using the `gcloud app deploy` command.
 
     > If in a linux environment and facing permission errors when executing the script, you may need to provide the script execution permissions using: `chmod -x ./appengine-deploy.sh`.
-    
 
-    **Note**: If you wish to see a summary of the services to deploy as shown in the example below, you can manually run `gcloud app deploy` in your terminal and the gcloud util will show a preview reflecting your current configurations in your `app.yaml` file. Make sure the summary matches your desired configuration. If you intend to use the script, exit using `ctrl+c` otherwise the build will fail. If running the commands manually and have already executed the steps above, you can hit `enter` to confirm and begin the deployment.
+    If you wish to see a summary of the services to deploy as shown in the example below, you can manually run `gcloud app deploy` in your terminal and the gcloud util will show a preview reflecting your current configurations in your `app.yaml` file. Make sure the summary matches your desired configuration. If you intend to use the script, exit using `ctrl+c` otherwise the build will fail. If running the commands manually and have already executed the steps above, you can hit `enter` to confirm and begin the deployment.
 
     ``` sh
     Services to deploy:
@@ -55,6 +54,7 @@ Make sure to also configure your gcloud environment to target the project where 
     target url:                  [https://api-dot-cloud-carbon-footprint.ue.r.appspot.com]
     target service account:      [cloud-carbon-footprint@appspot.gserviceaccount.com]
     ```
+    
     > If running manually, you can use the `--version` flag to specify a specific version ID for your deployment. Otherwise, a timestamp-based one will be generated as shown in the example.
 
 5. Google Cloud will begin building your application and deploying it to app engine. When it is finished, the link to your deployed service will be provided or you can access it by running the `gcloud app browse` command. If no custom routing is configured, it will deploy to `https://[version]-dot-[project-name].[region].r.appspot.com`.
