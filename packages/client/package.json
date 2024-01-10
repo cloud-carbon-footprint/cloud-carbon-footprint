@@ -33,7 +33,7 @@
     "@mui/material": "^5.11.1",
     "@mui/x-data-grid": "5.9.0",
     "apexcharts": "^3.26.3",
-    "axios": "^0.26.1",
+    "axios": "^1.6.5",
     "express": "^4.17.1",
     "helmet": "^5.0.1",
     "moment": "^2.29.1",
