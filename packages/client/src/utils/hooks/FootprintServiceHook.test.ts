@@ -300,7 +300,6 @@ describe('FootprintServiceHook', () => {
     })
 
     it('should avoid concatenating responses with duplicate results', async () => {
-
       const mockEstimate: EstimationResult = {
         timestamp: moment.utc('2022-02-01').toDate(),
         serviceEstimates: [
@@ -312,7 +311,7 @@ describe('FootprintServiceHook', () => {
             cost: 0,
             kilowattHours: 0,
             co2e: 0,
-            region: 'us-east-2'
+            region: 'us-east-2',
           },
         ],
         groupBy: GroupBy.day,
