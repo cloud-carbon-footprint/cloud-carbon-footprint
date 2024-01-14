@@ -102,11 +102,11 @@ const useRemoteFootprintService = (
 
 const concatenateResults = (estimates, newEstimates) => {
   const equalsLastDataObject = checkForEqualObjects(newEstimates, estimates)
-  if (estimates.length == 0 && equalsLastDataObject) {
+  if (estimates.length === 0) {
     return newEstimates
   }
 
-  if (!newEstimates || !(newEstimates.length > 0)) {
+  if (!newEstimates || newEstimates.length === 0 || equalsLastDataObject) {
     return estimates
   }
 

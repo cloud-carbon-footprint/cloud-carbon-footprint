@@ -298,5 +298,55 @@ describe('FootprintServiceHook', () => {
         mockEstimateTwo.serviceEstimates[0],
       )
     })
+
+    it('should avoid concatenating responses with duplicate results', async () => {
+
+      const mockEstimate: EstimationResult = {
+        timestamp: moment.utc('2022-02-01').toDate(),
+        serviceEstimates: [
+          {
+            cloudProvider: 'AWS',
+            accountId: 'accountId',
+            accountName: 'accountName',
+            serviceName: 'serviceName',
+            cost: 0,
+            kilowattHours: 0,
+            co2e: 0,
+            region: 'us-east-2'
+          },
+        ],
+        groupBy: GroupBy.day,
+      }
+      const mockEstimateTwo = JSON.parse(JSON.stringify(mockEstimate)) // Creates deep copy to properly simulate a duplicate
+      axiosMocked.get.mockResolvedValueOnce({ data: [mockEstimate] })
+
+      const start = moment.utc('2022-02-01')
+      const end = moment.utc('2022-02-02')
+
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useRemoteFootprintService({
+          baseUrl,
+          startDate: start,
+          endDate: end,
+          ignoreCache: false,
+          minLoadTimeMs,
+          groupBy: GroupBy.day,
+          limit: 1,
+        }),
+      )
+
+      // Second call
+      axiosMocked.get.mockResolvedValueOnce({ data: [mockEstimateTwo] })
+      await waitForNextUpdate()
+
+      await waitForNextUpdate()
+      expect(result.current).toEqual({
+        data: [mockEstimate],
+        loading: false,
+        error: null,
+      })
+      expect(result.current.data[0].serviceEstimates.length).toEqual(1)
+      expect(result.current.data[0]).toEqual(mockEstimate)
+    })
   })
 })
