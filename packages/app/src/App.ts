@@ -260,6 +260,12 @@ export default class App {
     )
   }
 
+  async getAzureEstimatesFromManualBillingInputData(
+    inputData: any[],
+  ): Promise<EstimationResult[]> {
+    return await AzureAccount.getDataFromManualBillingInputData(inputData)
+  }
+
   getOnPremiseEstimatesFromInputData(
     inputData: OnPremiseDataInput[],
   ): OnPremiseDataOutput[] {

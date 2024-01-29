@@ -239,6 +239,61 @@ export default class ConsumptionManagementService {
     return result
   }
 
+  public async getEstimatesFromManualBillingInputData(
+    inputData: UsageDetailResult[],
+  ) {
+    const results: MutableEstimationResult[] = []
+    const unknownRows: ConsumptionDetailRow[] = []
+
+    for (const consumptionRow of inputData) {
+      const consumptionDetailRow: ConsumptionDetailRow =
+        new ConsumptionDetailRow(consumptionRow)
+
+      this.updateTimestampByGrouping(GroupBy.day, consumptionDetailRow) // TODO: Change to param-defined grouping
+
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        await getEmissionsFactors(
+          consumptionDetailRow.region,
+          consumptionDetailRow.timestamp.toISOString(),
+          AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+          AZURE_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES,
+          this.consumptionManagementLogger,
+        )
+
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
+        consumptionDetailRow,
+        unknownRows,
+        emissionsFactors,
+      )
+
+      if (footprintEstimate) {
+        appendOrAccumulateEstimatesByDay(
+          results,
+          consumptionDetailRow,
+          footprintEstimate,
+          GroupBy.day,
+          [],
+        )
+      }
+    }
+
+    if (results.length > 0) {
+      unknownRows.map((rowData: ConsumptionDetailRow) => {
+        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
+        if (footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            GroupBy.day,
+            [],
+          )
+      })
+    }
+
+    return results
+  }
+
   private getFootprintEstimateFromUsageRow(
     consumptionDetailRow: ConsumptionDetailRow,
     unknownRows: ConsumptionDetailRow[],

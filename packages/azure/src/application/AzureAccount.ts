@@ -37,6 +37,7 @@ import AzureCredentialsProvider from './AzureCredentialsProvider'
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
+import { UsageDetailResult } from '../lib/ConsumptionTypes'
 
 export default class AzureAccount extends CloudProviderAccount {
   private credentials:
@@ -182,6 +183,25 @@ export default class AzureAccount extends CloudProviderAccount {
       ),
     )
     return await consumptionManagementService.getEstimatesFromInputData(
+      inputData,
+    )
+  }
+
+  static async getDataFromManualBillingInputData(
+    inputData: UsageDetailResult[],
+  ): Promise<EstimationResult[]> {
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+    )
+    return await consumptionManagementService.getEstimatesFromManualBillingInputData(
       inputData,
     )
   }
