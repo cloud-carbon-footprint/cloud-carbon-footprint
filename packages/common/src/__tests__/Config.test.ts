@@ -59,17 +59,20 @@ describe('Config', () => {
   })
 
   describe('Google Cloud', () => {
-    it('get GCP projects', () => {
+    it('loads list of GCP Projects from the environment variables', () => {
       const id = 'id'
+      const secondId = 'id2'
       const name = 'project'
 
       withEnvironment(
         'GCP_PROJECTS',
-        `[{"id": "${id}", "name": "${name}"}]`,
+        `[{"id": "${id}", "name": "${name}"}, {"id": "${secondId}"}]`,
         () => {
           const config = getConfig()
           expect(config.GCP.projects[0].id).toBe(id)
           expect(config.GCP.projects[0].name).toBe(name)
+          expect(config.GCP.projects[1].id).toBe(secondId)
+          expect(config.GCP.projects[1].name).toBeUndefined()
         },
       )
     })
