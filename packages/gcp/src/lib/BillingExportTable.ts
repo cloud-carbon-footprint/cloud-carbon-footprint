@@ -91,7 +91,14 @@ export default class BillingExportTable {
   ): Promise<EstimationResult[]> {
     const gcpConfig = configLoader().GCP
     const tagNames = gcpConfig.RESOURCE_TAG_NAMES
-    const usageRows = await this.getUsage(start, end, grouping, tagNames)
+    const projects = gcpConfig.projects
+    const usageRows = await this.getUsage(
+      start,
+      end,
+      grouping,
+      tagNames,
+      projects,
+    )
 
     const results: MutableEstimationResult[] = []
     const unknownRows: BillingExportRow[] = []
@@ -637,6 +644,7 @@ export default class BillingExportTable {
     end: Date,
     grouping: GroupBy,
     tagNames: string[],
+    projects: { id: string; name?: string }[],
   ): Promise<RowMetadata[]> {
     const startDate = new Date(
       moment.utc(start).startOf('day') as unknown as Date,
@@ -655,6 +663,8 @@ export default class BillingExportTable {
     )
     const [projectLabelPropertySelections, projectLabelPropertyJoins] =
       buildTagQuery('projectLabels', projectLabels)
+
+    const projectFilter = this.buildProjectFilter(projects)
 
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
@@ -688,6 +698,7 @@ export default class BillingExportTable {
                       .format('YYYY-MM-DDTHH:mm:ssZ')}') AND TIMESTAMP('${moment
       .utc(endDate)
       .format('YYYY-MM-DDTHH:mm:ssZ')}')
+                    ${projectFilter}
                   GROUP BY
                     timestamp,
                     accountId,
@@ -740,6 +751,13 @@ export default class BillingExportTable {
       label: [],
     }
 
+    if (!tagNames || !Array.isArray(tagNames)) {
+      this.billingExportTableLogger.warn(
+        'Configured list of tags is invalid. Tags must be a list of strings. Ignoring tags...',
+      )
+      return Object.values(tagColumns)
+    }
+
     // For each string in tag label, check the colon-separated prefix to determine which type of label it is
     tagNames.forEach((tag) => {
       const [prefix, key] = tag.split(':')
@@ -771,6 +789,20 @@ export default class BillingExportTable {
     })
 
     return parsedTags
+  }
+
+  private buildProjectFilter(projects: { id: string; name?: string }[]) {
+    if (!projects || !Array.isArray(projects)) {
+      this.billingExportTableLogger.warn(
+        'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
+      )
+      return ''
+    }
+    const projectIdList = projects
+      .map((project) => `'${project.id}'`)
+      .join(', ')
+
+    return `AND project.id IN (${projectIdList})`
   }
 }
 
