@@ -35,6 +35,8 @@ import {
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRam,
   mockQueryResultsForProjectFilter,
+  mockQueryResultsForProjectFilterEmpty,
+  mockQueryResultsForProjectFilterError,
   mockQueryResultsGPUMachineTypes,
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryResultsUnknownUsages,
@@ -1580,6 +1582,82 @@ describe('GCP BillingExportTable Service', () => {
     ]
 
     expect(result).toEqual(expectedResult)
+  })
+
+  it('ignores empty project filters', async () => {
+    setConfig({
+      GCP: {
+        projects: [],
+      },
+    })
+
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsForProjectFilterEmpty,
+    )
+
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    await billingExportTableService.getEstimates(startDate, endDate, grouping)
+
+    const expectedWhereFilter = `AND project.id IN`
+
+    expect(mockCreateQueryJob).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: expect.not.stringContaining(expectedWhereFilter),
+      }),
+    )
+  })
+
+  it('logs warning and ignores incorrectly formatted projects', async () => {
+    setConfig({
+      GCP: {
+        projects: undefined,
+      },
+    })
+
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsForProjectFilterError,
+    )
+
+    const loggerSpy = jest.spyOn(Logger.prototype, 'warn')
+
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    await billingExportTableService.getEstimates(startDate, endDate, grouping)
+
+    const expectedWhereFilter = `AND project.id IN`
+
+    expect(mockCreateQueryJob).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: expect.not.stringContaining(expectedWhereFilter),
+      }),
+    )
+
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
+    )
   })
 
   it('logs warning and ignores tags with incorrect prefix', async () => {

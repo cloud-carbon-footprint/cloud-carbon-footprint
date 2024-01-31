@@ -798,6 +798,9 @@ export default class BillingExportTable {
       )
       return ''
     }
+
+    if (!projects.length) return ''
+
     const projectIdList = projects
       .map((project) => `'${project.id}'`)
       .join(', ')
