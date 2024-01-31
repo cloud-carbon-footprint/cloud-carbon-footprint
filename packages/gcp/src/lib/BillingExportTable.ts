@@ -13,6 +13,7 @@ import {
   convertBytesToGigabytes,
   EstimationResult,
   getEmissionsFactors,
+  GoogleProjectDetailsOrIdList,
   GroupBy,
   Logger,
   LookupTableInput,
@@ -91,7 +92,7 @@ export default class BillingExportTable {
   ): Promise<EstimationResult[]> {
     const gcpConfig = configLoader().GCP
     const tagNames = gcpConfig.RESOURCE_TAG_NAMES
-    const projects = gcpConfig.projects
+    const projects: GoogleProjectDetailsOrIdList = gcpConfig.projects
     const usageRows = await this.getUsage(
       start,
       end,
@@ -644,7 +645,7 @@ export default class BillingExportTable {
     end: Date,
     grouping: GroupBy,
     tagNames: string[],
-    projects: { id: string; name?: string }[],
+    projects: GoogleProjectDetailsOrIdList,
   ): Promise<RowMetadata[]> {
     const startDate = new Date(
       moment.utc(start).startOf('day') as unknown as Date,
@@ -791,21 +792,39 @@ export default class BillingExportTable {
     return parsedTags
   }
 
-  private buildProjectFilter(projects: { id: string; name?: string }[]) {
+  private buildProjectFilter(projects: GoogleProjectDetailsOrIdList): string {
+    const projectIds = this.getProjectsIdsFromList(projects)
+
+    if (!projectIds.length) return ''
+
+    const formattedProjectIds = projectIds
+      .map((project) => `'${project}'`)
+      .join(', ')
+
+    return `AND project.id IN (${formattedProjectIds})`
+  }
+
+  private getProjectsIdsFromList(
+    projects: GoogleProjectDetailsOrIdList,
+  ): string[] {
+    const projectIds = []
+
     if (!projects || !Array.isArray(projects)) {
       this.billingExportTableLogger.warn(
         'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
       )
-      return ''
+      return projectIds
     }
 
-    if (!projects.length) return ''
+    for (const project of projects) {
+      if (typeof project === 'string') {
+        projectIds.push(project)
+      } else {
+        projectIds.push(project.id)
+      }
+    }
 
-    const projectIdList = projects
-      .map((project) => `'${project.id}'`)
-      .join(', ')
-
-    return `AND project.id IN (${projectIdList})`
+    return projectIds
   }
 }
 

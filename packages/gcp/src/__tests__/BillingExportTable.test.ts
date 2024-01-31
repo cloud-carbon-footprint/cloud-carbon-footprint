@@ -35,6 +35,7 @@ import {
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRam,
   mockQueryResultsForProjectFilter,
+  mockQueryResultsForProjectFilterArray,
   mockQueryResultsForProjectFilterEmpty,
   mockQueryResultsForProjectFilterError,
   mockQueryResultsGPUMachineTypes,
@@ -1471,6 +1472,44 @@ describe('GCP BillingExportTable Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for filtered projects that are an array of ids', async () => {
+    const testAccountId = 'test-account-id'
+    const testAccountIdTwo = 'test-account-id-two'
+
+    setConfig({
+      GCP: {
+        projects: [testAccountId, testAccountIdTwo],
+      },
+    })
+
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsForProjectFilterArray,
+    )
+
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    await billingExportTableService.getEstimates(startDate, endDate, grouping)
+
+    const expectedWhereFilter = `AND project.id IN ('${testAccountId}', '${testAccountIdTwo}')`
+
+    expect(mockCreateQueryJob).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: expect.stringContaining(expectedWhereFilter),
+      }),
+    )
   })
 
   it('returns estimates for filtered projects when list of projects is provided', async () => {

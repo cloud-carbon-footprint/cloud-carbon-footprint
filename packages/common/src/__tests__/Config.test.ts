@@ -4,6 +4,7 @@
 
 import fs from 'fs'
 import getConfig from '../Config'
+import { GoogleProjectDetails } from '../Types'
 
 describe('Config', () => {
   const withEnvironment = (name: string, value: string, test: () => void) => {
@@ -59,7 +60,7 @@ describe('Config', () => {
   })
 
   describe('Google Cloud', () => {
-    it('loads list of GCP Projects from the environment variables', () => {
+    it('loads list of GCP Projects with names and ids the environment variables', () => {
       const id = 'id'
       const secondId = 'id2'
       const name = 'project'
@@ -68,13 +69,25 @@ describe('Config', () => {
         'GCP_PROJECTS',
         `[{"id": "${id}", "name": "${name}"}, {"id": "${secondId}"}]`,
         () => {
-          const config = getConfig()
-          expect(config.GCP.projects[0].id).toBe(id)
-          expect(config.GCP.projects[0].name).toBe(name)
-          expect(config.GCP.projects[1].id).toBe(secondId)
-          expect(config.GCP.projects[1].name).toBeUndefined()
+          const configuredProjects = getConfig().GCP
+            .projects as GoogleProjectDetails[]
+          expect(configuredProjects[0].id).toBe(id)
+          expect(configuredProjects[0].name).toBe(name)
+          expect(configuredProjects[1].id).toBe(secondId)
+          expect(configuredProjects[1].name).toBeUndefined()
         },
       )
+    })
+
+    it('loads list of GCP Projects with only ids from the environment variables', () => {
+      const id = 'id'
+      const secondId = 'id2'
+
+      withEnvironment('GCP_PROJECTS', `["${id}", "${secondId}"]`, () => {
+        const configuredProjects = getConfig().GCP.projects as string[]
+        expect(configuredProjects[0]).toBe(id)
+        expect(configuredProjects[1]).toBe(secondId)
+      })
     })
 
     it('loads Google Cloud tags from environment variables', () => {
@@ -110,7 +123,7 @@ describe('Config', () => {
         [true, ''],
       ])(
         `sets ${provider}_INCLUDE_ESTIMATES to %s for INCLUDE_ESTIMATES=%s`,
-        (expected: boolean, value: any) => {
+        (expected: boolean, value: string) => {
           withEnvironment(`${provider}_INCLUDE_ESTIMATES`, value, () => {
             const config = getConfig()
             expect(config[provider].INCLUDE_ESTIMATES).toBe(expected)

@@ -4,6 +4,7 @@
 import fs from 'fs'
 import dotenv from 'dotenv'
 import { AWS_RECOMMENDATIONS_SERVICES } from './RecommendationsService'
+import { GoogleProjectDetailsOrIdList } from './Types'
 
 dotenv.config()
 
@@ -34,10 +35,7 @@ export interface CCFConfig {
     NAME?: string
     CURRENT_SERVICES?: { key: string; name: string }[]
     CURRENT_REGIONS?: string[]
-    projects?: {
-      id: string
-      name?: string
-    }[]
+    projects?: GoogleProjectDetailsOrIdList
     USE_CARBON_FREE_ENERGY_PERCENTAGE?: boolean
     INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean

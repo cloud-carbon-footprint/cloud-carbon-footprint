@@ -16,3 +16,10 @@ export type GoogleAuthClient =
   | UserRefreshClient
   | Impersonated
   | BaseExternalAccountClient
+
+export type GoogleProjectDetails = {
+  id: string
+  name?: string
+}
+
+export type GoogleProjectDetailsOrIdList = GoogleProjectDetails[] | string[]

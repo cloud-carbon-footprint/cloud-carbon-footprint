@@ -40,5 +40,9 @@ export {
   AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
 } from './RecommendationsService'
 export * from './helpers'
-export type { GoogleAuthClient } from './Types'
+export type {
+  GoogleAuthClient,
+  GoogleProjectDetails,
+  GoogleProjectDetailsOrIdList,
+} from './Types'
 export * from './EmissionsFactors'
