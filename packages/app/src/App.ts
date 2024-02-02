@@ -7,7 +7,7 @@ import {
   configLoader,
   EmissionRatioResult,
   EstimationResult,
-  GoogleProjectDetails,
+  AccountDetails,
   GroupBy,
   Logger,
   LookupTableInput,
@@ -92,7 +92,7 @@ export default class App {
         ).getDataFromBillingExportTable(startDate, endDate, grouping)
         GCPEstimatesByRegion.push(estimates)
       } else if (GCP?.projects.length) {
-        const googleProjectDetails = GCP.projects as GoogleProjectDetails[]
+        const googleProjectDetails = GCP.projects as AccountDetails[]
         // Resolve GCP Estimates asynchronously
         for (const project of googleProjectDetails) {
           const estimates = await Promise.all(

@@ -42,7 +42,7 @@ export {
 export * from './helpers'
 export type {
   GoogleAuthClient,
-  GoogleProjectDetails,
-  GoogleProjectDetailsOrIdList,
+  AccountDetails,
+  AccountDetailsOrIdList,
 } from './Types'
 export * from './EmissionsFactors'

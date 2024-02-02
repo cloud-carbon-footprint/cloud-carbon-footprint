@@ -13,12 +13,13 @@ import {
   convertBytesToGigabytes,
   EstimationResult,
   getEmissionsFactors,
-  GoogleProjectDetailsOrIdList,
+  AccountDetailsOrIdList,
   GroupBy,
   Logger,
   LookupTableInput,
   LookupTableOutput,
   TagCollection,
+  buildAccountFilter,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -92,7 +93,7 @@ export default class BillingExportTable {
   ): Promise<EstimationResult[]> {
     const gcpConfig = configLoader().GCP
     const tagNames = gcpConfig.RESOURCE_TAG_NAMES
-    const projects: GoogleProjectDetailsOrIdList = gcpConfig.projects
+    const projects: AccountDetailsOrIdList = gcpConfig.projects
     const usageRows = await this.getUsage(
       start,
       end,
@@ -383,6 +384,7 @@ export default class BillingExportTable {
       ]
     )
   }
+
   private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
     const gpuComputeProcessors = GPU_MACHINE_TYPES.filter((processor) =>
       usageType.startsWith(processor),
@@ -645,7 +647,7 @@ export default class BillingExportTable {
     end: Date,
     grouping: GroupBy,
     tagNames: string[],
-    projects: GoogleProjectDetailsOrIdList,
+    projects: AccountDetailsOrIdList,
   ): Promise<RowMetadata[]> {
     const startDate = new Date(
       moment.utc(start).startOf('day') as unknown as Date,
@@ -667,10 +669,9 @@ export default class BillingExportTable {
 
     const projectFilter = this.buildProjectFilter(projects)
 
-    const query = `SELECT
-                    DATE_TRUNC(DATE(usage_start_time), ${
-                      GCP_QUERY_GROUP_BY[grouping]
-                    }) as timestamp,
+    const query = `SELECT DATE_TRUNC(DATE(usage_start_time), ${
+      GCP_QUERY_GROUP_BY[grouping]
+    }) as timestamp,
                     project.id as accountId,
                     project.name as accountName,
                     ifnull(location.region, location.location) as region,
@@ -679,36 +680,36 @@ export default class BillingExportTable {
                     usage.unit as usageUnit,
                     system_labels.value AS machineType,
                     SUM(usage.amount) AS usageAmount,
-                    SUM(cost) AS cost
-                    ${tagPropertySelections}
-                    ${labelPropertySelections}
-                    ${projectLabelPropertySelections}
-                  FROM
-                    \`${this.tableName}\`
-                  LEFT JOIN
-                    UNNEST(system_labels) AS system_labels
-                    ON system_labels.key = "compute.googleapis.com/machine_spec"
-                  ${tagPropertyJoins}
-                  ${labelPropertyJoins}
-                  ${projectLabelPropertyJoins}
-                  WHERE
-                    cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
-                    AND usage_start_time BETWEEN TIMESTAMP('${moment
-                      .utc(startDate)
-                      .format('YYYY-MM-DDTHH:mm:ssZ')}') AND TIMESTAMP('${moment
-      .utc(endDate)
-      .format('YYYY-MM-DDTHH:mm:ssZ')}')
-                    ${projectFilter}
-                  GROUP BY
-                    timestamp,
-                    accountId,
-                    accountName,
-                    region,
-                    serviceName,
-                    usageType,
-                    usageUnit,
-                    machineType`
+                    SUM(cost) AS cost ${tagPropertySelections} ${labelPropertySelections} ${projectLabelPropertySelections}
+                   FROM
+                           \`${this.tableName}\`
+                       LEFT JOIN
+                       UNNEST(system_labels) AS system_labels
+                   ON system_labels.key = "compute.googleapis.com/machine_spec"
+                       ${tagPropertyJoins}
+                       ${labelPropertyJoins}
+                       ${projectLabelPropertyJoins}
+                   WHERE
+                       cost_type != 'rounding_error'
+                     AND usage.unit IN ('byte-seconds'
+                       , 'seconds'
+                       , 'bytes'
+                       , 'requests')
+                     AND usage_start_time BETWEEN TIMESTAMP ('${moment
+                       .utc(startDate)
+                       .format('YYYY-MM-DDTHH:mm:ssZ')}')
+                     AND TIMESTAMP ('${moment
+                       .utc(endDate)
+                       .format('YYYY-MM-DDTHH:mm:ssZ')}') ${projectFilter}
+                   GROUP BY
+                       timestamp,
+                       accountId,
+                       accountName,
+                       region,
+                       serviceName,
+                       usageType,
+                       usageUnit,
+                       machineType`
 
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
@@ -792,39 +793,16 @@ export default class BillingExportTable {
     return parsedTags
   }
 
-  private buildProjectFilter(projects: GoogleProjectDetailsOrIdList): string {
-    const projectIds = this.getProjectsIdsFromList(projects)
-
-    if (!projectIds.length) return ''
-
-    const formattedProjectIds = projectIds
-      .map((project) => `'${project}'`)
-      .join(', ')
-
-    return `AND project.id IN (${formattedProjectIds})`
-  }
-
-  private getProjectsIdsFromList(
-    projects: GoogleProjectDetailsOrIdList,
-  ): string[] {
-    const projectIds = []
-
-    if (!projects || !Array.isArray(projects)) {
+  private buildProjectFilter(projects: AccountDetailsOrIdList): string {
+    let projectFilter = ''
+    try {
+      projectFilter = buildAccountFilter(projects, 'project.id')
+    } catch (e) {
       this.billingExportTableLogger.warn(
         'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
       )
-      return projectIds
     }
-
-    for (const project of projects) {
-      if (typeof project === 'string') {
-        projectIds.push(project)
-      } else {
-        projectIds.push(project.id)
-      }
-    }
-
-    return projectIds
+    return projectFilter
   }
 }
 

@@ -17,9 +17,9 @@ export type GoogleAuthClient =
   | Impersonated
   | BaseExternalAccountClient
 
-export type GoogleProjectDetails = {
+export type AccountDetails = {
   id: string
   name?: string
 }
 
-export type GoogleProjectDetailsOrIdList = GoogleProjectDetails[] | string[]
+export type AccountDetailsOrIdList = AccountDetails[] | string[]
