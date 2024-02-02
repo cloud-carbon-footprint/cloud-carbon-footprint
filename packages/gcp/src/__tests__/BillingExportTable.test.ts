@@ -1695,7 +1695,7 @@ describe('GCP BillingExportTable Service', () => {
     )
 
     expect(loggerSpy).toHaveBeenCalledWith(
-      'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
+      'Configured list of Google Projects is invalid. Projects must be a list of of IDs or objects containing project IDs. Ignoring project filter...',
     )
   })
 

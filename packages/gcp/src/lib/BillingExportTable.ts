@@ -700,7 +700,8 @@ export default class BillingExportTable {
                        .format('YYYY-MM-DDTHH:mm:ssZ')}')
                      AND TIMESTAMP ('${moment
                        .utc(endDate)
-                       .format('YYYY-MM-DDTHH:mm:ssZ')}') ${projectFilter}
+                       .format('YYYY-MM-DDTHH:mm:ssZ')}') 
+                     ${projectFilter}
                    GROUP BY
                        timestamp,
                        accountId,
@@ -799,7 +800,7 @@ export default class BillingExportTable {
       projectFilter = buildAccountFilter(projects, 'project.id')
     } catch (e) {
       this.billingExportTableLogger.warn(
-        'Configured list of projects is invalid. Projects must be a list of objects containing project IDs. Ignoring project filter...',
+        'Configured list of Google Projects is invalid. Projects must be a list of of IDs or objects containing project IDs. Ignoring project filter...',
       )
     }
     return projectFilter

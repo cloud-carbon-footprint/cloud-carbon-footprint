@@ -16,6 +16,8 @@ import {
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
 import {
+  AccountDetailsOrIdList,
+  configLoader,
   EstimationResult,
   GroupBy,
   Logger,
@@ -61,29 +63,28 @@ import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
 
 const testAccountName = 'the-test-account'
+const defaultMockConfig = {
+  AWS: {
+    ATHENA_DB_NAME: 'test-db',
+    ATHENA_DB_TABLE: 'test-table',
+    ATHENA_QUERY_RESULT_LOCATION: 'test-location',
+    ATHENA_REGION: 'test-region',
+    RESOURCE_TAG_NAMES: ['user:Environment', 'aws:CreatedBy'],
+    accounts: [
+      {
+        id: testAccountId,
+        name: testAccountName,
+      },
+    ],
+  },
+}
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
     string,
     unknown
   >),
-  configLoader: jest.fn().mockImplementation(() => {
-    return {
-      AWS: {
-        ATHENA_DB_NAME: 'test-db',
-        ATHENA_DB_TABLE: 'test-table',
-        ATHENA_QUERY_RESULT_LOCATION: 'test-location',
-        ATHENA_REGION: 'test-region',
-        RESOURCE_TAG_NAMES: ['user:Environment', 'aws:CreatedBy'],
-        accounts: [
-          {
-            id: testAccountId,
-            name: testAccountName,
-          },
-        ],
-      },
-    }
-  }),
+  configLoader: jest.fn().mockImplementation(() => defaultMockConfig),
 }))
 
 describe('CostAndUsageReports Service', () => {
@@ -2288,7 +2289,36 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it(' successfully return lookup table data from getEstimatesFromInputData function', async () => {
+  it('queries estimates for filtered accounts when list of accounts is provided', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithTaggedResources)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+    await athenaService.getEstimates(startDate, endDate, grouping)
+
+    const expectedWhereFilter = `AND line_item_usage_account_id IN ('${testAccountId}')`
+
+    expect(startQueryExecutionSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        QueryString: expect.stringContaining(expectedWhereFilter),
+      }),
+      expect.anything(),
+    )
+  })
+
+  it('successfully return lookup table data from getEstimatesFromInputData function', async () => {
     // given
     const inputData: LookupTableInput[] = [
       {
@@ -2328,6 +2358,58 @@ describe('CostAndUsageReports Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  it('logs warning and ignores incorrectly formatted accounts', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithTaggedResources)
+
+    // Override config mock to return invalid account list
+    ;(configLoader as jest.Mock).mockReturnValue({
+      ...configLoader(),
+      AWS: {
+        ...defaultMockConfig.AWS,
+        accounts: 'invalid-accounts-list' as unknown as AccountDetailsOrIdList, // Let's just pretend this is possible
+      },
+    })
+
+    const loggerSpy = jest.spyOn(Logger.prototype, 'warn')
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+    await athenaService.getEstimates(startDate, endDate, grouping)
+
+    const expectedWhereFilter = `AND line_item_usage_account_id IN`
+
+    expect(startQueryExecutionSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        QueryString: expect.not.stringContaining(expectedWhereFilter),
+      }),
+      expect.anything(),
+    )
+
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'Configured list of AWS accounts is invalid. AWS Accounts must be a list of objects containing account details or a list of account IDs. Ignoring account filter...',
+    )
+
+    // Reset the config mock
+    ;(configLoader as jest.Mock).mockReturnValue({
+      ...configLoader(),
+      AWS: {
+        ...defaultMockConfig.AWS,
+      },
+    })
   })
 
   it('throws an error when the query status fails', async () => {

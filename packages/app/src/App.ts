@@ -67,7 +67,8 @@ export default class App {
         AWSEstimatesByRegion.push(estimates)
       } else if (AWS?.accounts.length) {
         // Resolve AWS Estimates synchronously in order to avoid hitting API limits
-        for (const account of AWS.accounts) {
+        const awsAccounts = AWS.accounts as AccountDetails[]
+        for (const account of awsAccounts) {
           const estimates = await Promise.all(
             await new AWSAccount(
               account.id,
@@ -194,7 +195,8 @@ export default class App {
       AWSRecommendations.push(recommendations)
     } else {
       // Resolve AWS Estimates synchronously in order to avoid hitting API limits
-      for (const account of AWS.accounts) {
+      const awsAccounts = AWS.accounts as AccountDetails[]
+      for (const account of awsAccounts) {
         const recommendations: RecommendationResult[] = await Promise.all(
           await new AWSAccount(
             account.id,

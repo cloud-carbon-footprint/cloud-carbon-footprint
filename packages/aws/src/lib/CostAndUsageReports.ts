@@ -23,8 +23,10 @@ import {
   Logger,
   wait,
   GroupBy,
-  AWSAccount,
   getEmissionsFactors,
+  AccountDetailsOrIdList,
+  buildAccountFilter,
+  AccountDetails,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -103,7 +105,14 @@ export default class CostAndUsageReports {
   ): Promise<EstimationResult[]> {
     const awsConfig = configLoader().AWS
     const tagNames = awsConfig.RESOURCE_TAG_NAMES
-    const usageRows = await this.getUsage(start, end, grouping, tagNames)
+    const accountList = awsConfig.accounts
+    const usageRows = await this.getUsage(
+      start,
+      end,
+      grouping,
+      tagNames,
+      accountList,
+    )
 
     usageRows.shift()
 
@@ -111,9 +120,13 @@ export default class CostAndUsageReports {
     const unknownRows: CostAndUsageReportsRow[] = []
     this.costAndUsageReportsLogger.info('Mapping over Usage Rows')
 
-    const accounts = Object.fromEntries(
-      awsConfig.accounts.map((account) => [account.id, account]),
-    )
+    const accounts = {}
+
+    if (Array.isArray(accountList)) {
+      accountList.forEach((account) => {
+        if (account.name) accounts[account.id] = account
+      })
+    }
 
     for (const rowData of usageRows) {
       const costAndUsageReportRow: CostAndUsageReportsRow =
@@ -562,6 +575,7 @@ export default class CostAndUsageReports {
     end: Date,
     grouping: GroupBy,
     tagNames: string[],
+    accounts: AccountDetailsOrIdList,
   ): Promise<Athena.Row[]> {
     const dateGranularity = AWS_QUERY_GROUP_BY[grouping]
     const dateExpression = `DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date))`
@@ -605,6 +619,8 @@ export default class CostAndUsageReports {
       ...tagColumnNames,
     ].join(', ')
 
+    const accountFilter = this.buildAccountFilter(accounts)
+
     const queryString = `SELECT ${dateExpression} AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
@@ -622,6 +638,7 @@ export default class CostAndUsageReports {
                         .toISOString()}') AND from_iso8601_timestamp('${moment
       .utc(endDate)
       .toISOString()}')
+                      ${accountFilter}
                     GROUP BY ${groupByColumnNames}`
 
     const params = {
@@ -813,10 +830,22 @@ export default class CostAndUsageReports {
       return false
     }
   }
+
+  private buildAccountFilter(accounts: AccountDetailsOrIdList): string {
+    let accountFilter = ''
+    try {
+      accountFilter = buildAccountFilter(accounts, 'line_item_usage_account_id')
+    } catch (e) {
+      this.costAndUsageReportsLogger.warn(
+        'Configured list of AWS accounts is invalid. AWS Accounts must be a list of objects containing account details or a list of account IDs. Ignoring account filter...',
+      )
+    }
+    return accountFilter
+  }
 }
 
 interface AWSAccountMap {
-  [index: string]: AWSAccount
+  [index: string]: AccountDetails
 }
 
 export const tagNameToAthenaColumn = (tagName: string): string => {

@@ -18,7 +18,7 @@ export const getAccountIdsFromList = (
   for (const account of accounts) {
     if (typeof account === 'string') {
       accountIds.push(account)
-    } else {
+    } else if (account.id) {
       accountIds.push(account.id)
     }
   }
