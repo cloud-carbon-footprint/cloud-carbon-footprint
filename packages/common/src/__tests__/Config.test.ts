@@ -4,7 +4,7 @@
 
 import fs from 'fs'
 import getConfig from '../Config'
-import { GoogleProjectDetails } from '../Types'
+import { AccountDetails } from '../Types'
 
 describe('Config', () => {
   const withEnvironment = (name: string, value: string, test: () => void) => {
@@ -36,7 +36,7 @@ describe('Config', () => {
   })
 
   describe('AWS', () => {
-    it('get AWS accounts', () => {
+    it('loads list of AWS accounts with names and ids from environment variables', () => {
       const id = 'b47m4n'
       const name = 'Bruce Wayne'
 
@@ -51,6 +51,17 @@ describe('Config', () => {
       )
     })
 
+    it('loads list of AWS accounts with only ids from the environment variables', () => {
+      const id = 'b47m4n'
+      const idTwo = 'cl4rk'
+
+      withEnvironment('AWS_ACCOUNTS', `["${id}", "${idTwo}"]`, () => {
+        const config = getConfig()
+        expect(config.AWS.accounts[0]).toBe(id)
+        expect(config.AWS.accounts[1]).toBe(idTwo)
+      })
+    })
+
     it('loads AWS resource tags from environment variables', () => {
       withEnvironment('AWS_RESOURCE_TAG_NAMES', `["Environment"]`, () => {
         const config = getConfig()
@@ -60,7 +71,7 @@ describe('Config', () => {
   })
 
   describe('Google Cloud', () => {
-    it('loads list of GCP Projects with names and ids the environment variables', () => {
+    it('loads list of GCP Projects with names and ids from environment variables', () => {
       const id = 'id'
       const secondId = 'id2'
       const name = 'project'
@@ -70,7 +81,7 @@ describe('Config', () => {
         `[{"id": "${id}", "name": "${name}"}, {"id": "${secondId}"}]`,
         () => {
           const configuredProjects = getConfig().GCP
-            .projects as GoogleProjectDetails[]
+            .projects as AccountDetails[]
           expect(configuredProjects[0].id).toBe(id)
           expect(configuredProjects[0].name).toBe(name)
           expect(configuredProjects[1].id).toBe(secondId)
