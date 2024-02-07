@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/aws
 
+## 0.16.0
+
+### Minor Changes
+
+- 7e899dce: Adds support and configuration variables for filtering accounts/projects by id
+
+### Patch Changes
+
+- Updated dependencies [7e899dce]
+  - @cloud-carbon-footprint/common@1.15.0
+
 ## 0.15.0
 
 ### Minor Changes

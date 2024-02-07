@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/cli
 
+## 1.13.0
+
+### Minor Changes
+
+- 7e899dce: Adds support and configuration variables for filtering accounts/projects by id
+
+### Patch Changes
+
+- 18600b1a: Fixes filename issue with create azure lookup script on linux machines
+
+  For updates to the create-app template, refer to [this commit.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/ec34e4d461ff4190002e040bb106d65c9c5965e9)
+
+- Updated dependencies [7e899dce]
+  - @cloud-carbon-footprint/app@1.8.0
+  - @cloud-carbon-footprint/common@1.15.0
+
 ## 1.12.4
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/client
 
+## 4.2.3
+
+### Patch Changes
+
+- 40817fa4: Fixes duplicate estimates being displayed in dashboard
+- Updated dependencies [7e899dce]
+  - @cloud-carbon-footprint/common@1.15.0
+
 ## 4.2.2
 
 ### Patch Changes
