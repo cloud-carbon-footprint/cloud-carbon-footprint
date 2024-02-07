@@ -72,16 +72,6 @@ In this instance, no action is needed and usage data will be fetched after the r
 
 ### Configuration Options
 
-#### Specifying Subscriptions
-
-By default, CCF will query usage data for all subscriptions under your configured Azure account. There may be some instances where you would prefer to only calculate estimates for specific subscriptions within an account. To do so, you can provide a list of specific subscription IDs to query using the `AZURE_SUBSCRIPTIONS` variable. This variable should be added to the `.env` file of your `packages/api` or `packages/cli` directory.
-
-Example:
-
-```env
-AZURE_SUBSCRIPTIONS=["subscription-1", "subscription 2"]
-```
-
 #### Subscription Chunking
 
 If you have a large number of subscriptions, you may encounter rate limits when fetching estimates. To reduce the likelihood of this happening across _multiple_ subscriptions, you can customize the number of subscriptions to query at a time. To do this, assign a number to `AZURE_SUBSCRIPTION_CHUNKS` in the `.env` file located in either the `packages/api` or `packages/cli` directories.
@@ -111,3 +101,37 @@ Time range will be requested in chunks of ${AZURE_CONSUMPTION_CHUNK_DAYS} days.
 #### Combining Configurations
 
 You can optimize requests for a large number of subscriptions with large datasets by using both subscription and date chunking together. However, be cautious when using certain configurations for both chunked subscriptions and days, as they may result in more frequent small requests than necessary and increase the likelihood of rate limits. It's best to use both as a last resort and prioritize subscription chunking with an appropriate date range and grouping method provided for the request instead.
+
+## Specifying Accounts
+
+By default, CCF will query usage data for all accounts under the provided billing account for each provider. Naturally, for large accounts, this could result in a large amount of data being queried at once. There may be some instances where you would prefer to only calculate estimates for specified subscriptions within an account or reduce the scope of a request to improve performance. To do so, you can provide a list of specific account IDs to query by adding the appropriate variable to your `.env` file for the `packages/api` or `packages/cli` directories.
+
+### AWS
+
+To specify accounts for AWS, you can provide a list of account IDs to query using the `AWS_ACCOUNTS` variable.
+
+Example:
+
+```env
+AWS_ACCOUNT=["account-1", "account-2"]
+```
+
+### Google Cloud
+
+To specify accounts for Google Cloud, you can provide a list of project ids to query using the GCP_PROJECTS variable. Please keep in mind that the project id must be the unique ID generated for the project, and is not always the same as the project name.
+
+Example:
+
+```env
+GCP_PROJECTS=["project-1", "project-2"]
+```
+
+### Azure
+
+To specify subscriptions for Azure, you can provide a list of subscription IDs to query using the `AZURE_SUBSCRIPTIONS` variable.
+
+Example:
+
+```env
+AZURE_SUBSCRIPTIONS=["subscription-1", "subscription-2"]
+```

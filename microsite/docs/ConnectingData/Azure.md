@@ -5,6 +5,8 @@ slug: /azure
 sidebar_position: 3
 ---
 
+### Account Setup
+
 Your Microsoft Azure account needs to have an App registered and Service Principal with permissions to read billing and usage data from your Subscriptions
 
 1.  Register a new Azure Application via your Azure Portal, under “App Registrations”.
@@ -34,6 +36,9 @@ Your Microsoft Azure account needs to have an App registered and Service Princip
 ⚠️ This will incur some cost. Use this sparingly if you wish to test with live data.
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend using either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occurred when starting up the server in VS Code terminals.
+
+### Account Filtering
+By default, CCF will request usage data for all subscriptions listed under the connected account. If you wish to specify a list smaller list of subscriptions to fetch, refer to the [Specifying Accounts](../ConfigurationOptions/PerformanceConsiderations.md#specifying-accounts) section of the Configuration Options.
 
 ### Unsupported Usage Types
 

@@ -5,6 +5,8 @@ slug: /aws
 sidebar_position: 1
 ---
 
+### Account Setup
+
 Your AWS account needs to be configured to generate Cost and Usage reports and save those reports in S3, and the application needs to authenticate with AWS and run queries on that data using Amazon Athena.
 
 1.  Ensure your aws account has the correct permissions
@@ -42,6 +44,10 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 :warning: This will incur some cost. Use this sparingly if you wish to test with live data.
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
+
+### Account Filtering and Labels
+
+By default, CCF will request data for all AWS accounts under the configured billing account within the Cost and Usage Reports (CUR) Data. Additionally, these accounts will only be labeled by the default numerical ID as displayed in the CUR row. If you wish to specify a subset of accounts to estimate, as well as add an associated label or name for the account, refer to the usage of the [AWS_ACCOUNTS](../ConfigurationOptions/ConfigurationsGlossary.md/#optionally-set-these-aws-variables) variable within the configuration glossary.
 
 ### Unsupported Usage Types
 

@@ -3,11 +3,14 @@ id: configurations-glossary
 title: Configurations Glossary
 slug: /configurations-glossary
 sidebar_position: 4
+toc_max_heading_level: 4
 ---
 
 ## Api/cli Packages
 
-### Variables for both estimation approaches with AWS
+### AWS
+
+#### Variables for both estimation approaches with AWS
 
 | Variable                     | Example Value                 | Type   | Notes                                                                                                                                                                                                                          |
 | ---------------------------- | ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -15,7 +18,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with AWS
+#### Variables needed for the Billing Data (Holistic) approach with AWS
 
 | Variable                         | Example Value                           | Type    | Notes                                                                                                  |
 | -------------------------------- | --------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
@@ -30,7 +33,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Cloud Usage API (Higher Accuracy) approach with AWS
+#### Variables needed for the Cloud Usage API (Higher Accuracy) approach with AWS
 
 | Variable     | Example Value                                        | Type  | Notes                                                                                                                                                |     |
 | ------------ | ---------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
@@ -38,7 +41,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these AWS variables
+#### Optionally set these AWS variables
 
 | Variable                     | Example Value            | Type   | Notes                                                                                                                                                                                                                                                                                                                                            |
 | ---------------------------- | ------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -47,10 +50,12 @@ sidebar_position: 4
 | AWS_PROXY_ROLE_NAME          | your-proxy-role-name     | string | The AWS role name in the proxy account, to proxy/chain from, when app is deployed to GCP.                                                                                                                                                                                                                                                        |
 | AWS_RECOMMENDATIONS_SERVICE  | ComputeOptimizer         | string | The AWS service used to get recommendations from. Options include: "RightSizing", "ComputeOptimizer" or "All". Default is "Rightsizing".                                                                                                                                                                                                         |
 | AWS_COMPUTE_OPTIMIZER_BUCKET | your-central-bucket-name | string | The name of the AWS bucket in which Compute Optimizer recommendations exist. This is only needed id "ComputeOptimizer" or "All" is configured for the `AWS_RECOMMENDATIONS_SERVICE` variable.                                                                                                                                                    |
-
+ AWS_ACCOUNTS | ["account-1", "account-2"] or [{"id":"your-account-id","name":"Your AWS Account"}] | array | The list of account IDs that you wish to request usage data from. If objects with name properties are provided, then the name value for each account will be used as labels for the corresponding account ID. If empty, usage data for all accounts under the configured billing table will be fetched.                                                                                                                                                    |
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with GCP
+### GCP
+
+#### Variables needed for the Billing Data (Holistic) approach with GCP
 
 | Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                                                                                                                 |
 | ------------------------------ | ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -63,7 +68,7 @@ sidebar_position: 4
 
 <br/>
 
-### Variables needed for the Cloud Usage API (Higher Accuracy) approach with GCP
+#### Variables needed for the Cloud Usage API (Higher Accuracy) approach with GCP
 
 | Variable     | Example Value                                            | Type  | Notes                                                                                                                                                |
 | ------------ | -------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,17 +76,20 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these GCP variables
+#### Optionally set these GCP variables
 
 | Variable                                 | Example Value | Type    | Notes                                                                                                                                                                                                                                                                                                                                                                                           |
 | ---------------------------------------- | ------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE    | true          | boolean | Setting this to true will change the emissions factors used by the application to take into account [Google's Carbon Free Energy percentage](https://cloud.google.com/sustainability/region-carbon) in each region. For example in us-central1, the grid emissions factor is 494 gCO2eq/kWh with CFE% of 93%. With this option set to true, the application would instead use 31.78 gCO2eq/kWh. |
 | GCP_VCPUS_PER_GKE_CLUSTER                | 3             | number  | Use this to configure the average number of vCPUs the application should use to estimate energy consumption of Kubernetes Engine clusters. If unset, defaults to 3, which is the default number of vCPUs provisioned.                                                                                                                                                                           |
 | GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT | 14            | number  | Use this to configure the average number of vCPUs the application should use to estimate energy consumption of Cloud Composer Environments. If unset, defaults to 14, which is the number of vCPUs provisioned for a medium sized environment.                                                                                                                                                  |
+ GCP_PROJECTS | ["project-id-1", "project-id-2"] | array | The list of IDs for the projects that you wish to request usage data from. It is also compatible with the value used for the Cloud Usage API approach. If empty, usage data for all accounts under the configured billing table will be fetched.                                                                                                                                                    |
 
 <br/>
 
-### Variables needed for the Billing Data (Holistic) approach with Azure
+### Azure
+
+#### Variables needed for the Billing Data (Holistic) approach with Azure
 
 | Variable                | Example Value            | Type    | Notes                                                                                                   |     |
 | ----------------------- | ------------------------ | ------- | ------------------------------------------------------------------------------------------------------- | --- |
@@ -93,7 +101,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager
+#### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager
 
 | Variable        | Example Value | Type   | Notes                                                                                                                                                                                                                                                 |
 | --------------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -101,21 +109,31 @@ sidebar_position: 4
 
 <br/>
 
-### Optionaly include this for tagging support
+#### Optionally set this to customize usage data fetch behavior
 
-| Variable                 | Example Value                          | Type         | Notes                                                                                          |     |
-| ------------------------ | -------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------- | --- |
-| AZURE_RESOURCE_TAG_NAMES | ["resourceGroup","project","customer"] | array:string | Azure resource tag names to include if present, include resourceGroup as a tag name if needed. |
+See [Azure Performance Considerations](./PerformanceConsiderations.md#azure-performance-considerations) for more information.
 
-### Optionally set this to customize usage data fetch behavior. See [Azure Performance Considerations](./PerformanceConsiderations.md#azure-performance-considerations) for more information
-
-| Variable                     | Example Value                        | Type         | Notes                                                                                                        |     |
-| ---------------------------- | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------ | --- |
+| Variable                     | Example Value                        | Type         | Notes                                                                                                        |
+| ---------------------------- | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------ |
 | AZURE_CONSUMPTION_CHUNK_DAYS | 5                                    | number       | To avoid rate limiting, requests can be grouped in chunks of days. Use this to specify the chunk size        |
 | AZURE_SUBSCRIPTION_CHUNKS    | 10                                   | number       | To avoid rate limiting, a group size of subscipritions for asynchronous requests can be set. Defaults to 10. |
 | AZURE_SUBSCRIPTIONS          | ["subscription-1", "subscription-2"] | array:string | List of subscriptions by IDs to include in estimations. Fetches all subscriptions by default                 |
 
-### Optionally set this to store cache file in Google Cloud Storage
+<br/>
+
+### Additional Options
+
+#### Optionally include this for tagging support
+
+| Variable                 | Example Value                                          | Type                         | Notes                                                                                                                               |
+| ------------------------ | ------------------------------------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| AWS_RESOURCE_TAG_NAMES   | ["user:Environment","aws:CreatedBy"]                   | array:string                 | Cost allocation tags used to group resources, see https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html |
+| GCP_RESOURCE_TAG_NAMES   | ["tag:my-tag", "label:my-label", "project:my-project"] | array:string                 | Google cloud resource tags to include if present, including labels or project labels. Format of "{tag-type}:{name}" is required     |
+| AZURE_RESOURCE_TAG_NAMES | ["resourceGroup","project","customer"]                 | array:string                 | Azure resource tag names to include if present, include resourceGroup as a tag name if needed.                                      |
+
+<br/>
+
+#### Optionally set this to store cache file in Google Cloud Storage
 
 | Variable              | Example Value  | Type   | Notes                                                                               |
 | --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
@@ -124,7 +142,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these custom configurations for On-Premise calculations
+#### Optionally set these custom configurations for On-Premise calculations
 
 | Variable                           | Example Value | Type   | Notes                                                                   |
 | ---------------------------------- | ------------- | ------ | ----------------------------------------------------------------------- |
@@ -137,7 +155,7 @@ sidebar_position: 4
 
 <br/>
 
-### Optionally set these variables to configure CORS
+#### Optionally set these variables to configure CORS
 
 | Variable          | Example Value                            | Type    | Notes                                                                                                      |
 | ----------------- | ---------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
@@ -146,7 +164,7 @@ sidebar_position: 4
 
 <br />
 
-### Optionally set Electricity Map API token
+#### Optionally set Electricity Map API token
 
 | Variable               | Example Value | Type   | Notes                                                                                                                 |
 |------------------------|---------------|--------|-----------------------------------------------------------------------------------------------------------------------|
@@ -156,7 +174,7 @@ sidebar_position: 4
 
 ## Client Package - all variables are optional
 
-| Variable                         | Example Value           | Type     Notes                                                                                                                                                |
+| Variable                         | Example Value           | Type    | Notes                                                                                                                                               |
 | -------------------------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | REACT_APP_PREVIOUS_YEAR_OF_USAGE | true                    | boolean | Use this to ensure the application requests usage data from the entire previous calendar year to today. Unset to make this false. Defaults to true. |
 | REACT_APP_GROUP_BY               | month                   | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year). Defaults to day.                                 |
