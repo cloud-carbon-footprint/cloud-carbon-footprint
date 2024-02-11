@@ -2645,7 +2645,7 @@ __metadata:
     react-apexcharts: ^1.3.9
     react-dates: ^21.8.0
     react-dom: ^18.2.0
-    react-is: ^17.0.2
+    react-is: ^18.2.0
     react-router-dom: ^6.6.0
     react-scripts: ^5.0.0
     react-test-renderer: ^18.2.0
