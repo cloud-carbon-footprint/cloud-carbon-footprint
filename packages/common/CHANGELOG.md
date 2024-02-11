@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.15.0
+
+### Minor Changes
+
+- 7e899dce: Adds support and configuration variables for filtering accounts/projects by id
+
 ## 1.14.0
 
 ### Minor Changes

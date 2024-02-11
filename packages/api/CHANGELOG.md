@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/api
 
+## 1.9.0
+
+### Minor Changes
+
+- 7e899dce: Adds support and configuration variables for filtering accounts/projects by id
+- 8ad9077a: Adds App Engine config and deployment script
+
+### Patch Changes
+
+- Updated dependencies [7e899dce]
+  - @cloud-carbon-footprint/app@1.8.0
+  - @cloud-carbon-footprint/common@1.15.0
+
 ## 1.8.1
 
 ### Patch Changes

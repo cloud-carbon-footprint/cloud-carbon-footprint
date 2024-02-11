@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.5.2
+
+### Patch Changes
+
+- 40817fa4: Fixes duplicate estimates being displayed in dashboard
+- 18600b1a: Fixes filename issue with create azure lookup script on linux machines
+
+  For updates to the create-app template, refer to [this commit.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/ec34e4d461ff4190002e040bb106d65c9c5965e9)
+
 ## 2.5.1
 
 ### Patch Changes
