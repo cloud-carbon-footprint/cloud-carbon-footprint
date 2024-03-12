@@ -19,6 +19,5 @@ Or you can choose to pass the parameters in a single line:
 
     --startDate YYYY-MM-DD \
     --endDate YYYY-MM-DD \
-    --region [us-east-1 | us-east-2] \
     --groupBy [day | dayAndService | service] \
     --format [table | csv]
