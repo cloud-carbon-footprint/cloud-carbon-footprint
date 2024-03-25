@@ -9,3 +9,4 @@
 |[PITS Global Data Recovery Services](https://www.pitsdatarecovery.net/) | [@pheianox](https://github.com/pheianox) | Analytics and effective integration with other cloud providers |
 |[ABN AMRO](https://www.abnamro.nl/nl/prive/index.html) | Jasper.Behnken@nl.abnamro.com | Used as a part of the bank's sustainability plan to improve sustainability within IT and the bank |
 |[Oda](https://oda.com) | [@kolonialno](https://github.com/kolonialno) | Measure energy (kWh) related to the servers/data centers we use (GCP) necessary for our climate accounting. Improve sustainability of our operations. |
+|[Aiven](https://aiven.io) | [@rsalevsky](https://github.com/rsalevsky) | Provide customers with carbon emissions metrics based on cloud resource consumption in our console experience. |
