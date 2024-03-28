@@ -6,6 +6,7 @@ import {
   ConsumptionManagementClient,
   UsageDetailUnion,
 } from '@azure/arm-consumption'
+import { CostManagementClient } from '@azure/arm-costmanagement'
 import { PagedAsyncIterableIterator } from '@azure/core-paging'
 import {
   configLoader,
@@ -96,6 +97,7 @@ export default class ConsumptionManagementService {
     private readonly unknownEstimator: UnknownEstimator,
     private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
     private readonly consumptionManagementClient?: ConsumptionManagementClient,
+    private readonly costManagementClient?: CostManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
     this.consumptionManagementRateLimitRemainingHeader =
@@ -349,6 +351,12 @@ export default class ConsumptionManagementService {
             includeEnd ? 'le' : 'lt'
           } '${endDate.toISOString()}'`,
         }
+        const o = {
+          timePeriod: {
+            start: startDate.toISOString(),
+            end: endDate.toISOString()}, 
+          }
+        }
         if (configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS) {
           this.consumptionManagementLogger.debug(
             `Querying consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()} for ${
@@ -360,6 +368,12 @@ export default class ConsumptionManagementService {
           `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
           options,
         )
+
+  //      const newUsageRows = await this.costManagementClient.generateCostDetailsReport.beginCreateOperationAndWait(
+  //        `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
+  //        o,
+  //      ) 
+  //      console.log(newUsageRows) 
         return await this.pageThroughUsageRows(usageRows)
       } catch (e) {
         await this.waitIfRateLimitExceeded(e, errorMsg)

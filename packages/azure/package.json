@@ -43,6 +43,7 @@
   "dependencies": {
     "@azure/arm-advisor": "^3.1.0",
     "@azure/arm-consumption": "^9.2.0",
+    "@azure/arm-costmanagement": "^1.0.0-beta.1",
     "@azure/arm-resources-subscriptions": "^2.0.2",
     "@azure/identity": "^3.2.2",
     "@azure/ms-rest-js": "^2.6.6",

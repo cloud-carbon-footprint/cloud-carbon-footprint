@@ -12,6 +12,7 @@ import {
   WorkloadIdentityCredential,
 } from '@azure/identity'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
+import { CostManagementClient } from '@azure/arm-costmanagement'
 import { AdvisorManagementClient } from '@azure/arm-advisor'
 
 import {
@@ -212,6 +213,7 @@ export default class AzureAccount extends CloudProviderAccount {
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
       new ConsumptionManagementClient(this.credentials, subscriptionId),
+      new CostManagementClient(this.credentials),
     )
     return await consumptionManagementService.getEstimates(
       startDate,
