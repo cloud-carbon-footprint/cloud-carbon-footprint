@@ -4,7 +4,6 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
 <div
   className="makeStyles-barChartContainer-1"
 >
-  <div />
   <div
     className="makeStyles-paginationContainer-2"
   >
@@ -299,7 +298,6 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
       />
     </div>
   </div>
-  <div />
   <div
     className="makeStyles-paginationContainer-17"
   >
