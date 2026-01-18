@@ -1,7 +1,7 @@
 # Configuration for deploying API service to Google App Engine using staging label
 service: api-staging
 
-runtime: nodejs20
+runtime: nodejs16
 instance_class: B4_1G
 basic_scaling:
   max_instances: 20
