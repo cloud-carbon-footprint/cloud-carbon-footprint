@@ -19,13 +19,3 @@ jest.spyOn(global.console, 'warn').mockImplementation((message) => {
     global.console.warn(message)
   }
 })
-
-// Mock react-apexcharts globally to avoid relying on ApexCharts internals in tests.
-// This keeps the component API surface (props) available for assertions while
-// preventing runtime errors from the underlying charting library.
-jest.mock('react-apexcharts', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function MockApexChart(_: any) {
-    return null
-  }
-})

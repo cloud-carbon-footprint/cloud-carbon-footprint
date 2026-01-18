@@ -209,6 +209,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               />
             </div>
           </div>
+          <div />
           <div
             className="makeStyles-paginationContainer-25"
           >
