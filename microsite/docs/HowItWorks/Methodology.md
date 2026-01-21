@@ -8,11 +8,12 @@ toc_max_heading_level: 4
 
 ## Summary
 
-Global greenhouse gas emissions from the tech sector are on par or larger than the aviation industry, at around
-[3% for ICT](https://c2e2.unepdtu.org/wp-content/uploads/sites/3/2020/03/greenhouse-gas-emissions-in-the-ict-sector.pdf)
-and [2% for aviation](https://www.atag.org/facts-figures.html) respectively. Within ICT, data centers are responsible for around 1%
-of greenhouse gas emissions and
-[global electricity usage](https://www.iea.org/reports/data-centres-and-data-transmission-networks).
+
+
+
+
+Greenhouse gas emissions from the technology sector match or exceed those of the aviation industry, with [ICT](https://c2e2.unepdtu.org/wp-content/uploads/sites/3/2020/03/greenhouse-gas-emissions-in-the-ict-sector.pdf) accounting for approximately 3% and [aviation  for 2%. ](https://www.atag.org/facts-figures.html)Within the ICT realm, data centers contribute about 1% to global greenhouse gas emissions and electricity consumption.[global electricity usage](https://www.iea.org/reports/data-centres-and-data-transmission-networks).
+
 Currently, most cloud providers do not disclose energy or carbon emissions from cloud usage to their customers
 (at an aggregate or individual level), which can be a challenge for organizations who want to baseline and reduce
 their carbon footprint. This application is a starting point to enable organizations to have greater visibility into
