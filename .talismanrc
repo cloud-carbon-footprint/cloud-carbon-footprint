@@ -449,6 +449,8 @@ fileignoreconfig:
   checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
+- filename: .github/workflows/ci-separate.yml
+  checksum: 7ff259b7cfe1532951d4fc08239bd0b61101a0d54175286c46754f8e9ecf1778
 scopeconfig:
 - scope: node
 version: "1.0"
