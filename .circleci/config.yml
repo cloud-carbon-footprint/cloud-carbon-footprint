@@ -1,184 +1,477 @@
+# CircleCI config
+# Separate backend (API) and frontend (client) pipelines.
+# Lint/test runs first; backend and frontend build/deploy/release run in parallel where applicable.
+
 version: 2.1
+
 orbs:
-  node: circleci/node@4.0.0
-  gcr: circleci/gcp-gcr@0.8.0
-  gcp-cli: circleci/gcp-cli@1.8.4
-jobs:
-  lint-test:
-    working_directory: ~/cloud-carbon-footprint
+  node: circleci/node@6.x
+
+executors:
+  node-18:
     docker:
-      - image: circleci/node:current
-    environment:
-      MAJOR_REVISION: 0
-      MINOR_REVISION: 0
-      GIT_HASH: <<pipeline.git.revision>>
+      - image: cimg/node:18.18
+    working_directory: ~/cloud-carbon-footprint
+  node-20:
+    docker:
+      - image: cimg/node:20.18
+    working_directory: ~/cloud-carbon-footprint
+
+parameters:
+  run-lint-test-node-18:
+    type: boolean
+    default: true
+  run-lint-test-node-20:
+    type: boolean
+    default: true
+
+jobs:
+  # --- Lint and test (runs for all; matrix node 18 and 20) ---
+  lint-test-node-18:
+    executor: node-18
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/cloud-carbon-footprint
       - restore_cache:
-          name: Restore Yarn Package Cache
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
       - run:
           name: Install Dependencies
           command: yarn install --immutable
       - save_cache:
-          name: Save Yarn Package Cache
+          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
-          name: lint
-          command: 'yarn lint'
+          name: Lint
+          command: yarn lint
       - run:
-          name: test
-          command: 'yarn test'
-      - persist_to_workspace:
-          root: ~/cloud-carbon-footprint
-          paths:
-            - node_modules/*
-            - packages/client/node_modules/*
-            - packages/server/node_modules/*
-  build-client:
-    description: Build Client
-    working_directory: ~/cloud-carbon-footprint
-    machine:
-      image: ubuntu-1604:202007-01
+          name: Test and upload coverage
+          command: |
+            yarn test
+            bash <(curl -s https://codecov.io/bash) || true
+            for pkg in client core app api cli aws gcp azure; do
+              [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
+            done
+
+  lint-test-node-20:
+    executor: node-20
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/cloud-carbon-footprint
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
       - run:
-          name: Install Yarn
-          command: npm i -g yarn
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run:
-          name: build
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Test and upload coverage
+          command: |
+            yarn test
+            bash <(curl -s https://codecov.io/bash) || true
+            for pkg in client core app api cli aws gcp azure; do
+              [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
+            done
+
+  # --- Backend pipeline (API + dependencies) ---
+  backend-build:
+    executor: node-20
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Build backend packages
+          command: |
+            yarn lerna run build --ignore @cloud-carbon-footprint/client \
+              --ignore @cloud-carbon-footprint/cli \
+              --ignore @cloud-carbon-footprint/create-app \
+              --ignore @cloud-carbon-footprint/integration-tests
+      - run:
+          name: Build workspace (api and dependencies)
+          command: |
+            yarn lerna run build:workspace --scope=@cloud-carbon-footprint/api --include-dependencies
+            yarn lerna run build:update --scope=@cloud-carbon-footprint/api
+      - run:
+          name: Zip backend artifact
+          command: |
+            zip -r dist-workspace-backend.zip dist-workspace/*
+            mkdir -p workspace-backend
+            mv dist-workspace dist-workspace-backend.zip workspace-backend/
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace-backend
+
+  # --- Frontend pipeline (client + dependencies) ---
+  # Set REACT_APP_* in CircleCI Project Settings > Environment Variables for client build
+  frontend-build:
+    executor: node-20
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Build common (client dependency)
+          command: yarn lerna run build --scope=@cloud-carbon-footprint/common
+      - run:
+          name: Build client app
           command: |
             cd packages/client
-            yarn build
+            ./create_client_env_file.sh
+            yarn build:app
+            cd ../..
+      - run:
+          name: Build workspace (client)
+          command: |
+            yarn lerna run build:workspace --scope=@cloud-carbon-footprint/client --include-dependencies
+            yarn lerna run build:update --scope=@cloud-carbon-footprint/client
+      - run:
+          name: Zip frontend artifact
+          command: |
+            zip -r dist-workspace-frontend.zip dist-workspace/*
+            mkdir -p workspace-frontend
+            mv dist-workspace dist-workspace-frontend.zip workspace-frontend/
       - persist_to_workspace:
-          root: ~/cloud-carbon-footprint
+          root: .
           paths:
-            - packages/client/build/*
-            - packages/client/.env
-  build-server:
-    description: Build Server
+            - workspace-frontend
+
+  # --- Backend release (Docker API, tags) ---
+  # Uses machine executor so Docker is available for build-push
+  backend-release:
+    machine: true
     working_directory: ~/cloud-carbon-footprint
-    machine:
-      image: ubuntu-1604:202007-01
+    environment:
+      CI: "true"
+      NODE_OPTIONS: "--max-old-space-size=4096"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - run:
+          name: Create release tag
+          command: node scripts/create-release-tag.js
+          environment:
+            GITHUB_TOKEN: << pipeline.project.github-token >>
+      - run:
+          name: Login to Docker Hub
+          command: echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      - run:
+          name: Build and push API to Docker Hub
+          command: |
+            TAG_NAME=$(node -p "require('./package.json').version")
+            docker build -t cloudcarbonfootprint/api:$TAG_NAME -t cloudcarbonfootprint/api:latest packages/api
+            docker push cloudcarbonfootprint/api:$TAG_NAME
+            docker push cloudcarbonfootprint/api:latest
+
+  # --- Frontend release (Docker client, tags) ---
+  frontend-release:
+    machine: true
+    working_directory: ~/cloud-carbon-footprint
+    environment:
+      CI: "true"
+      NODE_OPTIONS: "--max-old-space-size=4096"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - run:
+          name: Create release tag
+          command: node scripts/create-release-tag.js
+          environment:
+            GITHUB_TOKEN: << pipeline.project.github-token >>
+      - run:
+          name: Login to Docker Hub
+          command: echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      - run:
+          name: Build and push client to Docker Hub
+          command: |
+            TAG_NAME=$(node -p "require('./package.json').version")
+            docker build -t cloudcarbonfootprint/client:$TAG_NAME -t cloudcarbonfootprint/client:latest packages/client
+            docker push cloudcarbonfootprint/client:$TAG_NAME
+            docker push cloudcarbonfootprint/client:latest
+
+  # --- Backend deploy staging (API only) ---
+  backend-deploy-staging:
+    docker:
+      - image: node:20-alpine
+    working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
       - attach_workspace:
-          at: ~/cloud-carbon-footprint
+          at: .
       - run:
-          name: Install Yarn
-          command: npm i -g yarn
+          name: Prepare backend workspace
+          command: cp -r workspace-backend/dist-workspace dist-workspace
       - run:
-          name: build
+          name: Deploy API to staging
           command: |
-            cd packages/server
-            yarn build
+            apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+            cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+            cp packages/api/app-staging.yaml dist-workspace/packages/api
+            echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
+
+            yarn set version 1.22.4
+            rm -f yarn.lock package.json
+            cd dist-workspace/packages/api
+            yarn install
             ./create_server_env_file.sh
-      - persist_to_workspace:
-          root: ~/cloud-carbon-footprint
-          paths:
-            - packages/server/dist/*
-            - packages/server/.env
-  staging-deploy:
-    description: Deploy app to gcp staging
-    working_directory: ~/cloud-carbon-footprint
+            cd ../../..
+
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet app deploy --version=staging dist-workspace/packages/api/app-staging.yaml
+            cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
+
+  # --- Backend deploy production ---
+  backend-deploy-production:
     docker:
-      - image: hashicorp/terraform:0.12.28
+      - image: node:20-alpine
+    working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
       - attach_workspace:
-          at: ~/cloud-carbon-footprint
+          at: .
       - run:
-          name: staging-deploy
+          name: Prepare backend workspace
+          command: cp -r workspace-backend/dist-workspace dist-workspace
+      - run:
+          name: Deploy API to production
           command: |
-            apk add --update python3 py-crcmod bash libc6-compat curl
+            apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-            # Create client env file
-            cd packages/client
-            ./create_client_stage_env_file.sh
-            cd ../..
+            cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+            cp packages/api/app-production.yaml dist-workspace/packages/api
+            echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
-            # Store service account
+            yarn set version 1.22.4
+            rm -f yarn.lock package.json
+            cd dist-workspace/packages/api
+            yarn install
+            ./create_server_env_file.sh
+            cd ../../..
+
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-            # Initialize gcloud CLI
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
             gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+            gcloud --quiet app deploy --version=production dist-workspace/packages/api/app-production.yaml
+            cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
 
-            cd appengine
-            ./deploy-staging.sh
-            cd ..
-  prod-deploy:
-    description: Deploy app to gcp prod
-    working_directory: ~/cloud-carbon-footprint
+  # --- Frontend deploy staging (client only) ---
+  frontend-deploy-staging:
     docker:
-      - image: hashicorp/terraform:0.12.28
+      - image: node:20-alpine
+    working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
       - attach_workspace:
-          at: ~/cloud-carbon-footprint
+          at: .
       - run:
-          name: prod-deploy
+          name: Prepare frontend workspace
+          command: cp -r workspace-frontend/dist-workspace dist-workspace
+      - run:
+          name: Deploy client to staging
           command: |
-            apk add --update python3 py-crcmod bash libc6-compat curl
+            apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-            # Create client env file
-            cd packages/client
-            ./create_client_prod_env_file.sh
-            cd ../..
+            cp packages/client/app-staging.yaml dist-workspace/packages/client
 
-            # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-            # Initialize gcloud CLI
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
             gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+            gcloud --quiet app deploy --version=staging dist-workspace/packages/client/app-staging.yaml
+            cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
 
-            cd appengine
-            ./deploy-production.sh
-            cd ..
+  # --- Frontend deploy production ---
+  frontend-deploy-production:
+    docker:
+      - image: node:20-alpine
+    working_directory: ~/cloud-carbon-footprint
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Prepare frontend workspace
+          command: cp -r workspace-frontend/dist-workspace dist-workspace
+      - run:
+          name: Deploy client to production
+          command: |
+            apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+            cp packages/client/app-production.yaml dist-workspace/packages/client
+
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet app deploy --version=production dist-workspace/packages/client/app-production.yaml
+            cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
 
 workflows:
   version: 2
-  build-and-deploy:
+  ci-separate:
     jobs:
-      - lint-test
-      - build-client:
+      # Lint and test (matrix node 18 and 20)
+      - lint-test-node-18
+      - lint-test-node-20
+
+      # Backend pipeline
+      - backend-build:
           requires:
-            - lint-test
-      - build-server:
+            - lint-test-node-18
+            - lint-test-node-20
+
+      # Frontend pipeline (parallel with backend after lint-test)
+      - frontend-build:
           requires:
-            - lint-test
-      - staging-deploy:
+            - lint-test-node-18
+            - lint-test-node-20
+
+      # Backend release (only on changeset-release/trunk)
+      - backend-release:
+          requires:
+            - backend-build
           filters:
             branches:
-              only: [trunk]
+              only: changeset-release/trunk
+
+      # Frontend release (only on changeset-release/trunk)
+      - frontend-release:
           requires:
-            - build-client
-            - build-server
-      - hold:
-          type: approval
+            - frontend-build
+          filters:
+            branches:
+              only: changeset-release/trunk
+
+      # Backend deploy (only on trunk)
+      - backend-deploy-staging:
           requires:
-            - staging-deploy
-      - prod-deploy:
+            - backend-build
           filters:
             branches:
               only: trunk
+
+      - hold-backend:
+          type: approval
           requires:
-            - hold
+            - backend-deploy-staging
+          filters:
+            branches:
+              only: trunk
+
+      - backend-deploy-production:
+          requires:
+            - hold-backend
+          filters:
+            branches:
+              only: trunk
+
+      # Frontend deploy (only on trunk)
+      - frontend-deploy-staging:
+          requires:
+            - frontend-build
+          filters:
+            branches:
+              only: trunk
+
+      - hold-frontend:
+          type: approval
+          requires:
+            - frontend-deploy-staging
+          filters:
+            branches:
+              only: trunk
+
+      - frontend-deploy-production:
+          requires:
+            - hold-frontend
+          filters:
+            branches:
+              only: trunk

@@ -451,6 +451,8 @@ fileignoreconfig:
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
 - filename: .github/workflows/ci-separate.yml
   checksum: 7ff259b7cfe1532951d4fc08239bd0b61101a0d54175286c46754f8e9ecf1778
+- filename: .circleci/config.yml
+  checksum: 6b129c1abaf69ff35a5303677feb47ca8011d3ab000667eaee6af5afe49a8b66
 scopeconfig:
 - scope: node
 version: "1.0"
