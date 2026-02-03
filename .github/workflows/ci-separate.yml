@@ -333,7 +333,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: staging
     env:
@@ -407,7 +407,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: production
     env:
@@ -482,7 +482,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: staging
     steps:
@@ -515,7 +515,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: production
     steps:
