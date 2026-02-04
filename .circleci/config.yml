@@ -98,27 +98,27 @@ jobs:
 
   # --- Backend pipeline (API + dependencies) ---
   backend-build:
-    executor: node-18
+    executor: node-20
     steps:
       - checkout
       - restore_cache:
           keys:
-            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-v3-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
             - node-modules-
       - restore_cache:
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-v3-{{ checksum "yarn.lock" }}
             - yarn-packages-
       - run:
           name: Install Dependencies
-          command: yarn install --immutable
+          command: yarn install
       - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          key: node-modules-v3-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
           paths:
             - node_modules
             - packages/*/node_modules
       - save_cache:
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: yarn-packages-v3-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:

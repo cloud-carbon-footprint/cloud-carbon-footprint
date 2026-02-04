@@ -453,6 +453,8 @@ fileignoreconfig:
   checksum: 7ff259b7cfe1532951d4fc08239bd0b61101a0d54175286c46754f8e9ecf1778
 - filename: .circleci/config.yml
   checksum: 6b129c1abaf69ff35a5303677feb47ca8011d3ab000667eaee6af5afe49a8b66
+- filename: .circleci/config.yml
+  checksum: 5f5a7eaf06d8a93731182929c9a44f00f17872298e6d8a7f391f63062ceb0f49
 scopeconfig:
 - scope: node
 version: "1.0"
