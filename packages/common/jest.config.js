@@ -7,11 +7,6 @@ const baseConfig = require('../../jest.base.config')
 
 module.exports = {
   ...baseConfig,
-  moduleNameMapper: {
-    ...baseConfig.moduleNameMapper,
-    '^node-fetch$': '<rootDir>/src/__mocks__/node-fetch.js',
-    '^winston$': '<rootDir>/src/__mocks__/winston.js',
-  },
   coverageThreshold: {
     global: {
       statements: 94,
