@@ -98,7 +98,7 @@ jobs:
 
   # --- Backend pipeline (API + dependencies) ---
   backend-build:
-    executor: node-20
+    executor: node-18
     steps:
       - checkout
       - restore_cache:
