@@ -217,7 +217,7 @@ jobs:
           name: Create release tag
           command: node scripts/create-release-tag.js
           environment:
-            GITHUB_TOKEN: << pipeline.project.GITHUB_TOKEN >>
+            GITHUB_TOKEN: $GITHUB_TOKEN
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
@@ -249,7 +249,7 @@ jobs:
           name: Create release tag
           command: node scripts/create-release-tag.js
           environment:
-            GITHUB_TOKEN: << pipeline.project.GITHUB_TOKEN >>
+            GITHUB_TOKEN: $GITHUB_TOKEN
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
