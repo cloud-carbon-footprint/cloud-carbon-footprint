@@ -1,4 +1,10 @@
-name: CI
+# CI workflow with separate backend (API) and frontend (client) pipelines.
+# Backend pipeline runs only when backend packages or their dependencies change.
+# Frontend pipeline runs only when frontend packages or their dependencies change.
+# Shared package (common) changes trigger both pipelines.
+
+name: ci (backend & frontend separate)
+
 on:
   workflow_dispatch:
   push:
@@ -13,38 +19,87 @@ on:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION_BACKEND: '18.x'
+  NODE_VERSION_FRONTEND: '18.x'
+
 jobs:
-  lint-test:
+  # Detect which pipeline(s) to run based on changed paths
+  changes:
     runs-on: ubuntu-latest
-    # Runs tests across node 18 and node 20 environments
-    strategy: 
+    outputs:
+      # On workflow_dispatch run both pipelines; otherwise use path filter
+      backend: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.backend }}
+      frontend: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'packages/api/**'
+              - 'packages/app/**'
+              - 'packages/common/**'
+              - 'packages/core/**'
+              - 'packages/aws/**'
+              - 'packages/gcp/**'
+              - 'packages/azure/**'
+              - 'packages/ali/**'
+              - 'packages/on-premise/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'lerna.json'
+              - 'tsconfig.json'
+              - 'jest.base.config.js'
+              - 'setupTests.ts'
+              - '.prettierrc.json'
+              - '.github/workflows/ci-separate.yml'
+            frontend:
+              - 'packages/client/**'
+              - 'packages/common/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'lerna.json'
+              - 'tsconfig.json'
+              - 'jest.base.config.js'
+              - 'setupTests.ts'
+              - '.prettierrc.json'
+              - '.github/workflows/ci-separate.yml'
+
+  # --- Single lint & test job (runs when backend OR frontend changes) ---
+  lint-test:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    strategy:
       fail-fast: false
       matrix:
         node-version: [18.x, 20.x]
-    name: Install ${{ matrix.node-version }}
+    name: lint and test (${{ matrix.node-version }})
     steps:
       - uses: actions/checkout@v4
       - name: setup node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      # Cache every node_modules folder inside the monorepo
-      - name: cache all node_modules
+      - name: cache node_modules
         id: cache-modules
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
+      - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
         with:
@@ -60,48 +115,39 @@ jobs:
       - name: test and upload coverage
         run: |
           yarn test
-          bash <(curl -s https://codecov.io/bash)
-          bash <(curl -s https://codecov.io/bash) -f packages/client/coverage/* -F client
-          bash <(curl -s https://codecov.io/bash) -f packages/core/coverage/* -F core
-          bash <(curl -s https://codecov.io/bash) -f packages/app/coverage/* -F app
-          bash <(curl -s https://codecov.io/bash) -f packages/api/coverage/* -F api
-          bash <(curl -s https://codecov.io/bash) -f packages/cli/coverage/* -F cli
-          bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
-          bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
-          bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
-#      - name: integration tests
-#        run: yarn test:integration
-#        continue-on-error: true # Temporarily allow continue on failure till we've seen the tests consistently pass on CI
-  build:
-    needs: lint-test
+          bash <(curl -s https://codecov.io/bash) || true
+          for pkg in client core app api cli aws gcp azure; do
+            [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
+          done
+
+  # --- Backend pipeline (API + dependencies) ---
+  backend-build:
+    needs: [changes, lint-test]
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
-    # Runs tests across node 18 and node 20 environments
-    strategy: 
+    strategy:
       fail-fast: false
       matrix:
         node-version: [18.x, 20.x]
-    name: Build ${{ matrix.node-version }}
+    name: backend build (${{ matrix.node-version }})
     steps:
       - uses: actions/checkout@v4
         with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      # Cache every node_modules folder inside the monorepo
-      - name: cache all node_modules
+      - name: cache node_modules
         id: cache-modules
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
+      - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
         with:
@@ -112,10 +158,64 @@ jobs:
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: yarn install
-      - name: build-packages
+      - name: build backend packages
         run: |
-          yarn lerna run build --ignore @cloud-carbon-footprint/client --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
-      - name: build-client
+          yarn lerna run build --ignore @cloud-carbon-footprint/client \
+            --ignore @cloud-carbon-footprint/cli \
+            --ignore @cloud-carbon-footprint/create-app \
+            --ignore @cloud-carbon-footprint/integration-tests
+      - name: build workspace (api and dependencies)
+        run: |
+          yarn lerna run build:workspace --scope=@cloud-carbon-footprint/api --include-dependencies
+          yarn lerna run build:update --scope=@cloud-carbon-footprint/api
+      - name: zip backend artifact
+        run: zip -r dist-workspace-backend.zip dist-workspace/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-workspace-backend-${{ matrix.node-version }}
+          path: dist-workspace-backend.zip
+
+  # --- Frontend pipeline (client + dependencies) ---
+  frontend-build:
+    needs: [changes, lint-test]
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+    name: frontend build (${{ matrix.node-version }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: cache node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: yarn cache dir
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: cache yarn
+        uses: actions/cache@v4
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install
+      - name: build common (client dependency)
+        run: yarn lerna run build --scope=@cloud-carbon-footprint/common
+      - name: build client app
         env:
           REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
@@ -127,106 +227,56 @@ jobs:
           ./create_client_env_file.sh
           yarn build:app
           cd ../..
-      - name: build-workspace
+      - name: build workspace (client)
         run: |
-          yarn lerna run build:workspace
-          # replacing local @cloud-carbon-footprint dependencies with a local reference
-          yarn lerna run build:update
-      - name: zip artifact
-        run: zip dist-workspace.zip dist-workspace/* -r
+          yarn lerna run build:workspace --scope=@cloud-carbon-footprint/client --include-dependencies
+          yarn lerna run build:update --scope=@cloud-carbon-footprint/client
+      - name: zip frontend artifact
+        run: zip -r dist-workspace-frontend.zip dist-workspace/*
       - uses: actions/upload-artifact@v4
         with:
-          name: dist-workspace-${{ matrix.node-version}}
-          path: dist-workspace.zip
-  release:
-    needs: build
+          name: dist-workspace-frontend-${{ matrix.node-version }}
+          path: dist-workspace-frontend.zip
+
+  # --- Backend release (Docker API, tags) ---
+  backend-release:
+    needs: backend-build
+    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     env:
       CI: 'true'
       NODE_OPTIONS: --max-old-space-size=4096
     steps:
       - uses: actions/checkout@v4
-      # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
-      - name: use node.js 18
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          registry-url: https://registry.npmjs.org/ # Needed for auth
-      - name: cache all node_modules
+          registry-url: https://registry.npmjs.org/
+      - name: cache node_modules
         id: cache-modules
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
-        id: yarn-cache
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
-        uses: actions/cache@v4
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: yarn install --immutable
-      # End of yarn setup
-      # - name: build type declarations
-      #   run: yarn tsc:full
-      - name: build packages
-        # uses the react-scripts build and tsc build for client
-        run: |
-          yarn lerna run build
-          cd packages/client
-          ./create_client_env_file.sh
-          yarn build:app
-          cd ../..
-      # Publishes current version of packages that are not already present in the registry
-      - name: publish
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        run: yarn lerna publish from-package --yes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
-      - name: Create a release tag
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+      - name: create release tag
         id: create_tag
         run: node scripts/create-release-tag.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Creates and updates the next available tag with format "latest"
-      - name: Create latest release tag
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+      - name: create latest release tag
         id: create_latest_tag
         uses: EndBug/latest-tag@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Convert the newly created tag into a release with changelog information
-      - name: Create release on GitHub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Login to DockerHub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+      - name: login to docker hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push client to Docker Hub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        uses: docker/build-push-action@v3
-        with:
-          context: packages/client
-          push: true
-          tags: |
-            cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
-            cloudcarbonfootprint/client:latest
-      - name: Build and push api to Docker Hub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+      - name: build and push api to docker hub
         uses: docker/build-push-action@v3
         with:
           context: packages/api
@@ -234,12 +284,56 @@ jobs:
           tags: |
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
-  deploy-staging:
+
+  # --- Frontend release (Docker client, tags) ---
+  frontend-release:
+    needs: frontend-build
+    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+      NODE_OPTIONS: --max-old-space-size=4096
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: https://registry.npmjs.org/
+      - name: cache node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+      - name: create release tag
+        id: create_tag
+        run: node scripts/create-release-tag.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: login to docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: build and push client to docker hub
+        uses: docker/build-push-action@v3
+        with:
+          context: packages/client
+          push: true
+          tags: |
+            cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
+            cloudcarbonfootprint/client:latest
+
+  # --- Backend deploy (API only) ---
+  backend-deploy-staging:
+    needs: backend-build
     if: github.ref == 'refs/heads/trunk'
-    needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: staging
     env:
@@ -277,16 +371,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-20.x
-      - name: unzip artifact for deployment
-        run: unzip dist-workspace.zip
-      - name: deploy-staging
+          name: dist-workspace-backend-18.x
+      - name: unzip backend artifact
+        run: unzip -o dist-workspace-backend.zip
+      - name: deploy api to staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
           MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
-          apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl git
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
@@ -294,37 +388,26 @@ jobs:
           cp packages/api/app-staging.yaml dist-workspace/packages/api
           echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
-          cp packages/client/app-staging.yaml dist-workspace/packages/client
-
-          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
           yarn set version 1.22.4
-
-          rm yarn.lock
-          rm package.json
-
+          rm -f yarn.lock package.json
           cd dist-workspace/packages/api
-          # Generate yarn.lock file
           yarn install
           ./create_server_env_file.sh
           cd ../../..
 
-          # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-          # Initialize gcloud CLI
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-          cd appengine
-          ./deploy-staging.sh
-          cd ..
-  deploy-production:
+          gcloud --quiet app deploy --version=staging dist-workspace/packages/api/app-staging.yaml
+          cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
+
+  backend-deploy-production:
+    needs: backend-deploy-staging
     if: github.ref == 'refs/heads/trunk'
-    needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:20-alpine
     environment:
       name: production
     env:
@@ -362,10 +445,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-20.x
-      - name: unzip artifact for deployment
-        run: unzip dist-workspace.zip
-      - name: deploy-production
+          name: dist-workspace-backend-18.x
+      - name: unzip backend artifact
+        run: unzip -o dist-workspace-backend.zip
+      - name: deploy api to production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
@@ -379,28 +462,83 @@ jobs:
           cp packages/api/app-production.yaml dist-workspace/packages/api
           echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
-          cp packages/client/app-production.yaml dist-workspace/packages/client
-
-          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
           yarn set version 1.22.4
-
-          rm yarn.lock
-          rm package.json
-
+          rm -f yarn.lock package.json
           cd dist-workspace/packages/api
-          # Generate yarn.lock file
           yarn install
           ./create_server_env_file.sh
           cd ../../..
 
-          # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-          # Initialize gcloud CLI
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-          cd appengine
-          ./deploy-production.sh
-          cd ..
+          gcloud --quiet app deploy --version=production dist-workspace/packages/api/app-production.yaml
+          cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
+
+  # --- Frontend deploy (client only) ---
+  frontend-deploy-staging:
+    needs: frontend-build
+    if: github.ref == 'refs/heads/trunk'
+    runs-on: ubuntu-latest
+    container:
+      image: node:20-alpine
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-workspace-frontend-18.x
+      - name: unzip frontend artifact
+        run: unzip -o dist-workspace-frontend.zip
+      - name: deploy client to staging
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+        run: |
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cp packages/client/app-staging.yaml dist-workspace/packages/client
+
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud --quiet app deploy --version=staging dist-workspace/packages/client/app-staging.yaml
+          cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
+
+  frontend-deploy-production:
+    needs: frontend-deploy-staging
+    if: github.ref == 'refs/heads/trunk'
+    runs-on: ubuntu-latest
+    container:
+      image: node:20-alpine
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-workspace-frontend-18.x
+      - name: unzip frontend artifact
+        run: unzip -o dist-workspace-frontend.zip
+      - name: deploy client to production
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+        run: |
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cp packages/client/app-production.yaml dist-workspace/packages/client
+
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud --quiet app deploy --version=production dist-workspace/packages/client/app-production.yaml
+          cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..

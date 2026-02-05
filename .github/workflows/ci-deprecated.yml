@@ -1,0 +1,406 @@
+name: CI
+on:
+  workflow_dispatch:
+  push:
+    branches: [trunk]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
+  pull_request:
+    branches: [trunk]
+    types: [closed]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    # Runs tests across node 18 and node 20 environments
+    strategy: 
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+    name: Install ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Cache every node_modules folder inside the monorepo
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: cache global yarn cache
+        uses: actions/cache@v4
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn
+      - name: lint
+        run: yarn lint
+      - name: test and upload coverage
+        run: |
+          yarn test
+          bash <(curl -s https://codecov.io/bash)
+          bash <(curl -s https://codecov.io/bash) -f packages/client/coverage/* -F client
+          bash <(curl -s https://codecov.io/bash) -f packages/core/coverage/* -F core
+          bash <(curl -s https://codecov.io/bash) -f packages/app/coverage/* -F app
+          bash <(curl -s https://codecov.io/bash) -f packages/api/coverage/* -F api
+          bash <(curl -s https://codecov.io/bash) -f packages/cli/coverage/* -F cli
+          bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
+          bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
+          bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
+#      - name: integration tests
+#        run: yarn test:integration
+#        continue-on-error: true # Temporarily allow continue on failure till we've seen the tests consistently pass on CI
+  build:
+    needs: lint-test
+    runs-on: ubuntu-latest
+    # Runs tests across node 18 and node 20 environments
+    strategy: 
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+    name: Build ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Cache every node_modules folder inside the monorepo
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: cache global yarn cache
+        uses: actions/cache@v4
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install
+      - name: build-packages
+        run: |
+          yarn lerna run build --ignore @cloud-carbon-footprint/client --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
+      - name: build-client
+        env:
+          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
+          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+          REACT_APP_MINIMAL_DATE_AGE: ${{ secrets.REACT_APP_MINIMAL_DATE_AGE }}
+        run: |
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build:app
+          cd ../..
+      - name: build-workspace
+        run: |
+          yarn lerna run build:workspace
+          # replacing local @cloud-carbon-footprint dependencies with a local reference
+          yarn lerna run build:update
+      - name: zip artifact
+        run: zip dist-workspace.zip dist-workspace/* -r
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-workspace-${{ matrix.node-version}}
+          path: dist-workspace.zip
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+      NODE_OPTIONS: --max-old-space-size=4096
+    steps:
+      - uses: actions/checkout@v4
+      # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
+      - name: use node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: https://registry.npmjs.org/ # Needed for auth
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: cache global yarn cache
+        uses: actions/cache@v4
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+      # End of yarn setup
+      # - name: build type declarations
+      #   run: yarn tsc:full
+      - name: build packages
+        # uses the react-scripts build and tsc build for client
+        run: |
+          yarn lerna run build
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build:app
+          cd ../..
+      # Publishes current version of packages that are not already present in the registry
+      - name: publish
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        run: yarn lerna publish from-package --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
+      - name: Create a release tag
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        id: create_tag
+        run: node scripts/create-release-tag.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Creates and updates the next available tag with format "latest"
+      - name: Create latest release tag
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        id: create_latest_tag
+        uses: EndBug/latest-tag@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Convert the newly created tag into a release with changelog information
+      - name: Create release on GitHub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to DockerHub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push client to Docker Hub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        uses: docker/build-push-action@v3
+        with:
+          context: packages/client
+          push: true
+          tags: |
+            cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
+            cloudcarbonfootprint/client:latest
+      - name: Build and push api to Docker Hub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        uses: docker/build-push-action@v3
+        with:
+          context: packages/api
+          push: true
+          tags: |
+            cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
+            cloudcarbonfootprint/api:latest
+  deploy-staging:
+    if: github.ref == 'refs/heads/trunk'
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: node:18-alpine
+    environment:
+      name: staging
+    env:
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
+      GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
+      GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
+      GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
+      GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
+      GCP_USE_BILLING_DATA: ${{ secrets.GCP_USE_BILLING_DATA }}
+      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
+      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+      CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-workspace-20.x
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
+      - name: deploy-staging
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
+        run: |
+          apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl git
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+          cp packages/api/app-staging.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
+
+          cp packages/client/app-staging.yaml dist-workspace/packages/client
+
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
+          rm yarn.lock
+          rm package.json
+
+          cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
+          ./create_server_env_file.sh
+          cd ../../..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          cd appengine
+          ./deploy-staging.sh
+          cd ..
+  deploy-production:
+    if: github.ref == 'refs/heads/trunk'
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    container:
+      image: node:18-alpine
+    environment:
+      name: production
+    env:
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
+      GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
+      GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
+      GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
+      GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
+      GCP_USE_BILLING_DATA: ${{ secrets.GCP_USE_BILLING_DATA }}
+      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
+      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+      CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-workspace-20.x
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
+      - name: deploy-production
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
+        run: |
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+          cp packages/api/app-production.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
+
+          cp packages/client/app-production.yaml dist-workspace/packages/client
+
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
+          rm yarn.lock
+          rm package.json
+
+          cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
+          ./create_server_env_file.sh
+          cd ../../..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          cd appengine
+          ./deploy-production.sh
+          cd ..
