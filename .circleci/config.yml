@@ -1,6 +1,6 @@
 # CircleCI config
-# Separate backend (API) and frontend (client) pipelines.
-# Lint/test runs first; backend and frontend build/deploy/release run in parallel where applicable.
+# Backend and frontend pipelines; branch filters match ci-separate (trunk, changeset-release/trunk).
+# Node versions: 18.x and 20.x (matrix for lint-test and build jobs).
 
 version: 2.1
 
@@ -14,16 +14,8 @@ executors:
       - image: cimg/node:20.18
     working_directory: ~/cloud-carbon-footprint
 
-parameters:
-  run-lint-test-node-18:
-    type: boolean
-    default: true
-  run-lint-test-node-20:
-    type: boolean
-    default: true
-
 jobs:
-  # --- Lint and test (runs for all; matrix node 18 and 20) ---
+  # --- Lint and test (matrix node 18 and 20) ---
   lint-test-node-18:
     executor: node-18
     steps:
@@ -96,29 +88,29 @@ jobs:
               [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
             done
 
-  # --- Backend pipeline (API + dependencies) ---
-  backend-build:
-    executor: node-20
+  # --- Backend pipeline (API + dependencies); matrix node 18 and 20 ---
+  backend-build-node-18:
+    executor: node-18
     steps:
       - checkout
       - restore_cache:
           keys:
-            - node-modules-v3-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-backend-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
             - node-modules-
       - restore_cache:
           keys:
-            - yarn-packages-v3-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ checksum "yarn.lock" }}
             - yarn-packages-
       - run:
           name: Install Dependencies
           command: yarn install
       - save_cache:
-          key: node-modules-v3-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          key: node-modules-backend-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
           paths:
             - node_modules
             - packages/*/node_modules
       - save_cache:
-          key: yarn-packages-v3-{{ checksum "yarn.lock" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
@@ -144,10 +136,47 @@ jobs:
           paths:
             - workspace-backend
 
-  # --- Frontend pipeline (client + dependencies) ---
-  # Set REACT_APP_* in CircleCI Project Settings > Environment Variables for client build
-  frontend-build:
+  backend-build-node-20:
     executor: node-20
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-backend-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          key: node-modules-backend-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Build backend packages
+          command: |
+            yarn lerna run build --ignore @cloud-carbon-footprint/client \
+              --ignore @cloud-carbon-footprint/cli \
+              --ignore @cloud-carbon-footprint/create-app \
+              --ignore @cloud-carbon-footprint/integration-tests
+      - run:
+          name: Build workspace (api and dependencies)
+          command: |
+            yarn lerna run build:workspace --scope=@cloud-carbon-footprint/api --include-dependencies
+            yarn lerna run build:update --scope=@cloud-carbon-footprint/api
+
+  # --- Frontend pipeline (client + dependencies); matrix node 18 and 20 ---
+  # Set REACT_APP_* in CircleCI Project Settings > Environment Variables for client build
+  frontend-build-node-18:
+    executor: node-18
     steps:
       - checkout
       - restore_cache:
@@ -196,8 +225,47 @@ jobs:
           paths:
             - workspace-frontend
 
+  frontend-build-node-20:
+    executor: node-20
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+            - node-modules-
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}-{{ checksum "**/package.json" }}
+          paths:
+            - node_modules
+            - packages/*/node_modules
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Build common (client dependency)
+          command: yarn lerna run build --scope=@cloud-carbon-footprint/common
+      - run:
+          name: Build client app
+          command: |
+            cd packages/client
+            ./create_client_env_file.sh
+            yarn build:app
+            cd ../..
+      - run:
+          name: Build workspace (client)
+          command: |
+            yarn lerna run build:workspace --scope=@cloud-carbon-footprint/client --include-dependencies
+            yarn lerna run build:update --scope=@cloud-carbon-footprint/client
+
   # --- Backend release (Docker API, tags) ---
-  # Uses machine executor so Docker is available for build-push
   backend-release:
     machine: true
     working_directory: ~/cloud-carbon-footprint
@@ -400,13 +468,21 @@ workflows:
       - lint-test-node-20
 
       # Backend pipeline
-      - backend-build:
+      - backend-build-node-18:
+          requires:
+            - lint-test-node-18
+            - lint-test-node-20
+      - backend-build-node-20:
           requires:
             - lint-test-node-18
             - lint-test-node-20
 
       # Frontend pipeline (parallel with backend after lint-test)
-      - frontend-build:
+      - frontend-build-node-18:
+          requires:
+            - lint-test-node-18
+            - lint-test-node-20
+      - frontend-build-node-20:
           requires:
             - lint-test-node-18
             - lint-test-node-20
@@ -414,7 +490,8 @@ workflows:
       # Backend release (only on changeset-release/trunk)
       - backend-release:
           requires:
-            - backend-build
+            - backend-build-node-18
+            - backend-build-node-20
           filters:
             branches:
               only: changeset-release/trunk
@@ -422,7 +499,8 @@ workflows:
       # Frontend release (only on changeset-release/trunk)
       - frontend-release:
           requires:
-            - frontend-build
+            - frontend-build-node-18
+            - frontend-build-node-20
           filters:
             branches:
               only: changeset-release/trunk
@@ -430,22 +508,15 @@ workflows:
       # Backend deploy (only on trunk)
       - backend-deploy-staging:
           requires:
-            - backend-build
-          filters:
-            branches:
-              only: trunk
-
-      - hold-backend:
-          type: approval
-          requires:
-            - backend-deploy-staging
+            - backend-build-node-18
+            - backend-build-node-20
           filters:
             branches:
               only: trunk
 
       - backend-deploy-production:
           requires:
-            - hold-backend
+            - backend-deploy-staging
           filters:
             branches:
               only: trunk
@@ -453,22 +524,15 @@ workflows:
       # Frontend deploy (only on trunk)
       - frontend-deploy-staging:
           requires:
-            - frontend-build
-          filters:
-            branches:
-              only: trunk
-
-      - hold-frontend:
-          type: approval
-          requires:
-            - frontend-deploy-staging
+            - frontend-build-node-18
+            - frontend-build-node-20
           filters:
             branches:
               only: trunk
 
       - frontend-deploy-production:
           requires:
-            - hold-frontend
+            - frontend-deploy-staging
           filters:
             branches:
               only: trunk
