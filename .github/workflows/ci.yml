@@ -3,7 +3,7 @@
 # Frontend pipeline runs only when frontend packages or their dependencies change.
 # Shared package (common) changes trigger both pipelines.
 
-name: ci (backend & frontend separate)
+name: CI
 
 on:
   workflow_dispatch:
@@ -47,6 +47,8 @@ jobs:
               - 'packages/api/**'
               - 'packages/app/**'
               - 'packages/common/**'
+              - 'packages/cli/**'
+              - 'packages/integration-tests/**'
               - 'packages/core/**'
               - 'packages/aws/**'
               - 'packages/gcp/**'
@@ -60,7 +62,13 @@ jobs:
               - 'jest.base.config.js'
               - 'setupTests.ts'
               - '.prettierrc.json'
-              - '.github/workflows/ci-separate.yml'
+              - '.github/workflows/**'
+              - '.husky/**'
+              - 'appengine/**'
+              - 'cloudformation/**'
+              - 'docker/**'
+              - 'helm/**'
+              - 'scripts/**'
             frontend:
               - 'packages/client/**'
               - 'packages/common/**'
@@ -71,7 +79,9 @@ jobs:
               - 'jest.base.config.js'
               - 'setupTests.ts'
               - '.prettierrc.json'
-              - '.github/workflows/ci-separate.yml'
+              - '.github/workflows/**'
+              - '.husky/**'
+              - 'scripts/**'
 
   # --- Single lint & test job (runs when backend OR frontend changes) ---
   lint-test:
