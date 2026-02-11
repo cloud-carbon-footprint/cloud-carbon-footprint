@@ -2,19 +2,20 @@
   "name": "root",
   "private": true,
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=24.0.0"
   },
   "devDependencies": {
     "@changesets/cli": "^2.18.0",
     "@types/fs-extra": "^9.0.13",
+    "@types/node": "^24.0.0",
     "concurrently": "^7.0.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
-    "lerna": "^4.0.0",
+    "lerna": "^8.0.0",
     "rimraf": "^3.0.2",
     "sonar-scanner": "^3.1.0",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.6.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
   },
   "resolutions": {
     "@types/react": "^18.0.27",
@@ -23,7 +24,9 @@
     "@babel/core": "~7.16.7",
     "@types/eslint": "^8.2.1",
     "google-auth-library": "^7.11.0",
-    "typescript": "^4.6.2"
+    "typescript": "^5.4.0",
+    "long": "4.0.0",
+    "@typespec/ts-http-runtime": "0.2.2"
   },
   "workspaces": {
     "packages": [
@@ -55,5 +58,6 @@
     "release": "changeset version && yarn install",
     "postinstall": "husky install",
     "version": "yarn changeset version && yarn install --no-immutable"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }

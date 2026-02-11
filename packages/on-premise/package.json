@@ -46,9 +46,9 @@
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@types/jest-when": "^3.5.0",
-    "@types/node": "^17.0.8",
+    "@types/jest": "^29.5.12",
+    "@types/jest-when": "^3.5.5",
+    "@types/node": "^24.0.0",
     "@types/source-map-support": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
@@ -56,17 +56,17 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "jest": "^27.4.7",
-    "jest-when": "^3.5.0",
+    "jest": "^29.7.0",
+    "jest-when": "^3.6.0",
     "lint-staged": "^12.1.7",
     "onchange": "^7.1.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
-    "ts-jest": "^27.1.2",
-    "ts-node": "^10.4.0",
+    "ts-jest": "^29.2.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.6.2"
+    "typescript": "^5.4.0"
   },
   "lint-staged": {
     "*.{js,ts}": [

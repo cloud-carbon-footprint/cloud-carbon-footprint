@@ -6,5 +6,5 @@
     "outDir": "./dist",
     "skipLibCheck": true
   },
-  "include": ["./src", "../app/src/GCPCredentials.ts", "../app/src/__tests__/AWSCredentialsProvider.test.ts",]
+  "include": ["./src", "../app/src/GCPCredentials.ts", "../app/src/__tests__/AWSCredentialsProvider.test.ts"]
 }

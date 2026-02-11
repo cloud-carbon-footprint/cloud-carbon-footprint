@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "lib": ["ES2021"],
+    "lib": ["ES2023"],
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "target": "ES2021",
+    "target": "ES2023",
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "noImplicitReturns": true,
-    "declaration": true,
+    "declaration": true
   },
   "include": ["./src"],
-  "exclude": ["./node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
+  "exclude": ["./node_modules", "scripts", "**/__tests__/**" , "**/*.test.*"]
 }

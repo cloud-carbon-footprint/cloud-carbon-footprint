@@ -685,7 +685,7 @@ export default class CostAndUsageReports {
       const queryExecutionResults: GetQueryExecutionOutput =
         await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
       const queryStatus = queryExecutionResults.QueryExecution.Status
-      if (queryStatus.State === ('FAILED' || 'CANCELLED'))
+      if (queryStatus.State === 'FAILED' || queryStatus.State === 'CANCELLED')
         throw new Error(
           `Athena query failed. Reason ${queryStatus.StateChangeReason}. Query ID: ${queryExecutionInput.QueryExecutionId}`,
         )
