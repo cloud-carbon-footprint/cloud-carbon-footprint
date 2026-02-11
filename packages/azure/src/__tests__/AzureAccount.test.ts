@@ -99,6 +99,7 @@ describe('Azure Account', () => {
         startDate,
         endDate,
         grouping,
+        [],
       )
 
       // then
@@ -153,6 +154,48 @@ describe('Azure Account', () => {
       expect(promiseSpy).toBeCalledTimes(1)
     })
 
+    it('returns empty array if no subscriptions are found', async () => {
+      const mockCredentials = {
+        clientId: 'test-client-id',
+        secret: 'test-client-secret',
+        domain: 'test-tenant-id',
+      }
+      ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+      mockListSubscriptions.list.mockReturnValue([])
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const result = await azureAccount.getDataFromConsumptionManagement(
+        new Date(),
+        new Date(),
+        GroupBy.day,
+        [],
+      )
+      expect(result).toEqual([])
+    })
+
+    it('skips subscription if fetching by ID fails', async () => {
+      const mockCredentials = {
+        clientId: 'test-client-id',
+        secret: 'test-client-secret',
+        domain: 'test-tenant-id',
+      }
+      ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+      mockListSubscriptions.get.mockImplementationOnce(() => {
+        throw new Error('fail')
+      })
+      mockListSubscriptions.get.mockReturnValueOnce({ subscriptionId: 'sub-2' })
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const result = await azureAccount.getDataFromConsumptionManagement(
+        new Date(),
+        new Date(),
+        GroupBy.day,
+        ['sub-1', 'sub-2'],
+      )
+      // Should only return results for the successful subscription (sub-2)
+      expect(result).toHaveLength(1)
+    })
+
     describe('Fetch Configurations', () => {
       it('fetches data for all subscriptions when subscription chunks are set', async () => {
         const mockCredentials = {
@@ -193,16 +236,28 @@ describe('Azure Account', () => {
 
         ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
-        const AZURE = configLoader().AZURE || {}
+        interface AzureConfig {
+          SUBSCRIPTION_CHUNKS?: number
+          [key: string]: any
+        }
+
+        const AZURE = (configLoader().AZURE || {}) as AzureConfig
+
         AZURE.SUBSCRIPTION_CHUNKS = 2
         const promiseSpy = jest.spyOn(Promise, 'all')
         // when
         const azureAccount = new AzureAccount()
         await azureAccount.initializeAccount()
+        const subscriptionIds = ['sub-1', 'sub-2', 'sub-3', 'sub-4', 'sub-5']
+
+        subscriptionIds.forEach((subscriptionId) => {
+          mockListSubscriptions.get.mockReturnValueOnce({ subscriptionId })
+        })
         const results = await azureAccount.getDataFromConsumptionManagement(
           startDate,
           endDate,
           grouping,
+          subscriptionIds,
         )
 
         // Results should be the same as the mockEstimates array repeated 5 times
@@ -263,7 +318,7 @@ describe('Azure Account', () => {
         ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
         const getDataForSubscriptionSpy = jest.spyOn(
           AzureAccount.prototype,
-          'getDataForSubscription',
+          'getDataForSubscription' as any,
         )
 
         // when
@@ -273,6 +328,7 @@ describe('Azure Account', () => {
           startDate,
           endDate,
           grouping,
+          [],
         )
 
         // Results should be the same as the mockEstimates array repeated35 times
@@ -335,7 +391,7 @@ describe('Azure Account', () => {
         ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
         const getDataForSubscriptionSpy = jest.spyOn(
           AzureAccount.prototype,
-          'getDataForSubscription',
+          'getDataForSubscription' as any,
         )
 
         // when
@@ -403,7 +459,7 @@ describe('Azure Account', () => {
     // when
     const azureAccount = new AzureAccount()
     await azureAccount.initializeAccount()
-    const results = await azureAccount.getDataFromAdvisorManagement()
+    const results = await azureAccount.getDataFromAdvisorManagement([])
 
     // then
     const expectedRecommendations: RecommendationResult[] = [

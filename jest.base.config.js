@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+const { resolve } = require('path')
 module.exports = {
   roots: ['<rootDir>/src'],
   transform: {
@@ -14,5 +15,9 @@ module.exports = {
     'ts-jest': {
       isolatedModules: true,
     },
+  },
+  moduleNameMapper: {
+    '^@typespec/ts-http-runtime/internal/([^/]+)$':
+      `${resolve(__dirname, 'node_modules')}/@typespec/ts-http-runtime/dist/commonjs/$1/internal.js`,
   },
 }
