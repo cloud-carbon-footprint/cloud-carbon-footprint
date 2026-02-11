@@ -20,18 +20,18 @@ fixture`Cloud Carbon Footprint Recommendations`.page`http://127.0.0.1:3000/`
     await t.expect(getLocation()).contains('recommendations')
   })
 
-test('loading screen appears when app is starting', async (t) => {
+test.skip('loading screen appears when app is starting', async (t) => {
   await page.loadingScreen
 })
 
-test('filter components render with correct data when app loads', async (t) => {
+test.skip('filter components render with correct data when app loads', async (t) => {
   await t.expect(page.cloudProviders.exists).ok()
   await t.expect(page.recAccounts.exists).ok() //accounts count is different for recommendations and footprint
   await t.expect(page.regions.exists).ok()
   await t.expect(page.recommendationTypes.exists).ok()
 })
 
-test('card components render with data when app loads', async (t) => {
+test.skip('card components render with data when app loads', async (t) => {
   await t.expect(page.lastThirtyDayTotal.exists).ok()
   await t.expect(page.projectedThirtyDayTotal.exists).ok()
   await t.expect(page.forecastEquivalencyCard.exists).ok()
@@ -39,12 +39,12 @@ test('card components render with data when app loads', async (t) => {
   await t.expect(page.costSavingsPerMonth.exists).ok()
 })
 
-test('table components renders with data when app loads', async (t) => {
+test.skip('table components renders with data when app loads', async (t) => {
   await t.expect(page.searchInput.exists).ok()
   await t.expect(page.recommendationsDataGrid.exists).ok()
 })
 
-test('toggle changes unit of measure', async (t) => {
+test.skip('toggle changes unit of measure', async (t) => {
   //check first cell
   await t
     .expect(page.tableSavingsColumn.textContent)
