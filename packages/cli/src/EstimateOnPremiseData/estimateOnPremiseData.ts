@@ -42,9 +42,8 @@ export default async function estimateOnPremiseData(
   )
 
   if (onPremiseInputFile) {
-    const onPremiseInputData: OnPremiseDataInput[] = await csv().fromFile(
-      onPremiseInputFile,
-    )
+    const onPremiseInputData: OnPremiseDataInput[] =
+      await csv().fromFile(onPremiseInputFile)
     validateOnPremiseInput(onPremiseInputData)
     const onPremiseEstimatesData: OnPremiseDataOutput[] =
       new App().getOnPremiseEstimatesFromInputData(onPremiseInputData)

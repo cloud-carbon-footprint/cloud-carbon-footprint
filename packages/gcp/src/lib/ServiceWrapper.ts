@@ -78,15 +78,12 @@ export default class ServiceWrapper {
         project: project.projectId,
         auth: this.authClient,
       }
-      const instancesResult = await this.instancesClient.aggregatedListAsync(
-        computeEngineRequest,
-      )
-      const disksResult = await this.disksClient.aggregatedListAsync(
-        computeEngineRequest,
-      )
-      const addressesResult = await this.addressesClient.aggregatedListAsync(
-        computeEngineRequest,
-      )
+      const instancesResult =
+        await this.instancesClient.aggregatedListAsync(computeEngineRequest)
+      const disksResult =
+        await this.disksClient.aggregatedListAsync(computeEngineRequest)
+      const addressesResult =
+        await this.addressesClient.aggregatedListAsync(computeEngineRequest)
 
       const instanceZones = await this.extractZones(instancesResult)
       const diskZones = await this.extractZones(disksResult)
@@ -174,9 +171,8 @@ export default class ServiceWrapper {
       instance: instanceId,
       auth: this.authClient,
     }
-    const [instanceDetails] = await this.instancesClient.get(
-      computeEngineRequest,
-    )
+    const [instanceDetails] =
+      await this.instancesClient.get(computeEngineRequest)
     return instanceDetails
   }
 
@@ -191,9 +187,8 @@ export default class ServiceWrapper {
       machineType: machineType,
       auth: this.authClient,
     }
-    const [machineTypeDetails] = await this.machineTypesClient.get(
-      machineTypeRequest,
-    )
+    const [machineTypeDetails] =
+      await this.machineTypesClient.get(machineTypeRequest)
     return machineTypeDetails
   }
 

@@ -53,7 +53,7 @@ const Pagination: <T>(
 ) => ReactElement = ({ data, pageSize, handlePage }) => {
   const { paginationContainer, paginationLabel } = useStyles()
   const [page, setPage] = useState(0)
-  const { paginatedData, totalPages } = usePaginateData<typeof data[0]>(
+  const { paginatedData, totalPages } = usePaginateData<(typeof data)[0]>(
     data,
     pageSize,
   )

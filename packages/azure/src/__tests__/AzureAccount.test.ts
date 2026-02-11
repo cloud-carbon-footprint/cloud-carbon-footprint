@@ -509,9 +509,8 @@ describe('Azure Account', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const AWSAccount = require('../application/AzureAccount').default
-    const result = await AWSAccount.getDataFromConsumptionManagementInputData(
-      inputData,
-    )
+    const result =
+      await AWSAccount.getDataFromConsumptionManagementInputData(inputData)
 
     const expectedResult: LookupTableOutput[] = [
       {

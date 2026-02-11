@@ -82,9 +82,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
 
     const awsRecommendationsServices = getRecommendationsService()
 
-    const result = await awsRecommendationsServices.getRecommendations(
-      mockBucketName,
-    )
+    const result =
+      await awsRecommendationsServices.getRecommendations(mockBucketName)
 
     const expectedResult: RecommendationResult[] = [
       {
@@ -118,9 +117,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
 
     const awsRecommendationsServices = getRecommendationsService()
 
-    const result = await awsRecommendationsServices.getRecommendations(
-      mockBucketName,
-    )
+    const result =
+      await awsRecommendationsServices.getRecommendations(mockBucketName)
 
     const expectedResult: RecommendationResult[] = [
       {
@@ -153,9 +151,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
 
     const awsRecommendationsServices = getRecommendationsService()
 
-    const result = await awsRecommendationsServices.getRecommendations(
-      mockBucketName,
-    )
+    const result =
+      await awsRecommendationsServices.getRecommendations(mockBucketName)
 
     const expectedResult: RecommendationResult[] = [
       {

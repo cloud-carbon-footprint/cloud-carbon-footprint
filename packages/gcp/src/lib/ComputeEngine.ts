@@ -52,9 +52,8 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
       region,
     )
 
-    const [cpuUtilizationTimeSeries] = await this.client.listTimeSeries(
-      CPURequest,
-    )
+    const [cpuUtilizationTimeSeries] =
+      await this.client.listTimeSeries(CPURequest)
     const [vCPUTimeSeries] = await this.client.listTimeSeries(vCPURequest)
 
     const result: ComputeUsage[] = []

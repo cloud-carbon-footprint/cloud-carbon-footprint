@@ -218,9 +218,8 @@ describe('AWSAccount', () => {
     ]
 
     const AWSAccount = require('../application/AWSAccount').default
-    const result = await AWSAccount.getCostAndUsageReportsDataFromInputData(
-      inputData,
-    )
+    const result =
+      await AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
 
     const expectedResult: LookupTableOutput[] = [
       {

@@ -148,9 +148,8 @@ export default class AzureAccount extends CloudProviderAccount {
 
       for (const subscriptionId of subscriptionIds) {
         try {
-          const subscription = await this.subscriptionClient.subscriptions.get(
-            subscriptionId,
-          )
+          const subscription =
+            await this.subscriptionClient.subscriptions.get(subscriptionId)
           subscriptions.push(subscription)
         } catch (error) {
           this.logger.warn(

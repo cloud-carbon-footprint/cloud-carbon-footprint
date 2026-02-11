@@ -15,16 +15,16 @@
     "rimraf": "^3.0.2",
     "sonar-scanner": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.0"
+    "typescript": "5.5.4"
   },
   "resolutions": {
     "@types/react": "^18.0.27",
     "@types/express-serve-static-core": "^4.17.21",
     "@grpc/grpc-js": "^1.5.7",
     "@babel/core": "~7.16.7",
-    "@types/eslint": "^8.2.1",
+    "@types/eslint": "^8.56.0",
     "google-auth-library": "^7.11.0",
-    "typescript": "^5.4.0",
+    "typescript": "5.5.4",
     "long": "4.0.0",
     "@typespec/ts-http-runtime": "0.2.2"
   },

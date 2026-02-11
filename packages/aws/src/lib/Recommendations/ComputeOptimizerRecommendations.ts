@@ -32,9 +32,7 @@ import ComputeOptimizerRecommendation from './ComputeOptimizer/ComputeOptimizerR
 import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../../domain'
 import { AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from '../AWSRegions'
 
-export default class ComputeOptimizerRecommendations
-  implements ICloudRecommendationsService
-{
+export default class ComputeOptimizerRecommendations implements ICloudRecommendationsService {
   private readonly recommendationsLogger: Logger
   constructor(
     private readonly computeEstimator: ComputeEstimator,
@@ -51,9 +49,8 @@ export default class ComputeOptimizerRecommendations
       Bucket: centralComputeOptimizerBucket,
     }
     try {
-      const bucketObjectsList = await this.serviceWrapper.listBucketObjects(
-        params,
-      )
+      const bucketObjectsList =
+        await this.serviceWrapper.listBucketObjects(params)
 
       const recommendationsResult: RecommendationResult[] = []
       const includedRecommendationTypes = ['OVER_PROVISIONED', 'NOTOPTIMIZED']

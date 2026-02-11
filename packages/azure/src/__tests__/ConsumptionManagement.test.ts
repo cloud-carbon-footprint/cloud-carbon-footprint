@@ -1253,9 +1253,8 @@ describe('Azure Consumption Management Service', () => {
       ),
     )
 
-    const result = await consumptionManagementService.getEstimatesFromInputData(
-      inputData,
-    )
+    const result =
+      await consumptionManagementService.getEstimatesFromInputData(inputData)
 
     const expectedResult: LookupTableOutput[] = [
       {

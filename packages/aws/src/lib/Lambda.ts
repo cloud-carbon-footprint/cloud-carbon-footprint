@@ -163,9 +163,8 @@ export default class Lambda implements ICloudService {
     const startTime = Date.now()
 
     while (true) {
-      cwResultsData = await this.serviceWrapper.getCloudWatchLogQueryResults(
-        params,
-      )
+      cwResultsData =
+        await this.serviceWrapper.getCloudWatchLogQueryResults(params)
       if (
         cwResultsData.status !== 'Running' &&
         cwResultsData.status !== 'Scheduled'

@@ -1401,9 +1401,10 @@ describe('GCP BillingExportTable Service', () => {
       ),
     )
 
-    const result = await billingExportTableService.getEstimatesFromInputData(
-      lookupTableInputData,
-    )
+    const result =
+      await billingExportTableService.getEstimatesFromInputData(
+        lookupTableInputData,
+      )
 
     const expectedResult: LookupTableOutput[] = [
       {

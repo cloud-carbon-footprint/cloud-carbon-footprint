@@ -636,8 +636,8 @@ export default class CostAndUsageReports {
                       AND line_item_usage_start_date BETWEEN from_iso8601_timestamp('${moment
                         .utc(startDate)
                         .toISOString()}') AND from_iso8601_timestamp('${moment
-      .utc(endDate)
-      .toISOString()}')
+                        .utc(endDate)
+                        .toISOString()}')
                       ${accountFilter}
                     GROUP BY ${groupByColumnNames}`
 
@@ -667,9 +667,8 @@ export default class CostAndUsageReports {
   ): Promise<StartQueryExecutionOutput> {
     let response: StartQueryExecutionOutput
     try {
-      response = await this.serviceWrapper.startAthenaQueryExecution(
-        queryParams,
-      )
+      response =
+        await this.serviceWrapper.startAthenaQueryExecution(queryParams)
       this.costAndUsageReportsLogger.info('Started Athena Query Execution')
     } catch (e) {
       throw new Error(`Athena start query failed. Reason ${e.message}.`)

@@ -110,9 +110,8 @@ describe('Cache', () => {
     const target = {}
     //run
     cacheDecorator(target, 'propertyTest', propertyDescriptor)
-    const estimationResult: EstimationResult[] = await propertyDescriptor.value(
-      rawRequest,
-    )
+    const estimationResult: EstimationResult[] =
+      await propertyDescriptor.value(rawRequest)
 
     //assert
     expect(estimationResult).toEqual(expectedEstimationResults)
@@ -206,9 +205,8 @@ describe('Cache', () => {
 
     //run
     cacheDecorator({}, 'propertyTest', propertyDescriptor)
-    const estimationResult: EstimationResult[] = await propertyDescriptor.value(
-      rawRequest,
-    )
+    const estimationResult: EstimationResult[] =
+      await propertyDescriptor.value(rawRequest)
 
     //assert
     const expectedEstimationResults: EstimationResult[] =

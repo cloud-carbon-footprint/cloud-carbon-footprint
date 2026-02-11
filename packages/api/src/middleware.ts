@@ -56,9 +56,8 @@ export const FootprintApiMiddleware = async function (
   const footprintApp = new App()
   try {
     const estimationRequest = createValidFootprintRequest(rawRequest)
-    const estimationResults = await footprintApp.getCostAndEstimates(
-      estimationRequest,
-    )
+    const estimationResults =
+      await footprintApp.getCostAndEstimates(estimationRequest)
     res.json(estimationResults)
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
@@ -114,9 +113,8 @@ export const RecommendationsApiMiddleware = async function (
   const footprintApp = new App()
   try {
     const estimationRequest = createValidRecommendationsRequest(rawRequest)
-    const recommendations = await footprintApp.getRecommendations(
-      estimationRequest,
-    )
+    const recommendations =
+      await footprintApp.getRecommendations(estimationRequest)
     res.json(recommendations)
   } catch (e) {
     apiLogger.error(`Unable to process recommendations request.`, e)

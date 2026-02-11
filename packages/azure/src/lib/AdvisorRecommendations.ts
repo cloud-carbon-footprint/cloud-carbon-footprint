@@ -32,9 +32,7 @@ import {
 } from '../domain'
 import { AZURE_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from './AzureRegions'
 
-export default class AdvisorRecommendations
-  implements ICloudRecommendationsService
-{
+export default class AdvisorRecommendations implements ICloudRecommendationsService {
   private readonly recommendationsLogger: Logger
   constructor(
     private readonly computeEstimator: ComputeEstimator,

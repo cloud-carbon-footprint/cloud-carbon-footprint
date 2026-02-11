@@ -28,5 +28,6 @@ module.exports = {
         argsIgnorePattern: '^_',
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 }

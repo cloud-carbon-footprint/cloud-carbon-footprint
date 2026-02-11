@@ -30,9 +30,7 @@ import {
 import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../../domain'
 import { AWS_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES } from '../AWSRegions'
 
-export default class RightsizingRecommendations
-  implements ICloudRecommendationsService
-{
+export default class RightsizingRecommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
   private readonly recommendationsLogger: Logger
   constructor(

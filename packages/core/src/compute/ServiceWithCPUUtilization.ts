@@ -11,9 +11,7 @@ import {
 } from '../.'
 import { ComputeUsage, ComputeEstimator } from '.'
 
-export default abstract class ServiceWithCPUUtilization
-  implements ICloudService
-{
+export default abstract class ServiceWithCPUUtilization implements ICloudService {
   private readonly estimator: ComputeEstimator
 
   protected constructor() {

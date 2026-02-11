@@ -2342,9 +2342,8 @@ describe('CostAndUsageReports Service', () => {
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
     )
-    const result = await costAndUsageReportsService.getEstimatesFromInputData(
-      inputData,
-    )
+    const result =
+      await costAndUsageReportsService.getEstimatesFromInputData(inputData)
 
     // then
     const expectedResult: LookupTableOutput[] = [

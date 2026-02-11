@@ -73,9 +73,8 @@ export default async function createLookupTable(
   }
 
   if (azureInputFile) {
-    const azureInputData: LookupTableInput[] = await csv().fromFile(
-      azureInputFile,
-    )
+    const azureInputData: LookupTableInput[] =
+      await csv().fromFile(azureInputFile)
     validateInputData(azureInputData)
     const azureEstimatesData: LookupTableOutput[] =
       await new App().getAzureEstimatesFromInputData(azureInputData)
