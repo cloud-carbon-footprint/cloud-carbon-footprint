@@ -124,9 +124,9 @@ jobs:
         run: yarn lint
       - name: test and upload coverage
         run: |
-          yarn lerna run test --ignore=@cloud-carbon-footprint/client -- --coverage --runInBand
+          yarn test
           bash <(curl -s https://codecov.io/bash) || true
-          for pkg in core app api cli aws gcp azure; do
+          for pkg in client core app api cli aws gcp azure; do
             [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
           done
 

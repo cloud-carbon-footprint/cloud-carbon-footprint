@@ -15,7 +15,7 @@
     "clean": "rimraf screenshots"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.16.5",
+    "@babel/eslint-parser": "^7.26.0",
     "@testing-library/testcafe": "^5.0.0",
     "concurrently": "^7.0.0",
     "eslint": "^8.57.0",
