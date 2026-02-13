@@ -126,7 +126,7 @@ jobs:
         run: |
           yarn test
           bash <(curl -s https://codecov.io/bash) || true
-          for pkg in client core app api cli aws gcp azure; do
+          for pkg in core app api cli aws gcp azure; do
             [ -d "packages/$pkg/coverage" ] && bash <(curl -s https://codecov.io/bash) -f "packages/$pkg/coverage/*" -F "$pkg" || true
           done
 
@@ -156,7 +156,7 @@ jobs:
       - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$HOME/.yarn/berry/cache" >> $GITHUB_OUTPUT
       - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -211,7 +211,7 @@ jobs:
       - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$HOME/.yarn/berry/cache" >> $GITHUB_OUTPUT
       - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
