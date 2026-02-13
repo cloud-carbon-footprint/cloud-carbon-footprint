@@ -108,7 +108,7 @@ jobs:
       - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$HOME/.yarn/berry/cache" >> $GITHUB_OUTPUT
       - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
