@@ -1,7 +1,7 @@
 # Configuration for deploying API service to Google App Engine using production label
 service: api
 
-runtime: nodejs16
+runtime: nodejs24
 instance_class: B4_1G
 basic_scaling:
   max_instances: 20

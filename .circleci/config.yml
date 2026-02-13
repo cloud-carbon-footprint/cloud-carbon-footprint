@@ -1,17 +1,17 @@
 # CircleCI config
 # Backend and frontend pipelines; branch filters match ci-separate (trunk, changeset-release/trunk).
-# Node versions: 18.x and 20.x (matrix for lint-test and build jobs).
+# Node version: 24.x (for lint-test and build jobs).
 
 version: 2.1
 
 executors:
   node-18:
     docker:
-      - image: cimg/node:18.18
+      - image: cimg/node:24.13
     working_directory: ~/cloud-carbon-footprint
   node-20:
     docker:
-      - image: cimg/node:20.18
+      - image: cimg/node:24.13
     working_directory: ~/cloud-carbon-footprint
 
 jobs:
@@ -332,7 +332,7 @@ jobs:
   # --- Backend deploy staging (API only) ---
   backend-deploy-staging:
     docker:
-      - image: node:20-alpine
+      - image: node:24-alpine
     working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
@@ -369,7 +369,7 @@ jobs:
   # --- Backend deploy production ---
   backend-deploy-production:
     docker:
-      - image: node:20-alpine
+      - image: node:24-alpine
     working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
@@ -406,7 +406,7 @@ jobs:
   # --- Frontend deploy staging (client only) ---
   frontend-deploy-staging:
     docker:
-      - image: node:20-alpine
+      - image: node:24-alpine
     working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout
@@ -434,7 +434,7 @@ jobs:
   # --- Frontend deploy production ---
   frontend-deploy-production:
     docker:
-      - image: node:20-alpine
+      - image: node:24-alpine
     working_directory: ~/cloud-carbon-footprint
     steps:
       - checkout

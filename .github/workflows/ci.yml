@@ -24,8 +24,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION_BACKEND: '20.x'
-  NODE_VERSION_FRONTEND: '20.x'
+  NODE_VERSION_BACKEND: '24.x'
+  NODE_VERSION_FRONTEND: '24.x'
 
 jobs:
   # Detect which pipeline(s) to run based on changed paths
@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [24.x]
     name: lint and test (${{ matrix.node-version }})
     steps:
       - uses: actions/checkout@v4
@@ -138,7 +138,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [24.x]
     name: backend build (${{ matrix.node-version }})
     steps:
       - uses: actions/checkout@v4
@@ -193,7 +193,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [24.x]
     name: frontend build (${{ matrix.node-version }})
     steps:
       - uses: actions/checkout@v4
@@ -260,7 +260,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: https://registry.npmjs.org/
       - name: cache node_modules
         id: cache-modules
@@ -307,7 +307,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: https://registry.npmjs.org/
       - name: cache node_modules
         id: cache-modules
@@ -343,7 +343,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:20-alpine
+      image: node:24-alpine
     environment:
       name: staging
     env:
@@ -381,7 +381,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-backend-20.x
+          name: dist-workspace-backend-24.x
       - name: unzip backend artifact
         run: unzip -o dist-workspace-backend.zip
       - name: deploy api to staging
@@ -417,7 +417,7 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:20-alpine
+      image: node:24-alpine
     environment:
       name: production
     env:
@@ -455,7 +455,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-backend-20.x
+          name: dist-workspace-backend-24.x
       - name: unzip backend artifact
         run: unzip -o dist-workspace-backend.zip
       - name: deploy api to production
@@ -492,14 +492,14 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:20-alpine
+      image: node:24-alpine
     environment:
       name: staging
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-frontend-20.x
+          name: dist-workspace-frontend-24.x
       - name: unzip frontend artifact
         run: unzip -o dist-workspace-frontend.zip
       - name: deploy client to staging
@@ -525,14 +525,14 @@ jobs:
     if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:20-alpine
+      image: node:24-alpine
     environment:
       name: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-workspace-frontend-20.x
+          name: dist-workspace-frontend-24.x
       - name: unzip frontend artifact
         run: unzip -o dist-workspace-frontend.zip
       - name: deploy client to production

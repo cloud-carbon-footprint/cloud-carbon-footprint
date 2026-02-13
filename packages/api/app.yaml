@@ -2,7 +2,7 @@
 # https://cloud.google.com/appengine/docs/standard/nodejs/building-app
 # https://www.cloudcarbonfootprint.org/docs/deploying
 
-runtime: nodejs18
+runtime: nodejs24
 instance_class: B2  
 
 # Scaling Configurations. Can be automatic, basic, or manual

@@ -3,7 +3,7 @@
 # Install dependencies (git, node, yarn, jq)
 yum update -y
 yum install -y git
-curl --silent --location https://rpm.nodesource.com/setup_14.x | bash -
+curl --silent --location https://rpm.nodesource.com/setup_24.x | bash -
 yum install -y nodejs
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
 rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
