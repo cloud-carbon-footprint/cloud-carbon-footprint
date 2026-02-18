@@ -8,6 +8,10 @@ import {
   JWT,
   UserRefreshClient,
   Impersonated,
+  IdTokenClient,
+  PluggableAuthClient,
+  PassThroughClient,
+  IdentityPoolClient,
 } from 'google-auth-library'
 
 export type GoogleAuthClient =
@@ -16,6 +20,10 @@ export type GoogleAuthClient =
   | UserRefreshClient
   | Impersonated
   | BaseExternalAccountClient
+  | IdTokenClient
+  | PluggableAuthClient
+  | PassThroughClient
+  | IdentityPoolClient
 
 export type AccountDetails = {
   id: string

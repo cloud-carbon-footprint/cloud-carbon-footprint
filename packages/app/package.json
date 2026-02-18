@@ -46,7 +46,7 @@
     "@cloud-carbon-footprint/common": "^1.15.0",
     "@cloud-carbon-footprint/gcp": "^0.15.0",
     "@cloud-carbon-footprint/on-premise": "^0.1.1",
-    "@google-cloud/storage": "^5.16.1",
+    "@google-cloud/storage": "^7.19.0",
     "@sovpro/delimited-stream": "^1.1.0",
     "moment": "^2.29.1",
     "mongodb": "^4.7.0",

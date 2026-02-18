@@ -49,7 +49,7 @@
     "@azure/ms-rest-nodeauth": "^3.1.1",
     "@cloud-carbon-footprint/common": "^1.14.0",
     "@cloud-carbon-footprint/core": "^0.17.3",
-    "@google-cloud/secret-manager": "^3.10.1",
+    "@google-cloud/secret-manager": "^6.1.1",
     "moment": "^2.29.1"
   },
   "devDependencies": {

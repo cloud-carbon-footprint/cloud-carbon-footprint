@@ -43,7 +43,7 @@
   "dependencies": {
     "@cloud-carbon-footprint/common": "^1.15.0",
     "@cloud-carbon-footprint/core": "^0.17.3",
-    "@google-cloud/iam-credentials": "^1.1.1",
+    "@google-cloud/iam-credentials": "^4.2.1",
     "aws-sdk": "^2.927.0",
     "aws-sdk-mock": "^5.1.0",
     "csvtojson": "^2.0.10",
