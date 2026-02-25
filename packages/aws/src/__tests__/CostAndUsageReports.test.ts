@@ -2,19 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, {
-  CloudWatch,
-  CloudWatchLogs,
-  CostExplorer,
-  Athena as AWSAthena,
-  S3,
-  Glue,
-} from 'aws-sdk'
-import {
-  GetQueryExecutionOutput,
-  GetQueryResultsOutput,
-} from 'aws-sdk/clients/athena'
+import { mockClient } from 'aws-sdk-client-mock'
 import {
   AccountDetailsOrIdList,
   configLoader,
@@ -35,7 +23,7 @@ import {
 import CostAndUsageReports, {
   tagNameToAthenaColumn,
 } from '../lib/CostAndUsageReports'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
 import {
   testAccountId,
   athenaMockGetQueryResultsWithEC2EBSLambda,
@@ -61,6 +49,20 @@ import {
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+import { GlueClient } from '@aws-sdk/client-glue'
+import {
+  AthenaClient,
+  GetQueryExecutionCommand,
+  GetQueryExecutionCommandOutput,
+  GetQueryResultsCommand,
+  GetQueryResultsCommandOutput,
+  QueryExecutionState,
+  StartQueryExecutionCommand,
+} from '@aws-sdk/client-athena'
+import { S3Client } from '@aws-sdk/client-s3'
+import { CostExplorerClient } from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
 
 const testAccountName = 'the-test-account'
 const defaultMockConfig = {
@@ -93,19 +95,23 @@ describe('CostAndUsageReports Service', () => {
   const grouping = GroupBy.day
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
   const getQueryExecutionResponse = {
-    QueryExecution: { Status: { State: 'SUCCEEDED' } },
+    $metadata: {},
+    QueryExecution: { Status: { State: QueryExecutionState.SUCCEEDED } },
   }
   const getQueryExecutionFailedResponse = {
-    QueryExecution: { Status: { State: 'FAILED', StateChangeReason: 'TEST' } },
+    $metadata: {},
+    QueryExecution: {
+      Status: { State: QueryExecutionState.FAILED, StateChangeReason: 'TEST' },
+    },
   }
   const getServiceWrapper = () => {
     const serviceWrapper = new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
-      new AWSAthena(),
-      new Glue(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
+      new AthenaClient(),
+      new GlueClient(),
     )
     // Ensures that tests pass product_vcpu column check by default
     serviceWrapper.getAthenaTableDescription = jest.fn().mockResolvedValue({
@@ -122,10 +128,7 @@ describe('CostAndUsageReports Service', () => {
     })
     return serviceWrapper
   }
-
-  beforeAll(() => {
-    AWSMock.setSDKInstance(AWS)
-  })
+  const athenaClientMock = mockClient(AthenaClient)
 
   beforeEach(() => {
     AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
@@ -134,7 +137,7 @@ describe('CostAndUsageReports Service', () => {
   })
 
   afterEach(() => {
-    AWSMock.restore()
+    athenaClientMock.reset()
     jest.restoreAllMocks()
     startQueryExecutionSpy.mockClear()
     getQueryExecutionSpy.mockClear()
@@ -2514,7 +2517,6 @@ describe('CostAndUsageReports Service', () => {
     })
 
     afterEach(() => {
-      AWSMock.restore()
       jest.restoreAllMocks()
       startQueryExecutionSpy.mockClear()
       getQueryExecutionSpy.mockClear()
@@ -2660,21 +2662,27 @@ describe('CostAndUsageReports Service', () => {
 
   function mockStartQueryExecution(response: { QueryExecutionId: string }) {
     startQueryExecutionSpy.mockResolvedValue(response)
-    AWSMock.mock('Athena', 'startQueryExecution', startQueryExecutionSpy)
+    athenaClientMock
+      .on(StartQueryExecutionCommand)
+      .callsFake(startQueryExecutionSpy)
   }
   function mockStartQueryExecutionFailed(response: string) {
     startQueryExecutionSpy.mockRejectedValue(new Error(response))
-    AWSMock.mock('Athena', 'startQueryExecution', startQueryExecutionSpy)
+    athenaClientMock
+      .on(StartQueryExecutionCommand)
+      .callsFake(startQueryExecutionSpy)
   }
 
-  function mockGetQueryExecution(response: GetQueryExecutionOutput) {
+  function mockGetQueryExecution(response: GetQueryExecutionCommandOutput) {
     getQueryExecutionSpy.mockResolvedValue(response)
-    AWSMock.mock('Athena', 'getQueryExecution', getQueryExecutionSpy)
+    athenaClientMock
+      .on(GetQueryExecutionCommand)
+      .callsFake(getQueryExecutionSpy)
   }
 
-  function mockGetQueryResults(results: GetQueryResultsOutput) {
+  function mockGetQueryResults(results: GetQueryResultsCommandOutput) {
     getQueryResultsSpy.mockResolvedValue(results)
-    AWSMock.mock('Athena', 'getQueryResults', getQueryResultsSpy)
+    athenaClientMock.on(GetQueryResultsCommand).callsFake(getQueryResultsSpy)
   }
 })
 

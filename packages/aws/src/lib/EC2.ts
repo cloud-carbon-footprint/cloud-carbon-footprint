@@ -2,8 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import {
+  GetMetricDataCommandInput,
+  MetricDataResult,
+} from '@aws-sdk/client-cloudwatch'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
 import {
   Cost,
   ComputeUsage,
@@ -40,7 +43,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
     start: Date,
     end: Date,
   ): Promise<ComputeUsage[]> => {
-    const params = {
+    const params: GetMetricDataCommandInput = {
       StartTime: start,
       EndTime: end,
       MetricDataQueries: [
@@ -79,7 +82,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

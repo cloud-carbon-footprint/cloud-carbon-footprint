@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { RightsizingRecommendation as AwsRightsizingRecommendation } from 'aws-sdk/clients/costexplorer'
+import { RightsizingRecommendation as AwsRightsizingRecommendation } from '@aws-sdk/client-cost-explorer'
 import { getHoursInMonth } from '@cloud-carbon-footprint/common'
 import RightsizingRecommendation from './RightsizingRecommendation'
 

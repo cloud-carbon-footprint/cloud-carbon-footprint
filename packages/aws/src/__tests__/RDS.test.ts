@@ -2,12 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch, CostExplorer, CloudWatchLogs, S3 } from 'aws-sdk'
 import { FootprintEstimate, Cost } from '@cloud-carbon-footprint/core'
 import RDS from '../lib/RDS'
 import RDSStorage from '../lib/RDSStorage'
 import RDSComputeService from '../lib/RDSCompute'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { CostExplorerClient } from '@aws-sdk/client-cost-explorer'
+import { S3Client } from '@aws-sdk/client-s3'
 
 describe('RDS Service', function () {
   const startDate = '2020-08-16'
@@ -15,10 +18,10 @@ describe('RDS Service', function () {
   const region = 'us-east-1'
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   it('Combines the results from both the RDSCompute and RDSStorage services ', async () => {

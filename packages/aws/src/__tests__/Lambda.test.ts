@@ -2,21 +2,37 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatchLogs, CostExplorer, CloudWatch, S3 } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
 import { estimateCo2 } from '@cloud-carbon-footprint/core'
 import Lambda from '../lib/Lambda'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
 import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../domain'
+import { S3Client } from '@aws-sdk/client-s3'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+} from '@aws-sdk/client-cost-explorer'
+import {
+  CloudWatchLogsClient,
+  DescribeLogGroupsCommand,
+  DescribeQueriesCommand,
+  GetQueryResultsCommand,
+  QueryInfo,
+  QueryStatus,
+  StartQueryCommand,
+} from '@aws-sdk/client-cloudwatch-logs'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+
+const costExplorerMock = mockClient(CostExplorerClient)
+const cloudWatchLogsMock = mockClient(CloudWatchLogsClient)
+const cloudWatchMock = mockClient(CloudWatchClient)
 
 describe('Lambda', () => {
-  beforeAll(() => {
-    AWSMock.setSDKInstance(AWS)
-  })
-
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
+    cloudWatchLogsMock.reset()
+    cloudWatchMock.reset()
     jest.restoreAllMocks()
     startQuerySpy.mockClear()
   })
@@ -32,7 +48,7 @@ describe('Lambda', () => {
     logGroupName: groupName,
   }))
 
-  const runningQueries: CloudWatchLogs.QueryInfo[] = [
+  const runningQueries: QueryInfo[] = [
     {
       queryId: 'test',
       status: 'Running',
@@ -41,10 +57,10 @@ describe('Lambda', () => {
 
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   it('gets Lambda usage for one function and one day', async () => {
@@ -62,7 +78,7 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Complete',
+      status: QueryStatus.Complete,
     }
 
     mockDescribeLogGroups(logGroups)
@@ -116,7 +132,7 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Complete',
+      status: QueryStatus.Complete,
     }
 
     mockDescribeLogGroups(logGroups)
@@ -181,7 +197,7 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Complete',
+      status: QueryStatus.Complete,
     }
 
     mockDescribeLogGroups(logGroups)
@@ -248,7 +264,7 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Complete',
+      status: QueryStatus.Complete,
     }
 
     mockDescribeLogGroups(logGroups)
@@ -336,7 +352,7 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Running',
+      status: QueryStatus.Running,
     }
 
     mockDescribeLogGroups(logGroups)
@@ -362,21 +378,11 @@ describe('Lambda', () => {
   })
 
   it('gets Lambda cost', async () => {
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(
-          null,
-          buildCostExplorerGetCostResponse([
-            { start: startDate, amount: 100.0, keys: ['AWS Lambda'] },
-            { start: endDate, amount: 50.0, keys: ['test'] },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetCostResponse([
+        { start: startDate, amount: 100.0, keys: ['AWS Lambda'] },
+        { start: endDate, amount: 50.0, keys: ['test'] },
+      ]),
     )
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
@@ -393,56 +399,32 @@ describe('Lambda', () => {
   })
 
   function mockDescribeLogGroups(logGroups: { logGroupName: string }[]) {
-    AWSMock.mock(
-      'CloudWatchLogs',
-      'describeLogGroups',
-      (
-        params: CloudWatchLogs.DescribeLogGroupsRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(null, {
-          logGroups: logGroups,
-        })
-      },
-    )
+    cloudWatchLogsMock.on(DescribeLogGroupsCommand).resolves({
+      logGroups: logGroups,
+    })
   }
 
-  function mockDescribeQueries(queries: CloudWatchLogs.QueryInfo[]) {
-    AWSMock.mock(
-      'CloudWatchLogs',
-      'describeQueries',
-      (
-        params: CloudWatchLogs.DescribeQueriesRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(null, {
-          queries: queries,
-        })
-      },
-    )
+  function mockDescribeQueries(queries: QueryInfo[]) {
+    cloudWatchLogsMock.on(DescribeQueriesCommand).resolves({
+      queries: queries,
+    })
   }
 
   const startQuerySpy = jest.fn()
 
   function mockStartQuery(response: { queryId: string }) {
     startQuerySpy.mockResolvedValue(response)
-    return AWSMock.mock('CloudWatchLogs', 'startQuery', startQuerySpy)
+    return cloudWatchLogsMock.on(StartQueryCommand).callsFake(startQuerySpy)
   }
 
   function mockGetResults(results: {
     results: { field: string; value: string }[][]
-    status: string
+    status: QueryStatus
   }) {
-    AWSMock.mock(
-      'CloudWatchLogs',
-      'getQueryResults',
-      (
-        params: CloudWatchLogs.GetQueryResultsRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(null, results)
-      },
-    )
+    cloudWatchLogsMock.on(GetQueryResultsCommand).resolves({
+      $metadata: {},
+      ...results,
+    })
   }
 })
 

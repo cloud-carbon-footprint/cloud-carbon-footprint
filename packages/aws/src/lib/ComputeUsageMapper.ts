@@ -2,9 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch, CostExplorer } from 'aws-sdk'
-
-import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
+import { GetCostAndUsageResponse } from '@aws-sdk/client-cost-explorer'
+import {
+  GetMetricDataCommandOutput,
+  MetricDataResult,
+} from '@aws-sdk/client-cloudwatch'
 
 import {
   ComputeUsage,
@@ -16,7 +18,7 @@ import {
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 function getNumberVcpusByDate(
-  getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
+  getCostAndUsageResponses: GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ): RawComputeUsage[] {
   const vcpusByDate: RawComputeUsage[] = []
@@ -41,8 +43,8 @@ function getNumberVcpusByDate(
 }
 
 export function getComputeUsage(
-  metricDataResponses: CloudWatch.GetMetricDataOutput[],
-  getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
+  metricDataResponses: GetMetricDataCommandOutput[],
+  getCostAndUsageResponses: GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ): ComputeUsage[] {
   const metricDataResults: MetricDataResult[] = metricDataResponses.flatMap(

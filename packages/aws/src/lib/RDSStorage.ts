@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
 import { Logger } from '@cloud-carbon-footprint/common'
 import {
   ICloudService,
@@ -50,7 +50,7 @@ export default class RDSStorage implements ICloudService {
     endDate: Date,
     region: string,
   ): Promise<VolumeUsage[]> {
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
         End: endDate.toISOString().substr(0, 10),
@@ -101,7 +101,7 @@ export default class RDSStorage implements ICloudService {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

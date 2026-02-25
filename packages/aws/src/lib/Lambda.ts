@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { GetQueryResultsResponse } from 'aws-sdk/clients/cloudwatchlogs'
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
+import { GetQueryResultsCommandOutput } from '@aws-sdk/client-cloudwatch-logs'
 import {
   ICloudService,
   FootprintEstimate,
@@ -42,7 +42,7 @@ export default class Lambda implements ICloudService {
     }
     const queryIdsArray = await this.getQueryIdsArray(groupNames, start, end)
 
-    let usage: GetQueryResultsResponse[] = []
+    let usage: GetQueryResultsCommandOutput[] = []
     for (const queryId of queryIdsArray) {
       usage = usage.concat(
         await Promise.all(queryId.map((id) => this.getResults(id.toString()))),
@@ -155,7 +155,9 @@ export default class Lambda implements ICloudService {
     return queryData.queryId
   }
 
-  private async getResults(queryId: string): Promise<GetQueryResultsResponse> {
+  private async getResults(
+    queryId: string,
+  ): Promise<GetQueryResultsCommandOutput> {
     const params = {
       queryId: queryId,
     }
@@ -181,7 +183,7 @@ export default class Lambda implements ICloudService {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

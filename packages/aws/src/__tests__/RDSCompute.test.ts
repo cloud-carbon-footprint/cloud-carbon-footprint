@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
 import RDSComputeService from '../lib/RDSCompute'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 import {
   buildCostExplorerGetCostRequest,
@@ -13,14 +12,23 @@ import {
   buildCostExplorerGetUsageResponse,
 } from './fixtures/builders'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { S3Client } from '@aws-sdk/client-s3'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+} from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import {
+  CloudWatchClient,
+  GetMetricDataCommandOutput,
+  StatusCode,
+} from '@aws-sdk/client-cloudwatch'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
+const costExplorerMock = mockClient(CostExplorerClient)
 
 describe('RDS Compute', function () {
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
   })
 
   const metricDataQueries = [
@@ -37,10 +45,10 @@ describe('RDS Compute', function () {
   ]
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   it('should get RDS CPU utilization for two hours of different days', async () => {
@@ -66,31 +74,20 @@ describe('RDS Compute', function () {
       end_date_string.substr(0, 10),
       'us-east-1',
     )
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: AWS.CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest)
 
-        callback(
-          null,
-          buildCostExplorerGetUsageResponse([
-            {
-              start: '2020-01-25',
-              amount: 1,
-              keys: ['USW1-InstanceUsage:db.t3.medium'],
-            },
-            {
-              start: '2020-01-26',
-              amount: 1,
-              keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-            },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetUsageResponse([
+        {
+          start: '2020-01-25',
+          amount: 1,
+          keys: ['USW1-InstanceUsage:db.t3.medium'],
+        },
+        {
+          start: '2020-01-26',
+          amount: 1,
+          keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+        },
+      ]),
     )
 
     const rdsService = new RDSComputeService(getServiceWrapper())
@@ -100,6 +97,11 @@ describe('RDS Compute', function () {
       new Date(end_date_string),
       'us-east-1',
     )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(costExplorerRequest)
 
     expect(usageByHour).toEqual([
       {
@@ -138,31 +140,19 @@ describe('RDS Compute', function () {
       end_date_string.substr(0, 10),
       'us-east-1',
     )
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: AWS.CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest)
-
-        callback(
-          null,
-          buildCostExplorerGetUsageResponse([
-            {
-              start: '2020-01-25',
-              amount: 1,
-              keys: ['USW1-InstanceUsage:db.t3.medium'],
-            },
-            {
-              start: '2020-01-26',
-              amount: 1,
-              keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-            },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetUsageResponse([
+        {
+          start: '2020-01-25',
+          amount: 1,
+          keys: ['USW1-InstanceUsage:db.t3.medium'],
+        },
+        {
+          start: '2020-01-26',
+          amount: 1,
+          keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+        },
+      ]),
     )
 
     const rdsService = new RDSComputeService(getServiceWrapper())
@@ -173,6 +163,10 @@ describe('RDS Compute', function () {
       'us-east-1',
     )
 
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(costExplorerRequest)
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 32.34,
@@ -196,7 +190,7 @@ describe('RDS Compute', function () {
     mockAWSCloudWatchGetMetricDataCall(
       new Date(start_date_string),
       new Date(end_date_string),
-      { MetricDataResults: [] },
+      { $metadata: {}, MetricDataResults: [] },
       metricDataQueries,
     )
 
@@ -205,33 +199,23 @@ describe('RDS Compute', function () {
       end_date_string.substr(0, 10),
       'us-east-1',
     )
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: AWS.CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest)
 
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: start_date_string,
-                End: end_date_string,
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: 0,
-                },
-              },
-              Groups: [],
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: start_date_string,
+            End: end_date_string,
+          },
+          Total: {
+            UsageQuantity: {
+              Amount: '0',
             },
-          ],
-        })
-      },
-    )
+          },
+          Groups: [],
+        },
+      ],
+    })
 
     const rdsService = new RDSComputeService(getServiceWrapper())
 
@@ -240,6 +224,11 @@ describe('RDS Compute', function () {
       new Date(end_date_string),
       'us-east-1',
     )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(costExplorerRequest)
 
     expect(usageByHour).toEqual([])
   })
@@ -261,38 +250,6 @@ describe('RDS Compute', function () {
       metricDataQueries,
     )
 
-    const costExplorerRequest = buildRdsCostExplorerGetUsageRequest(
-      start_date_string.substr(0, 10),
-      end_date_string.substr(0, 10),
-      'us-east-1',
-    )
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: AWS.CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest)
-
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: start_date_string,
-                End: end_date_string,
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: 0,
-                },
-              },
-              Groups: [],
-            },
-          ],
-        })
-      },
-    )
     const rdsService = new RDSComputeService(getServiceWrapper())
     const getUsageByHour = async () =>
       await rdsService.getUsage(
@@ -310,37 +267,19 @@ describe('RDS Compute', function () {
     const start = '2020-01-25T00:00:00.000Z'
     const end = '2020-01-27T00:00:00.000Z'
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: AWS.CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(
-          buildCostExplorerGetCostRequest(
-            start.substr(0, 10),
-            end.substr(0, 10),
-            'us-east-1',
-            ['RDS: Running Hours'],
-          ),
-        )
-        callback(
-          null,
-          buildCostExplorerGetCostResponse([
-            {
-              start: '2020-01-25',
-              amount: 2.3081821243,
-              keys: ['USW1-InstanceUsage:db.t3.medium'],
-            },
-            {
-              start: '2020-01-26',
-              amount: 2.3081821243,
-              keys: ['USW1-InstanceUsage:db.t3.medium'],
-            },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetCostResponse([
+        {
+          start: '2020-01-25',
+          amount: 2.3081821243,
+          keys: ['USW1-InstanceUsage:db.t3.medium'],
+        },
+        {
+          start: '2020-01-26',
+          amount: 2.3081821243,
+          keys: ['USW1-InstanceUsage:db.t3.medium'],
+        },
+      ]),
     )
 
     const rdsService = new RDSComputeService(getServiceWrapper())
@@ -349,6 +288,18 @@ describe('RDS Compute', function () {
       new Date(start),
       new Date(end),
       'us-east-1',
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      buildCostExplorerGetCostRequest(
+        start.substr(0, 10),
+        end.substr(0, 10),
+        'us-east-1',
+        ['RDS: Running Hours'],
+      ),
     )
 
     expect(rdsCosts).toEqual([
@@ -369,9 +320,10 @@ describe('RDS Compute', function () {
 function buildCloudwatchCPUUtilizationResponse(
   timestamps: Date[],
   values: number[],
-  statusCode = 'Complete',
-) {
+  statusCode: StatusCode = 'Complete',
+): GetMetricDataCommandOutput {
   return {
+    $metadata: {},
     MetricDataResults: [
       {
         Id: 'cpuUtilization',

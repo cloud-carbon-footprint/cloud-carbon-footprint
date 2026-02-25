@@ -1,8 +1,7 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
 import path from 'path'
 import moment from 'moment'
 import * as fs from 'fs'
@@ -25,14 +24,24 @@ import {
   mockEC2ComputeOptimizerBucketList,
   mockLambdaComputeOptimizerBucketList,
 } from './fixtures/computeOptimizer.fixtures'
+import {
+  GetObjectCommand,
+  ListObjectsV2Command,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import { CostExplorerClient } from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+
+const s3Mock = mockClient(S3Client)
 
 describe('AWS Compute Optimizer Recommendations Service', () => {
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
   const getRecommendationsService = () =>
     new ComputeOptimizerRecommendations(
@@ -49,23 +58,25 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
 
   function mockListComputeOptimizerBucket(response: any) {
     listBucketObjectsSpy.mockResolvedValue(response)
-    AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
+    s3Mock.on(ListObjectsV2Command).callsFake(listBucketObjectsSpy)
   }
 
   function mockGetComputeOptimizerBucket(mockCSVFilePath: string) {
     const mockFilePath = path.join(process.cwd(), mockCSVFilePath)
     const mockFile = fs.readFileSync(mockFilePath)
-    AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
+    s3Mock.on(GetObjectCommand).resolves({
+      $metadata: {},
+      Body: Buffer.from(mockFile) as any,
+    })
   }
 
   beforeAll(() => {
     configLoader().AWS.RECOMMENDATIONS_SERVICE =
       AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
-    AWSMock.setSDKInstance(AWS)
   })
 
   afterEach(() => {
-    AWSMock.restore()
+    s3Mock.reset()
     jest.restoreAllMocks()
     configLoader().AWS.RECOMMENDATIONS_SERVICE = defaultConfig
   })

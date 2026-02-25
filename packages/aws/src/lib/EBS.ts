@@ -18,6 +18,7 @@ import {
 } from './StorageUsageMapper'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
 
 export default class EBS implements ICloudService {
   serviceName = 'EBS'
@@ -106,7 +107,7 @@ export default class EBS implements ICloudService {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const params = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

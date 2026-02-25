@@ -2,16 +2,18 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CostExplorer } from 'aws-sdk'
-import { GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
+import {
+  GetCostAndUsageCommandInput,
+  GetCostAndUsageCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
 import { Cost } from '@cloud-carbon-footprint/core'
 import { ServiceWrapper } from './ServiceWrapper'
 
 export async function getCostFromCostExplorer(
-  params: CostExplorer.GetCostAndUsageRequest,
+  params: GetCostAndUsageCommandInput,
   serviceWrapper: ServiceWrapper,
 ): Promise<Cost[]> {
-  const responses: GetCostAndUsageResponse[] =
+  const responses: GetCostAndUsageCommandOutput[] =
     await serviceWrapper.getCostAndUsageResponses(params)
   return responses
     .map((response) => {

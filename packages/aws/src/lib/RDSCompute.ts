@@ -2,8 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CostExplorer } from 'aws-sdk'
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import {
+  GetCostAndUsageCommandInput,
+  GetCostAndUsageCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
 import {
   ServiceWithCPUUtilization,
   ComputeUsage,
@@ -14,6 +16,7 @@ import { getComputeUsage } from './ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from './AWSInstanceTypes'
 import { ServiceWrapper } from './ServiceWrapper'
 import { getCostFromCostExplorer } from './CostMapper'
+import { GetMetricDataCommandInput } from '@aws-sdk/client-cloudwatch'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
@@ -41,7 +44,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
   }
 
   private async getCpuUtilization(start: Date, end: Date) {
-    const params = {
+    const params: GetMetricDataCommandInput = {
       StartTime: start,
       EndTime: end,
       MetricDataQueries: [
@@ -66,8 +69,8 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     startDate: string,
     endDate: string,
     region: string,
-  ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
-    const params = {
+  ): Promise<GetCostAndUsageCommandOutput[]> {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: startDate,
         End: endDate,
@@ -102,7 +105,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

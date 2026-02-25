@@ -3,49 +3,39 @@
  */
 
 import {
-  AWSError,
-  ChainableTemporaryCredentials,
-  Credentials,
-  WebIdentityCredentials,
-} from 'aws-sdk'
+  fromTemporaryCredentials,
+  fromWebToken,
+} from '@aws-sdk/credential-providers'
+import { AwsCredentialIdentity, Provider } from '@aws-sdk/types'
 import { IAMCredentialsClient } from '@google-cloud/iam-credentials'
 import { GoogleAuth, JWT } from 'google-auth-library'
 import { GoogleAuthClient } from '@cloud-carbon-footprint/common'
 
-export default class GCPCredentials extends Credentials {
+export default class GCPCredentials {
   constructor(
     private accountId: string,
     private targetRoleName: string,
     private proxyAccountId: string,
     private proxyRoleName: string,
-  ) {
-    super(undefined)
-  }
+  ) {}
 
-  async refresh(callback: (err?: AWSError) => void): Promise<void> {
-    try {
+  getProvider(): Provider<AwsCredentialIdentity> {
+    return async () => {
       const token = await this.getTokenId()
-      const credentials = new ChainableTemporaryCredentials({
+
+      const masterCredentials = fromWebToken({
+        roleArn: `arn:aws:iam::${this.proxyAccountId}:role/${this.proxyRoleName}`,
+        roleSessionName: this.proxyRoleName,
+        webIdentityToken: token,
+      })
+
+      return fromTemporaryCredentials({
         params: {
           RoleArn: `arn:aws:iam::${this.accountId}:role/${this.targetRoleName}`,
           RoleSessionName: this.targetRoleName,
         },
-        masterCredentials: new WebIdentityCredentials({
-          RoleArn: `arn:aws:iam::${this.proxyAccountId}:role/${this.proxyRoleName}`,
-          RoleSessionName: this.proxyRoleName,
-          WebIdentityToken: token,
-        }),
-      })
-
-      await credentials.getPromise()
-
-      this.accessKeyId = credentials.accessKeyId
-      this.secretAccessKey = credentials.secretAccessKey
-      this.sessionToken = credentials.sessionToken
-      this.expireTime = new Date(Date.now() + 1000 * 60 * 60) //Credentials expiration time to 1 hour
-      callback()
-    } catch (e) {
-      callback(e)
+        masterCredentials,
+      })()
     }
   }
 

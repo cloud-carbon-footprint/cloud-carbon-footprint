@@ -1,31 +1,32 @@
 /* © 2021 Thoughtworks, Inc.
  */
-import AWSMock from 'aws-sdk-mock'
-import { CloudWatch } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
+import {
+  CloudWatchClient,
+  GetMetricDataCommand,
+  GetMetricDataCommandInput,
+  GetMetricDataCommandOutput,
+} from '@aws-sdk/client-cloudwatch'
+
+const cloudWatchMock = mockClient(CloudWatchClient)
 
 const mockAWSCloudWatchGetMetricDataCall = (
   start: Date,
   end: Date,
-  response: any,
-  metricDataQueries: Array<any>,
+  response: GetMetricDataCommandOutput,
+  metricDataQueries: GetMetricDataCommandInput['MetricDataQueries'],
 ) => {
-  AWSMock.mock(
-    'CloudWatch',
-    'getMetricData',
-    (
-      params: CloudWatch.GetMetricDataInput,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      expect(params).toEqual({
-        StartTime: start,
-        EndTime: end,
-        MetricDataQueries: metricDataQueries,
-        ScanBy: 'TimestampAscending',
-      })
-
-      callback(null, response)
-    },
-  )
+  cloudWatchMock.reset()
+  cloudWatchMock.on(GetMetricDataCommand).callsFake((input) => {
+    expect(input).toEqual({
+      StartTime: start,
+      EndTime: end,
+      MetricDataQueries: metricDataQueries,
+      ScanBy: 'TimestampAscending',
+    })
+    return Promise.resolve(response)
+  })
+  return cloudWatchMock
 }
 
 export default mockAWSCloudWatchGetMetricDataCall

@@ -3,7 +3,6 @@
  */
 
 import moment from 'moment'
-import { CostExplorer } from 'aws-sdk'
 import {
   StorageUsage,
   FootprintEstimate,
@@ -14,6 +13,10 @@ import {
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 import { ServiceWrapper } from './ServiceWrapper'
+import {
+  GetCostAndUsageCommandInput,
+  GetCostAndUsageCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
 
 export class VolumeUsage implements StorageUsage {
   readonly terabyteHours: number
@@ -34,11 +37,11 @@ export enum DiskType {
 }
 
 export async function getUsageFromCostExplorer(
-  params: CostExplorer.GetCostAndUsageRequest,
+  params: GetCostAndUsageCommandInput,
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
   serviceWrapper: ServiceWrapper,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] =
+  const responses: GetCostAndUsageCommandOutput[] =
     await serviceWrapper.getCostAndUsageResponses(params)
 
   return responses

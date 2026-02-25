@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
 import {
   StorageUsage,
   HDDStorageService,
@@ -11,6 +11,7 @@ import {
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { GetMetricDataCommandInput } from '@aws-sdk/client-cloudwatch'
 
 export default class S3 extends HDDStorageService {
   serviceName = 'S3'
@@ -20,7 +21,7 @@ export default class S3 extends HDDStorageService {
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
-    const params = {
+    const params: GetMetricDataCommandInput = {
       StartTime: startDate,
       EndTime: endDate,
       MetricDataQueries: [
@@ -48,7 +49,7 @@ export default class S3 extends HDDStorageService {
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
     // This request includes all s3 types/keys combined together
-    const params: GetCostAndUsageRequest = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

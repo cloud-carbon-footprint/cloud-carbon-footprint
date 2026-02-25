@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Athena } from 'aws-sdk'
+import { GetQueryResultsCommandOutput } from '@aws-sdk/client-athena'
 
 export const testAccountId = '123456789'
 
@@ -145,8 +145,9 @@ const queryResultsDataOne = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithEC2EBSLambda: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithEC2EBSLambda: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataOne],
     },
@@ -230,8 +231,9 @@ const queryResultsDataTwo = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithS3CloudWatchRDS: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithS3CloudWatchRDS: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataTwo],
     },
@@ -300,8 +302,9 @@ const queryResultsDataThree = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataThree],
     },
@@ -385,8 +388,9 @@ const queryResultsDataFour = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithKinesisESAndEc2Spot: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithKinesisESAndEc2Spot: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFour],
     },
@@ -500,8 +504,9 @@ const queryResultsDataFive = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFive],
     },
@@ -600,8 +605,9 @@ const queryResultsDataSix = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataSix],
     },
@@ -670,8 +676,9 @@ const queryResultsDataSeven = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataSeven],
     },
@@ -725,8 +732,9 @@ const queryResultsDataEight = [
   },
 ]
 
-export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsNetworking: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataEight],
     },
@@ -795,7 +803,8 @@ const queryResultsDataNine = [
   },
 ]
 
-export const athenaMockGetQueryResultsMemory: Athena.GetQueryResultsOutput = {
+export const athenaMockGetQueryResultsMemory: GetQueryResultsCommandOutput = {
+  $metadata: {},
   ResultSet: {
     Rows: [queryResultsHeaders, ...queryResultsDataNine],
   },
@@ -894,8 +903,9 @@ const queryResultsDataTen = [
   },
 ]
 
-export const athenaMockGetQueryResultsS3WithReplicationFactors: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsS3WithReplicationFactors: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataTen],
     },
@@ -1009,8 +1019,9 @@ const queryResultsDataEleven = [
   },
 ]
 
-export const athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataEleven],
     },
@@ -1109,8 +1120,9 @@ const queryResultsDataTwelve = [
   },
 ]
 
-export const athenaMockGetQueryResultsDatabasesWithReplicationFactors: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsDatabasesWithReplicationFactors: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataTwelve],
     },
@@ -1224,8 +1236,9 @@ const queryResultsDataThirteen = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithReclassifiedUnknowns: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
     },
@@ -1352,8 +1365,9 @@ const queryResultsDataFourteen = [
     ],
   },
 ]
-export const athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
     },
@@ -1422,8 +1436,9 @@ const queryResultsDataFifteen = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFifteen],
     },
@@ -1447,8 +1462,9 @@ const queryResultsDataSixteen = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithNoUsageAmount: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithNoUsageAmount: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataSixteen],
     },
@@ -1487,8 +1503,9 @@ const queryResultsDataSeventeen = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithUnknownInstanceType: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithUnknownInstanceType: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataSeventeen],
     },
@@ -1527,8 +1544,9 @@ const queryResultsDataEighteen = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithGPUInstances: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithGPUInstances: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataEighteen],
     },
@@ -1567,8 +1585,9 @@ const queryResultsX86AndARMLambdas = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithX86AndARMLambdas: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithX86AndARMLambdas: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsX86AndARMLambdas],
     },
@@ -1652,8 +1671,9 @@ const queryResultsDataTaggedResources = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithTaggedResources: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithTaggedResources: GetQueryResultsCommandOutput =
   {
+    $metadata: {},
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataTaggedResources],
     },

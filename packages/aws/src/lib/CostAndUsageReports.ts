@@ -2,14 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 import moment from 'moment'
-import { Athena } from 'aws-sdk'
 import {
-  GetQueryExecutionInput,
-  GetQueryExecutionOutput,
-  GetQueryResultsOutput,
-  StartQueryExecutionInput,
-  StartQueryExecutionOutput,
-} from 'aws-sdk/clients/athena'
+  GetQueryExecutionCommandInput,
+  GetQueryExecutionCommandOutput,
+  GetQueryResultsCommandOutput,
+  StartQueryExecutionCommandInput,
+  StartQueryExecutionCommandOutput,
+  Row,
+  Datum,
+} from '@aws-sdk/client-athena'
 
 import {
   configLoader,
@@ -576,7 +577,7 @@ export default class CostAndUsageReports {
     grouping: GroupBy,
     tagNames: string[],
     accounts: AccountDetailsOrIdList,
-  ): Promise<Athena.Row[]> {
+  ): Promise<Row[]> {
     const dateGranularity = AWS_QUERY_GROUP_BY[grouping]
     const dateExpression = `DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date))`
     const lineItemTypes = LINE_ITEM_TYPES.join(`', '`)
@@ -641,7 +642,7 @@ export default class CostAndUsageReports {
                       ${accountFilter}
                     GROUP BY ${groupByColumnNames}`
 
-    const params = {
+    const params: StartQueryExecutionCommandInput = {
       QueryString: queryString,
       QueryExecutionContext: {
         Database: this.dataBaseName,
@@ -656,16 +657,16 @@ export default class CostAndUsageReports {
 
     const response = await this.startQuery(params)
 
-    const queryExecutionInput: GetQueryExecutionInput = {
+    const queryExecutionInput: GetQueryExecutionCommandInput = {
       QueryExecutionId: response.QueryExecutionId,
     }
     return await this.getQueryResultSetRows(queryExecutionInput)
   }
 
   private async startQuery(
-    queryParams: StartQueryExecutionInput,
-  ): Promise<StartQueryExecutionOutput> {
-    let response: StartQueryExecutionOutput
+    queryParams: StartQueryExecutionCommandInput,
+  ): Promise<StartQueryExecutionCommandOutput> {
+    let response: StartQueryExecutionCommandOutput
     try {
       response =
         await this.serviceWrapper.startAthenaQueryExecution(queryParams)
@@ -677,11 +678,11 @@ export default class CostAndUsageReports {
   }
 
   private async getQueryResultSetRows(
-    queryExecutionInput: GetQueryExecutionInput,
+    queryExecutionInput: GetQueryExecutionCommandInput,
   ) {
     this.costAndUsageReportsLogger.info('Getting Athena Query Execution')
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput =
+      const queryExecutionResults: GetQueryExecutionCommandOutput =
         await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === 'FAILED' || queryStatus.State === 'CANCELLED')
@@ -693,7 +694,7 @@ export default class CostAndUsageReports {
       await wait(1000)
     }
     this.costAndUsageReportsLogger.info('Getting Athena Query Result Sets')
-    const results: GetQueryResultsOutput[] =
+    const results: GetQueryResultsCommandOutput[] =
       await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
@@ -770,7 +771,7 @@ export default class CostAndUsageReports {
   }
 
   private convertAthenaRowToCostAndUsageReportsRow(
-    rowData: Athena.datumList,
+    rowData: Datum[],
     tagNames: string[],
     accounts: AWSAccountMap,
   ): CostAndUsageReportsRow {

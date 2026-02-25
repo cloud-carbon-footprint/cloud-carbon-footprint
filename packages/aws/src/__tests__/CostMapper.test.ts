@@ -2,42 +2,33 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CostExplorer } from 'aws-sdk'
-import {
-  GetCostAndUsageRequest,
-  GetCostAndUsageResponse,
-} from 'aws-sdk/clients/costexplorer'
+import { mockClient } from 'aws-sdk-client-mock'
+
 import { getCostFromCostExplorer } from '../lib/CostMapper'
-import { AWS_REGIONS } from '../lib/AWSRegions'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { AWS_REGIONS } from '../lib'
+import { ServiceWrapper } from '../lib'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+  GetCostAndUsageCommandInput,
+  GetCostAndUsageCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
+const costExplorerMock = mockClient(CostExplorerClient)
 
 describe('CostMapper', function () {
   it('calculates cost ', async () => {
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(null, buildResponseBody())
-      },
-    )
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(buildResponseBody())
 
     const costs = await getCostFromCostExplorer(
       buildRequestParams(),
       new ServiceWrapper(
         undefined,
         undefined,
-        new CostExplorer({ region: AWS_REGIONS.US_EAST_1 }),
+        new CostExplorerClient({ region: AWS_REGIONS.US_EAST_1 }),
         undefined,
       ),
     )
@@ -49,7 +40,7 @@ describe('CostMapper', function () {
   })
 })
 
-function buildRequestParams(): GetCostAndUsageRequest {
+function buildRequestParams(): GetCostAndUsageCommandInput {
   return {
     TimePeriod: {
       Start: startDate,
@@ -83,8 +74,9 @@ function buildRequestParams(): GetCostAndUsageRequest {
   }
 }
 
-function buildResponseBody(): GetCostAndUsageResponse {
+function buildResponseBody(): GetCostAndUsageCommandOutput {
   return {
+    $metadata: {},
     ResultsByTime: [
       {
         TimePeriod: { Start: startDate, End: endDate },

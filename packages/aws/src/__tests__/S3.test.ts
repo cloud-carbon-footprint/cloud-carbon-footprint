@@ -2,25 +2,27 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, {
-  CloudWatch,
-  CloudWatchLogs,
-  CostExplorer,
-  S3 as S3Service,
-} from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
+
 import S3 from '../lib/S3'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+} from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { S3Client } from '@aws-sdk/client-s3'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
+const cloudWatchMock = mockClient(CloudWatchClient)
+const costExplorerMock = mockClient(CostExplorerClient)
 
 describe('S3', () => {
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
+    cloudWatchMock.reset()
   })
 
   const region = 'us-east-1'
@@ -37,10 +39,10 @@ describe('S3', () => {
   ]
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3Service(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   it('gets S3 usage', async () => {
@@ -87,21 +89,11 @@ describe('S3', () => {
   })
 
   it('gets S3 cost for two days', async () => {
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(
-          null,
-          buildCostExplorerGetCostResponse([
-            { start, amount: 2.3, keys: ['Amazon Simple Storage Service'] },
-            { start: dayTwo, amount: 4.6, keys: ['test'] },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetCostResponse([
+        { start, amount: 2.3, keys: ['Amazon Simple Storage Service'] },
+        { start: dayTwo, amount: 4.6, keys: ['test'] },
+      ]),
     )
 
     const s3Service = new S3(getServiceWrapper())

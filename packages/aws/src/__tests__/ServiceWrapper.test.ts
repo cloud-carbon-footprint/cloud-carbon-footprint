@@ -2,39 +2,58 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, {
-  CloudWatch,
-  CloudWatchLogs,
-  CostExplorer,
-  Athena,
-  S3,
-  Glue,
-} from 'aws-sdk'
-import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { mockClient } from 'aws-sdk-client-mock'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import {
+  CloudWatchClient,
+  GetMetricDataCommand,
+  GetMetricDataCommandInput,
+  GetMetricDataCommandOutput,
+} from '@aws-sdk/client-cloudwatch'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+  GetCostAndUsageRequest,
+  GetRightsizingRecommendationCommand,
+  GetRightsizingRecommendationRequest,
+} from '@aws-sdk/client-cost-explorer'
+import { S3Client } from '@aws-sdk/client-s3'
+import {
+  AthenaClient,
+  GetQueryResultsCommand,
+  GetQueryResultsOutput,
+} from '@aws-sdk/client-athena'
+import { GetTableCommand, GlueClient } from '@aws-sdk/client-glue'
+import { ServiceWrapper } from '../lib'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
+const cloudWatchMock = mockClient(CloudWatchClient)
+const costExplorerMock = mockClient(CostExplorerClient)
+const athenaMock = mockClient(AthenaClient)
+const glueMock = mockClient(GlueClient)
+
+beforeEach(() => {
+  costExplorerMock.reset()
+  cloudWatchMock.reset()
+  athenaMock.reset()
+  glueMock.reset()
 })
 
 describe('aws service helper', () => {
   afterEach(() => {
-    AWSMock.restore()
     jest.restoreAllMocks()
   })
 
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
-      new Athena(),
-      new Glue(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
+      new AthenaClient(),
+      new GlueClient(),
     )
 
   it('enablePagination decorator should follow CostExplorer CostAndUsage next pages', async () => {
@@ -64,11 +83,10 @@ describe('aws service helper', () => {
       .mockResolvedValueOnce(firstPageResponse)
       .mockResolvedValueOnce(secondPageResponse)
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      costExplorerGetCostAndUsageSpy,
-    )
+    costExplorerMock
+      .on(GetCostAndUsageCommand)
+      .callsFake(costExplorerGetCostAndUsageSpy)
+
     const responses = await getServiceWrapper().getCostAndUsageResponses(
       getCostAndUsageRequest,
     )
@@ -118,11 +136,10 @@ describe('aws service helper', () => {
       .mockResolvedValueOnce(firstPageResponse)
       .mockResolvedValueOnce(secondPageResponse)
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getRightsizingRecommendation',
-      costExplorerGetRightsizingRecommendationsSpy,
-    )
+    costExplorerMock
+      .on(GetRightsizingRecommendationCommand)
+      .callsFake(costExplorerGetRightsizingRecommendationsSpy)
+
     const responses =
       await getServiceWrapper().getRightsizingRecommendationsResponses(
         getRightsizingRecommendationsRequest,
@@ -158,7 +175,10 @@ describe('aws service helper', () => {
       .mockResolvedValueOnce(firstPageResponse)
       .mockResolvedValueOnce(secondPageResponse)
 
-    AWSMock.mock('CloudWatch', 'getMetricData', cloudWatchGetMetricDataSpy)
+    cloudWatchMock
+      .on(GetMetricDataCommand)
+      .callsFake(cloudWatchGetMetricDataSpy)
+
     const responses = await getServiceWrapper().getMetricDataResponses(
       buildAwsCloudWatchGetMetricDataRequest(),
     )
@@ -186,7 +206,7 @@ describe('aws service helper', () => {
     athenaGetResultsSpy
       .mockResolvedValueOnce(firstPageResponse)
       .mockResolvedValueOnce(secondPageResponse)
-    AWSMock.mock('Athena', 'getQueryResults', athenaGetResultsSpy)
+    athenaMock.on(GetQueryResultsCommand).callsFake(athenaGetResultsSpy)
 
     const responses = await getServiceWrapper().getAthenaQueryResultSets({
       QueryExecutionId: 'some-query-id',
@@ -228,7 +248,7 @@ describe('aws service helper', () => {
       },
     }
     glueGetTableSpy.mockResolvedValueOnce(mockTableDetails)
-    AWSMock.mock('Glue', 'getTable', glueGetTableSpy)
+    glueMock.on(GetTableCommand).callsFake(glueGetTableSpy)
 
     const params = {
       DatabaseName: 'database-name',
@@ -242,7 +262,7 @@ describe('aws service helper', () => {
   })
 })
 
-function buildAwsCostExplorerGetRightsizingRecommendationsRequest(): CostExplorer.Types.GetRightsizingRecommendationRequest {
+function buildAwsCostExplorerGetRightsizingRecommendationsRequest(): GetRightsizingRecommendationRequest {
   return {
     Service: 'AmazonEC2',
     Configuration: {
@@ -329,7 +349,7 @@ function buildAwsCostExplorerGetRightsizingRecommendationsResponse(
   }
 }
 
-function buildAwsCostExplorerGetCostAndUsageRequest(): CostExplorer.Types.GetCostAndUsageRequest {
+function buildAwsCostExplorerGetCostAndUsageRequest(): GetCostAndUsageRequest {
   return {
     TimePeriod: {
       Start: startDate,
@@ -384,8 +404,9 @@ function buildAwsCostExplorerGetCostAndUsageResponse(
 
 function buildAwsCloudWatchGetMetricDataResponse(
   nextPageToken: string,
-): CloudWatch.GetMetricDataOutput {
+): GetMetricDataCommandOutput {
   return {
+    $metadata: {},
     NextToken: nextPageToken,
     MetricDataResults: [
       {
@@ -400,7 +421,7 @@ function buildAwsCloudWatchGetMetricDataResponse(
   }
 }
 
-function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataInput {
+function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataCommandInput {
   return {
     StartTime: new Date(startDate),
     EndTime: new Date(endDate),
@@ -422,7 +443,7 @@ function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataInput {
 
 function buildAthenaGetQueryResultsResponse(
   nextPageToken: string,
-): Athena.GetQueryResultsOutput {
+): GetQueryResultsOutput {
   return {
     NextToken: nextPageToken,
     ResultSet: { Rows: [] },

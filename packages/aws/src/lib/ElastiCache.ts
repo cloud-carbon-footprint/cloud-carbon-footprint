@@ -12,6 +12,8 @@ import { getComputeUsage } from './ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from './AWSInstanceTypes'
 import { ServiceWrapper } from './ServiceWrapper'
 import { getCostFromCostExplorer } from './CostMapper'
+import { GetMetricDataCommandInput } from '@aws-sdk/client-cloudwatch'
+import { GetCostAndUsageCommandInput } from '@aws-sdk/client-cost-explorer'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'ElastiCache'
@@ -25,7 +27,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
     end: Date,
     region: string,
   ): Promise<ComputeUsage[]> {
-    const cloudWatchParams = {
+    const cloudWatchParams: GetMetricDataCommandInput = {
       StartTime: start,
       EndTime: end,
       MetricDataQueries: [
@@ -46,7 +48,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
     const metricDataResponses =
       await this.serviceWrapper.getMetricDataResponses(cloudWatchParams)
 
-    const costExplorerParams = {
+    const costExplorerParams: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),
@@ -82,7 +84,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    const costExplorerParams = {
+    const costExplorerParams: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: start.toISOString().substr(0, 10),
         End: end.toISOString().substr(0, 10),

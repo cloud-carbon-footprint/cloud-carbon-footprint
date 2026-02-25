@@ -2,15 +2,19 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer, CloudWatchLogs, S3 } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
 import ElastiCache from '../lib/ElastiCache'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { ServiceWrapper } from '../lib'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
+import { S3Client } from '@aws-sdk/client-s3'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+} from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
+const costExplorerMock = mockClient(CostExplorerClient)
 
 describe('ElastiCache', () => {
   const startDate = '2020-07-10'
@@ -32,14 +36,14 @@ describe('ElastiCache', () => {
   ]
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
   })
 
   it('should return the usage of two hours of different days', async () => {
@@ -63,59 +67,55 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-
-        callback(null, {
-          ResultsByTime: [
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: startDate,
+            End: dayTwo,
+          },
+          Groups: [
             {
-              TimePeriod: {
-                Start: startDate,
-                End: dayTwo,
-              },
-              Groups: [
-                {
-                  Keys: ['NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
+              Keys: ['NodeUsage:cache.t3.medium'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '2',
                 },
-              ],
-            },
-            {
-              TimePeriod: {
-                Start: dayTwo,
-                End: endDate,
               },
-              Groups: [
-                {
-                  Keys: ['NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
-                },
-              ],
             },
           ],
-        })
-      },
-    )
+        },
+        {
+          TimePeriod: {
+            Start: dayTwo,
+            End: endDate,
+          },
+          Groups: [
+            {
+              Keys: ['NodeUsage:cache.t3.medium'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '2',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    })
 
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const usageByHour = await elasticacheService.getUsage(
       new Date(startDate),
       new Date(endDate),
       region,
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      costExplorerRequest(startDate, endDate, region),
     )
 
     expect(usageByHour).toEqual([
@@ -145,38 +145,35 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: startDate,
-                End: endDate,
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: 0,
-                },
-              },
-              Groups: [],
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: startDate,
+            End: endDate,
+          },
+          Total: {
+            UsageQuantity: {
+              Amount: '0', //
             },
-          ],
-        })
-      },
-    )
+          },
+          Groups: [],
+        },
+      ],
+    })
 
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const usageByHour = await elasticacheService.getUsage(
       new Date(startDate),
       new Date(endDate),
       region,
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      costExplorerRequest(startDate, endDate, region),
     )
 
     expect(usageByHour).toEqual([])
@@ -202,42 +199,39 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-        callback(null, {
-          ResultsByTime: [
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: startDate,
+            End: endDate,
+          },
+          Groups: [
             {
-              TimePeriod: {
-                Start: startDate,
-                End: endDate,
-              },
-              Groups: [
-                {
-                  Keys: ['USE2-NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '1',
-                    },
-                  },
+              Keys: ['USE2-NodeUsage:cache.t3.medium'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '1',
                 },
-              ],
+              },
             },
           ],
-        })
-      },
-    )
+        },
+      ],
+    })
 
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const usageByHour = await elasticacheService.getUsage(
       new Date(startDate),
       new Date(endDate),
       region,
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      costExplorerRequest(startDate, endDate, region),
     )
 
     expect(usageByHour).toEqual([
@@ -270,50 +264,47 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-        callback(null, {
-          ResultsByTime: [
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: startDate,
+            End: endDate,
+          },
+          Groups: [
             {
-              TimePeriod: {
-                Start: startDate,
-                End: endDate,
+              Keys: ['USE2-NodeUsage:cache.t3.medium'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '3',
+                },
               },
-              Groups: [
-                {
-                  Keys: ['USE2-NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '3',
-                    },
-                  },
+            },
+            {
+              Keys: ['USE2-NodeUsage:cache.t2.micro'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '2',
                 },
-                {
-                  Keys: ['USE2-NodeUsage:cache.t2.micro'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
-                },
-              ],
+              },
             },
           ],
-        })
-      },
-    )
+        },
+      ],
+    })
 
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const usageByHour = await elasticacheService.getUsage(
       new Date(startDate),
       new Date(endDate),
       region,
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      costExplorerRequest(startDate, endDate, region),
     )
 
     expect(usageByHour).toEqual([
@@ -348,50 +339,47 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-        callback(null, {
-          ResultsByTime: [
+    costExplorerMock.on(GetCostAndUsageCommand).resolves({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: startDate,
+            End: endDate,
+          },
+          Groups: [
             {
-              TimePeriod: {
-                Start: startDate,
-                End: endDate,
+              Keys: ['USE2-NodeUsage:cache.t3.medium'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '2',
+                },
               },
-              Groups: [
-                {
-                  Keys: ['USE2-NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
+            },
+            {
+              Keys: ['USE2-NodeUsage:cache.t2.micro'],
+              Metrics: {
+                UsageQuantity: {
+                  Amount: '2',
                 },
-                {
-                  Keys: ['USE2-NodeUsage:cache.t2.micro'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
-                },
-              ],
+              },
             },
           ],
-        })
-      },
-    )
+        },
+      ],
+    })
 
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const usageByHour = await elasticacheService.getUsage(
       new Date(startDate),
       new Date(endDate),
       region,
+    )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(1)
+    expect(calls[0].args[0].input).toEqual(
+      costExplorerRequest(startDate, endDate, region),
     )
 
     expect(usageByHour).toEqual([
@@ -426,45 +414,6 @@ describe('ElastiCache', () => {
       metrics,
     )
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        expect(params).toEqual(costExplorerRequest(startDate, endDate, region))
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: startDate,
-                End: endDate,
-              },
-              Groups: [
-                {
-                  Keys: ['USE2-NodeUsage:cache.t3.medium'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
-                },
-                {
-                  Keys: ['USE2-NodeUsage:cache.t2.micro'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: '2',
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        })
-      },
-    )
-
     const elasticacheService = new ElastiCache(getServiceWrapper())
     const getUsageByHour = async () =>
       await elasticacheService.getUsage(
@@ -472,6 +421,10 @@ describe('ElastiCache', () => {
         new Date(endDate),
         region,
       )
+
+    const calls = costExplorerMock.commandCalls(GetCostAndUsageCommand)
+
+    expect(calls).toHaveLength(0)
 
     await expect(getUsageByHour).rejects.toThrow(
       'Partial Data Returned from AWS',

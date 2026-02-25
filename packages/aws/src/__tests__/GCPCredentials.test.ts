@@ -3,73 +3,75 @@
  */
 
 import GCPCredentials from '../application/GCPCredentials'
-import { ChainableTemporaryCredentials, WebIdentityCredentials } from 'aws-sdk'
+import {
+  fromTemporaryCredentials,
+  fromWebToken,
+} from '@aws-sdk/credential-providers'
+import type { AwsCredentialIdentity } from '@aws-sdk/types'
 import Mock = jest.Mock
 
-const Credentials = jest.requireActual('aws-sdk').Credentials
-jest.mock('aws-sdk', () => {
+jest.mock('@aws-sdk/credential-providers', () => {
   return {
-    ChainableTemporaryCredentials: jest.fn(),
-    WebIdentityCredentials: jest.fn(),
-    Credentials: jest.requireActual('aws-sdk').Credentials,
+    fromTemporaryCredentials: jest.fn(),
+    fromWebToken: jest.fn(),
   }
 })
 
-const authClientMock = { email: 'test@test.com' }
-const mockToken = 'some-token'
-
 jest.mock('google-auth-library', () => {
   return {
-    GoogleAuth: jest.fn().mockImplementation(() => ({
-      getClient: jest.fn().mockResolvedValue(authClientMock),
-      getProjectId: jest.fn().mockResolvedValue('test-project.id'),
-    })),
+    __esModule: true,
+    GoogleAuth: class MockGoogleAuth {
+      getClient = jest.fn().mockResolvedValue({ email: 'test@test.com' })
+      getProjectId = jest.fn().mockResolvedValue('test-project.id')
+    },
+    JWT: jest.fn(),
   }
 })
 
 jest.mock('@google-cloud/iam-credentials', () => {
   return {
-    IAMCredentialsClient: jest.fn().mockImplementation(() => ({
-      generateIdToken: jest.fn().mockResolvedValue([{ token: mockToken }]),
-    })),
+    __esModule: true,
+    IAMCredentialsClient: class MockIAMCredentialsClient {
+      generateIdToken = jest.fn().mockResolvedValue([{ token: 'some-token' }])
+    },
   }
 })
 
-function mockChainableTemporaryCredentials(
+const mockToken = 'some-token'
+
+function mockFromTemporaryCredentials(
   targetAccessKeyId: string,
   targetSecretAccessKey: string,
   targetSessionToken: string,
 ) {
-  const chainableTemporaryCredentials =
-    ChainableTemporaryCredentials as unknown as Mock
-  chainableTemporaryCredentials.mockImplementationOnce(() => {
-    return new Credentials(
-      targetAccessKeyId,
-      targetSecretAccessKey,
-      targetSessionToken,
-    )
+  const mockFn = fromTemporaryCredentials as unknown as Mock
+  mockFn.mockImplementationOnce(() => {
+    return async (): Promise<AwsCredentialIdentity> => ({
+      accessKeyId: targetAccessKeyId,
+      secretAccessKey: targetSecretAccessKey,
+      sessionToken: targetSessionToken,
+      expiration: new Date(Date.now() + 1000 * 60 * 60),
+    })
   })
-  return chainableTemporaryCredentials
+  return mockFn
 }
 
-function mockWebIdentityCredentials(
+function mockFromWebToken(
   targetAccessKeyId: string,
   targetSecretAccessKey: string,
   targetSessionToken: string,
 ) {
-  const webIdentityCredentials = WebIdentityCredentials as unknown as Mock
-  const credentials = new Credentials(
-    targetAccessKeyId,
-    targetSecretAccessKey,
-    targetSessionToken,
-  )
-  webIdentityCredentials.mockImplementationOnce(() => {
-    return credentials
+  const mockFn = fromWebToken as unknown as Mock
+  const provider = async (): Promise<AwsCredentialIdentity> => ({
+    accessKeyId: targetAccessKeyId,
+    secretAccessKey: targetSecretAccessKey,
+    sessionToken: targetSessionToken,
   })
-  return { webIdentityCredentials, webIdentityReturnedCredentials: credentials }
+  mockFn.mockImplementationOnce(() => provider)
+  return { fromWebTokenMock: mockFn, webIdentityProvider: provider }
 }
 
-let credentials: any
+let credentials: GCPCredentials
 
 describe('GCPCredentials instance', () => {
   beforeEach(() => {
@@ -91,72 +93,62 @@ describe('GCPCredentials instance', () => {
     const targetSecretAccessKey = 'verylongstringwithrandomchars'
     const targetSessionToken = 'hi'
 
-    mockChainableTemporaryCredentials(
+    mockFromTemporaryCredentials(
       targetAccessKeyId,
       targetSecretAccessKey,
       targetSessionToken,
     )
 
     //when
-    await credentials.getPromise()
+    const result = await credentials.getProvider()()
 
     //then
-    expect(credentials.accessKeyId).toEqual(targetAccessKeyId)
-    expect(credentials.secretAccessKey).toEqual(targetSecretAccessKey)
-    expect(credentials.sessionToken).toEqual(targetSessionToken)
-    expect(credentials.expireTime).toBeInstanceOf(Date)
+    expect(result.accessKeyId).toEqual(targetAccessKeyId)
+    expect(result.secretAccessKey).toEqual(targetSecretAccessKey)
+    expect(result.sessionToken).toEqual(targetSessionToken)
+    expect(result.expiration).toBeInstanceOf(Date)
   })
 
-  it('should create ChainableTemporaryCredentials with expected options', async () => {
+  it('should create fromTemporaryCredentials with expected options', async () => {
     //given
-    const chainableTemporaryCredentials = mockChainableTemporaryCredentials(
-      '',
-      '',
-      '',
-    )
-    const { webIdentityReturnedCredentials } = mockWebIdentityCredentials(
-      'a',
-      'b',
-      'c',
-    )
+    const mockFn = mockFromTemporaryCredentials('', '', '')
+    const { webIdentityProvider } = mockFromWebToken('a', 'b', 'c')
 
     const accountId = '1233452012'
     const targetRoleName = 'myRoleName'
-    const chainableTemporaryCredentialsOptions = {
+    const expectedOptions = {
       params: {
         RoleArn: `arn:aws:iam::${accountId}:role/${targetRoleName}`,
         RoleSessionName: targetRoleName,
       },
-      masterCredentials: webIdentityReturnedCredentials,
+      masterCredentials: webIdentityProvider,
     }
 
     //when
-    await credentials.getPromise()
+    await credentials.getProvider()()
 
     //then
-    expect(chainableTemporaryCredentials).toHaveBeenCalledWith(
-      chainableTemporaryCredentialsOptions,
-    )
+    expect(mockFn).toHaveBeenCalledWith(expectedOptions)
   })
 
-  it('should create WebIdentityCredentials with expected options', async () => {
+  it('should create fromWebToken with expected options', async () => {
     //given
-    mockChainableTemporaryCredentials('', '', '')
-    const { webIdentityCredentials } = mockWebIdentityCredentials('a', 'b', 'c')
+    mockFromTemporaryCredentials('', '', '')
+    const { fromWebTokenMock } = mockFromWebToken('a', 'b', 'c')
 
     const proxyAccountId = '11111'
     const proxyRoleName = 'proxyRoleName'
 
     const webOptions = {
-      RoleArn: `arn:aws:iam::${proxyAccountId}:role/${proxyRoleName}`,
-      RoleSessionName: proxyRoleName,
-      WebIdentityToken: mockToken,
+      roleArn: `arn:aws:iam::${proxyAccountId}:role/${proxyRoleName}`,
+      roleSessionName: proxyRoleName,
+      webIdentityToken: mockToken,
     }
 
     //when
-    await credentials.getPromise()
+    await credentials.getProvider()()
 
     //then
-    expect(webIdentityCredentials).toHaveBeenCalledWith(webOptions)
+    expect(fromWebTokenMock).toHaveBeenCalledWith(webOptions)
   })
 })

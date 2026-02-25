@@ -2,22 +2,25 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
-
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { mockClient } from 'aws-sdk-client-mock'
+import { ServiceWrapper } from '../lib'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 import EC2 from '../lib/EC2'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { S3Client } from '@aws-sdk/client-s3'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+} from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
+const costExplorerMock = mockClient(CostExplorerClient)
 
 describe('EC2', () => {
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
   })
 
   const dayOneHourOne = '2020-07-10T21:00:00.000Z'
@@ -50,10 +53,10 @@ describe('EC2', () => {
 
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
   it('gets EC2 usage', async () => {
@@ -380,21 +383,11 @@ describe('EC2', () => {
   })
 
   it('gets ec2 cost', async () => {
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (
-        params: CostExplorer.GetCostAndUsageRequest,
-        callback: (a: Error, response: any) => any,
-      ) => {
-        callback(
-          null,
-          buildCostExplorerGetCostResponse([
-            { start: startDate, amount: 100.0, keys: ['EC2: Running Hours'] },
-            { start: endDate, amount: 50.0, keys: ['test'] },
-          ]),
-        )
-      },
+    costExplorerMock.on(GetCostAndUsageCommand).resolves(
+      buildCostExplorerGetCostResponse([
+        { start: startDate, amount: 100.0, keys: ['EC2: Running Hours'] },
+        { start: endDate, amount: 50.0, keys: ['test'] },
+      ]),
     )
 
     const ec2Service = new EC2(getServiceWrapper())

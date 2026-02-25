@@ -1,10 +1,14 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
+import {
+  GetRightsizingRecommendationCommandOutput,
+  RightsizingType,
+} from '@aws-sdk/client-cost-explorer'
 
-export const rightsizingRecommendationTerminate: GetRightsizingRecommendationResponse =
+export const rightsizingRecommendationTerminate: GetRightsizingRecommendationCommandOutput =
   {
+    $metadata: {},
     RightsizingRecommendations: [
       {
         AccountId: 'test-account',
@@ -19,7 +23,7 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
             },
           },
         },
-        RightsizingType: 'Terminate',
+        RightsizingType: RightsizingType.TERMINATE,
         TerminateRecommendationDetail: {
           EstimatedMonthlySavings: '20',
         },
@@ -37,7 +41,7 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
             },
           },
         },
-        RightsizingType: 'Terminate',
+        RightsizingType: RightsizingType.TERMINATE,
         TerminateRecommendationDetail: {
           EstimatedMonthlySavings: '80',
         },
@@ -55,7 +59,7 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
             },
           },
         },
-        RightsizingType: 'Terminate',
+        RightsizingType: RightsizingType.TERMINATE,
         TerminateRecommendationDetail: {
           EstimatedMonthlySavings: '20',
         },
@@ -73,7 +77,7 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
             },
           },
         },
-        RightsizingType: 'Terminate',
+        RightsizingType: RightsizingType.TERMINATE,
         TerminateRecommendationDetail: {
           EstimatedMonthlySavings: '30',
         },
@@ -81,8 +85,9 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
     ],
   }
 
-export const rightsizingRecommendationModify: GetRightsizingRecommendationResponse =
+export const rightsizingRecommendationModify: GetRightsizingRecommendationCommandOutput =
   {
+    $metadata: {},
     RightsizingRecommendations: [
       {
         AccountId: 'test-account',
@@ -97,7 +102,7 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
             },
           },
         },
-        RightsizingType: 'Modify',
+        RightsizingType: RightsizingType.MODIFY,
         ModifyRecommendationDetail: {
           TargetInstances: [
             {
@@ -126,8 +131,9 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
     ],
   }
 
-export const rightsizingRecommendationModify1: GetRightsizingRecommendationResponse =
+export const rightsizingRecommendationModify1: GetRightsizingRecommendationCommandOutput =
   {
+    $metadata: {},
     RightsizingRecommendations: [
       {
         AccountId: 'test-account',
@@ -142,7 +148,7 @@ export const rightsizingRecommendationModify1: GetRightsizingRecommendationRespo
             },
           },
         },
-        RightsizingType: 'Modify',
+        RightsizingType: RightsizingType.MODIFY,
         ModifyRecommendationDetail: {
           TargetInstances: [
             {
@@ -171,8 +177,9 @@ export const rightsizingRecommendationModify1: GetRightsizingRecommendationRespo
     ],
   }
 
-export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecommendationResponse =
+export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecommendationCommandOutput =
   {
+    $metadata: {},
     RightsizingRecommendations: [
       {
         AccountId: 'test-account',
@@ -187,7 +194,7 @@ export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecomm
             },
           },
         },
-        RightsizingType: 'Terminate',
+        RightsizingType: RightsizingType.TERMINATE,
         TerminateRecommendationDetail: {
           EstimatedMonthlySavings: '20',
         },
@@ -195,8 +202,9 @@ export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecomm
     ],
   }
 
-export const rightsizingCrossFamilyRecommendationModify: GetRightsizingRecommendationResponse =
+export const rightsizingCrossFamilyRecommendationModify: GetRightsizingRecommendationCommandOutput =
   {
+    $metadata: {},
     RightsizingRecommendations: [
       {
         AccountId: 'test-account',
@@ -211,7 +219,7 @@ export const rightsizingCrossFamilyRecommendationModify: GetRightsizingRecommend
             },
           },
         },
-        RightsizingType: 'Modify',
+        RightsizingType: RightsizingType.MODIFY,
         ModifyRecommendationDetail: {
           TargetInstances: [
             {

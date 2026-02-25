@@ -41,11 +41,17 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
+    "@aws-sdk/client-athena": "^3.991.0",
+    "@aws-sdk/client-cloudwatch": "^3.991.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.991.0",
+    "@aws-sdk/client-cost-explorer": "^3.991.0",
+    "@aws-sdk/client-glue": "^3.991.0",
+    "@aws-sdk/client-s3": "^3.991.0",
+    "@aws-sdk/credential-providers": "^3.991.0",
     "@cloud-carbon-footprint/common": "^1.15.0",
     "@cloud-carbon-footprint/core": "^0.17.3",
     "@google-cloud/iam-credentials": "^4.2.1",
-    "aws-sdk": "^2.927.0",
-    "aws-sdk-mock": "^5.1.0",
+    "aws-sdk-client-mock": "^4.1.0",
     "csvtojson": "^2.0.10",
     "moment": "^2.29.1",
     "ramda": "^0.29.0"

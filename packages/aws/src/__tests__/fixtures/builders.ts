@@ -2,6 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import {
+  GetCostAndUsageCommandOutput,
+  GroupDefinitionType,
+} from '@aws-sdk/client-cost-explorer'
+
 export function buildCostExplorerGetCostRequest(
   startDate: string,
   endDate: string,
@@ -41,7 +46,7 @@ export function buildCostExplorerGetCostResponse(
   return {
     GroupDefinitions: [
       {
-        Type: 'DIMENSION',
+        Type: GroupDefinitionType.DIMENSION,
         Key: 'USAGE_TYPE',
       },
     ],
@@ -63,7 +68,7 @@ export function buildCostExplorerGetCostResponse(
         ],
       }
     }),
-  }
+  } as unknown as GetCostAndUsageCommandOutput
 }
 
 export function buildCostExplorerGetUsageResponse(
@@ -93,5 +98,5 @@ export function buildCostExplorerGetUsageResponse(
         ],
       }
     }),
-  }
+  } as unknown as GetCostAndUsageCommandOutput
 }

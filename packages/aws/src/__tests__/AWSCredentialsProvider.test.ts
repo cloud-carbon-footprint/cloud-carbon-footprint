@@ -6,66 +6,35 @@ import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 import GCPCredentials from '../application/GCPCredentials'
 import { setConfig } from '@cloud-carbon-footprint/common'
 import {
-  ChainableTemporaryCredentials,
-  Credentials,
-  EC2MetadataCredentials,
-  ECSCredentials,
-} from 'aws-sdk'
-import Mock = jest.Mock
+  fromContainerMetadata,
+  fromInstanceMetadata,
+  fromNodeProviderChain,
+  fromTemporaryCredentials,
+} from '@aws-sdk/credential-providers'
+import type { AwsCredentialIdentity, Provider } from '@aws-sdk/types'
 
-jest.mock('aws-sdk', () => {
-  return {
-    ChainableTemporaryCredentials: jest.fn(),
-    EC2MetadataCredentials: jest.fn(),
-    ECSCredentials: jest.fn(),
-    Credentials: jest.fn(),
-    config: jest.requireActual('aws-sdk').config,
-  }
-})
+jest.mock('@aws-sdk/credential-providers', () => ({
+  fromTemporaryCredentials: jest.fn(),
+  fromInstanceMetadata: jest.fn(),
+  fromContainerMetadata: jest.fn(),
+  fromNodeProviderChain: jest.fn(),
+}))
 
-function mockChainableTemporaryCredentials(
-  targetAccessKeyId: string,
-  targetSecretAccessKey: string,
-  targetSessionToken: string,
-) {
-  const chainableTemporaryCredentials =
-    ChainableTemporaryCredentials as unknown as Mock
-  chainableTemporaryCredentials.mockImplementationOnce(() => {
-    return new Credentials(
-      targetAccessKeyId,
-      targetSecretAccessKey,
-      targetSessionToken,
-    )
-  })
-  return chainableTemporaryCredentials
-}
+jest.mock('../application/GCPCredentials', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
-function mockEC2MetadataCredentials(options: {
-  httpOptions: { timeout: number }
-  maxRetries: number
-}) {
-  const ec2MetadataCredentials = EC2MetadataCredentials as unknown as Mock
-  ec2MetadataCredentials.mockImplementationOnce(() => {
-    return new EC2MetadataCredentials(options)
-  })
-  return ec2MetadataCredentials
-}
-
-function mockECSCredentials(options: {
-  httpOptions: { timeout: number }
-  maxRetries: number
-}) {
-  const ecsCredentials = ECSCredentials as unknown as Mock
-  ecsCredentials.mockImplementationOnce(() => {
-    return new ECSCredentials(options)
-  })
-  return ecsCredentials
-}
+type Mock = jest.Mock
 
 describe('AWSCredentialsProvider', () => {
   const targetRoleName = 'testTargetRoleName'
   const proxyAccountId = '987654321'
   const proxyRoleName = 'testProxyRoleName'
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   it('create returns GCPCredentialsProvider', () => {
     // given
@@ -82,21 +51,32 @@ describe('AWSCredentialsProvider', () => {
       },
     })
     const accountId = '12345678910'
-    const expectedCredentials = new GCPCredentials(
-      accountId,
-      targetRoleName,
-      proxyAccountId,
-      proxyRoleName,
-    )
+    const expectedProvider: Provider<AwsCredentialIdentity> = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
+      sessionToken: 'test',
+    })
+
+    const getProviderMock = jest.fn().mockReturnValue(expectedProvider)
+    ;(GCPCredentials as unknown as Mock).mockImplementationOnce(() => ({
+      getProvider: getProviderMock,
+    }))
 
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
 
     // then
-    expect(credentials).toEqual(expectedCredentials)
+    expect(credentials).toBe(expectedProvider)
+    expect(GCPCredentials).toHaveBeenCalledWith(
+      accountId,
+      targetRoleName,
+      proxyAccountId,
+      proxyRoleName,
+    )
+    expect(getProviderMock).toHaveBeenCalled()
   })
 
-  it('create returns ChainableTemporaryCredentials', () => {
+  it('create returns fromTemporaryCredentials provider', () => {
     // given
     setConfig({
       AWS: {
@@ -111,8 +91,6 @@ describe('AWSCredentialsProvider', () => {
         IS_AWS_GLOBAL: true,
       },
     })
-    const mockedChainableTemporaryCredentials =
-      mockChainableTemporaryCredentials('', '', '')
     const accountId = '123'
     const params = {
       params: {
@@ -120,14 +98,22 @@ describe('AWSCredentialsProvider', () => {
         RoleSessionName: `${targetRoleName}`,
       },
     }
+    const expectedProvider: Provider<AwsCredentialIdentity> = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
+    })
+    ;(fromTemporaryCredentials as unknown as Mock).mockReturnValueOnce(
+      expectedProvider,
+    )
+
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
     // then
-    expect(credentials).toBeInstanceOf(Credentials)
-    expect(mockedChainableTemporaryCredentials).toHaveBeenCalledWith(params)
+    expect(credentials).toBe(expectedProvider)
+    expect(fromTemporaryCredentials).toHaveBeenCalledWith(params)
   })
 
-  it('create returns EC2MetadataCredentials', () => {
+  it('create returns fromInstanceMetadata provider', () => {
     // given
     setConfig({
       AWS: {
@@ -139,18 +125,24 @@ describe('AWSCredentialsProvider', () => {
         },
       },
     })
-    const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
-    const mockedEC2MetadataCredentials = mockEC2MetadataCredentials(options)
+    const options = { timeout: 5000, maxRetries: 10 }
+    const expectedProvider: Provider<AwsCredentialIdentity> = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
+    })
+    ;(fromInstanceMetadata as unknown as Mock).mockReturnValueOnce(
+      expectedProvider,
+    )
     const accountId = '123'
 
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
     // then
-    expect(credentials).toBeInstanceOf(EC2MetadataCredentials)
-    expect(mockedEC2MetadataCredentials).toHaveBeenCalledWith(options)
+    expect(credentials).toBe(expectedProvider)
+    expect(fromInstanceMetadata).toHaveBeenCalledWith(options)
   })
 
-  it('create returns ECSCredentials', () => {
+  it('create returns fromContainerMetadata provider', () => {
     // given
     setConfig({
       AWS: {
@@ -162,39 +154,45 @@ describe('AWSCredentialsProvider', () => {
         },
       },
     })
-    const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
-    const mockedECSCredentials = mockECSCredentials(options)
+    const options = { timeout: 5000, maxRetries: 10 }
+    const expectedProvider: Provider<AwsCredentialIdentity> = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
+    })
+    ;(fromContainerMetadata as unknown as Mock).mockReturnValueOnce(
+      expectedProvider,
+    )
     const accountId = '123'
 
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
     // then
-    expect(credentials).toBeInstanceOf(ECSCredentials)
-    expect(mockedECSCredentials).toHaveBeenCalledWith(options)
+    expect(credentials).toBe(expectedProvider)
+    expect(fromContainerMetadata).toHaveBeenCalledWith(options)
   })
 
-  it('create returns Credentials by default', () => {
+  it('create returns fromNodeProviderChain provider by default', () => {
     // given
     setConfig({
       AWS: {
-        authentication: {
-          mode: undefined,
-        },
+        authentication: {} as any,
       },
     })
 
     const accountId = '123'
-    const credentialsOptions = { accessKeyId: '', secretAccessKey: '' }
-    const credentialsMock = Credentials as unknown as Mock
-    credentialsMock.mockImplementationOnce(() => {
-      return new Credentials(credentialsOptions)
+    const expectedProvider: Provider<AwsCredentialIdentity> = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
     })
+    ;(fromNodeProviderChain as unknown as Mock).mockReturnValueOnce(
+      expectedProvider,
+    )
 
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
 
     // then
-    expect(credentials).toBeInstanceOf(Credentials)
-    expect(credentialsMock).toHaveBeenCalledWith(credentialsOptions)
+    expect(credentials).toBe(expectedProvider)
+    expect(fromNodeProviderChain).toHaveBeenCalled()
   })
 })

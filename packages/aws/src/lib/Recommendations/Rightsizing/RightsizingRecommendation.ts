@@ -4,7 +4,7 @@
 import {
   EC2ResourceDetails,
   RightsizingRecommendation as AwsRightsizingRecommendation,
-} from 'aws-sdk/clients/costexplorer'
+} from '@aws-sdk/client-cost-explorer'
 import { containsAny, getHoursInMonth } from '@cloud-carbon-footprint/common'
 import { AWS_MAPPED_REGION_NAMES_TO_CODES, AWS_REGIONS } from '../../AWSRegions'
 import {

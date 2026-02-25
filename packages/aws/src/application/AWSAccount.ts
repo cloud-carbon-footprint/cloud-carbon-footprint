@@ -2,16 +2,18 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
-  Athena,
-  CloudWatch,
-  CloudWatchLogs,
-  CostExplorer,
-  Credentials,
-  Glue,
-  S3 as S3Service,
-} from 'aws-sdk'
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+import { AthenaClient } from '@aws-sdk/client-athena'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { CostExplorerClient } from '@aws-sdk/client-cost-explorer'
+import { GlueClient } from '@aws-sdk/client-glue'
+import { S3Client } from '@aws-sdk/client-s3'
+import type { AwsCredentialIdentity, Provider } from '@aws-sdk/types'
+
+type AwsClientConfig = {
+  region: string
+  credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>
+}
 
 import {
   CloudProviderAccount,
@@ -56,7 +58,7 @@ import {
 import { Recommendations } from '../lib/Recommendations'
 
 export default class AWSAccount extends CloudProviderAccount {
-  private readonly credentials: Credentials
+  private readonly credentials: Provider<AwsCredentialIdentity>
 
   constructor(
     public id: string,
@@ -120,10 +122,7 @@ export default class AWSAccount extends CloudProviderAccount {
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
     const serviceWrapper = this.createServiceWrapper(
-      this.getServiceConfigurationOptions(
-        configLoader().AWS.ATHENA_REGION,
-        this.credentials,
-      ),
+      this.getClientConfig(configLoader().AWS.ATHENA_REGION, this.credentials),
     )
 
     return await Recommendations.getRecommendations(
@@ -148,7 +147,7 @@ export default class AWSAccount extends CloudProviderAccount {
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
       this.createServiceWrapper(
-        this.getServiceConfigurationOptions(
+        this.getClientConfig(
           configLoader().AWS.ATHENA_REGION,
           this.credentials,
         ),
@@ -181,42 +180,39 @@ export default class AWSAccount extends CloudProviderAccount {
   private getService(
     key: string,
     region: string,
-    credentials: Credentials,
+    credentials: AwsClientConfig['credentials'],
   ): ICloudService {
     if (this.services[key] === undefined)
       throw new Error('Unsupported service: ' + key)
-    const options = this.getServiceConfigurationOptions(region, credentials)
+    const options = this.getClientConfig(region, credentials)
     return this.services[key](options)
   }
 
-  private getServiceConfigurationOptions(
+  private getClientConfig(
     region: string,
-    credentials: Credentials,
-  ): ServiceConfigurationOptions {
-    return {
-      region: region,
-      credentials: credentials,
-    }
+    credentials: AwsClientConfig['credentials'],
+  ): AwsClientConfig {
+    return { region, credentials }
   }
 
-  private createServiceWrapper(options: ServiceConfigurationOptions) {
+  private createServiceWrapper(options: AwsClientConfig) {
     return new ServiceWrapper(
-      new CloudWatch(options),
-      new CloudWatchLogs(options),
-      new CostExplorer({
+      new CloudWatchClient(options),
+      new CloudWatchLogsClient(options),
+      new CostExplorerClient({
         region: configLoader().AWS.IS_AWS_GLOBAL
           ? 'us-east-1'
           : 'cn-northwest-1',
         credentials: options.credentials,
       }),
-      new S3Service(options),
-      new Athena(options),
-      new Glue(options),
+      new S3Client(options),
+      new AthenaClient(options),
+      new GlueClient(options),
     )
   }
 
   private services: {
-    [id: string]: (options: ServiceConfigurationOptions) => ICloudService
+    [id: string]: (options: AwsClientConfig) => ICloudService
   } = {
     ebs: (options) => {
       return new EBS(this.createServiceWrapper(options))

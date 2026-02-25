@@ -161,12 +161,26 @@ fileignoreconfig:
   checksum: adb4259db1934a8d27063692a483b43414fc0c289281d59f826f11bd1100ec90
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
   checksum: ec52a92eb7fb0a0ab7cffda10a2eb4f1bcdab3ee186f2bffa8bae212dfd4ef0b
+- filename: packages/aws/src/__tests__/EBS.test.ts
+  checksum: 29ce386762904fcf5370ffb40c955eaac42dde42889cc7ffe6fb035107c2b751
+- filename: packages/aws/src/__tests__/EC2.test.ts
+  checksum: b4bb32cd3ac472bebee947e4e0e0da42913feade96dcec4bca29880e32eda320
+- filename: packages/aws/src/__tests__/ElastiCache.test.ts
+  checksum: ddaa89df375f8ba6d084ee42fb9694d5e5cc8440b908ec7b3e70d86d3e72444f
+- filename: packages/aws/src/__tests__/GCPCredentials.test.ts
+  checksum: 8df7b03db8dc8c0fa30228b9765f6d26cabc5798d82e8a7807002f42bd3e92cf
+- filename: packages/aws/src/__tests__/Lambda.test.ts
+  checksum: 6985c70bb293f1bf502e288caa4ff34f047786b6e492420d537a11749c5bd625
+- filename: packages/aws/src/__tests__/RDSCompute.test.ts
+  checksum: e133412b5eada39f69735bdfa1367d826716b475c96d5073526da7bd34eed2d4
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
-  checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+  checksum: 58b7e9c26563baf1837cbb87045111e1bf00ec64f55710ae703e64289377c4b7
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
   checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
 - filename: packages/aws/src/__tests__/RightsizingRecommendations.test.ts
   checksum: 5f4b552f103b11d0aa6b194799bc70a930d2eb64b5a3d1474fb8284de8861439
+- filename: packages/aws/src/__tests__/S3.test.ts
+  checksum: 100ddc1645fb52321268b1aab6128dbc528a72ba6a436a1bccb0ae1239eb6421
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/__tests__/fixtures/computeOptimizer.fixtures.ts

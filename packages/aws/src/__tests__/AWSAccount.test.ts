@@ -2,8 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Credentials } from 'aws-sdk'
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+import { AwsCredentialIdentity, Provider } from '@aws-sdk/types'
 import { CloudProviderAccount } from '@cloud-carbon-footprint/core'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
@@ -32,38 +31,65 @@ import {
   ComputeOptimizerRecommendations,
 } from '../lib/Recommendations'
 
+type AwsClientConfig = {
+  region: string
+  credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>
+}
+
+jest.mock('@aws-sdk/client-cloudwatch', () => ({
+  CloudWatchClient: jest.fn().mockImplementation(() => ({
+    send: jest.fn(),
+  })),
+}))
+
+jest.mock('@aws-sdk/client-cost-explorer', () => ({
+  CostExplorerClient: jest.fn().mockImplementation(() => ({
+    send: jest.fn(),
+  })),
+}))
+
+jest.mock('@aws-sdk/client-cloudwatch-logs', () => ({
+  CloudWatchLogsClient: jest.fn().mockImplementation(() => ({
+    send: jest.fn(),
+  })),
+}))
+
+jest.mock('@aws-sdk/client-s3', () => ({
+  S3Client: jest.fn().mockImplementation(() => ({
+    send: jest.fn(),
+  })),
+}))
+
+jest.mock('@aws-sdk/client-athena', () => ({
+  AthenaClient: jest.fn(),
+}))
+
+jest.mock('@aws-sdk/client-glue', () => ({
+  GlueClient: jest.fn(),
+}))
+
 jest.mock('../application/AWSCredentialsProvider')
+
+import AWSAccount from '../application/AWSAccount'
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 describe('AWSAccount', () => {
-  const CloudWatch = jest.fn()
-  const CostExplorer = jest.fn()
-  const CloudWatchLogs = jest.fn()
-  const Athena = jest.fn()
-  const S3Service = jest.fn()
-  const GlueService = jest.fn()
-  let expectedCredentials: Credentials
+  let expectedCredentials: Provider<AwsCredentialIdentity>
 
   beforeEach(() => {
-    jest.doMock('aws-sdk', () => {
-      return {
-        CloudWatch: CloudWatch,
-        CostExplorer: CostExplorer,
-        CloudWatchLogs: CloudWatchLogs,
-        Athena: Athena,
-        S3: S3Service,
-        Glue: GlueService,
-      }
+    const mockedCreate = jest.fn()
+    expectedCredentials = async () => ({
+      accessKeyId: 'test',
+      secretAccessKey: 'test',
+      sessionToken: 'test',
     })
 
-    const mockedCreate = jest.fn()
-    expectedCredentials = new Credentials('test', 'test', 'test')
     mockedCreate.mockReturnValue(expectedCredentials)
     AWSCredentialsProvider.create = mockedCreate
   })
 
   afterEach(() => {
-    jest.restoreAllMocks()
+    jest.clearAllMocks()
   })
 
   it('should return empty if no service in config file', () => {
@@ -72,8 +98,9 @@ describe('AWSAccount', () => {
         CURRENT_SERVICES: [],
       },
     })
-    const AWSAccount = require('../application/AWSAccount').default
-    const services = new AWSAccount().getServices()
+    const services = new AWSAccount('test-id', 'test-name', [
+      'us-east-1',
+    ]).getServices('us-east-1')
     expect(services).toHaveLength(0)
   })
 
@@ -83,21 +110,21 @@ describe('AWSAccount', () => {
         CURRENT_SERVICES: [{ key: 'duck', name: '' }],
       },
     })
-
-    const awsAccount = require('../application/AWSAccount').default
-    const account = new awsAccount('123', 'us-east-1')
+    const account = new AWSAccount('test-id', 'test-name', ['us-east-1'])
     expect(() => {
-      account.getServices()
+      account.getServices('us-east-1')
     }).toThrowError('Unsupported service: duck')
   })
 
   it('should return instances from registered services in configuration file', () => {
     expectAWSService('ebs').toBeInstanceOf(EBS)
-    expect(CloudWatch).toHaveBeenCalledWith({
+    const { CloudWatchClient } = require('@aws-sdk/client-cloudwatch')
+    expect(CloudWatchClient).toHaveBeenCalledWith({
       region: 'some-region',
       credentials: expectedCredentials,
     })
-    expect(CostExplorer).toHaveBeenCalledWith({
+    const { CostExplorerClient } = require('@aws-sdk/client-cost-explorer')
+    expect(CostExplorerClient).toHaveBeenCalledWith({
       region: 'us-east-1',
       credentials: expectedCredentials,
     })
@@ -129,7 +156,8 @@ describe('AWSAccount', () => {
       expectAWSService('ebs')
 
       //then
-      const options: ServiceConfigurationOptions = CloudWatch.mock.calls[0][0]
+      const { CloudWatchClient } = require('@aws-sdk/client-cloudwatch')
+      const options: AwsClientConfig = CloudWatchClient.mock.calls[0][0]
       expect(options.credentials).toEqual(expectedCredentials)
     })
 
@@ -138,7 +166,8 @@ describe('AWSAccount', () => {
       expectAWSService('s3')
 
       //then
-      const options: ServiceConfigurationOptions = CostExplorer.mock.calls[0][0]
+      const { CostExplorerClient } = require('@aws-sdk/client-cost-explorer')
+      const options: AwsClientConfig = CostExplorerClient.mock.calls[0][0]
       expect(options.credentials).toEqual(expectedCredentials)
     })
 
@@ -147,8 +176,10 @@ describe('AWSAccount', () => {
       expectAWSService('lambda')
 
       //then
-      const options: ServiceConfigurationOptions =
-        CloudWatchLogs.mock.calls[0][0]
+      const {
+        CloudWatchLogsClient,
+      } = require('@aws-sdk/client-cloudwatch-logs')
+      const options: AwsClientConfig = CloudWatchLogsClient.mock.calls[0][0]
       expect(options.credentials).toEqual(expectedCredentials)
     })
   })
@@ -156,8 +187,7 @@ describe('AWSAccount', () => {
   it('should get data for regions', async () => {
     const startDate = new Date('2021-01-01')
     const endDate = new Date('2021-02-01')
-    const AWSAccount = require('../application/AWSAccount').default
-    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+    const testAWSAccount = new AWSAccount('12345678', 'test account', [
       'region-a',
     ])
     const expectedEstimatesResult: EstimationResult[] =
@@ -170,7 +200,7 @@ describe('AWSAccount', () => {
 
     getRegionDataSpy.mockResolvedValue(expectedEstimatesResult)
 
-    const result = await testAwsAccount.getDataForRegions(
+    const result = await testAWSAccount.getDataForRegions(
       startDate,
       endDate,
       GroupBy.day,
@@ -182,8 +212,7 @@ describe('AWSAccount', () => {
   it('should getDataFromCostAndUsageReports', async () => {
     const startDate = new Date('2021-01-01')
     const endDate = new Date('2021-02-01')
-    const AWSAccount = require('../application/AWSAccount').default
-    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+    const testAWSAccount = new AWSAccount('12345678', 'test account', [
       'region-a',
     ])
     const expectedEstimatesResult: EstimationResult[] =
@@ -198,9 +227,10 @@ describe('AWSAccount', () => {
       expectedEstimatesResult,
     )
 
-    const result = await testAwsAccount.getDataFromCostAndUsageReports(
+    const result = await testAWSAccount.getDataFromCostAndUsageReports(
       startDate,
       endDate,
+      GroupBy.day,
     )
 
     expect(result).toEqual(expectedEstimatesResult)
@@ -217,7 +247,6 @@ describe('AWSAccount', () => {
       },
     ]
 
-    const AWSAccount = require('../application/AWSAccount').default
     const result =
       await AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
 
@@ -236,8 +265,7 @@ describe('AWSAccount', () => {
 
   describe('Recommendations', () => {
     it('should get data for rightsizing recommendations', async () => {
-      const AWSAccount = require('../application/AWSAccount').default
-      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      const testAWSAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
 
@@ -261,7 +289,7 @@ describe('AWSAccount', () => {
       )
 
       getRecommendations.mockResolvedValue(expectedRecommendations)
-      const result = await testAwsAccount.getDataForRecommendations(
+      const result = await testAWSAccount.getDataForRecommendations(
         AWS_DEFAULT_RECOMMENDATION_TARGET,
       )
 
@@ -269,8 +297,7 @@ describe('AWSAccount', () => {
     })
 
     it('should get data for Cross Instance Family recommendations', async () => {
-      const AWSAccount = require('../application/AWSAccount').default
-      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      const testAWSAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
 
@@ -294,7 +321,7 @@ describe('AWSAccount', () => {
       )
 
       getRecommendations.mockResolvedValue(expectedRecommendations)
-      const result = await testAwsAccount.getDataForRecommendations(
+      const result = await testAWSAccount.getDataForRecommendations(
         AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
       )
 
@@ -305,8 +332,7 @@ describe('AWSAccount', () => {
     })
 
     it('should get data for compute optimizer recommendations', async () => {
-      const AWSAccount = require('../application/AWSAccount').default
-      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      const testAWSAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
 
@@ -339,7 +365,7 @@ describe('AWSAccount', () => {
       )
 
       getRecommendations.mockResolvedValue(expectedRecommendations)
-      const result = await testAwsAccount.getDataForRecommendations(
+      const result = await testAWSAccount.getDataForRecommendations(
         AWS_DEFAULT_RECOMMENDATION_TARGET,
       )
 
@@ -347,8 +373,7 @@ describe('AWSAccount', () => {
     })
 
     it('should get data for all recommendation services (compute optimizer and rightsizing)', async () => {
-      const AWSAccount = require('../application/AWSAccount').default
-      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      const testAWSAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
 
@@ -402,7 +427,7 @@ describe('AWSAccount', () => {
         expectedRecommendations[1],
       ])
 
-      const result = await testAwsAccount.getDataForRecommendations(
+      const result = await testAWSAccount.getDataForRecommendations(
         AWS_DEFAULT_RECOMMENDATION_TARGET,
       )
 
@@ -410,8 +435,7 @@ describe('AWSAccount', () => {
     })
 
     it('should get data with highest savings when retrieving duplicate ids from all recommendation services', async () => {
-      const AWSAccount = require('../application/AWSAccount').default
-      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      const testAWSAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
 
@@ -558,7 +582,7 @@ describe('AWSAccount', () => {
         mockRightsizingRecommendations,
       )
 
-      const result = await testAwsAccount.getDataForRecommendations(
+      const result = await testAWSAccount.getDataForRecommendations(
         AWS_DEFAULT_RECOMMENDATION_TARGET,
       )
 
@@ -576,7 +600,6 @@ function expectAWSService(key: string) {
     },
   })
   const testRegion = 'some-region'
-  const AWSAccount = require('../application/AWSAccount').default
   const services = new AWSAccount('12345678', 'test account', [
     testRegion,
   ]).getServices(testRegion)

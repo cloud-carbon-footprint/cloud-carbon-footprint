@@ -1,10 +1,16 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import {
+  GetRightsizingRecommendationCommand,
+  GetRightsizingRecommendationCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
+import { mockClient } from 'aws-sdk-client-mock'
 import moment from 'moment'
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch'
+import { CostExplorerClient } from '@aws-sdk/client-cost-explorer'
+import { CloudWatchLogsClient } from '@aws-sdk/client-cloudwatch-logs'
+import { S3Client } from '@aws-sdk/client-s3'
 
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import {
@@ -25,18 +31,16 @@ import { ServiceWrapper, RightsizingRecommendations } from '../lib'
 describe('AWS Rightsizing Recommendations Service', () => {
   const getServiceWrapper = () =>
     new ServiceWrapper(
-      new CloudWatch(),
-      new CloudWatchLogs(),
-      new CostExplorer(),
-      new S3(),
+      new CloudWatchClient(),
+      new CloudWatchLogsClient(),
+      new CostExplorerClient(),
+      new S3Client(),
     )
 
-  beforeAll(() => {
-    AWSMock.setSDKInstance(AWS)
-  })
+  const costExplorerMock = mockClient(CostExplorerClient)
 
   afterEach(() => {
-    AWSMock.restore()
+    costExplorerMock.reset()
     jest.restoreAllMocks()
     getRightsizingRecommendationSpy.mockClear()
   })
@@ -44,14 +48,9 @@ describe('AWS Rightsizing Recommendations Service', () => {
   const getRightsizingRecommendationSpy = jest.fn()
 
   function mockGetRightsizingRecommendation(
-    response: GetRightsizingRecommendationResponse,
+    response: GetRightsizingRecommendationCommandOutput,
   ) {
-    getRightsizingRecommendationSpy.mockResolvedValue(response)
-    AWSMock.mock(
-      'CostExplorer',
-      'getRightsizingRecommendation',
-      getRightsizingRecommendationSpy,
-    )
+    costExplorerMock.on(GetRightsizingRecommendationCommand).resolves(response)
   }
 
   it('Get recommendations from Rightsizing API type: Terminate with pagination', async () => {
@@ -70,24 +69,28 @@ describe('AWS Rightsizing Recommendations Service', () => {
       AWS_DEFAULT_RECOMMENDATION_TARGET,
     )
 
-    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
-      {
-        Service: 'AmazonEC2',
-        Configuration: {
-          BenefitsConsidered: false,
-          RecommendationTarget: 'SAME_INSTANCE_FAMILY',
-        },
-      },
-      expect.anything(),
+    const calls = costExplorerMock.commandCalls(
+      GetRightsizingRecommendationCommand,
     )
+
+    expect(calls).toHaveLength(1)
+
+    expect(calls[0].args[0].input).toEqual({
+      Service: 'AmazonEC2',
+      Configuration: {
+        BenefitsConsidered: false,
+        RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+      },
+    })
+
     const expectedResult: RecommendationResult[] = [
       {
         cloudProvider: 'AWS',
         accountId: 'test-account',
         accountName: 'test-account',
         region: 'us-east-2',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: test-instance-name.',
+        recommendationType: 'TERMINATE',
+        recommendationDetail: 'TERMINATE instance: test-instance-name.',
         kilowattHourSavings: 272.409501312,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
@@ -99,8 +102,8 @@ describe('AWS Rightsizing Recommendations Service', () => {
         accountId: 'test-account-1',
         accountName: 'test-account-1',
         region: 'us-east-2',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: test-instance-name.',
+        recommendationType: 'TERMINATE',
+        recommendationDetail: 'TERMINATE instance: test-instance-name.',
         kilowattHourSavings: 60.276672000000005,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
@@ -112,8 +115,8 @@ describe('AWS Rightsizing Recommendations Service', () => {
         accountId: 'test-account-2',
         accountName: 'test-account-2',
         region: 'us-east-2',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: test-instance-name.',
+        recommendationType: 'TERMINATE',
+        recommendationDetail: 'TERMINATE instance: test-instance-name.',
         kilowattHourSavings: 0.37672920000000004,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
@@ -127,8 +130,8 @@ describe('AWS Rightsizing Recommendations Service', () => {
         co2eSavings: 0.00015468802335360003,
         costSavings: 30,
         kilowattHourSavings: 0.37672920000000004,
-        recommendationDetail: 'Terminate instance with Resource ID: test-id.',
-        recommendationType: 'Terminate',
+        recommendationDetail: 'TERMINATE instance with Resource ID: test-id.',
+        recommendationType: 'TERMINATE',
         region: 'us-east-2',
         resourceId: 'test-id',
         instanceName: '',
@@ -153,26 +156,28 @@ describe('AWS Rightsizing Recommendations Service', () => {
     const result = await awsRecommendationsServices.getRecommendations(
       AWS_DEFAULT_RECOMMENDATION_TARGET,
     )
-
-    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
-      {
-        Service: 'AmazonEC2',
-        Configuration: {
-          BenefitsConsidered: false,
-          RecommendationTarget: 'SAME_INSTANCE_FAMILY',
-        },
-      },
-      expect.anything(),
+    const calls = costExplorerMock.commandCalls(
+      GetRightsizingRecommendationCommand,
     )
+
+    expect(calls).toHaveLength(1)
+
+    expect(calls[0].args[0].input).toEqual({
+      Service: 'AmazonEC2',
+      Configuration: {
+        BenefitsConsidered: false,
+        RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+      },
+    })
     const expectedResult: RecommendationResult[] = [
       {
         cloudProvider: 'AWS',
         accountId: 'test-account',
         accountName: 'test-account',
         region: 'us-east-2',
-        recommendationType: 'Modify',
+        recommendationType: 'MODIFY',
         recommendationDetail:
-          'Modify instance: test-instance-name. Update instance type t2.micro to t2.nano',
+          'MODIFY instance: test-instance-name. Update instance type t2.micro to t2.nano',
         kilowattHourSavings: 0.18836460000000002,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
@@ -202,25 +207,27 @@ describe('AWS Rightsizing Recommendations Service', () => {
       AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
     )
 
-    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
-      {
-        Service: 'AmazonEC2',
-        Configuration: {
-          BenefitsConsidered: false,
-          RecommendationTarget:
-            AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
-        },
-      },
-      expect.anything(),
+    const calls = costExplorerMock.commandCalls(
+      GetRightsizingRecommendationCommand,
     )
+
+    expect(calls).toHaveLength(1)
+
+    expect(calls[0].args[0].input).toEqual({
+      Service: 'AmazonEC2',
+      Configuration: {
+        BenefitsConsidered: false,
+        RecommendationTarget: AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+      },
+    })
     const expectedResult: RecommendationResult[] = [
       {
         cloudProvider: 'AWS',
         accountId: 'test-account',
         accountName: 'test-account',
         region: 'us-east-2',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: test-instance-name.',
+        recommendationType: 'TERMINATE',
+        recommendationDetail: 'TERMINATE instance: test-instance-name.',
         kilowattHourSavings: 0.37672920000000004,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
@@ -254,9 +261,9 @@ describe('AWS Rightsizing Recommendations Service', () => {
         accountId: 'test-account',
         accountName: 'test-account',
         region: 'us-east-2',
-        recommendationType: 'Modify',
+        recommendationType: 'MODIFY',
         recommendationDetail:
-          'Modify instance: test-instance-name. Update instance type t2.micro to t3.micro',
+          'MODIFY instance: test-instance-name. Update instance type t2.micro to t3.micro',
         kilowattHourSavings: -0.37672920000000004,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
@@ -272,11 +279,9 @@ describe('AWS Rightsizing Recommendations Service', () => {
     getRightsizingRecommendationSpy.mockRejectedValue({
       message: 'error-test',
     })
-    AWSMock.mock(
-      'CostExplorer',
-      'getRightsizingRecommendation',
-      getRightsizingRecommendationSpy,
-    )
+    costExplorerMock
+      .on(GetRightsizingRecommendationCommand)
+      .callsFake(getRightsizingRecommendationSpy)
 
     const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),

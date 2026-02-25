@@ -3,10 +3,10 @@
  */
 
 import {
-  GetRightsizingRecommendationRequest,
+  GetRightsizingRecommendationCommandInput,
   RightsizingRecommendation as AwsRightsizingRecommendation,
-  RightsizingRecommendationList,
-} from 'aws-sdk/clients/costexplorer'
+  RightsizingType,
+} from '@aws-sdk/client-cost-explorer'
 import {
   CloudConstantsEmissionsFactors,
   ComputeEstimator,
@@ -45,7 +45,7 @@ export default class RightsizingRecommendations implements ICloudRecommendations
   async getRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    const params: GetRightsizingRecommendationRequest = {
+    const params: GetRightsizingRecommendationCommandInput = {
       Service: this.rightsizingRecommendationsService,
       Configuration: {
         BenefitsConsidered: false,
@@ -56,7 +56,8 @@ export default class RightsizingRecommendations implements ICloudRecommendations
     try {
       const results =
         await this.serviceWrapper.getRightsizingRecommendationsResponses(params)
-      const rightsizingRecommendations: RightsizingRecommendationList =
+      console.log(results)
+      const rightsizingRecommendations: AwsRightsizingRecommendation[] =
         results.flatMap(
           ({ RightsizingRecommendations }) => RightsizingRecommendations,
         )
@@ -83,7 +84,7 @@ export default class RightsizingRecommendations implements ICloudRecommendations
           co2eSavings += currentMemoryFootprint.co2e
         }
 
-        if (recommendation.RightsizingType === 'Modify') {
+        if (recommendation.RightsizingType === RightsizingType.MODIFY) {
           this.getTargetInstance(recommendation)
           const rightsizingTargetRecommendation =
             new RightsizingTargetRecommendation(recommendation)
@@ -138,8 +139,8 @@ export default class RightsizingRecommendations implements ICloudRecommendations
       defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
     }
     const recommendationTypes: { [key: string]: string } = {
-      Terminate: defaultDetail,
-      Modify: `${defaultDetail} ${modifyDetail}`,
+      TERMINATE: defaultDetail,
+      MODIFY: `${defaultDetail} ${modifyDetail}`,
     }
     return recommendationTypes[rightsizingCurrentRecommendation.type]
   }
