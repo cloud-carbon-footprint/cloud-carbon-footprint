@@ -49,7 +49,7 @@ export default class EBS implements ICloudService {
     endDate: Date,
     region: string,
   ): Promise<VolumeUsage[]> {
-    const params = {
+    const params: GetCostAndUsageCommandInput = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
         End: endDate.toISOString().substr(0, 10),
