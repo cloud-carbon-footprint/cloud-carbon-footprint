@@ -2,13 +2,14 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch } from 'aws-sdk'
+import { GetMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch'
 
 const dayOne = '2020-07-01'
 const hourOne = 'T22:00:00.000Z'
 const hourTwo = 'T23:00:00.000Z'
 
-export const ec2MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
+export const ec2MockGetMetricDataResponse: GetMetricDataCommandOutput = {
+  $metadata: {},
   MetricDataResults: [
     {
       Id: 'cpuUtilization',
@@ -46,8 +47,9 @@ export const ec2MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
   Messages: [],
 }
 
-export const elastiCacheMockGetMetricDataResponse: CloudWatch.GetMetricDataOutput =
+export const elastiCacheMockGetMetricDataResponse: GetMetricDataCommandOutput =
   {
+    $metadata: {},
     MetricDataResults: [
       {
         Id: 'cpuUtilization',
@@ -60,7 +62,8 @@ export const elastiCacheMockGetMetricDataResponse: CloudWatch.GetMetricDataOutpu
     ],
   }
 
-export const s3MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
+export const s3MockGetMetricDataResponse: GetMetricDataCommandOutput = {
+  $metadata: {},
   MetricDataResults: [
     {
       Id: 's3Size',
@@ -73,18 +76,18 @@ export const s3MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
   ],
 }
 
-export const rdsMockComputeGetMetricDataResponse: CloudWatch.GetMetricDataOutput =
-  {
-    MetricDataResults: [
-      {
-        Id: 'cpuUtilization',
-        Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
-        Values: [22.983333333333334, 31.435897435897434],
-      },
-      {
-        Id: 'cpuUtilization',
-        Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
-        Values: [11.566666666666666, 24.25],
-      },
-    ],
-  }
+export const rdsMockComputeGetMetricDataResponse: GetMetricDataCommandOutput = {
+  $metadata: {},
+  MetricDataResults: [
+    {
+      Id: 'cpuUtilization',
+      Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
+      Values: [22.983333333333334, 31.435897435897434],
+    },
+    {
+      Id: 'cpuUtilization',
+      Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
+      Values: [11.566666666666666, 24.25],
+    },
+  ],
+}

@@ -8,8 +8,7 @@ import {
   rdsMockComputeGetMetricDataResponse,
   s3MockGetMetricDataResponse,
 } from './cloudwatch.fixtures'
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CostExplorer } from 'aws-sdk'
+import { mockClient } from 'aws-sdk-client-mock'
 import { when } from 'jest-when'
 import {
   ebsMockGetCostResponse,
@@ -29,6 +28,26 @@ import {
   mockStartQueryResponse,
 } from './cloudwatchlogs.fixtures'
 
+import {
+  CloudWatchClient,
+  GetMetricDataCommand,
+} from '@aws-sdk/client-cloudwatch'
+import {
+  CostExplorerClient,
+  GetCostAndUsageCommand,
+  GetCostAndUsageCommandOutput,
+} from '@aws-sdk/client-cost-explorer'
+import {
+  CloudWatchLogsClient,
+  DescribeLogGroupsCommand,
+  GetQueryResultsCommand,
+  StartQueryCommand,
+} from '@aws-sdk/client-cloudwatch-logs'
+
+const cloudWatchMock = mockClient(CloudWatchClient)
+const costExplorerMock = mockClient(CostExplorerClient)
+const cloudWatchLogsMock = mockClient(CloudWatchLogsClient)
+
 export function mockAwsCloudWatchGetMetricData() {
   const mockGetMetricDataFunction = jest.fn()
   mockGetMetricDataFunction
@@ -41,16 +60,7 @@ export function mockAwsCloudWatchGetMetricData() {
     .mockReturnValueOnce(elastiCacheMockGetMetricDataResponse)
     .mockReturnValueOnce(rdsMockComputeGetMetricDataResponse)
 
-  AWSMock.mock(
-    'CloudWatch',
-    'getMetricData',
-    (
-      params: AWS.CloudWatch.GetMetricDataOutput,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      callback(null, mockGetMetricDataFunction())
-    },
-  )
+  cloudWatchMock.on(GetMetricDataCommand).resolves(mockGetMetricDataFunction())
 }
 
 export function mockAwsCostExplorerGetCostAndUsage() {
@@ -260,16 +270,9 @@ export function mockAwsCostExplorerGetCostAndUsage() {
     .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
     .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
 
-  AWSMock.mock(
-    'CostExplorer',
-    'getCostAndUsage',
-    (
-      params: AWS.CostExplorer.GetCostAndUsageRequest,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      callback(null, mockGetCostAndUsageFunction(params))
-    },
-  )
+  costExplorerMock
+    .on(GetCostAndUsageCommand)
+    .resolves(mockGetCostAndUsageFunction())
 }
 
 export function mockAwsCloudWatchGetQueryResultsForLambda() {
@@ -288,16 +291,9 @@ function mockLambdaDescribeLogGroups(
       logGroups: mockLambdaLogGroups,
     })
 
-  AWSMock.mock(
-    'CloudWatchLogs',
-    'describeLogGroups',
-    (
-      params: AWS.CloudWatchLogs.DescribeLogGroupsRequest,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      callback(null, mockDescribeLogGroupsFunction())
-    },
-  )
+  cloudWatchLogsMock
+    .on(DescribeLogGroupsCommand)
+    .resolves(mockDescribeLogGroupsFunction())
 }
 
 function mockLambdaStartQuery(mockStartQueryResponse: { queryId: string }) {
@@ -305,7 +301,9 @@ function mockLambdaStartQuery(mockStartQueryResponse: { queryId: string }) {
   mockStartQueryFunction
     .mockResolvedValue(mockStartQueryResponse)
     .mockResolvedValue(mockStartQueryResponse)
-  return AWSMock.mock('CloudWatchLogs', 'startQuery', mockStartQueryFunction)
+  return cloudWatchLogsMock
+    .on(StartQueryCommand)
+    .callsFake(mockStartQueryFunction)
 }
 
 function mockLambdaGetQueryResults(mockGetQueryResults: {
@@ -316,29 +314,13 @@ function mockLambdaGetQueryResults(mockGetQueryResults: {
   mockGetQueryResultsFunction
     .mockReturnValueOnce(mockGetQueryResults)
     .mockReturnValueOnce(mockGetQueryResults)
-  AWSMock.mock(
-    'CloudWatchLogs',
-    'getQueryResults',
-    (
-      params: AWS.CloudWatchLogs.GetQueryResultsRequest,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      callback(null, mockGetQueryResultsFunction())
-    },
-  )
+  cloudWatchLogsMock
+    .on(GetQueryResultsCommand)
+    .resolves(mockGetQueryResultsFunction())
 }
 
 export function mockAwsCostExplorerGetCostAndUsageResponse(
-  response: CostExplorer.GetCostAndUsageResponse,
+  response: GetCostAndUsageCommandOutput,
 ) {
-  AWSMock.mock(
-    'CostExplorer',
-    'getCostAndUsage',
-    (
-      params: AWS.CostExplorer.GetCostAndUsageRequest,
-      callback: (a: Error, response: any) => any,
-    ) => {
-      callback(null, response)
-    },
-  )
+  costExplorerMock.on(GetCostAndUsageCommand).resolves(response)
 }

@@ -2,8 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
 import {
   EstimationRequestValidationError,
   EstimationResult,
@@ -128,16 +126,8 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
   }),
 }))
 
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
-
 beforeEach(() => {
   mockWarn = jest.spyOn(console, 'warn').mockImplementation()
-})
-
-afterEach(() => {
-  AWSMock.restore()
 })
 
 describe('cli', () => {

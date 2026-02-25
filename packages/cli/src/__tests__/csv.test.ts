@@ -4,8 +4,6 @@
 
 import path from 'path'
 import fs from 'fs'
-import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
 
 import {
   mockAwsCloudWatchGetMetricData,
@@ -98,14 +96,6 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     }
   }),
 }))
-
-beforeAll(() => {
-  AWSMock.setSDKInstance(AWS)
-})
-
-afterEach(() => {
-  AWSMock.restore()
-})
 
 describe('csv test', () => {
   const start = '2020-07-01'

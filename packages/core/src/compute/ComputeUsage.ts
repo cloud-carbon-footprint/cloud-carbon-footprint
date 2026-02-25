@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
+import { MetricDataResult } from '@aws-sdk/client-cloudwatch'
 import { IUsageData, CloudConstants } from '../.'
 
 export default interface ComputeUsage extends IUsageData {
