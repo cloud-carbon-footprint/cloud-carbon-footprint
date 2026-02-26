@@ -398,10 +398,9 @@ jobs:
           cp packages/api/app-staging.yaml dist-workspace/packages/api
           echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
-          yarn set version 1.22.4
-          rm -f yarn.lock package.json
+          corepack enable
           cd dist-workspace/packages/api
-          yarn install
+          yarn install --immutable
           ./create_server_env_file.sh
           cd ../../..
 
