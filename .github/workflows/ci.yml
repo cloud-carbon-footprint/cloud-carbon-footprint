@@ -409,7 +409,7 @@ jobs:
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-          gcloud --quiet app deploy --version=staging dist-workspace/packages/api/app-staging.yaml
+          gcloud --quiet app deploy --version=staging dist-workspace/packages/api/app-staging.yaml --no-cache
           cd appengine && gcloud --quiet app deploy dispatch.yaml && cd ..
 
   backend-deploy-production:
