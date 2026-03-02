@@ -178,6 +178,7 @@ jobs:
         run: |
           yarn lerna run build:workspace --scope=@cloud-carbon-footprint/api --include-dependencies
           yarn lerna run build:update --scope=@cloud-carbon-footprint/api --include-dependencies
+          find dist-workspace/packages -name "*.ts" -type f -delete
       - name: zip backend artifact
         run: zip -r dist-workspace-backend.zip dist-workspace/*
       - uses: actions/upload-artifact@v4
