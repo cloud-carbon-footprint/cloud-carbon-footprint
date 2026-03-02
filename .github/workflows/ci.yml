@@ -177,7 +177,7 @@ jobs:
       - name: build workspace (api and dependencies)
         run: |
           yarn lerna run build:workspace --scope=@cloud-carbon-footprint/api --include-dependencies
-          yarn lerna run build:update --scope=@cloud-carbon-footprint/api
+          yarn lerna run build:update --scope=@cloud-carbon-footprint/api --include-dependencies
       - name: zip backend artifact
         run: zip -r dist-workspace-backend.zip dist-workspace/*
       - uses: actions/upload-artifact@v4
@@ -411,7 +411,7 @@ jobs:
           cp ../../../yarn.lock .
           
           # Run the focused production install to only install the API and its dependencies, without any dev dependencies
-          yarn workspaces focus --production
+          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn workspaces focus --production
           
           ./create_server_env_file.sh
           cd ../../..
