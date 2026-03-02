@@ -385,10 +385,6 @@ jobs:
           name: dist-workspace-backend-24.x
       - name: unzip backend artifact
         run: unzip -o dist-workspace-backend.zip
-      - name: Enable Yarn 4 via Corepack
-        run: |
-         corepack enable
-         corepack prepare yarn@4.12.0 --activate
       - name: deploy api to staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -403,12 +399,15 @@ jobs:
           cp packages/api/app-staging.yaml dist-workspace/packages/api
           echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
-          yarn install --immutable
-          yarn workspace @cloud-carbon-footprint/api run build
-          yarn workspaces focus @cloud-carbon-footprint/api --production
+          corepack enable
+          mv package.json package.json.bak
+          mv .yarnrc.yml .yarnrc.yml.bak
           cd dist-workspace/packages/api
+          yarn install
           ./create_server_env_file.sh
           cd ../../..
+          mv package.json.bak package.json
+          mv .yarnrc.yml.bak .yarnrc.yml
 
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
