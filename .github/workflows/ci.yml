@@ -401,17 +401,18 @@ jobs:
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
-          mkdir -p dist-workspace/packages/api/.yarn/ && cp -r .yarn/releases "$_"
-          
           echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
           cd dist-workspace/packages/api
           
           # This is required so Yarn 4 doesn't try to find the root .yarn/ folders
-          printf "nodeLinker: node-modules\nyarnPath: .yarn/releases/yarn-4.12.0.cjs" > .yarnrc.yml
+          printf "nodeLinker: node-modules" > .yarnrc.yml
           
           # Copy the lockfile from your source root (to keep versions identical)
           cp ../../../yarn.lock .
+          
+          # Run the focused production install to only install the API and its dependencies, without any dev dependencies
+          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn workspaces focus --production
           
           ./create_server_env_file.sh
           cd ../../..
