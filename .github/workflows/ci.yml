@@ -411,7 +411,7 @@ jobs:
           cd dist-workspace/packages/api
           
           # This is required so Yarn 4 doesn't try to find the root .yarn/ folders
-          printf "nodeLinker: node-modules\nyarnPath: .yarn/releases/yarn-4.12.0.cjs\nenableImmutableInstalls: false\n" > .yarnrc.yml
+          printf "nodeLinker: node-modules\nyarnPath: .yarn/releases/yarn-4.12.0.cjs" > .yarnrc.yml
           
           # Copy the lockfile from your source root (to keep versions identical)
           cp ../../../yarn.lock .
