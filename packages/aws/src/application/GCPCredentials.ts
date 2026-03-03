@@ -45,7 +45,11 @@ export default class GCPCredentials {
     })
 
     const authClient: GoogleAuthClient = await auth.getClient()
-    const iamCredentials = new IAMCredentialsClient({ auth: auth })
+    // Use fallback: true to force HTTP/1.1 REST mode and avoid the gRPC
+    const iamCredentials = new IAMCredentialsClient({
+      auth: auth,
+      fallback: true,
+    })
 
     const projectId = await auth.getProjectId()
 
