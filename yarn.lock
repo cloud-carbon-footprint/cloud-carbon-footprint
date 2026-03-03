@@ -3354,7 +3354,6 @@ __metadata:
     "@aws-sdk/credential-providers": "npm:^3.991.0"
     "@cloud-carbon-footprint/common": "npm:^1.15.0"
     "@cloud-carbon-footprint/core": "npm:^0.17.3"
-    "@google-cloud/iam-credentials": "npm:^4.2.1"
     "@types/jest": "npm:^29.5.12"
     "@types/jest-when": "npm:^3.5.5"
     "@types/node": "npm:^24.0.0"

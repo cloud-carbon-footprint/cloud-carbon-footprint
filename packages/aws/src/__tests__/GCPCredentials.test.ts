@@ -21,20 +21,27 @@ jest.mock('google-auth-library', () => {
   return {
     __esModule: true,
     GoogleAuth: class MockGoogleAuth {
-      getClient = jest.fn().mockResolvedValue({ email: 'test@test.com' })
+      getClient = jest.fn().mockResolvedValue({
+        email: 'test@test.com',
+        getAccessToken: jest
+          .fn()
+          .mockResolvedValue({ token: 'mock-access-token' }),
+      })
       getProjectId = jest.fn().mockResolvedValue('test-project.id')
     },
     JWT: jest.fn(),
   }
 })
 
-jest.mock('@google-cloud/iam-credentials', () => {
-  return {
-    __esModule: true,
-    IAMCredentialsClient: class MockIAMCredentialsClient {
-      generateIdToken = jest.fn().mockResolvedValue([{ token: 'some-token' }])
-    },
-  }
+const mockFetch = jest.fn().mockResolvedValue({
+  ok: true,
+  json: jest.fn().mockResolvedValue({ token: 'some-token' }),
+})
+beforeAll(() => {
+  global.fetch = mockFetch
+})
+afterAll(() => {
+  delete (global as unknown as { fetch?: unknown }).fetch
 })
 
 const mockToken = 'some-token'
