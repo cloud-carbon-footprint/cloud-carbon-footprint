@@ -3549,7 +3549,6 @@ __metadata:
     jest: "npm:^29.7.0"
     lint-staged: "npm:^15.2.0"
     moment: "npm:^2.29.1"
-    node-fetch: "npm:^2.6.1"
     prettier: "npm:^3.2.5"
     rimraf: "npm:^6.1.3"
     ts-jest: "npm:^29.2.0"
@@ -19590,7 +19589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7, node-fetch@npm:^2.6.9, node-fetch@npm:^2.7.0":
+"node-fetch@npm:^2.6.7, node-fetch@npm:^2.6.9, node-fetch@npm:^2.7.0":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:

@@ -2,7 +2,6 @@
  * © 2023 Thoughtworks, Inc.
  */
 
-import fetch from 'node-fetch'
 import { CloudConstantsEmissionsFactors } from '@cloud-carbon-footprint/core'
 import { configLoader, Logger } from './index'
 import { convertGramsToMetricTons } from './helpers'

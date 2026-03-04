@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import fetch from 'node-fetch'
 import {
   getElectricityMapsData,
   getEmissionsFactors,
@@ -10,7 +9,6 @@ import {
 } from '../EmissionsFactors'
 import { Logger } from '../index'
 
-jest.mock('node-fetch', () => jest.fn())
 const { Response } = jest.requireActual('node-fetch')
 jest.mock('../index', () => ({
   ...(jest.requireActual('../index') as Record<string, unknown>),
@@ -59,6 +57,11 @@ describe('getEmissionsFactors', () => {
   })
 
   it('returns carbon intensity values from Electricity Maps (gCO2eq/kWh) in t/kWh if there is no cached value for the zone', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => ({ token: 'some-token' }),
+    } as any)
+
     const response = {
       carbonIntensity: 300, // gCO2eq/kWh
     }
@@ -93,6 +96,11 @@ describe('getElectricityMapsData', () => {
   }
 
   beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => ({ token: 'some-token' }),
+    } as any)
+
     jest.clearAllMocks()
   })
 
