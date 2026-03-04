@@ -23,7 +23,7 @@
     "@grpc/grpc-js": "^1.5.7",
     "@babel/core": "^7.26.0",
     "@types/eslint": "^8.56.0",
-    "google-auth-library": "^10.5.0",
+    "google-auth-library": "^9.0.0",
     "typescript": "5.5.4",
     "long": "4.0.0",
     "@typespec/ts-http-runtime": "0.2.2"
