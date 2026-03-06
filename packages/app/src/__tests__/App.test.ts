@@ -1331,7 +1331,7 @@ function setUpServices(
   serviceNames: string[],
   mockGetCosts: jest.Mock<Promise<Cost[]>>[],
 ) {
-  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+  const mockGetUsage: jest.Mock<Promise<UsageData[]>> = jest.fn()
   const mockCloudServices: ICloudService[] = mockGetEstimates.map(
     (mockGetEstimate, i) => {
       return {

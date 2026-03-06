@@ -80,14 +80,14 @@ describe('GCP Recommendations Service', () => {
     mockGoogleCompute: any
 
   beforeEach(async () => {
-    const googleAuth = new GoogleAuth()
+    const googleAuth = new GoogleAuth({
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    })
     const getClientSpy = jest.spyOn(googleAuth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
-    googleAuthClient = await googleAuth.getClient({
-      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-    })
+    googleAuthClient = await googleAuth.getClient()
 
     mockGoogleCompute = {
       instances: new InstancesClient(),
@@ -142,8 +142,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -186,8 +186,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -228,8 +228,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -265,8 +265,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -305,8 +305,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -351,8 +351,8 @@ describe('GCP Recommendations Service', () => {
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
         serviceWrapper,
       )
 
@@ -395,8 +395,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -439,8 +439,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -475,8 +475,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -511,8 +511,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -547,8 +547,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -582,8 +582,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -621,8 +621,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 
@@ -682,8 +682,8 @@ describe('GCP Recommendations Service', () => {
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT!),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT!),
       serviceWrapper,
     )
 

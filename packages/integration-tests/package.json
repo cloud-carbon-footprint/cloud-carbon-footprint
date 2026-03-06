@@ -15,11 +15,10 @@
     "clean": "rimraf screenshots"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.26.0",
     "@testing-library/testcafe": "^5.0.0",
     "concurrently": "^7.0.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-prettier": "^5.1.0",
     "eslint-plugin-testcafe": "^0.2.1",
     "lint-staged": "^15.2.0",

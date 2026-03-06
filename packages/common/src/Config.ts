@@ -147,7 +147,7 @@ const getAzureSubscriptions = () => {
 const getEnvVar = (envVar: string): string => {
   try {
     return fs.readFileSync(`/run/secrets/${envVar}`, 'utf8').replace('\n', '')
-  } catch (err) {
+  } catch {
     return process.env[envVar]
   }
 }

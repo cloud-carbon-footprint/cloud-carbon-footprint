@@ -66,7 +66,7 @@ export default function cache(): any {
         )
       }
 
-      let newEstimates: EstimationResult[] = []
+      let newEstimates: EstimationResult[]
       if (missingDates.length > 0) {
         newEstimates = await getEstimatesForMissingDates(
           getCostAndEstimates,

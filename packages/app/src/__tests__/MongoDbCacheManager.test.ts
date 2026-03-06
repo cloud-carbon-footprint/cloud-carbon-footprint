@@ -301,7 +301,7 @@ describe('MongoDbCacheManager', () => {
 
     it.each([
       [['cloudProviders', ['test-cloud-providers'], 'cloudProvider']],
-      [['accounts', ['test-accounts'], 'accountId', ,]],
+      [['accounts', ['test-accounts'], 'accountId']],
       [['services', ['test-services'], 'serviceName']],
       [['regions', ['test-regions'], 'region']],
       [['tags', { 'test-key': 'test-tag' }, 'tags.test-key']],

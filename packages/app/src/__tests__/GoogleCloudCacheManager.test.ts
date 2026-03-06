@@ -8,6 +8,7 @@ import GoogleCloudCacheManager from '../GoogleCloudCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
 
 const creatReadStreamMock = jest.fn()
+const createWriteStreamMock = jest.fn()
 const writeGcsFile = jest.fn()
 const existsMock = jest.fn()
 
@@ -20,6 +21,7 @@ jest.mock('@google-cloud/storage', () => {
             file: jest.fn().mockImplementation(() => {
               return {
                 createReadStream: creatReadStreamMock,
+                createWriteStream: createWriteStreamMock,
                 save: writeGcsFile,
                 exists: existsMock,
               }
@@ -30,6 +32,12 @@ jest.mock('@google-cloud/storage', () => {
     }),
   }
 })
+
+const mockWriteToFile = jest.fn()
+jest.mock('../common/helpers', () => ({
+  ...(jest.requireActual('../common/helpers') as Record<string, unknown>),
+  writeToFile: (...args: unknown[]) => mockWriteToFile(...args),
+}))
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
@@ -136,23 +144,29 @@ describe('CacheManager', () => {
         startDate,
         1,
       )
-
-      const mockedStream = new PassThrough()
-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
-      mockedStream.end()
-
-      creatReadStreamMock.mockReturnValue(mockedStream)
-
-      writeGcsFile.mockResolvedValue(true)
+      const mockWriteStream = {
+        write: jest
+          .fn()
+          .mockImplementation((_data: string, cb?: () => void) => {
+            if (cb) cb()
+            return true
+          }),
+        end: jest.fn().mockImplementation((cb?: () => void) => {
+          if (cb) cb()
+          return Promise.resolve()
+        }),
+        on: jest.fn(),
+      }
+      mockWriteToFile.mockResolvedValue(undefined)
+      createWriteStreamMock.mockResolvedValue(mockWriteStream)
 
       //run
-      const write = await googleCloudCacheManager.setEstimates(
-        cachedData,
-        'day',
-      )
+      await googleCloudCacheManager.setEstimates(cachedData, 'day')
 
       //assert
-      expect(write).resolves
+      expect(createWriteStreamMock).toHaveBeenCalled()
+      expect(mockWriteToFile).toHaveBeenCalledWith(mockWriteStream, cachedData)
+      expect(mockWriteStream.end).toHaveBeenCalled()
     })
 
     it('should console.warn on file writing error', async () => {
@@ -162,14 +176,13 @@ describe('CacheManager', () => {
         startDate,
         1,
       )
-
-      const mockedStream = new PassThrough()
-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
-      mockedStream.end()
-
-      creatReadStreamMock.mockReturnValue(mockedStream)
-
-      writeGcsFile.mockRejectedValue('ERROR')
+      const mockWriteStream = {
+        write: jest.fn().mockReturnValue(true),
+        end: jest.fn(),
+        on: jest.fn(),
+      }
+      createWriteStreamMock.mockResolvedValue(mockWriteStream)
+      mockWriteToFile.mockRejectedValue(new Error('ERROR'))
 
       console.warn = jest.fn()
 
@@ -205,7 +218,7 @@ describe('CacheManager', () => {
     )
 
     expect(googleCloudCacheManager.cachedEstimates).toEqual(estimates)
-    await expect(JSON.stringify(missingDates)).toEqual(
+    expect(JSON.stringify(missingDates)).toEqual(
       JSON.stringify([
         moment.utc(new Date('2022-01-02')),
         moment.utc(new Date('2022-01-03')),

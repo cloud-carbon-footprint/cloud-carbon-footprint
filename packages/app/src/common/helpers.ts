@@ -26,9 +26,11 @@ export const writeToFile = async (
   const COMMA_SEPARATOR = '\n' + ',' + '\n'
 
   async function writeIt(output: string) {
-    fh
-      ? await writeStream.writeFile(fh, output)
-      : await writeStream.write(output)
+    if (fh) {
+      await writeStream.writeFile(fh, output)
+    } else {
+      await writeStream.write(output)
+    }
   }
 
   await writeIt(OPEN_BRACKET) // beginning of the cache file
@@ -73,7 +75,7 @@ export const getCachedData = async (
 const isNotADataDelimiter = (l: string) => {
   // data delimiters are [, ], or empty line
   // and are encoded on writeToFile() function
-  return !/^[\[\],\n]$/.test(l)
+  return !/^[[\],\n]$/.test(l)
 }
 
 const dateTimeReviver = (key: string, value: string) => {
