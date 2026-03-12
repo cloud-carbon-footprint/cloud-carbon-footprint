@@ -160,7 +160,7 @@ fileignoreconfig:
 - filename: packages/aws/src/__tests__/AWSAccount.test.ts
   checksum: adb4259db1934a8d27063692a483b43414fc0c289281d59f826f11bd1100ec90
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: ec52a92eb7fb0a0ab7cffda10a2eb4f1bcdab3ee186f2bffa8bae212dfd4ef0b
+  checksum: 126b479f72e3219ab658db6392e0fee480cb3a69615a907787493c6a9e928395
 - filename: packages/aws/src/__tests__/EBS.test.ts
   checksum: 29ce386762904fcf5370ffb40c955eaac42dde42889cc7ffe6fb035107c2b751
 - filename: packages/aws/src/__tests__/EC2.test.ts
@@ -202,7 +202,7 @@ fileignoreconfig:
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
   checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 68f9a8c23d08e892511e99356f39c010b8e8959fd012aaa51e999cd51e51181b
+  checksum: efd531c7636c4f492273420379d692855aff382ba3360b3725750537554e107a
 - filename: packages/azure/src/application/AzureCredentialsProvider.ts
   checksum: 08ea921d8cf6e05dd55183b8c9c338dee64bcb3a77d875c276455f79e3034c4e
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
@@ -222,7 +222,7 @@ fileignoreconfig:
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
-  checksum: fe21b93664ffbf61c7120fbda819f6e5ff9f5719c27220425b0e724daea0b9ce
+  checksum: 7058acce4f60eb7e19051cdb116085156413311d63b589c5d388c4fd2348769c
 - filename: packages/cli/src/__tests__/fixtures/costexplorer.fixtures.ts
   checksum: bebdc2291d7c56544c098f7eaf4ee7603c2151ff8129fb4f65399a88ff2b1fd7
 - filename: packages/client/.env.template
@@ -398,9 +398,11 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/stub-server/mockData.json
   checksum: 9073338cab91e48f6b789c52f415d8559926d791d80aeb2954cb2fb842202a66
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: 50397c9013f12b8b9cc457ffdeee4e5796edf2175dccc2c3aef7c7016c6fb144
+  checksum: 5f0e6c9f0b7d6894f4b70e4a197992eeeb142c4d3ff32bb35aaf0b10962575ab
 - filename: packages/gcp/src/__tests__/GCPAccount.test.ts
   checksum: 26ef0caf65177a4e013ecff94012824cee58ceed48c09b29f7710712084ab9c4
+- filename: packages/gcp/src/__tests__/Recommendations.test.ts
+  checksum: d6062d03e743ba6b0ae652ee31a874203345bf2288a347c64bf0b2d74b278f69
 - filename: packages/gcp/src/lib/BillingExportTable.ts
   checksum: 96f2b97dfa7265469d3a6958aac504414c2f298bd214364d925b3c0b65efa2a7
 - filename: packages/gcp/src/lib/BillingExportTypes.ts

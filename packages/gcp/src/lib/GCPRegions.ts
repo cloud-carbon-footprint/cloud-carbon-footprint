@@ -5,6 +5,7 @@
 import { mappedRegionsToElectricityMapZones } from '@cloud-carbon-footprint/common'
 
 export enum GCP_REGIONS {
+  AFRICA_SOUTH1 = 'africa-south1',
   ASIA_EAST1 = 'asia-east1',
   ASIA_EAST2 = 'asia-east2',
   ASIA_NORTHEAST1 = 'asia-northeast1',
@@ -18,6 +19,7 @@ export enum GCP_REGIONS {
   AUSTRALIA_SOUTHEAST2 = 'australia-southeast2',
   EUROPE_CENTRAL2 = 'europe-central2',
   EUROPE_NORTH1 = 'europe-north1',
+  EUROPE_NORTH2 = 'europe-north2',
   EUROPE_SOUTHWEST1 = 'europe-southwest1',
   EUROPE_WEST1 = 'europe-west1',
   EUROPE_WEST2 = 'europe-west2',
@@ -30,11 +32,13 @@ export enum GCP_REGIONS {
   EUROPE_WEST12 = 'europe-west12',
   NORTHAMERICA_NORTHEAST1 = 'northamerica-northeast1',
   NORTHAMERICA_NORTHEAST2 = 'northamerica-northeast2',
+  NORTHAMERICA_SOUTH1 = 'northamerica-south1',
   SOUTHAMERICA_EAST1 = 'southamerica-east1',
   SOUTHAMERICA_WEST1 = 'southamerica-west1',
   US_CENTRAL1 = 'us-central1',
   US_CENTRAL2 = 'us-central2',
   US_EAST1 = 'us-east1',
+  US_EAST2 = 'us-east2',
   US_EAST4 = 'us-east4',
   US_EAST5 = 'us-east5',
   US_SOUTH1 = 'us-south1',
@@ -42,6 +46,9 @@ export enum GCP_REGIONS {
   US_WEST2 = 'us-west2',
   US_WEST3 = 'us-west3',
   US_WEST4 = 'us-west4',
+  MIDDLEEAST_CENTRAL1 = 'me-central1',
+  MIDDLEEAST_CENTRAL2 = 'me-central2',
+  MIDDLEEAST_WEST1 = 'me-west1',
   UNKNOWN = 'Unknown',
 }
 
@@ -96,5 +103,12 @@ export const GCP_MAPPED_REGIONS_TO_ELECTRICITY_MAPS_ZONES: mappedRegionsToElectr
     [GCP_REGIONS.US_WEST2]: 'US-CAL-CISO',
     [GCP_REGIONS.US_WEST3]: 'US-NW-PACE',
     [GCP_REGIONS.US_WEST4]: 'US-NW-NEVP',
+    [GCP_REGIONS.AFRICA_SOUTH1]: 'ZA',
+    [GCP_REGIONS.EUROPE_NORTH2]: 'SE-SE3',
+    [GCP_REGIONS.MIDDLEEAST_CENTRAL1]: null,
+    [GCP_REGIONS.MIDDLEEAST_CENTRAL2]: null,
+    [GCP_REGIONS.MIDDLEEAST_WEST1]: 'IL',
+    [GCP_REGIONS.NORTHAMERICA_SOUTH1]: 'MX',
+    [GCP_REGIONS.US_EAST2]: 'US-MIDA-PJM',
     [GCP_REGIONS.UNKNOWN]: null,
   }

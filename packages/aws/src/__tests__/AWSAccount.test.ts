@@ -256,8 +256,8 @@ describe('AWSAccount', () => {
         region: 'us-east-1',
         usageType: 'USE2-BoxUsage:t2.micro',
         vCpus: '2',
-        kilowattHours: 0.014425250356994983,
-        co2e: 0.000005468165227575731,
+        kilowattHours: 0.014956053070482703,
+        co2e: 0.000005460870701962408,
       },
     ]
     expect(result).toEqual(expectedResult)
