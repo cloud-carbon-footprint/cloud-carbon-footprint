@@ -246,7 +246,7 @@ export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
     [GCP_DUAL_REGIONS.NAM4]: 0.000989, // Sum of us-central1 + us-east1
     [GCP_MULTI_REGIONS.ASIA]: 0.003123, // Sum of region group data centers within Asia
     [GCP_MULTI_REGIONS.EU]: 0.002058, // Sum of EU region data centers (BE, FI, SE, ES, DE, NL, IT, FR, PL)
-    [GCP_MULTI_REGIONS.US]: 0.003810, // Sum of all US data centers
+    [GCP_MULTI_REGIONS.US]: 0.00381, // Sum of all US data centers
     [GCP_REGIONS.UNKNOWN]: 0.0003100681818, // Average of the above regions (excludes multi/dual-regions)
   }
 }
