@@ -158,7 +158,7 @@ fileignoreconfig:
 - filename: packages/app/src/common/helpers.ts
   checksum: 2e52b1cd76a3b0184cd91449e2b571dc872c2aae8993c91748dcab981e28cfa5
 - filename: packages/aws/src/__tests__/AWSAccount.test.ts
-  checksum: adb4259db1934a8d27063692a483b43414fc0c289281d59f826f11bd1100ec90
+  checksum: 81ecb4eed786a888490549e5d7fcf63e876caa0df607306eab279fec890ff9f4
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
   checksum: 126b479f72e3219ab658db6392e0fee480cb3a69615a907787493c6a9e928395
 - filename: packages/aws/src/__tests__/EBS.test.ts
