@@ -67,9 +67,29 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       return GLUE_VCPUS_PER_USAGE * this.usageAmount
     if (this.serviceName === 'AmazonSimpleDB')
       return SIMPLE_DB_VCPUS_PER_USAGE * this.usageAmount
-    if (this.usageType.includes('Aurora:ServerlessUsage'))
+    // 1 ACU is 1/4 of a vCPU
+    if (
+      this.usageType.includes('Aurora:ServerlessUsage') ||
+      this.usageType.includes('Aurora:ServerlessV2Usage') ||
+      this.usageType.includes('Aurora:ServerlessV2IOOptimizedUsage') ||
+      this.usageType.includes('Neptune:ServerlessUsage')
+    )
       return this.usageAmount / 4
-    if (containsAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType))
+    if (
+      containsAny(
+        [
+          'Fargate-vCPU-Hours',
+          'Fargate-ARM-vCPU-Hours',
+          'Fargate-Windows-vCPU-Hours',
+          'CPUCredits',
+          'Consumption-based:vCPU',
+          'FARGATE-vCPUHours',
+          'AppRunner-vCPU-hours',
+          'SERVERLESS-vCPUHours',
+        ],
+        this.usageType,
+      )
+    )
       return this.usageAmount
     if (
       containsAny(
@@ -111,6 +131,10 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     const [instanceFamily, instanceSize] = instanceType.split('.')
     if (this.usageType.includes('Kafka'))
       return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
+    if (this.usageType.includes('Express'))
+      return MSK_INSTANCE_TYPES[
+        `express${this.usageType.split('Express').pop()}`
+      ]
     if (this.serviceName === 'AmazonRedshift')
       return REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0] / 3600
     return EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]

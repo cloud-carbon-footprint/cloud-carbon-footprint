@@ -47,6 +47,23 @@ export const SSD_USAGE_TYPES: string[] = [
   'Storage.SSD.50', // Fsx
   'Storage.MultiAZ:SSD', // Fsx
   'RDS:GP3-Storage', // RDS
+  'Express.Storage', // Express
+  'TimedStorage-RabbitMQ-ByteHrs', // Amazon MQ for RabbitMQ (EBS, high-throughput messaging)
+  'Vectors-TimedStorage-ByteHrs', // S3 Vectors (AI Knowledge Bases, high-speed random access)
+  'Fargate-EphemeralStorage-GB-Hours', // Fargate ephemeral SSD storage
+  'Lambda-Storage-GB-Second', // Lambda /tmp ephemeral SSD storage
+  'Lambda-Storage-GB-Second-ARM', // Lambda /tmp ephemeral SSD storage (ARM)
+  'ES:GP3-Storage', // OpenSearch GP3 SSD storage
+  'RDS:Multi-AZ-GP3-Storage', // RDS Multi-AZ GP3 SSD storage
+  'RDS:PIOPS-Storage-IO2', // RDS Provisioned IOPS IO2 SSD
+  'RDS:Multi-AZ-PIOPS-Storage-IO2', // RDS Multi-AZ Provisioned IOPS IO2 SSD
+  'RDS:Multi-AZCluster-PIOPS-Storage-IO2', // RDS Cluster Provisioned IOPS IO2 SSD
+  'IO-OptimizedStorageUsage', // Aurora I/O-Optimized SSD storage
+  'RDS:Multi-AZCluster-GP3-Storage', // RDS Cluster GP3 SSD
+  'Storage.SSD.125', // FSx SSD 125GB
+  'Storage.SAZ_2N2:SSD', // FSx Single-AZ SSD
+  'Storage.SAZ_2N:SSD', // FSx Single-AZ SSD
+  'Storage.SAZ2:SSD', // FSx Single-AZ SSD
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -103,6 +120,25 @@ export const HDD_USAGE_TYPES: string[] = [
   'AMP:MetricStorageByteHrs',
   'TimedStorage-INT-AIA-ByteHrs', // S3 Glacier
   'TimedStorage-GIR-ByteHrs', // S3 Glacier
+  'ArchiveTimedStorage-ByteHrs', // EFS Archive tier (Magnetic)
+  'ArchiveTimedStorage-SmallFiles', // EFS Archive small file overhead (Magnetic)
+  'IATimedStorage-ByteHrs', // EFS Infrequent Access (Magnetic)
+  'IATimedStorage-ET-ByteHrs', // EFS IA Elastic Throughput (Magnetic)
+  'IATimedStorage-ET-SmallFiles', // EFS IA small file overhead (Magnetic)
+  'IATimedStorage-SmallFiles', // EFS IA small file overhead (Magnetic)
+  'TimedStorage-INT-AA-ByteHrs', // S3 Intelligent-Tiering Archive Access
+  'Tables-TimedStorage-ByteHrs', // S3 Tables (Apache Iceberg)
+  'TimedStorage-EBS-ByteHrs', // Generic EBS storage (snapshots/cold tiers)
+  'TimedStorage-GigabyteHrs', // Generic S3/EFS Standard storage
+  'TimedStorage-GIR-SmObjects', // S3 Glacier Instant Retrieval (Small Objects)
+  'TimedStorage-GlacierByteHrs', // S3 Glacier archival storage
+  'TimedStorage-Z-ByteHrs', // One Zone storage (EFS/S3, Magnetic)
+  'TimedStorage-XZ-ByteHrs', // Cross-Zone archival storage
+  'ElasticStorageUsage', // S3 Intelligent-Tiering (HDD profile)
+  'EarlyDelete-GIR', // S3 Glacier Instant Retrieval
+  'EarlyDelete-GIR-SmObjects', // S3 Glacier Instant Retrieval (small objects)
+  'StorageUsedInS3ByteHour', // Standard S3 object storage (HDD profile)
+  'SnapshotArchiveEarlyDelete', // EBS snapshot archive early deletion
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -120,6 +156,22 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'TransitGateway-Bytes',
   'Retrieval',
   'BilledBytes',
+  'DataTransfer-xAZ-Out-Bytes', // Cross-AZ outbound data movement
+  'DataTransfer-xAZ-In-Bytes', // Cross-AZ inbound data movement
+  'DataTransfer-AZ-Out-Bytes', // Intra-AZ outbound network traffic
+  'DataTransfer-AZ-In-Bytes', // Intra-AZ inbound network traffic
+  'VpcPeering-Out-Bytes', // Inter-VPC peering outbound traffic
+  'VpcPeering-In-Bytes', // Inter-VPC peering inbound traffic
+  'DataTransferOut', // Generic outbound internet data transfer
+  'DataTransfer-Out-OBytes', // CloudFront origin fetch data movement
+  'DataXfer-Out-Free-Bytes', // Outbound traffic (Free tier)
+  'DataProcessing-Bytes', // Load balancer data plane processing
+  'Traffic-GB-Processed', // ELB/Gateway data plane traffic
+  'S3RTC-In-Bytes', // S3 Replication Time Control inbound
+  'S3RTC-Out-Bytes', // S3 Replication Time Control outbound
+  'VPCLattice-DataProcessing-Bytes', // VPC Lattice managed data plane traffic
+  'AWS-In-Bytes', // Regional inbound data transfer
+  'MRAP-Out-Bytes', // Multi-Region Access Point outbound
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -131,6 +183,7 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'GlacierByteHrs',
   'ByteHrs-EFS',
   'ByteHrs-DynamoDB',
+  'EarlyDelete-GIR',
 ]
 
 export const UNKNOWN_USAGE_TYPES: string[] = [
@@ -178,7 +231,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Airflow-MediumEnvironment',
   'IPAddressManager-IP-Hours',
   'Gateway:VTL-Storage',
-  'Aurora:ServerlessV2Usage', // RDS Aurora
+  'PublicIPv4:InUseAddress', // Public IPv4 address in use
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
