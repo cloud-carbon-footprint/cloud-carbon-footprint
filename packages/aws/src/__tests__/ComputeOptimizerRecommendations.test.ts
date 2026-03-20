@@ -103,10 +103,10 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         accountName: '1234567890',
         region: 'eu-central-1',
         recommendationType: 'EC2-OVER_PROVISIONED',
-        kilowattHourSavings: 3.9519791999999994,
+        kilowattHourSavings: 11.060730563099998,
         resourceId: 'i-0c80d1b0f3a0c5c69',
         instanceName: 'PA-VM-100 | Networks',
-        co2eSavings: 0.0014543283456,
+        co2eSavings: 0.004070348847220799,
         recommendationDetail:
           'Save cost by changing instance type from m4.xlarge to t3.xlarge.',
         costSavings: 33.79,

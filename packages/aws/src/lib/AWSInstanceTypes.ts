@@ -5,6 +5,7 @@
 import {
   COMPUTE_PROCESSOR_TYPES,
   cascadeLakeSkylake,
+  broadwellHaswell,
 } from '@cloud-carbon-footprint/core'
 
 export const RDS_INSTANCE_TYPES: { [instanceType: string]: number } = {
@@ -450,6 +451,32 @@ export const REDSHIFT_INSTANCE_TYPES: {
 export const EC2_INSTANCE_TYPES: {
   [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, memory, scope3 emissions ]
 } = {
+  a1: {
+    medium: [1, 2, 0.45],
+    large: [2, 4, 0.45],
+    xlarge: [4, 8, 0.45],
+    '2xlarge': [8, 16, 0.45],
+    '4xlarge': [16, 32, 0.45],
+    metal: [16, 32, 0.45],
+  },
+  c1: {
+    medium: [2, 1.7, 0.68],
+    xlarge: [8, 7, 0.68],
+  },
+  c3: {
+    large: [2, 3.75, 0.7],
+    xlarge: [4, 7.5, 0.7],
+    '2xlarge': [8, 15, 0.7],
+    '4xlarge': [16, 30, 0.7],
+    '8xlarge': [32, 60, 0.7],
+  },
+  c4: {
+    large: [2, 3.75, 0.67],
+    xlarge: [4, 7.5, 0.67],
+    '2xlarge': [8, 15, 0.67],
+    '4xlarge': [16, 30, 0.67],
+    '8xlarge': [36, 60, 0.67],
+  },
   c5: {
     large: [2, 4, 0.81],
     xlarge: [4, 8, 0.81],
@@ -560,6 +587,37 @@ export const EC2_INSTANCE_TYPES: {
   },
   hpc6a: {
     '48xlarge': [96, 384, 0],
+  },
+  i2: {
+    xlarge: [4, 30.5, 1.5],
+    '2xlarge': [8, 61, 1.5],
+    '4xlarge': [16, 122, 1.5],
+    '8xlarge': [32, 244, 1.5],
+  },
+  m1: {
+    small: [1, 1.7, 1],
+    medium: [1, 3.7, 1],
+    large: [2, 7.5, 1],
+    xlarge: [4, 15, 1],
+  },
+  m2: {
+    xlarge: [2, 17.1, 1.2],
+    '2xlarge': [4, 34.2, 1.2],
+    '4xlarge': [8, 68.4, 1.2],
+  },
+  m3: {
+    medium: [1, 3.75, 1],
+    large: [2, 7.5, 1],
+    xlarge: [4, 15, 1],
+    '2xlarge': [8, 30, 1],
+  },
+  m4: {
+    large: [2, 8, 0.9],
+    xlarge: [4, 16, 0.9],
+    '2xlarge': [8, 32, 0.9],
+    '4xlarge': [16, 64, 0.9],
+    '10xlarge': [40, 160, 0.9],
+    '16xlarge': [64, 256, 0.9],
   },
   mac1: {
     metal: [12, 32, 0.44],
@@ -700,6 +758,21 @@ export const EC2_INSTANCE_TYPES: {
   p4d: {
     '24xlarge': [96, 1152, 3],
   },
+  r3: {
+    large: [2, 15, 1.19],
+    xlarge: [4, 30.5, 1.19],
+    '2xlarge': [8, 61, 1.19],
+    '4xlarge': [16, 122, 1.19],
+    '8xlarge': [32, 244, 1.19],
+  },
+  r4: {
+    large: [2, 15.25, 1.6],
+    xlarge: [4, 30.5, 1.6],
+    '2xlarge': [8, 61, 1.6],
+    '4xlarge': [16, 122, 1.6],
+    '8xlarge': [32, 244, 1.6],
+    '16xlarge': [64, 488, 1.6],
+  },
   r5: {
     large: [2, 16, 1.9],
     xlarge: [4, 32, 1.9],
@@ -808,6 +881,9 @@ export const EC2_INSTANCE_TYPES: {
     '24xlarge': [96, 768, 2.4],
     '32xlarge': [128, 1024, 2.4],
     metal: [128, 1024, 2.4],
+  },
+  t1: {
+    micro: [1, 0.61, 0.75],
   },
   t2: {
     nano: [1, 0, 1.1],
@@ -1988,6 +2064,57 @@ export const BURSTABLE_INSTANCE_BASELINE_UTILIZATION: {
 export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   [instanceType: string]: string[]
 } = {
+  'a1.medium': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'a1.large': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'a1.xlarge': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'a1.2xlarge': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'a1.4xlarge': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'a1.metal': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON],
+  'c1.medium': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c1.xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c3.large': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c3.xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c3.2xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c3.4xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c3.8xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'c4.large': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'c4.xlarge': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'c4.2xlarge': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'c4.4xlarge': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'c4.8xlarge': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'i2.xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'i2.2xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'i2.4xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'i2.8xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'm1.small': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm1.medium': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm1.large': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm1.xlarge': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm2.xlarge': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm2.2xlarge': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm2.4xlarge': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'm3.medium': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'm3.large': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'm3.xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'm3.2xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'm4.large': broadwellHaswell,
+  'm4.xlarge': broadwellHaswell,
+  'm4.2xlarge': broadwellHaswell,
+  'm4.4xlarge': broadwellHaswell,
+  'm4.10xlarge': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  'm4.16xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r3.large': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'r3.xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'r3.2xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'r3.4xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'r3.8xlarge': [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE],
+  'r4.large': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r4.xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r4.2xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r4.4xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r4.8xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'r4.16xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  't1.micro': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
   'mac1.metal': [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE],
   't4g.nano': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2],
   't4g.micro': [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2],
