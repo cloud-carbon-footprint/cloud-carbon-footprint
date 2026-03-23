@@ -64,6 +64,7 @@ export const SSD_USAGE_TYPES: string[] = [
   'Storage.SAZ_2N2:SSD', // FSx Single-AZ SSD
   'Storage.SAZ_2N:SSD', // FSx Single-AZ SSD
   'Storage.SAZ2:SSD', // FSx Single-AZ SSD
+  'Fargate-ARM-GB-Hours', // Fargate ARM container memory-hours
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -172,6 +173,7 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'VPCLattice-DataProcessing-Bytes', // VPC Lattice managed data plane traffic
   'AWS-In-Bytes', // Regional inbound data transfer
   'MRAP-Out-Bytes', // Multi-Region Access Point outbound
+  'ImportDataSize-Bytes', // Data import transfer volume
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -232,6 +234,21 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'IPAddressManager-IP-Hours',
   'Gateway:VTL-Storage',
   'PublicIPv4:InUseAddress', // Public IPv4 address in use
+  'VPCLattice-Service-Hourly', // VPC Lattice service fee
+  'CloudWAN-Attachment-Hours', // Availability fee for logical network attachment
+  'Guardrail-', // Bedrock Guardrail safety scanning (abstracted security unit)
+  'Column-Statistics-DPU-Hour', // Glue DPU for column statistics (serverless abstraction)
+  'CodeExecutionInDPUHours', // Athena Spark notebook DPU execution
+  'Canvas:Session-Hrs', // SageMaker Canvas application session time
+  'Logs-LiveTail', // CloudWatch Logs live session duration
+  'Application-Signals', // CloudWatch application health monitoring
+  'MLflow:TrackingServerCompute', // SageMaker MLflow tracking server (Small/Medium/Large)
+  'Airflow-MicroEnvironment', // MWAA micro Airflow environment
+  'MemoryOptimizedStoppedGraphUsage', // Neptune stopped graph memory reservation (NCU units)
+  'Small-SimpleAD-Usage', // AWS Directory Service Simple AD
+  'AmazonEKS-Hours:extendedSupport', // EKS extended K8s version support (managed control plane)
+  'Q-Business-Starter-Index-free', // Amazon Q Business free-tier knowledge index
+  'KafkaServerless-ClusterHours', // MSK Serverless cluster base hourly fee
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -241,6 +258,9 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'Dollar', // AWSDeveloperSupport - no energy associated with support cost
   'HostBoxUsage', // "Double counted" with resource usage rows, so ignore.
+  'Runtime:Consumption-based:Memory', // Serverless memory allocation, avoid double-counting with compute.
+  'SERVERLESS-MemoryGBHours', // RAM-time, avoid double-counting server carbon.
+  'EKS-Auto:', // EKS Auto Mode management fees, hardware tracked in EC2/Fargate line items ( EKS-Auto:<instance>-management-hours ).
 ]
 
 export const LINE_ITEM_TYPES: string[] = [
