@@ -86,6 +86,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
           'FARGATE-vCPUHours',
           'AppRunner-vCPU-hours',
           'SERVERLESS-vCPUHours',
+          'DatabaseInsights-vCPU-Hours',
         ],
         this.usageType,
       )

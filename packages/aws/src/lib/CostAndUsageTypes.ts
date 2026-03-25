@@ -194,7 +194,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'SoftwareUsage',
   'BundleUsage',
   'Small-Directory-Usage',
-  'Std-MicrosoftAD-DC-Usage',
+  'MicrosoftAD-DC-Usage', // AWS Directory Service Microsoft AD (all sizes: Std, Lrg, etc.)
   'InactivePipelines',
   'Lambda-Provisioned',
   'ets-hd-success',
@@ -224,6 +224,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Input-Standard-Hours',
   'Airflow-SmallWorker',
   'AppRunner-Provisioned-GB-hours',
+  'AppRunner-GB-hours', // App Runner memory provisioning (DRAM, not storage)
   'ApiGatewayCacheUsage',
   'PortUsage',
   'SharedMsftAD-Usage',
@@ -252,6 +253,9 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'KafkaServerless-ClusterHours', // MSK Serverless cluster base hourly fee
   'VpcEndpoint-Resource-Hours', // VPC endpoint resource provisioning fee
   'VpcLattice-Service-Network-Resource-Hours', // VPC Lattice service network resource fee
+  'CachedData:Valkey', // That is RAM memory; it will not be categorized under SSD.
+  'CachedData:Redis', // That is RAM memory; it will not be categorized under SSD.
+  'CachedData:Memcached', // That is RAM memory; it will not be categorized under SSD.
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -270,6 +274,7 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'ConnectorSync', // Kendra data connector sync, no direct hardware mapping.
   'KendraDeveloperEdition', // Kendra developer edition index, abstracted managed service.
   'Kendra-GenAI-', // Kendra GenAI capacity, abstracted managed service.
+  'OpenSearchExtendedSupport', // Double-count the emissions already captured by ES.instance
 ]
 
 export const LINE_ITEM_TYPES: string[] = [

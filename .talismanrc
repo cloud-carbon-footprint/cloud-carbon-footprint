@@ -190,7 +190,7 @@ fileignoreconfig:
 - filename: packages/aws/src/lib/CostAndUsageReports.ts
   checksum: 1e137cc798c5ad0176a70c08933b020baafe906969ac91fd34e033de68b1106a
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
-  checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
+  checksum: 68fe8d53521874c7ad3b11dadce8cc4cbd38468be319a6463c6e5d34eadac78a
 - filename: packages/aws/src/lib/Recommendations/ComputeOptimizerRecommendations.ts
   checksum: f028097741c58142ed4ac1a5748f80727ad9428666741e5b304f4994595c9438
 - filename: packages/aws/src/lib/Recommendations/Recommendations.ts
