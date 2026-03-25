@@ -116,7 +116,10 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     return this.usageType
       .split(':')
       .pop()
-      .replace(/^((db|cache|dax|dms|ml|mq|KernelGateway-ml|.+Kafka)\.)/, '')
+      .replace(
+        /^((db|cache|dax|dms|ml|mq|KernelGateway-ml|CodeEditor-ml|JupyterLab-ml|Notebook-sc|.+Kafka)\.)/,
+        '',
+      )
   }
 
   private getBurstableInstanceVCPu(instanceType: string) {
@@ -200,7 +203,10 @@ const cleanUsageUnit = (
   serviceName: string,
   usageType: string,
 ): string => {
-  if (usageType.includes('Fargate-GB-Hours')) {
+  if (
+    usageType.includes('Fargate-GB-Hours') ||
+    usageType.includes('Fargate-ARM-GB-Hours')
+  ) {
     return KNOWN_USAGE_UNITS.GB_HOURS
   }
 

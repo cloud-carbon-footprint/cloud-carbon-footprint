@@ -44,6 +44,7 @@ export const SSD_USAGE_TYPES: string[] = [
   'ra3.xlplus', // Redshift SSD
   'ra3.4xlarge', // Redshift SSD
   'ra3.16xlarge', // Redshift SSD
+  'ra3.large', //Redshift SSD
   'Storage.SSD.50', // Fsx
   'Storage.MultiAZ:SSD', // Fsx
   'RDS:GP3-Storage', // RDS
@@ -249,6 +250,8 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'AmazonEKS-Hours:extendedSupport', // EKS extended K8s version support (managed control plane)
   'Q-Business-Starter-Index-free', // Amazon Q Business free-tier knowledge index
   'KafkaServerless-ClusterHours', // MSK Serverless cluster base hourly fee
+  'VpcEndpoint-Resource-Hours', // VPC endpoint resource provisioning fee
+  'VpcLattice-Service-Network-Resource-Hours', // VPC Lattice service network resource fee
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -261,6 +264,12 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'Runtime:Consumption-based:Memory', // Serverless memory allocation, avoid double-counting with compute.
   'SERVERLESS-MemoryGBHours', // RAM-time, avoid double-counting server carbon.
   'EKS-Auto:', // EKS Auto Mode management fees, hardware tracked in EC2/Fargate line items ( EKS-Auto:<instance>-management-hours ).
+  'ECS-Anywhere-Instance-hours', // On-premises management fee, no AWS compute hardware.
+  'EnterpriseServer', // It represents license cost. "Double counted" with EC2 usage rows, so ignore.
+  'MemoryOptimizedGraphUsage', // Neptune NCU abstraction, no direct hardware mapping.
+  'ConnectorSync', // Kendra data connector sync, no direct hardware mapping.
+  'KendraDeveloperEdition', // Kendra developer edition index, abstracted managed service.
+  'Kendra-GenAI-', // Kendra GenAI capacity, abstracted managed service.
 ]
 
 export const LINE_ITEM_TYPES: string[] = [
