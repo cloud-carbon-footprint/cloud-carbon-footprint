@@ -39,6 +39,8 @@ fileignoreconfig:
   checksum: 5f5a7eaf06d8a93731182929c9a44f00f17872298e6d8a7f391f63062ceb0f49
 - filename: .github/workflows/ci-separate.yml
   checksum: 7ff259b7cfe1532951d4fc08239bd0b61101a0d54175286c46754f8e9ecf1778
+- filename: .github/workflows/ci.yml
+  checksum: 25a0d187448d82a3d34072fbbc53da48a978938344c17b567b6b3e4ab55cbd21
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
   checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
 - filename: CONTRIBUTING.md
