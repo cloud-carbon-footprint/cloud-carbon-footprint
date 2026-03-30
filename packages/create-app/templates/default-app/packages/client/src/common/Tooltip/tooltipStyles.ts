@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Tooltip as MaterialTooltip, withStyles } from '@material-ui/core'
-import { CCFTheme } from '../../utils/themes'
+import { makeStyles } from 'tss-react/mui'
+import { Tooltip, tooltipClasses } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
-const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
+const useStyles = makeStyles()(({ palette }) => ({
   tooltip: {
     color: palette.primaryBlue,
     fontSize: 13,
@@ -22,8 +22,8 @@ const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
   },
 }))
 
-export const TextOnlyTooltip = withStyles({
-  tooltip: {
+export const TextOnlyTooltip = styled(Tooltip)({
+  [`& .${tooltipClasses.tooltip}`]: {
     color: 'rgba(0, 0, 0, 0.87)',
     backgroundColor: 'white',
     border: 'solid 1px #E6E6E6',
@@ -33,9 +33,9 @@ export const TextOnlyTooltip = withStyles({
     boxShadow: '1px 1px 5px #E6E6E6',
     borderRadius: '5px',
   },
-  arrow: {
+  [`& .${tooltipClasses.arrow}`]: {
     color: '#E6E6E6',
   },
-})(MaterialTooltip)
+})
 
 export default useStyles

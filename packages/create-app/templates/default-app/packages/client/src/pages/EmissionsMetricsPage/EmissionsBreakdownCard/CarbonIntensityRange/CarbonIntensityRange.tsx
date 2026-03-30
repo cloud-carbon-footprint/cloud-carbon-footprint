@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement } from 'react'
-import { useTheme } from '@material-ui/core'
+import { useTheme } from '@mui/material/styles'
 import useStyles from './carbonIntensityRangeStyles'
 
 type TimeLineProps = {

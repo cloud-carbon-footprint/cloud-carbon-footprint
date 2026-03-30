@@ -5,7 +5,6 @@
 import React, {
   FunctionComponent,
   ReactElement,
-  SyntheticEvent,
   useEffect,
   useState,
 } from 'react'
@@ -13,15 +12,13 @@ import {
   DataGrid,
   GridCellParams,
   GridColDef,
-  GridOverlay,
   GridRowParams,
-  MuiEvent,
 } from '@mui/x-data-grid'
 import {
   RecommendationResult,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import DashboardCard from '../../../layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
 import DateRange from '../../../common/DateRange'
@@ -106,7 +103,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   }
   const [pageState, setPageState] = useState(initialPageState)
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const handlePageSizeChange = (newPageSize: number) => {
     setPageState({ ...pageState, pageSize: newPageSize })
@@ -196,10 +193,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
 
-  const handleRowClick = (
-    params: GridRowParams,
-    _event: MuiEvent<SyntheticEvent>,
-  ) => {
+  const handleRowClick = (params: GridRowParams) => {
     if (selectedRecommendation && params.row.id === selectedRecommendation.id) {
       setSelectedRecommendation(undefined)
     } else {
@@ -244,7 +238,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
                 autoHeight
                 rows={rows}
                 columns={getColumns(co2eUnit)}
-                columnBuffer={6}
+                columnBufferPx={250}
                 hideFooterSelectedRowCount={true}
                 classes={{
                   cell: classes.cell,
@@ -252,23 +246,36 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
                 }}
                 onRowClick={handleRowClick}
                 disableColumnFilter
-                pageSize={pageState.pageSize}
-                components={{
-                  Toolbar: customPaginationComponent,
-                  Pagination: customPaginationComponent,
-                  NoRowsOverlay: () => (
-                    <GridOverlay>
+                paginationModel={{
+                  page: pageState.page,
+                  pageSize: pageState.pageSize,
+                }}
+                onPaginationModelChange={(model) =>
+                  setPageState({
+                    ...pageState,
+                    page: model.page,
+                    pageSize: model.pageSize,
+                  })
+                }
+                pageSizeOptions={[25, 50, 100]}
+                slots={{
+                  toolbar: customPaginationComponent,
+                  pagination: customPaginationComponent,
+                  noRowsOverlay: () => (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                      }}
+                    >
                       There's no data to display! Expand your search parameters
                       to get started. (Try adding accounts, regions or
                       recommendation types)
-                    </GridOverlay>
+                    </div>
                   ),
                 }}
-                onPageSizeChange={handlePageSizeChange}
-                page={pageState.page}
-                onPageChange={(newPage) =>
-                  setPageState({ ...pageState, page: newPage })
-                }
                 onSortModelChange={(model) => {
                   let page = pageState.page
                   if (pageState.sortOrder !== model[0]?.sort) {

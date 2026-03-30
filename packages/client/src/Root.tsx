@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { defaultTheme } from './utils/themes'
 import loadConfig from './ConfigLoader'
 import { BrowserRouter } from 'react-router-dom'
-import { CssBaseline, ThemeProvider } from '@material-ui/core'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { App } from './App'
 
 export function Root() {

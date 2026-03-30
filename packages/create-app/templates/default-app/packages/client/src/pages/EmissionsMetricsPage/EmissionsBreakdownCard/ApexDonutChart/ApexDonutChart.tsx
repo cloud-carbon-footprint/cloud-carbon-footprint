@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 import Chart from 'react-apexcharts'
 
 import { CCFTheme, getChartColors } from '../../../../utils/themes'
@@ -70,7 +70,7 @@ export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
     },
     height: '500px',
     theme: {
-      mode: theme.palette.type,
+      mode: theme.palette.mode,
     },
     tooltip: {
       fillSeriesColor: false,

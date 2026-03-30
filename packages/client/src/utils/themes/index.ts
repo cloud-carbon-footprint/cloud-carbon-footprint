@@ -7,8 +7,28 @@ import {
   createTheme as createMuiTheme,
   Theme,
   ThemeOptions,
-} from '@material-ui/core/styles'
-import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette'
+  Palette,
+  PaletteOptions,
+} from '@mui/material/styles'
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    chart: Palette['primary'][]
+    primaryBlue: CSSProperties['color']
+    lightBlue: CSSProperties['color']
+    lightTitle: CSSProperties['color']
+    lightMessage: CSSProperties['color']
+    extLink: CSSProperties['color']
+  }
+  interface PaletteOptions {
+    chart?: PaletteOptions['primary'][]
+    primaryBlue?: CSSProperties['color']
+    lightBlue?: CSSProperties['color']
+    lightTitle?: CSSProperties['color']
+    lightMessage?: CSSProperties['color']
+    extLink?: CSSProperties['color']
+  }
+}
 
 export type CCFPaletteAdditions = {
   chart: Palette['primary'][]
@@ -53,7 +73,7 @@ export function createThemeOptions(options: CCFThemeOptions): CCFThemeOptions {
 const defaultTheme = () => {
   return createTheme({
     palette: {
-      type: 'light',
+      mode: 'light',
       background: {
         default: '#F1F1F1',
       },
@@ -90,7 +110,7 @@ const defaultTheme = () => {
 
 export function createTheme(options: SimpleThemeOptions): CCFTheme {
   const themeOptions = createThemeOptions(options)
-  const baseTheme = createMuiTheme(themeOptions) as CCFTheme
+  const baseTheme = createMuiTheme(themeOptions as ThemeOptions) as CCFTheme
   const theme = { ...baseTheme }
   return theme
 }

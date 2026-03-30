@@ -13,8 +13,8 @@ import {
   ChevronRight,
   FirstPage,
   LastPage,
-} from '@material-ui/icons'
-import { IconButton } from '@material-ui/core'
+} from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 import { Page } from '../../../../Types'
 import useStyles from './paginationStyles'
 
@@ -51,7 +51,9 @@ const usePaginateData: <T>(
 const Pagination: <T>(
   props: PropsWithChildren<PaginationProps<T>>,
 ) => ReactElement = ({ data, pageSize, handlePage }) => {
-  const { paginationContainer, paginationLabel } = useStyles()
+  const {
+    classes: { paginationContainer, paginationLabel },
+  } = useStyles()
   const [page, setPage] = useState(0)
   const { paginatedData, totalPages } = usePaginateData<(typeof data)[0]>(
     data,

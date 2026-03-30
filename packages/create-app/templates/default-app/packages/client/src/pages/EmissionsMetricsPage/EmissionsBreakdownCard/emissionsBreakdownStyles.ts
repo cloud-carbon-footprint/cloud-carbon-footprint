@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core'
-import { CCFTheme } from '../../../utils/themes'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
+const useStyles = makeStyles()(({ palette }) => ({
   topContainer: {
     boxShadow: 'none',
     display: 'flex',

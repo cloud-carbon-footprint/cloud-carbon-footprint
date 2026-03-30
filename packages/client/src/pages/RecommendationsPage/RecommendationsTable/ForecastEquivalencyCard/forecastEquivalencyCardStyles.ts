@@ -2,9 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   card: {
     backgroundColor: '#3F51B5',
     flex: '1 1 350px',

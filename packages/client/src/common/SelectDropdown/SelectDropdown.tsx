@@ -2,15 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ChangeEvent, FunctionComponent, ReactElement } from 'react'
-import { FormControl, MenuItem, Select } from '@material-ui/core'
+import React, { FunctionComponent, ReactElement } from 'react'
+import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import BootstrapInput from './selectDropdownStyles'
 
 type SelectDropdownProps = {
   id?: string
   value: string
   dropdownOptions: string[]
-  handleChange: (event: ChangeEvent<{ value: unknown }>) => void
+  handleChange: (event: SelectChangeEvent<string>) => void
 }
 
 const SelectDropdown: FunctionComponent<SelectDropdownProps> = ({

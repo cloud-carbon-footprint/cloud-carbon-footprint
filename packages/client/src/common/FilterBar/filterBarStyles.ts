@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
 const PADDING_FILTER = 0.5
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   filterHeader: {
     top: 0,
     position: 'sticky', //make filter bar stick to top of container instead of page

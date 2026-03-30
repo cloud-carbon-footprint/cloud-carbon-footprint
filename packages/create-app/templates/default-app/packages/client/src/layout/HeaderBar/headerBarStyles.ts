@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme) => ({
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
       flexGrow: 1,
@@ -54,7 +53,6 @@ const useStyles = makeStyles((theme: Theme) =>
         transform: 'translate3d(0, 0, 0)',
       },
     },
-  }),
-)
+  }))
 
 export default useStyles

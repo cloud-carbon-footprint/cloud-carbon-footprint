@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, Typography } from '@mui/material'
 import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
@@ -10,7 +10,7 @@ import useStyles from './headerBarStyles'
 import logo from './ccf_logo.png'
 
 const HeaderBar = (): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <AppBar

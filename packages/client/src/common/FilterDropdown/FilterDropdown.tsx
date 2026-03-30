@@ -7,11 +7,10 @@ import { toUpper } from 'ramda'
 import Autocomplete, {
   AutocompleteRenderInputParams,
   AutocompleteRenderOptionState,
-} from '@material-ui/lab/Autocomplete'
-import Checkbox from '@material-ui/core/Checkbox'
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import { TextField, Typography } from '@material-ui/core'
+} from '@mui/material/Autocomplete'
+import { Checkbox, TextField, Typography } from '@mui/material'
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import { DropdownOption } from '../../Types'
 import useStyles from './filterDropdownStyles'
 
@@ -25,7 +24,7 @@ interface FilterDropdownProps {
 }
 
 const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const getLabelOfGroupByCloudProviders = (
     cloudProvider: string,
@@ -53,10 +52,11 @@ const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
       : ''
 
   const renderOption = (
+    props: React.HTMLAttributes<HTMLLIElement>,
     option: DropdownOption,
     state: AutocompleteRenderOptionState,
   ) => (
-    <>
+    <li {...props}>
       <Checkbox
         color="primary"
         icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
@@ -66,7 +66,7 @@ const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
         checked={state.selected}
       />
       {option.name}
-    </>
+    </li>
   )
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
@@ -105,7 +105,7 @@ const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
         props.updateSelections(selections)
       }}
       getOptionLabel={(option: DropdownOption) => option.name}
-      getOptionSelected={(option: DropdownOption, value: DropdownOption) =>
+      isOptionEqualToValue={(option: DropdownOption, value: DropdownOption) =>
         option.key === value.key
       }
       renderOption={renderOption}

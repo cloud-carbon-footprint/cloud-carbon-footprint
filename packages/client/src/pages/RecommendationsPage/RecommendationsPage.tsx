@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
@@ -30,7 +30,7 @@ const RecommendationsPage = ({
   config = loadConfig(),
   footprint,
 }): ReactElement<RecommendationsPageProps> => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
 

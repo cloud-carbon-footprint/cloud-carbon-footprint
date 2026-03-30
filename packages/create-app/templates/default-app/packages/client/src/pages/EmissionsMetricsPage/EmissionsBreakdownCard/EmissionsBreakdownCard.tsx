@@ -22,7 +22,7 @@ type EmissionsBreakdownContainerProps = {
 const EmissionsBreakdownCard: FunctionComponent<
   EmissionsBreakdownContainerProps
 > = ({ data, baseUrl, onApiError }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [chartType, setChartType] = useState(ChartDataTypes.REGION)
 
   const { data: emissionsData, loading: emissionsLoading } =

@@ -213,13 +213,13 @@ describe('Filters', () => {
       expect(filteredData).toBeWithinTimeframe(3)
     })
 
-    it('should filter by timeframe = 36 by default', () => {
+    it('should filter by timeframe = 72 by default', () => {
       const estimationResults = generateEstimations(moment.utc(), 13)
       const filters = new EmissionsFilters()
 
       const filteredData = filters.filter(estimationResults)
 
-      expect(filteredData).toBeWithinTimeframe(36)
+      expect(filteredData).toBeWithinTimeframe(72)
     })
 
     it('should filter by dateRange', () => {
@@ -388,7 +388,7 @@ describe('Filters', () => {
     it('selects the timeframe filter by default', () => {
       const filters = new EmissionsFilters()
 
-      expect(filters.timeframe).toEqual(36)
+      expect(filters.timeframe).toEqual(72)
       expect(filters.dateRange).toBeNull()
     })
 
@@ -398,7 +398,7 @@ describe('Filters', () => {
         new FiltersDateRange(startDate, null),
       )
 
-      expect(filters.timeframe).toEqual(36)
+      expect(filters.timeframe).toEqual(72)
       expect(filters.dateRange?.isComplete()).toEqual(false)
       expect(filters.dateRange?.startDate).toEqual(startDate)
       expect(filters.dateRange?.endDate).toEqual(null)

@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { FilterOptions, FilterResultResponse } from 'src/Types'
 import { buildFilters, FootprintData } from 'src/utils/hooks'
@@ -30,7 +30,7 @@ export default function EmissionsMetricsPage({
   onApiError,
   footprint,
 }: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const filterOptions: FilterResultResponse = useFilterDataFromEstimates(
     footprint.data,

@@ -2,27 +2,24 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import styled from 'styled-components'
-import { Theme, withTheme } from '@material-ui/core'
+import { styled, Theme } from '@mui/material/styles'
 
-const StyleWrapper = withTheme(styled.div`
-  ${({ theme }: { theme: Theme }) => `
+const StyleWrapper = styled('div')(({ theme }: { theme: Theme }) => `
     .DateRangePickerInput {
       border-radius: ${theme.shape.borderRadius}px;
       overflow: hidden;
-      height: ${theme.spacing(5)}px;
+      height: ${theme.spacing(5)};
       background-color: ${theme.palette.background.paper};
     }
-    // https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/OutlinedInput/OutlinedInput.js#L10
     .DateRangePickerInput__withBorder {
       border: 1px solid ${
-        theme.palette.type === 'light'
+        theme.palette.mode === 'light'
           ? 'rgba(0, 0, 0, 0.23)'
           : 'rgba(255, 255, 255, 0.23)'
       };
     }
     .DateInput {
-      width: ${theme.spacing(13)}px;
+      width: ${theme.spacing(13)};
     }
     .DateInput_input {
       color: ${theme.palette.primary.light};
@@ -87,7 +84,7 @@ const StyleWrapper = withTheme(styled.div`
       border-radius: ${theme.shape.borderRadius}px;
       border: 1px solid ${theme.palette.divider};
       overflow: hidden;
-      top: ${theme.spacing(6)}px !important;
+      top: ${theme.spacing(6)} !important;
     }
     .DayPickerNavigation_svg__horizontal {
       fill: ${theme.palette.action.active};
@@ -113,7 +110,6 @@ const StyleWrapper = withTheme(styled.div`
     .DayPickerKeyboardShortcuts_show__bottomRight::before {
       border-right: 33px solid ${theme.palette.primary.main}
     }
-  `}
 `)
 
 export default StyleWrapper

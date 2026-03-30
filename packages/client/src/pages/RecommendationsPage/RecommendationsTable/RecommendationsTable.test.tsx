@@ -2,7 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import each from 'jest-each'
 import moment from 'moment'
 import { act } from 'react-dom/test-utils'
@@ -90,7 +96,7 @@ describe('Recommendations Table', () => {
     )
 
     const actualRowData = dataRows.map((row) =>
-      within(row).getAllByRole('cell'),
+      within(row).getAllByRole('gridcell'),
     )
 
     // Subtracts 3 from the row data length to ignore unused properties
@@ -212,7 +218,7 @@ describe('Recommendations Table', () => {
     dataRows.shift() // Removes row with table headers
 
     const actualRowData = dataRows.map((row) =>
-      within(row).getAllByRole('cell'),
+      within(row).getAllByRole('gridcell'),
     )
 
     actualRowData[0].forEach((cell) => expect(cell.innerHTML).toContain('-'))
@@ -255,7 +261,7 @@ describe('Recommendations Table', () => {
       dataRows.shift() // Removes row with table headers
 
       const actualRowData = dataRows.map((row) =>
-        within(row).getAllByRole('cell'),
+        within(row).getAllByRole('gridcell'),
       )
 
       const firstRow = actualRowData[0]
@@ -302,7 +308,7 @@ describe('Recommendations Table', () => {
       dataRows.shift() // Removes row with table headers
 
       const actualRowData = dataRows.map((row) =>
-        within(row).getAllByRole('cell'),
+        within(row).getAllByRole('gridcell'),
       )
 
       const firstRow = actualRowData[0]
@@ -340,7 +346,7 @@ describe('Recommendations Table', () => {
     dataRows.shift() // Removes row with table headers
 
     const actualRowData = dataRows.map((row) =>
-      within(row).getAllByRole('cell'),
+      within(row).getAllByRole('gridcell'),
     )
 
     const firstRow = actualRowData[0]
@@ -419,7 +425,7 @@ describe('Recommendations Table', () => {
         dataRows.shift() // Removes row with table headers
 
         const actualRowData = dataRows.map((row) =>
-          within(row).getAllByRole('cell'),
+          within(row).getAllByRole('gridcell'),
         )
 
         expect(
@@ -477,37 +483,51 @@ describe('Recommendations Table', () => {
       })
     }
 
-    it('should reset to first page when table data is changed', () => {
+    it('should reset to first page when table data is changed', async () => {
       const { getAllByLabelText } = render(
         <RecommendationsTable
           {...testProps}
           recommendations={mockRecommendationsFor2Pages}
         />,
       )
-      const activePageStyle = 'backgroundColor: #3f51b5'
 
       // Only check buttons in first pagination instance
-      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
+      await waitFor(() => {
+        expect(getAllByLabelText('page 1')[0]).toHaveAttribute(
+          'aria-current',
+          'page',
+        )
+      })
 
       const nextPageButton = getAllByLabelText('Go to page 2')[0]
       fireEvent.click(nextPageButton)
 
-      expect(getAllByLabelText('page 2')[0]).toHaveStyle(activePageStyle)
-      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveStyle(
-        activePageStyle,
+      expect(getAllByLabelText('page 2')[0]).toHaveAttribute(
+        'aria-current',
+        'page',
+      )
+      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveAttribute(
+        'aria-current',
+        'page',
       )
 
       // Get first sort button
       const sortButton = getAllByLabelText('Sort')[0]
       fireEvent.click(sortButton)
 
-      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveStyle(
-        activePageStyle,
+      await waitFor(() => {
+        expect(getAllByLabelText('page 1')[0]).toHaveAttribute(
+          'aria-current',
+          'page',
+        )
+      })
+      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveAttribute(
+        'aria-current',
+        'page',
       )
-      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
     })
 
-    it('should reset to page 1 after search, filters, and sorting are applied', () => {
+    it('should reset to page 1 after search, filters, and sorting are applied', async () => {
       const { getByRole, getAllByLabelText } = render(
         <RecommendationsTable
           {...testProps}
@@ -515,27 +535,40 @@ describe('Recommendations Table', () => {
         />,
       )
 
-      const activePageStyle = 'backgroundColor: #3f51b5'
-
       // Only check buttons in first pagination instance
-      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
+      await waitFor(() => {
+        expect(getAllByLabelText('page 1')[0]).toHaveAttribute(
+          'aria-current',
+          'page',
+        )
+      })
 
       const nextPageButton = getAllByLabelText('Go to page 2')[0]
       fireEvent.click(nextPageButton)
 
-      expect(getAllByLabelText('page 2')[0]).toHaveStyle(activePageStyle)
-      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveStyle(
-        activePageStyle,
+      expect(getAllByLabelText('page 2')[0]).toHaveAttribute(
+        'aria-current',
+        'page',
+      )
+      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveAttribute(
+        'aria-current',
+        'page',
       )
 
       //change value of the search bar
       const searchBar = getByRole('textbox')
       fireEvent.change(searchBar, { target: { value: 'aws' } })
 
-      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveStyle(
-        activePageStyle,
+      await waitFor(() => {
+        expect(getAllByLabelText('page 1')[0]).toHaveAttribute(
+          'aria-current',
+          'page',
+        )
+      })
+      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveAttribute(
+        'aria-current',
+        'page',
       )
-      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
     })
   })
 })

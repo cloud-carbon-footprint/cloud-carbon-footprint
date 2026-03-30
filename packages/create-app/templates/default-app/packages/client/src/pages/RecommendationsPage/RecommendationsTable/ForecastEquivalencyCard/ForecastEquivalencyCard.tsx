@@ -3,8 +3,8 @@
  */
 
 import { FunctionComponent } from 'react'
-import { Card, Typography } from '@material-ui/core'
-import { Eco, CalendarToday } from '@material-ui/icons'
+import { Card, Typography } from '@mui/material'
+import { EnergySavingsLeaf as Eco, CalendarToday } from '@mui/icons-material'
 import useStyles from './forecastEquivalencyCardStyles'
 
 type ForecastEquivalencyProps = {
@@ -18,7 +18,7 @@ const ForecastEquivalencyCard: FunctionComponent<ForecastEquivalencyProps> = ({
   treeSeedlings,
   yearCostSavings,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Card data-testid="forecast-equivalency-card" className={classes.card}>
       <div className={classes.titleContainer}>

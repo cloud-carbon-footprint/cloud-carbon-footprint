@@ -3,7 +3,11 @@
  */
 
 import React, { FunctionComponent, useState } from 'react'
-import { FlightTakeoff, PhonelinkRing, Eco } from '@material-ui/icons'
+import {
+  FlightTakeoff,
+  PhonelinkRing,
+  EnergySavingsLeaf as Eco,
+} from '@mui/icons-material'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { sumEstimates } from '../../../utils/helpers'
 import NoDataMessage from '../../../common/NoDataMessage'
@@ -30,7 +34,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
   data,
 }) => {
   const [selection, setSelection] = useState('flights')
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
   const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
@@ -93,7 +97,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
   }
 
   const updateButtonColor = (buttonSelection: Selection) =>
-    buttonSelection === selection ? 'primary' : 'default'
+    buttonSelection === selection ? 'primary' : 'inherit'
 
   if (totalMetricTons) {
     return (

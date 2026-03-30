@@ -4,7 +4,7 @@
 
 import { FunctionComponent, ReactElement } from 'react'
 import useStyles from './toggleStyles'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 
 type ToggleProps = {
   label?: string
@@ -15,7 +15,7 @@ const Toggle: FunctionComponent<ToggleProps> = ({
   label,
   handleToggle,
 }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <div className={classes.toggleWrapper}>
       {label && <Typography className={classes.label}>{label}</Typography>}

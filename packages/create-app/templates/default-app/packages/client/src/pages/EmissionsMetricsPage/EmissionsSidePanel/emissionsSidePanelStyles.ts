@@ -2,11 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import { CCFTheme } from '../../../utils/themes'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles<CCFTheme>(({ palette, spacing, typography }) => {
-  return createStyles({
+const useStyles = makeStyles()(({ palette, spacing, typography }) => ({
     contentBold: {
       padding: spacing(2, 2, 0, 2),
       fontWeight: 'bold',
@@ -27,7 +25,6 @@ const useStyles = makeStyles<CCFTheme>(({ palette, spacing, typography }) => {
     openIcon: {
       marginLeft: '8px',
     },
-  })
-})
+  }))
 
 export default useStyles

@@ -5,8 +5,8 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import clsx from 'clsx'
 import { Moment } from 'moment'
-import ForwardIcon from '@material-ui/icons/Forward'
-import { Typography } from '@material-ui/core'
+import ForwardIcon from '@mui/icons-material/Forward'
+import { Typography } from '@mui/material'
 import {
   GroupBy,
   RecommendationResult,
@@ -44,7 +44,8 @@ export const ForecastError = {
   MISSING_DAYS: 'DAYS',
 } as const
 
-export type ForecastErrorType = typeof ForecastError[keyof typeof ForecastError]
+export type ForecastErrorType =
+  (typeof ForecastError)[keyof typeof ForecastError]
 
 const Forecast: FunctionComponent<ForecastProps> = ({
   emissionsData,
@@ -52,7 +53,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   co2eUnit,
   forecastDetails,
 }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const forecastMultiplier = co2eUnitMultiplier[co2eUnit]
 

@@ -2,14 +2,14 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
 const lightPositive = '#e0fbcd'
 const darkPositive = '#00791E'
 const lightNegative = '#ffedf0'
 const darkNegative = '#c22000'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   badgeContainer: {
     display: 'flex',
     gap: 5,

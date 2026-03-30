@@ -5,8 +5,8 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import { Moment } from 'moment'
 import { AxiosError } from 'axios'
-import { Container } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Container } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
 import RecommendationsPage from './pages/RecommendationsPage/'
@@ -60,14 +60,14 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     setMobileWarningEnabled(false)
   }
 
-  const useStyles = makeStyles(() => ({
+  const useStyles = makeStyles()(() => ({
     appContainer: {
       padding: 0,
       height: 'calc(100vh - 65px)',
     },
   }))
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   if (mobileWarningEnabled) {
     return (

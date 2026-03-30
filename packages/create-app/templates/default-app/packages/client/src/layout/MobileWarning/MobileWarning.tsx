@@ -3,8 +3,8 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Container, IconButton, Modal, Typography } from '@material-ui/core'
-import { Close, Warning } from '@material-ui/icons'
+import { Container, IconButton, Modal, Typography } from '@mui/material'
+import { Close, Warning } from '@mui/icons-material'
 import DashboardCard from '../DashboardCard'
 import useStyles from './mobileWarningStyles'
 
@@ -15,7 +15,7 @@ type MobileWarningProps = {
 const MobileWarning: FunctionComponent<MobileWarningProps> = ({
   handleClose,
 }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Modal data-testid="warning-modal" open>

@@ -2,9 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   checkbox: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(-2),

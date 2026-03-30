@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Box, Card, CardContent, Grid, Typography } from '@material-ui/core'
+import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import useStyles from './CarbonCardStyles'
 
 type CarbonCardProps = {
@@ -15,7 +15,7 @@ const CarbonCard: FunctionComponent<CarbonCardProps> = ({
   title,
   children,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Grid item xs={12}>

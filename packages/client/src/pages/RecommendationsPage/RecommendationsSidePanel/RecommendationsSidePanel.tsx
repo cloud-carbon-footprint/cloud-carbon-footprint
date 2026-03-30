@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Container, Divider, Grid } from '@material-ui/core'
+import { Container, Divider, Grid } from '@mui/material'
 import SidePanel from '../../../common/SidePanel'
 import { RecommendationRow } from '../../../Types'
 import { RecommendationsPanelRow, RecommendationsPanelColumn } from './layout'
@@ -22,7 +22,7 @@ export type RecommendationsSidePanelProps = {
 const RecommendationsSidePanel: FunctionComponent<
   RecommendationsSidePanelProps
 > = ({ recommendation, onClose }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   let resourceName = recommendation.instanceName
   if (recommendation.recommendationType.includes('EBS')) {

@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import React, {
   Dispatch,
   FunctionComponent,
@@ -30,7 +30,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
   components,
   suffixComponent,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <div data-testid="filterBar" className={classes.filterHeader}>
       <Grid

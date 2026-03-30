@@ -2,15 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Divider, Link, Typography } from '@material-ui/core'
+import { Divider, Link, Typography } from '@mui/material'
 import clsx from 'clsx'
-import { OpenInNew } from '@material-ui/icons'
+import { OpenInNew } from '@mui/icons-material'
 import React, { FunctionComponent } from 'react'
 import SidePanel from '../../../common/SidePanel'
 import useStyles from './emissionsSidePanelStyles'
 
 export const Methodology: FunctionComponent = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <>
       <Typography className={classes.content} component="p">

@@ -2,14 +2,14 @@
 
 exports[`ApexBarChart renders with correct configuration 1`] = `
 <div
-  className="makeStyles-barChartContainer-1"
+  className="css-1kl06em-barChartContainer"
 >
   <div />
   <div
-    className="makeStyles-paginationContainer-2"
+    className="css-1omlrkm-paginationContainer"
   >
     <span
-      className="makeStyles-paginationLabel-3"
+      className="css-p956zy-paginationLabel"
     >
       1 - 4
        of 
@@ -17,10 +17,11 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
     </span>
     <button
       aria-label="first page"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -34,27 +35,25 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="FirstPageIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M18.41 16.59 13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
+        />
+      </svg>
     </button>
     <button
       aria-label="chevron-left"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -68,27 +67,25 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="ChevronLeftIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+        />
+      </svg>
     </button>
     <button
       aria-label="chevron-right"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -102,27 +99,25 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="ChevronRightIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+        />
+      </svg>
     </button>
     <button
       aria-label="last page"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -136,20 +131,17 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="LastPageIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M5.59 7.41 10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
+        />
+      </svg>
     </button>
   </div>
 </div>
@@ -157,7 +149,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
 
 exports[`ApexBarChart should set colors to each bar based on region emissions 1`] = `
 <div
-  className="makeStyles-barChartContainer-16"
+  className="css-1kl06em-barChartContainer"
 >
   <div
     style={
@@ -213,7 +205,7 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         className="t-bar"
         style={
           Object {
-            "backgroundColor": "#aaaaaa",
+            "backgroundColor": "#eeeeee",
             "flexGrow": 2,
             "height": "1px",
           }
@@ -235,7 +227,7 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         className="t-bar"
         style={
           Object {
-            "backgroundColor": "#aaaaaa",
+            "backgroundColor": "#eeeeee",
             "flexGrow": 2,
             "height": "1px",
           }
@@ -257,7 +249,7 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         className="t-bar"
         style={
           Object {
-            "backgroundColor": "#aaaaaa",
+            "backgroundColor": "#eeeeee",
             "flexGrow": 2,
             "height": "1px",
           }
@@ -279,7 +271,7 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         className="t-bar"
         style={
           Object {
-            "backgroundColor": "#aaaaaa",
+            "backgroundColor": "#eeeeee",
             "flexGrow": 2,
             "height": "1px",
           }
@@ -301,10 +293,10 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
   </div>
   <div />
   <div
-    className="makeStyles-paginationContainer-17"
+    className="css-1omlrkm-paginationContainer"
   >
     <span
-      className="makeStyles-paginationLabel-18"
+      className="css-p956zy-paginationLabel"
     >
       1 - 4
        of 
@@ -312,10 +304,11 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
     </span>
     <button
       aria-label="first page"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -329,27 +322,25 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="FirstPageIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M18.41 16.59 13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
+        />
+      </svg>
     </button>
     <button
       aria-label="chevron-left"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -363,27 +354,25 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="ChevronLeftIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+        />
+      </svg>
     </button>
     <button
       aria-label="chevron-right"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -397,27 +386,25 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="ChevronRightIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+        />
+      </svg>
     </button>
     <button
       aria-label="last page"
-      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
       disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -431,20 +418,17 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
       tabIndex={-1}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="LastPageIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M5.59 7.41 10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
+        />
+      </svg>
     </button>
   </div>
 </div>

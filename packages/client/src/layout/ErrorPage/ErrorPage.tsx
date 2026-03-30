@@ -4,10 +4,9 @@
 
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import CloudOffIcon from '@material-ui/icons/CloudOff'
-import { Grid } from '@material-ui/core'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import { createStyles, Theme } from '@material-ui/core/styles'
+import CloudOffIcon from '@mui/icons-material/CloudOff'
+import { Grid } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 import { AxiosError } from 'axios'
 
 export type ErrorState = {
@@ -34,22 +33,20 @@ export const useAxiosErrorHandling = (
   return { error, setError }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    cloudIcon: {
-      fontSize: '175px',
-      color: theme.palette.primary.main,
-    },
-    errorStatus: {
-      fontSize: '36px',
-      textAlign: 'center',
-    },
-    errorMessage: {
-      fontSize: '18px',
-      textAlign: 'center',
-    },
-  }),
-)
+const useStyles = makeStyles()((theme) => ({
+  cloudIcon: {
+    fontSize: '175px',
+    color: theme.palette.primary.main,
+  },
+  errorStatus: {
+    fontSize: '36px',
+    textAlign: 'center',
+  },
+  errorMessage: {
+    fontSize: '18px',
+    textAlign: 'center',
+  },
+}))
 
 const DEFAULT_ERROR = {
   status: '520',
@@ -72,7 +69,7 @@ interface ErrorPageProps {
 const ErrorPage = (props: ErrorPageProps): ReactElement<ErrorPageProps> => {
   const location = useLocation()
   const { statusText, status } = (location.state as ErrorState) ?? DEFAULT_ERROR
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Grid

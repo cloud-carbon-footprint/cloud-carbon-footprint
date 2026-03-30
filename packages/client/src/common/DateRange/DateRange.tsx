@@ -3,7 +3,7 @@
  */
 
 import { FunctionComponent, ReactElement } from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import moment from 'moment'
 import useStyles from './dateRangeStyles'
 
@@ -14,7 +14,7 @@ type DateRangeProps = {
 const DateRange: FunctionComponent<DateRangeProps> = ({
   lookBackPeriodDays,
 }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const today = moment().utc()
   const todayFormatted = today.format('ll')
   const lookBackDateFormatted = today

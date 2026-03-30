@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import useStyles from '../recommendationsSidePanelStyles'
 
 type RecommendationsPanelRowProps = {
@@ -14,7 +14,7 @@ type RecommendationsPanelRowProps = {
 const RecommendationsPanelRow: FunctionComponent<
   RecommendationsPanelRowProps
 > = ({ label, content }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Grid
       container

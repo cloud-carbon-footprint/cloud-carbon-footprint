@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
-import { Warning } from '@material-ui/icons'
-import { Typography } from '@material-ui/core'
+import { Warning } from '@mui/icons-material'
+import { Typography } from '@mui/material'
 import useStyles from './errorStyles'
 import { ForecastErrorType } from '../Forecast'
 import clsx from 'clsx'
@@ -15,7 +15,7 @@ type ErrorMessages = {
 }
 
 const Error: FunctionComponent<ErrorProps> = ({ errorType, hasContainer }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const containerClasses = clsx(classes.container, {
     [classes.noContainer]: hasContainer,
   })

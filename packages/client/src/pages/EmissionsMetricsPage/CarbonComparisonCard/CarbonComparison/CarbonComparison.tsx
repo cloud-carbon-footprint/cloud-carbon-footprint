@@ -9,8 +9,8 @@ import {
   CardContent,
   Link,
   Typography,
-} from '@material-ui/core'
-import { OpenInNew } from '@material-ui/icons'
+} from '@mui/material'
+import { OpenInNew } from '@mui/icons-material'
 import { ComparisonItem } from '../../../../Types'
 import useStyles from '../carbonComparisonStyles'
 
@@ -20,7 +20,7 @@ type CarbonComparisonProps = {
   comparisons: { [name: string]: ComparisonItem }
   selection: string
   updateSelection: (selection: string) => void
-  updateButtonColor: (selection: string) => 'default' | 'primary'
+  updateButtonColor: (selection: string) => 'inherit' | 'primary'
 }
 
 const CarbonComparison: FunctionComponent<CarbonComparisonProps> = ({
@@ -31,7 +31,7 @@ const CarbonComparison: FunctionComponent<CarbonComparisonProps> = ({
   updateSelection,
   updateButtonColor,
 }): ReactElement => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const currentSource = comparisons[selection].source
 
   return (

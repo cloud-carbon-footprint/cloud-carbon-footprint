@@ -4,11 +4,12 @@
 
 import {
   useGridApiContext,
-  useGridState,
+  useGridSelector,
+  gridPageCountSelector,
+  gridPaginationModelSelector,
   GridToolbarContainer,
 } from '@mui/x-data-grid'
-import Pagination from '@material-ui/lab/Pagination'
-import { Box, MenuItem, Select, Typography } from '@material-ui/core'
+import { Pagination, Box, MenuItem, Select, Typography } from '@mui/material'
 import { FunctionComponent, ReactElement } from 'react'
 import useStyles from './recommendationsTableStyles'
 
@@ -20,15 +21,16 @@ const CustomPagination: FunctionComponent<CustomPaginationProps> = ({
   handlePageSizeChange,
 }): ReactElement => {
   const apiRef = useGridApiContext()
-  const [state] = useGridState(apiRef)
-  const classes = useStyles()
+  const paginationModel = useGridSelector(apiRef, gridPaginationModelSelector)
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector)
+  const { classes } = useStyles()
 
   return (
     <GridToolbarContainer>
       <Box display="flex" flexGrow={1} />
       <Typography className={classes.rowsPerPage}>Rows per page:</Typography>
       <Select
-        value={state.pagination.pageSize}
+        value={paginationModel.pageSize}
         onChange={(event) => handlePageSizeChange(event.target.value)}
       >
         <MenuItem value={25}>25</MenuItem>
@@ -40,8 +42,8 @@ const CustomPagination: FunctionComponent<CustomPaginationProps> = ({
         color="primary"
         size="small"
         shape="rounded"
-        count={state.pagination.pageCount}
-        page={state.pagination.page + 1}
+        count={pageCount}
+        page={paginationModel.page + 1}
         showFirstButton
         showLastButton
         onChange={(event, value) => apiRef.current.setPage(value - 1)}

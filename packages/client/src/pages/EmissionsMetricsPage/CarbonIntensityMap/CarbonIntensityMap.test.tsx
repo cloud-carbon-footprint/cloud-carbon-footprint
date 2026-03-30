@@ -27,7 +27,7 @@ describe('Carbon Intensity Map', () => {
     expect(dropdown).toBeInTheDocument()
 
     // Clicks on Material UI's select element to display the popup that has the options to be queried
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const dropdownOptions = within(getByRole('listbox'))
 
     expect(dropdownOptions.getByText('AWS')).toBeInTheDocument()
@@ -38,7 +38,7 @@ describe('Carbon Intensity Map', () => {
   it('should show a map for GCP when selecting GCP from the dropdown', () => {
     const { getByTestId, getByRole } = render(<CarbonIntensityMap />)
 
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const dropdownOptions = within(getByRole('listbox'))
     fireEvent.click(dropdownOptions.getByText('GCP'))
 
@@ -48,7 +48,7 @@ describe('Carbon Intensity Map', () => {
   it('should show a map for Azure when selecting Azure from the dropdown', () => {
     const { getByTestId, getByRole } = render(<CarbonIntensityMap />)
 
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const dropdownOptions = within(getByRole('listbox'))
     fireEvent.click(dropdownOptions.getByText('Azure'))
 

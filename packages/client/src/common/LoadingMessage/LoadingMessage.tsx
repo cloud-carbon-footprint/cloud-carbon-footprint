@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CircularProgress, Grid } from '@material-ui/core'
+import { CircularProgress, Grid } from '@mui/material'
 import React, { FunctionComponent } from 'react'
 import useStyles from './loadingMessageStyles'
 
@@ -13,7 +13,7 @@ type LoadingMessageProps = {
 const LoadingMessage: FunctionComponent<LoadingMessageProps> = ({
   message,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Grid container className={classes.loadingContainer}>
       <CircularProgress size={100} />

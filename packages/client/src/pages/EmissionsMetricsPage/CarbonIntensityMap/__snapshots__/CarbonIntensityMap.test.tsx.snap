@@ -2,50 +2,59 @@
 
 exports[`Carbon Intensity Map should render with correct configuration 1`] = `
 <div
-  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 css-13i4rnv-MuiGrid-root"
 >
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-card-4 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-fm2ips-MuiPaper-root-MuiCard-root-card"
+    style={
+      Object {
+        "--Paper-shadow": "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
+      }
+    }
   >
     <div
-      className="MuiBox-root MuiBox-root-10 makeStyles-contentContainer-8"
+      className="MuiBox-root css-1vw7nz5-contentContainer"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-9"
+        className="MuiCardContent-root css-13mdtst-MuiCardContent-root-cardContent"
       >
         <div
-          className="MuiBox-root MuiBox-root-11 makeStyles-topContainer-2"
+          className="MuiBox-root css-h551wz-topContainer"
         >
           <p
-            className="MuiTypography-root makeStyles-title-1 MuiTypography-body1"
+            className="MuiTypography-root MuiTypography-body1 css-1q4qy19-MuiTypography-root-title"
+            style={Object {}}
           >
             Carbon Intensity Map
           </p>
           <div
-            className="MuiFormControl-root"
+            className="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
           >
             <div
-              className="MuiInputBase-root MuiInputBase-formControl"
+              className="MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-wo92li-MuiInputBase-root"
               data-testid="select"
               onClick={[Function]}
             >
               <div
+                aria-expanded="false"
                 aria-haspopup="listbox"
                 aria-labelledby="map-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-12"
+                className="MuiSelect-select MuiSelect-outlined MuiInputBase-input css-1m7yk8f-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
                 id="map-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onKeyDown={[Function]}
                 onMouseDown={[Function]}
-                role="button"
+                role="combobox"
                 tabIndex={0}
               >
                 AWS
               </div>
               <input
                 aria-hidden={true}
-                className="MuiSelect-nativeInput"
+                aria-invalid={false}
+                className="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+                disabled={false}
                 onAnimationStart={[Function]}
                 onChange={[Function]}
                 required={false}
@@ -54,7 +63,8 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
               />
               <svg
                 aria-hidden={true}
-                className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
+                data-testid="ArrowDropDownIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
               >
@@ -66,11 +76,11 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
           </div>
         </div>
         <div
-          className="MuiBox-root MuiBox-root-13"
+          className="MuiBox-root css-3ciuqz"
         >
           <img
             alt="AWS Map"
-            className="makeStyles-map-3"
+            className="css-kfdy4-map"
             data-testid="awsIntensityMap"
             src="AWSMap.png"
           />

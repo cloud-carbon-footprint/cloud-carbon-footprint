@@ -3,8 +3,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-} from '@material-ui/core'
-import { ExpandMore } from '@material-ui/icons'
+} from '@mui/material'
+import { ExpandMore } from '@mui/icons-material'
 import { Moment } from 'moment'
 import { FunctionComponent } from 'react'
 import { ForecastError as ErrorType } from '../Forecast'
@@ -16,7 +16,7 @@ type ErrorListProps = {
 }
 
 const ErrorList: FunctionComponent<ErrorListProps> = ({ missingDates }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Accordion className={classes.accordionContainer}>

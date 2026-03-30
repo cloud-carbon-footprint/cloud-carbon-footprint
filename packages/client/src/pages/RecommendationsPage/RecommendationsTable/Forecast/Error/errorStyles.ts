@@ -2,9 +2,9 @@
  * © 2023 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   container: {
     padding: '0.75em 1em',
     background: 'rgba(63, 81, 181, 0.08)',

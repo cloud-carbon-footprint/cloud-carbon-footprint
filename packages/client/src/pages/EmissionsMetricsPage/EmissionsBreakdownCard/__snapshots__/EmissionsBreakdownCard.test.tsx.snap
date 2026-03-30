@@ -2,51 +2,59 @@
 
 exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] = `
 <div
-  className="MuiGrid-root makeStyles-cardHalf-17 MuiGrid-item"
+  className="MuiGrid-root MuiGrid-item css-1iudnio-MuiGrid-root-cardHalf"
 >
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-card-16 makeStyles-minHeight-18 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1qqhtpd-MuiPaper-root-MuiCard-root-card-minHeight"
+    style={
+      Object {
+        "--Paper-shadow": "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
+      }
+    }
   >
     <div
-      className="MuiBox-root MuiBox-root-22 makeStyles-contentContainer-20"
+      className="MuiBox-root css-1vw7nz5-contentContainer"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-21"
+        className="MuiCardContent-root css-13mdtst-MuiCardContent-root-cardContent"
       >
         <div
-          className="makeStyles-topContainer-14"
+          className="css-11amkn8-topContainer"
           id="emissionsBreakdownContainer"
         >
           <p
-            className="makeStyles-title-15"
+            className="css-wqjyws-title"
           >
             Emissions Breakdown
           </p>
           <div
-            className="MuiFormControl-root"
+            className="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
           >
             <div
-              className="MuiInputBase-root MuiInputBase-formControl"
+              className="MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-wo92li-MuiInputBase-root"
               data-testid="select"
               onClick={[Function]}
             >
               <div
+                aria-expanded="false"
                 aria-haspopup="listbox"
                 aria-labelledby="breakdown-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-23"
+                className="MuiSelect-select MuiSelect-outlined MuiInputBase-input css-1m7yk8f-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
                 id="breakdown-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onKeyDown={[Function]}
                 onMouseDown={[Function]}
-                role="button"
+                role="combobox"
                 tabIndex={0}
               >
                 Region
               </div>
               <input
                 aria-hidden={true}
-                className="MuiSelect-nativeInput"
+                aria-invalid={false}
+                className="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+                disabled={false}
                 onAnimationStart={[Function]}
                 onChange={[Function]}
                 required={false}
@@ -55,7 +63,8 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               />
               <svg
                 aria-hidden={true}
-                className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
+                data-testid="ArrowDropDownIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
               >
@@ -67,7 +76,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
           </div>
         </div>
         <div
-          className="makeStyles-barChartContainer-24"
+          className="css-1kl06em-barChartContainer"
         >
           <div
             style={
@@ -123,7 +132,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
                 className="t-bar"
                 style={
                   Object {
-                    "backgroundColor": "#aaaaaa",
+                    "backgroundColor": "#eeeeee",
                     "flexGrow": 2,
                     "height": "1px",
                   }
@@ -145,7 +154,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
                 className="t-bar"
                 style={
                   Object {
-                    "backgroundColor": "#aaaaaa",
+                    "backgroundColor": "#eeeeee",
                     "flexGrow": 2,
                     "height": "1px",
                   }
@@ -167,7 +176,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
                 className="t-bar"
                 style={
                   Object {
-                    "backgroundColor": "#aaaaaa",
+                    "backgroundColor": "#eeeeee",
                     "flexGrow": 2,
                     "height": "1px",
                   }
@@ -189,7 +198,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
                 className="t-bar"
                 style={
                   Object {
-                    "backgroundColor": "#aaaaaa",
+                    "backgroundColor": "#eeeeee",
                     "flexGrow": 2,
                     "height": "1px",
                   }
@@ -211,10 +220,10 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
           </div>
           <div />
           <div
-            className="makeStyles-paginationContainer-25"
+            className="css-1omlrkm-paginationContainer"
           >
             <span
-              className="makeStyles-paginationLabel-26"
+              className="css-p956zy-paginationLabel"
             >
               1 - 1
                of 
@@ -222,10 +231,11 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
             </span>
             <button
               aria-label="first page"
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+              className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
+              onContextMenu={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -239,27 +249,25 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               tabIndex={-1}
               type="button"
             >
-              <span
-                className="MuiIconButton-label"
+              <svg
+                aria-hidden={true}
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                data-testid="FirstPageIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  aria-hidden={true}
-                  className="MuiSvgIcon-root"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M18.41 16.59 13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
+                />
+              </svg>
             </button>
             <button
               aria-label="chevron-left"
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+              className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
+              onContextMenu={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -273,27 +281,25 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               tabIndex={-1}
               type="button"
             >
-              <span
-                className="MuiIconButton-label"
+              <svg
+                aria-hidden={true}
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                data-testid="ChevronLeftIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  aria-hidden={true}
-                  className="MuiSvgIcon-root"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                />
+              </svg>
             </button>
             <button
               aria-label="chevron-right"
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+              className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
+              onContextMenu={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -307,27 +313,25 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               tabIndex={-1}
               type="button"
             >
-              <span
-                className="MuiIconButton-label"
+              <svg
+                aria-hidden={true}
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                data-testid="ChevronRightIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  aria-hidden={true}
-                  className="MuiSvgIcon-root"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                />
+              </svg>
             </button>
             <button
               aria-label="last page"
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+              className="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1svfwy9-MuiButtonBase-root-MuiIconButton-root"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
+              onContextMenu={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -341,20 +345,17 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               tabIndex={-1}
               type="button"
             >
-              <span
-                className="MuiIconButton-label"
+              <svg
+                aria-hidden={true}
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                data-testid="LastPageIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  aria-hidden={true}
-                  className="MuiSvgIcon-root"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M5.59 7.41 10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
+                />
+              </svg>
             </button>
           </div>
         </div>

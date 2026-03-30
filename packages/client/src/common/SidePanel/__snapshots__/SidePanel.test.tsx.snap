@@ -2,19 +2,25 @@
 
 exports[`Side Bar renders 1`] = `
 <div
-  className="MuiDrawer-root MuiDrawer-docked makeStyles-drawer-3 makeStyles-drawer-9 makeStyles-drawerClose-5"
+  className="MuiDrawer-root MuiDrawer-anchorRight MuiDrawer-docked css-nce4eq-MuiDrawer-docked-drawer-drawerClose"
   id="drawer-closed"
 >
   <div
-    className="MuiPaper-root MuiDrawer-paper makeStyles-drawerClose-5 MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight MuiPaper-elevation0"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation0 MuiDrawer-paper MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight css-4copqf-MuiPaper-root-MuiDrawer-paper-drawerClose"
+    style={
+      Object {
+        "--Paper-shadow": "none",
+      }
+    }
   >
     <button
       aria-label="open drawer"
-      className="MuiButtonBase-root MuiIconButton-root makeStyles-infoButton-1 MuiIconButton-colorInherit MuiIconButton-edgeStart"
-      disabled={false}
+      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart MuiIconButton-sizeMedium css-1blr2er-MuiButtonBase-root-MuiIconButton-root-infoButton"
+      disabled={null}
       id="info-button"
       onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -28,34 +34,31 @@ exports[`Side Bar renders 1`] = `
       tabIndex={0}
       type="button"
     >
-      <span
-        className="MuiIconButton-label"
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+        data-testid="infoIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
       >
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root"
-          data-testid="infoIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
-          />
-        </svg>
-      </span>
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+        />
+      </svg>
     </button>
     <div
-      className="makeStyles-toolbar-6 makeStyles-hide-7"
+      className="css-1399a6s-toolbar css-ufw61h-hide"
     >
       <div
-        className="makeStyles-closeButtonContainer-2"
+        className="css-dmkffz-closeButtonContainer"
         id="close-button-container"
       >
         <button
-          className="MuiButtonBase-root MuiIconButton-root"
-          disabled={false}
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-53g0n7-MuiButtonBase-root-MuiIconButton-root"
+          disabled={null}
           onBlur={[Function]}
           onClick={[Function]}
+          onContextMenu={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
@@ -69,29 +72,26 @@ exports[`Side Bar renders 1`] = `
           tabIndex={0}
           type="button"
         >
-          <span
-            className="MuiIconButton-label"
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="closeIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
           >
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root"
-              data-testid="closeIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-            </svg>
-          </span>
+            <path
+              d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+          </svg>
         </button>
       </div>
       <h3
-        className="MuiTypography-root makeStyles-contentTitle-8 MuiTypography-body1"
+        className="MuiTypography-root MuiTypography-body1 css-4m9hsa-MuiTypography-root-contentTitle"
         data-testid="sideBarTitle"
+        style={Object {}}
       />
       <hr
-        className="MuiDivider-root"
+        className="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
       />
     </div>
   </div>

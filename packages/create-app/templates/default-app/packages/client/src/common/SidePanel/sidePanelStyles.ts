@@ -2,25 +2,25 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 import { SidePanelProps } from '../../Types'
 
-const useStyles = makeStyles(
-  ({ palette, transitions, spacing, breakpoints, mixins }) => ({
+const useStyles = makeStyles<Pick<SidePanelProps, 'drawerWidth'>>()(
+  ({ palette, transitions, spacing, breakpoints, mixins }, { drawerWidth }) => ({
     infoButton: {
       margin: spacing(10, 'auto'),
       color:
-        palette.type === 'dark' ? palette.text.primary : palette.primary.main,
+        palette.mode === 'dark' ? palette.text.primary : palette.primary.main,
     },
     closeButtonContainer: {
       textAlign: 'right',
     },
     drawer: {
-      width: ({ drawerWidth }: SidePanelProps) => drawerWidth,
+      width: drawerWidth,
       flexShrink: 0,
     },
     drawerOpen: {
-      width: ({ drawerWidth }: SidePanelProps) => drawerWidth,
+      width: drawerWidth,
       transition: transitions.create('width', {
         easing: transitions.easing.sharp,
         duration: transitions.duration.enteringScreen,
@@ -32,15 +32,14 @@ const useStyles = makeStyles(
         duration: transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: 0, //spacing(4) + 1,
+      width: 0,
       [breakpoints.up('sm')]: {
-        width: spacing(6) + 1,
+        width: `calc(${spacing(6)} + 1px)`,
       },
-      marginRight: 14, // Offset to make scrollbar visible
+      marginRight: 14,
     },
     toolbar: {
       padding: spacing(10, 1),
-      // necessary for content to be below app bar
       ...mixins.toolbar,
     },
     hide: {

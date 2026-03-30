@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import useStyles from '../recommendationsSidePanelStyles'
 
 type RecommendationsPanelColumnProps = {
@@ -16,7 +16,7 @@ type RecommendationsPanelColumnProps = {
 const RecommendationsPanelColumn: FunctionComponent<
   RecommendationsPanelColumnProps
 > = ({ label, content, subLabel, hasLeftAlignedContent }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Grid
       className={classes.detailsColumn}

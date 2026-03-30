@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Select } from '@material-ui/core'
+import { Select } from '@mui/material'
 import SelectDropdown from './SelectDropdown'
 import { create } from 'react-test-renderer'
 import { fireEvent, render, within } from '@testing-library/react'
@@ -33,7 +33,7 @@ describe('Select Dropdown', () => {
     const { dropdownOptions } = props
 
     // Clicks on Material UI's select element to display the popup that has the options to be queried
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const menuItems = within(getByRole('listbox'))
 
     expect(menuItems.getAllByRole('option')).toHaveLength(3)
@@ -47,7 +47,7 @@ describe('Select Dropdown', () => {
       <SelectDropdown {...props} dropdownOptions={['example']} />,
     )
 
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const menuItems = within(getByRole('listbox'))
 
     expect(menuItems.getByRole('option')).toHaveTextContent('Example')
@@ -56,7 +56,7 @@ describe('Select Dropdown', () => {
   it('should call the passed handleChange function when an option is selected', () => {
     const { getByRole } = render(<SelectDropdown {...props} />)
 
-    fireEvent.mouseDown(getByRole('button'))
+    fireEvent.mouseDown(getByRole('combobox'))
     const dropdownOptions = within(getByRole('listbox'))
     fireEvent.click(dropdownOptions.getByText('Option B'))
 

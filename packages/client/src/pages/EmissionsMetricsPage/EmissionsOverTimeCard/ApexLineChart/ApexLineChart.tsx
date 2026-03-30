@@ -8,8 +8,8 @@ import moment, { unitOfTime } from 'moment'
 import { renderToStaticMarkup } from 'react-dom/server'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
-import { useTheme } from '@material-ui/core/styles'
-import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
+import { useTheme } from '@mui/material/styles'
+import { GetApp, PanTool, RotateLeft, ZoomIn } from '@mui/icons-material'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ApexChartProps, DateRange } from '../../../../Types'
 import { getChartColors, CCFTheme } from '../../../../utils/themes'
@@ -202,7 +202,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       width: 1,
     },
     theme: {
-      mode: theme.palette.type,
+      mode: theme.palette.mode,
     },
     tooltip: {
       shared: true,

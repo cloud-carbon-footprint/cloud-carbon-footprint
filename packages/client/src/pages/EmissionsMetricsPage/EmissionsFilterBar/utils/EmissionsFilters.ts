@@ -26,7 +26,7 @@ import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { ServiceChooser } from './options/ServiceChooser'
 
 const defaultConfig: FiltersConfig = {
-  timeframe: 36,
+  timeframe: 72,
   dateRange: null,
   options: {
     [DropdownFilterOptions.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],

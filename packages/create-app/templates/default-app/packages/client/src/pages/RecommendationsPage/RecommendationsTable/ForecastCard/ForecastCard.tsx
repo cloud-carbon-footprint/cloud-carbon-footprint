@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent } from 'react'
 import clsx from 'clsx'
-import { Card, Divider, Typography } from '@material-ui/core'
+import { Card, Divider, Typography } from '@mui/material'
 import Tooltip from '../../../../common/Tooltip'
 import useStyles from './forecastCardStyles'
 import PercentBadge from '../PercentBadge'
@@ -30,7 +30,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   co2eUnit = Co2eUnit.MetricTonnes,
   id,
 }) => {
-  const classes = useStyles({ co2ePercentChange, costPercentChange })
+  const { classes } = useStyles()
   const hasCo2ePercentChange = co2ePercentChange !== undefined
   const hasCostPercentChange = costPercentChange !== undefined
 

@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from 'tss-react/mui'
 
 const PADDING_LOADING = 2
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   loadingContainer: {
     flexDirection: 'column',
     alignItems: 'center',

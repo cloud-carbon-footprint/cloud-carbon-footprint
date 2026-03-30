@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent, ReactElement } from 'react'
 import clsx from 'clsx'
-import { Box, Card, CardContent, Grid, Typography } from '@material-ui/core'
+import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import useStyles from './DashboardCardStyles'
 
 type DashboardCardProps = {
@@ -26,7 +26,7 @@ const DashboardCard: FunctionComponent<DashboardCardProps> = ({
   containerClass,
   children,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Grid

@@ -2,9 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(({ palette }) => {
+const useStyles = makeStyles()(({ palette }) => {
   return {
     paginationContainer: {
       paddingTop: '10px',

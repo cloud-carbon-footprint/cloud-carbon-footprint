@@ -3,9 +3,9 @@
  */
 
 import { FunctionComponent } from 'react'
-import { IconButton, TextField } from '@material-ui/core'
-import ClearIcon from '@material-ui/icons/Clear'
-import SearchIcon from '@material-ui/icons/Search'
+import { IconButton, TextField } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear'
+import SearchIcon from '@mui/icons-material/Search'
 import useStyles from './searchBarStyles'
 
 type SearchBarProps = {
@@ -19,7 +19,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({
   onChange,
   clearSearch,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <TextField
       data-testid="search-input"

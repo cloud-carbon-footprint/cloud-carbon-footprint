@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { makeStyles } from '@material-ui/core/styles'
-import { CCFTheme } from '../../../utils/themes'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles<CCFTheme>(({ palette, spacing }) => {
+const useStyles = makeStyles()(({ palette, spacing }) => {
   return {
     title: {
       color: palette.primary.contrastText,

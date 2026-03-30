@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography, SelectChangeEvent } from '@mui/material'
 import SelectDropdown from '../../../common/SelectDropdown'
 import DashboardCard from '../../../layout/DashboardCard'
 import AWSMap from './AWSMap.png'
@@ -19,7 +19,7 @@ type IntensityMaps = {
 
 const CarbonIntensityMap = (): ReactElement => {
   const [cloudProvider, setCloudProvider] = useState('AWS')
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const intensityMaps: IntensityMaps = {
     AWS: AWSMap,
@@ -27,7 +27,7 @@ const CarbonIntensityMap = (): ReactElement => {
     Azure: AzureMap,
   }
 
-  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+  const handleChange = (event: SelectChangeEvent<string>) => {
     setCloudProvider(event.target.value)
   }
 

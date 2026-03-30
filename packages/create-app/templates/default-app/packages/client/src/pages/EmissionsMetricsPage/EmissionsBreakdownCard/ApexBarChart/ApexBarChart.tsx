@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent, useState } from 'react'
 import Chart from 'react-apexcharts'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 import { PageEntry, Page, barChartCustomColors } from '../../../../Types'
 import useStyles from './apexBarChartStyles'
 import { createCustomBarColors, mapToRange } from './helpers'
@@ -29,7 +29,7 @@ const ApexBarChart: FunctionComponent<ApexBarChartProps> = ({
   })
 
   const theme = useTheme()
-  const classes = useStyles()
+  const { classes } = useStyles()
   const mainTheme = theme.palette.primary.main
   const darkTheme = theme.palette.primary.dark
 

@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { Button, ButtonGroup } from '@material-ui/core'
+import { Button, ButtonGroup } from '@mui/material'
 import { FilterProps } from '../../../../../Types'
 import useStyles from './monthFilterStyles'
 
@@ -11,7 +11,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({
   filters,
   setFilters,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const timeframes: { [label: string]: number } = {
     '1M': 1,
     '3M': 3,
@@ -35,7 +35,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({
               disableElevation
               key={label}
               variant={isCurrentTimeFrame(time) ? 'contained' : undefined}
-              color={isCurrentTimeFrame(time) ? 'primary' : 'default'}
+              color={isCurrentTimeFrame(time) ? 'primary' : 'inherit'}
               onClick={() => setFilters(filters.withTimeFrame(time))}
               className={classes.button}
             >

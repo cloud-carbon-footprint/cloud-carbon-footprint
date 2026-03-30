@@ -4,13 +4,13 @@
 
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { Close, Info } from '@material-ui/icons'
-import { Typography, Drawer, Divider, IconButton } from '@material-ui/core'
+import { Close, Info } from '@mui/icons-material'
+import { Typography, Drawer, Divider, IconButton } from '@mui/material'
 import { SidePanelProps } from '../../Types'
 import useStyles from './sidePanelStyles'
 
 const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
-  const classes = useStyles(props)
+  const { classes } = useStyles({ drawerWidth: props.drawerWidth })
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

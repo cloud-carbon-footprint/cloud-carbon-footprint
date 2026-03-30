@@ -4,8 +4,8 @@
 
 import { FunctionComponent } from 'react'
 import clsx from 'clsx'
-import { Typography } from '@material-ui/core'
-import { TrendingDown, TrendingFlat, TrendingUp } from '@material-ui/icons'
+import { Typography } from '@mui/material'
+import { TrendingDown, TrendingFlat, TrendingUp } from '@mui/icons-material'
 import { formattedNumberWithCommas } from '../../../../utils/helpers/transformData'
 import useStyles from './percentBadgeStyles'
 
@@ -14,7 +14,7 @@ type PercentBadgeProps = {
 }
 
 const PercentBadge: FunctionComponent<PercentBadgeProps> = ({ amount }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const trendingArrowIcon = () => {
     if (amount < 0)
