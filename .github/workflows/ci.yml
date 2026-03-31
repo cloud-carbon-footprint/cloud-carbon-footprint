@@ -514,6 +514,11 @@ jobs:
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
+          yarn set version 1.22.4
+          rm -f yarn.lock package.json
+          cd dist-workspace/packages/client
+          yarn install
+          cd ../../..
 
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
