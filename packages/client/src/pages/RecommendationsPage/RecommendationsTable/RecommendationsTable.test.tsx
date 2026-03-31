@@ -11,8 +11,7 @@ import {
 } from '@testing-library/react'
 import each from 'jest-each'
 import moment from 'moment'
-import { act } from 'react-dom/test-utils'
-import React from 'react'
+import React, { act } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { Co2eUnit, ServiceResult } from '../../../Types'
 import {

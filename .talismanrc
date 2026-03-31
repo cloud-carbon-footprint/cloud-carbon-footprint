@@ -243,6 +243,8 @@ fileignoreconfig:
   checksum: 4023aca308afc058ea67013d0a5a3f8a513eb7e47d4b87b9ee0daebe3e030fc1
 - filename: packages/client/src/common/FilterBar/utils/OptionChooser.ts
   checksum: c32a914549f1f0b14676e2fc073ade25979a2db15362a01221061283d7713d56
+- filename: packages/client/src/common/FilterDropdown/FilterDropdown.tsx
+  checksum: 4b81dcdeea6edd016c020bd087a4f92b131f95e1dc03750f970d859477a04f63
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
   checksum: e30283b83d2ccfa4e72c58d243c11c8251019cf5d7f6da5b8c9649a94984c147
 - filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
@@ -289,6 +291,8 @@ fileignoreconfig:
   checksum: c57d6e00062fb19ac80689510822dc06e2a85b18a309f96443f6e5f6de6b08c9
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.test.tsx
+  checksum: bf8017c29b9d9aa70925897e93e8734b0d3a7d51e9f0a324c68e0b3755caaa64
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.tsx
   checksum: 2b82491331fdf97d40600b5bc0ffae48fafc0b9cde278d529f2d37d8e9393007
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters.test.ts

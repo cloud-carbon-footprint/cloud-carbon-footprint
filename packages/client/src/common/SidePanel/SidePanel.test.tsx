@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
+import React, { act } from 'react'
 import { create } from 'react-test-renderer'
 import { fireEvent, render } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
 import SidePanel from './SidePanel'
 
 describe('Side Bar', () => {

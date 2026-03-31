@@ -73,14 +73,15 @@ const ApexBarChart: FunctionComponent<ApexBarChartProps> = ({
     y: dataType === 'region' ? -122 : -55,
   }
 
+  const barSeries = [
+    {
+      name: 'Total CO2e',
+      data: pageData.data,
+    },
+  ]
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: any = {
-    series: [
-      {
-        name: 'Total CO2e',
-        data: pageData.data,
-      },
-    ],
     colors: customBarColors,
     chart: {
       type: 'bar',
@@ -195,12 +196,16 @@ const ApexBarChart: FunctionComponent<ApexBarChartProps> = ({
           colorRange={barChartCustomColors}
         />
       )}
-      <Chart
-        options={options}
-        series={options.series}
-        type="bar"
-        height={options.height}
-      />
+      {pageData.data.length > 0 ? (
+        <Chart
+          options={options}
+          series={barSeries}
+          type="bar"
+          height={options.height}
+        />
+      ) : (
+        <div />
+      )}
       <Pagination
         data={mappedDataEntries}
         pageSize={pageSize}

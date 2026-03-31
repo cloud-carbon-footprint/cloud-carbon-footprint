@@ -2,11 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
+import React, { act } from 'react'
 import { create } from 'react-test-renderer'
 import CarbonComparison from './CarbonComparison'
 import { fireEvent, render } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
 
 describe('CarbonComparison', () => {
   const FakeIcon = () => <div />

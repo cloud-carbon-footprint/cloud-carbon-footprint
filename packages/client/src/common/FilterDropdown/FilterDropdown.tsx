@@ -52,22 +52,25 @@ const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
       : ''
 
   const renderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+    liProps: React.HTMLAttributes<HTMLLIElement> & { key?: React.Key },
     option: DropdownOption,
     state: AutocompleteRenderOptionState,
-  ) => (
-    <li {...props}>
-      <Checkbox
-        color="primary"
-        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-        checkedIcon={<CheckBoxIcon fontSize="small" />}
-        className={classes.checkbox}
-        inputProps={{ role: `checkbox-${option.key}` }}
-        checked={state.selected}
-      />
-      {option.name}
-    </li>
-  )
+  ) => {
+    const { key, ...rest } = liProps
+    return (
+      <li key={key} {...rest}>
+        <Checkbox
+          color="primary"
+          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+          checkedIcon={<CheckBoxIcon fontSize="small" />}
+          className={classes.checkbox}
+          inputProps={{ role: `checkbox-${option.key}` }}
+          checked={state.selected}
+        />
+        {option.name}
+      </li>
+    )
+  }
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <TextField

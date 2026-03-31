@@ -5,16 +5,32 @@
 import React from 'react'
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import moment from 'moment'
-import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
-import { render } from '@testing-library/react'
 import ApexLineChart from './ApexLineChart'
-import { GroupBy, ServiceData } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
+import { DateRange } from '../../../../Types'
 
-jest.mock('apexcharts')
+jest.mock('react-apexcharts', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const React = require('react')
+  function MockChart(props: Record<string, unknown>) {
+    return React.createElement('div', {
+      'aria-label': (props['aria-label'] as string) || 'apex-line-chart',
+    })
+  }
+  return { __esModule: true, default: MockChart }
+})
+
 jest.mock('../../../../utils/themes')
 
 describe('ApexLineChart', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
   class EstimationResultBuilder {
     private timestamp = moment('2019-08-10T00:00:00.000Z').toDate()
     private serviceEstimates: ServiceData[] = [
@@ -72,9 +88,9 @@ describe('ApexLineChart', () => {
   const setToggledSeriesSpy = jest.fn()
   // Use this function to mock the component's state, and pass any initial values you'd want to override for a specific test
   const mockUseState = (
-    initialDateRange = { min: null, max: null },
-    initialChartData = [],
-    initialDefaultDateRange = { min: null, max: null },
+    initialDateRange: DateRange = { min: null, max: null },
+    initialChartData: EstimationResult[] = [],
+    initialDefaultDateRange: DateRange = { min: null, max: null },
     initialToggledSeries = [
       { CO2e: true },
       { 'Kilowatt Hours': false },
@@ -102,8 +118,8 @@ describe('ApexLineChart', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it('should manually disable kilowatt hours and cost series on initial data load', () => {
-    render(
+  it('should mark kilowatt hours and cost series hidden on initial data load', () => {
+    const testRenderer = create(
       <ApexLineChart
         data={[
           new EstimationResultBuilder()
@@ -112,12 +128,54 @@ describe('ApexLineChart', () => {
         ]}
       />,
     )
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', [
-      'Cost',
+    const ser = testRenderer.root.findByType(Chart)?.props?.series
+    expect(ser[0].hidden).toBeUndefined()
+    expect(ser[1].hidden).toBe(true)
+    expect(ser[2].hidden).toBe(true)
+  })
+
+  it('should not hide any series when all legends are enabled', () => {
+    mockUseState({ min: null, max: null }, [], { min: null, max: null }, [
+      { CO2e: true },
+      { 'Kilowatt Hours': true },
+      { Cost: true },
     ])
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', [
-      'Kilowatt Hours',
+
+    const testRenderer = create(
+      <ApexLineChart
+        data={[
+          new EstimationResultBuilder()
+            .withTime(new Date('2019-08-10T00:00:00.000Z'))
+            .build(),
+        ]}
+      />,
+    )
+    const ser = testRenderer.root.findByType(Chart)?.props?.series
+    expect(ser[0].hidden).toBeUndefined()
+    expect(ser[1].hidden).toBeUndefined()
+    expect(ser[2].hidden).toBeUndefined()
+  })
+
+  it('should hide all series when all legends are disabled', () => {
+    mockUseState({ min: null, max: null }, [], { min: null, max: null }, [
+      { CO2e: false },
+      { 'Kilowatt Hours': false },
+      { Cost: false },
     ])
+
+    const testRenderer = create(
+      <ApexLineChart
+        data={[
+          new EstimationResultBuilder()
+            .withTime(new Date('2019-08-10T00:00:00.000Z'))
+            .build(),
+        ]}
+      />,
+    )
+    const ser = testRenderer.root.findByType(Chart)?.props?.series
+    expect(ser[0].hidden).toBe(true)
+    expect(ser[1].hidden).toBe(true)
+    expect(ser[2].hidden).toBe(true)
   })
 
   it('should update chart with new data and default max values on props data change', () => {
@@ -144,6 +202,7 @@ describe('ApexLineChart', () => {
       },
       {
         name: 'Kilowatt Hours',
+        hidden: true,
         data: [
           {
             x: new Date('2019-08-10T00:00:00.000Z'),
@@ -153,6 +212,7 @@ describe('ApexLineChart', () => {
       },
       {
         name: 'Cost',
+        hidden: true,
         data: [
           {
             x: new Date('2019-08-10T00:00:00.000Z'),
@@ -164,6 +224,7 @@ describe('ApexLineChart', () => {
   })
 
   it('should set date range when data actually provided', () => {
+    setDateRangeSpy.mockClear()
     mockUseState()
 
     act(() => {
@@ -171,6 +232,37 @@ describe('ApexLineChart', () => {
     })
 
     expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not reset date range when default range is unchanged', () => {
+    setDateRangeSpy.mockClear()
+    setDefaultDateRangeSpy.mockClear()
+    mockUseState(
+      {
+        min: new Date('2019-08-10T00:00:00.000Z'),
+        max: new Date('2019-08-11T00:00:00.000Z'),
+      },
+      [],
+      {
+        min: new Date('2019-08-10T00:00:00.000Z'),
+        max: new Date('2019-08-11T00:00:00.000Z'),
+      },
+    )
+
+    act(() => {
+      create(
+        <ApexLineChart
+          data={[
+            new EstimationResultBuilder()
+              .withTime(new Date('2019-08-10T00:00:00.000Z'))
+              .build(),
+          ]}
+        />,
+      )
+    })
+
+    expect(setDateRangeSpy).not.toHaveBeenCalled()
+    expect(setDefaultDateRangeSpy).not.toHaveBeenCalled()
   })
 
   it('should not set date range state when zooming with apex line chart and less than two filtered items are within the range', () => {
@@ -320,6 +412,7 @@ describe('ApexLineChart', () => {
         },
         {
           name: 'Kilowatt Hours',
+          hidden: true,
           data: [
             {
               x: new Date('2019-08-10T00:00:00.000Z'),
@@ -333,6 +426,7 @@ describe('ApexLineChart', () => {
         },
         {
           name: 'Cost',
+          hidden: true,
           data: [
             {
               x: new Date('2019-08-10T00:00:00.000Z'),
@@ -370,5 +464,56 @@ describe('ApexLineChart', () => {
       { 'Kilowatt Hours': true },
       { Cost: false },
     ])
+  })
+
+  it('should keep at least one legend series visible', () => {
+    mockUseState({ min: null, max: null }, [], { min: null, max: null }, [
+      { CO2e: true },
+      { 'Kilowatt Hours': false },
+      { Cost: false },
+    ])
+
+    let testRenderer: ReactTestRenderer
+    act(() => {
+      testRenderer = create(<ApexLineChart data={[]} />)
+    })
+
+    act(() => {
+      const afterLegendClickCallback =
+        testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
+          ?.legendClick
+
+      expect(afterLegendClickCallback).toBeDefined()
+      afterLegendClickCallback(undefined, 0)
+    })
+
+    expect(setToggledSeriesSpy).toHaveBeenNthCalledWith(1, [
+      { CO2e: false },
+      { 'Kilowatt Hours': false },
+      { Cost: false },
+    ])
+    expect(setToggledSeriesSpy).toHaveBeenNthCalledWith(2, [
+      { CO2e: true },
+      { 'Kilowatt Hours': false },
+      { Cost: false },
+    ])
+  })
+
+  it('should format x-axis labels using day grouping format', () => {
+    const testRenderer = create(
+      <ApexLineChart
+        data={[
+          new EstimationResultBuilder()
+            .withTime(new Date('2019-08-10T00:00:00.000Z'))
+            .build(),
+        ]}
+      />,
+    )
+    const formatter =
+      testRenderer.root?.findByType(Chart)?.props?.options?.xaxis?.labels
+        ?.formatter
+
+    expect(formatter).toBeDefined()
+    expect(formatter('2019-08-10T00:00:00.000Z')).toEqual('Aug 11, 2019')
   })
 })

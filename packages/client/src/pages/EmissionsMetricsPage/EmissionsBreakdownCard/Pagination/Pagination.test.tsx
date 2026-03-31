@@ -2,10 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
+import React, { act } from 'react'
 import { create } from 'react-test-renderer'
 import { render, fireEvent } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
 import Pagination from './Pagination'
 
 describe('Pagination', () => {

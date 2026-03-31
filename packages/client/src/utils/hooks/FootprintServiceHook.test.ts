@@ -89,6 +89,31 @@ describe('FootprintServiceHook', () => {
       })
     })
 
+    it('should not throw when estimation rows omit serviceEstimates', async () => {
+      const rowWithoutServiceEstimates = {
+        timestamp: moment.utc('2020-08-27').toDate(),
+        groupBy: GroupBy.day,
+      } as EstimationResult
+
+      axiosMocked.get.mockResolvedValue({ data: [rowWithoutServiceEstimates] })
+
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useRemoteFootprintService({
+          baseUrl,
+          startDate,
+          endDate,
+          ignoreCache,
+          minLoadTimeMs,
+          groupBy,
+        }),
+      )
+
+      await waitForNextUpdate()
+      await waitForNextUpdate()
+      expect(result.current.error).toBeNull()
+      expect(result.current.data).toEqual([rowWithoutServiceEstimates])
+    })
+
     describe('when response is an error', () => {
       const error = {
         message: 'Axios generated error message',

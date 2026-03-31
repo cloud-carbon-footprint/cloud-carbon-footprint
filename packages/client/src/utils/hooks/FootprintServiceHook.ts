@@ -153,12 +153,13 @@ const checkForEqualObjects = (
 
   const newServiceEstimates =
     newEstimates[newEstimates?.length - 1]?.serviceEstimates
-  const lastNewDataObject = newServiceEstimates[newServiceEstimates?.length - 1]
+  const lastNewDataObject =
+    newServiceEstimates?.[newServiceEstimates.length - 1]
 
   const cachedServiceEstimates =
     cachedEstimates[cachedEstimates?.length - 1]?.serviceEstimates
   const lastCachedDataObject =
-    cachedServiceEstimates[cachedServiceEstimates?.length - 1]
+    cachedServiceEstimates?.[cachedServiceEstimates.length - 1]
 
   return equals(lastNewDataObject, lastCachedDataObject)
 }

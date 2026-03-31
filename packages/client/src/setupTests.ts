@@ -8,9 +8,8 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect'
 
-// suppress warning that comes from react-dates which the library maintainers cannot / will not fix
-// this may hide warnings that are caused by other class-based components
-// https://github.com/airbnb/react-dates/issues/1748
+// Suppress legacy React lifecycle warnings from older third-party dependencies in tests.
+// This may also hide similar warnings from other class components.
 jest.spyOn(global.console, 'warn').mockImplementation((message) => {
   if (
     !message.includes('componentWillReceiveProps') &&

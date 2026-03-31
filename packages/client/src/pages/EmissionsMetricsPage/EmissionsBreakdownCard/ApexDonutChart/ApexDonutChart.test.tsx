@@ -122,11 +122,10 @@ describe('ApexDonutChart', () => {
   it('should pass sorted chart options to Chart component', () => {
     const chartOptionLabels =
       fixture.root.findByType(Chart).props?.options?.labels
-    const chartOptionSeries =
-      fixture.root.findByType(Chart).props?.options?.series
+    const chartSeries = fixture.root.findByType(Chart).props?.series
 
     expect(chartOptionLabels).toEqual(['ebs', 'ec2', 's3', 'eks'])
-    expect(chartOptionSeries).toEqual([3000.014, 2000.014, 1000.014, 0.000014])
+    expect(chartSeries).toEqual([3000.014, 2000.014, 1000.014, 0.000014])
   })
 
   it('should format tool tip y values to 3 decimal places', () => {

@@ -6,6 +6,8 @@ import moment from 'moment'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import {
   checkFootprintDates,
+  checkIfAllDatesExistForForecast,
+  getEmissionDateRange,
   sliceFootprintDataByLastMonth,
 } from './handleDates'
 
@@ -323,5 +325,85 @@ describe('checks footprint dates', () => {
 
       expect(slicedFootprintData).toEqual(data.slice(data.length - 1))
     })
+  })
+})
+
+describe('getEmissionDateRange', () => {
+  it('uses default config when config argument is omitted', () => {
+    const { start, end } = getEmissionDateRange({})
+    expect(moment.isMoment(start)).toBe(true)
+    expect(moment.isMoment(end)).toBe(true)
+  })
+
+  it('uses PREVIOUS_YEAR_OF_USAGE when set', () => {
+    const { start, end } = getEmissionDateRange({
+      config: {
+        DATE_RANGE: { TYPE: 'day', VALUE: '30' },
+        MINIMAL_DATE_AGE: 0,
+        PREVIOUS_YEAR_OF_USAGE: true,
+        START_DATE: '',
+        END_DATE: '2023-03-15',
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+
+    expect(start.toISOString()).toEqual('2022-01-01T00:00:00.000Z')
+    expect(end.toISOString()).toEqual('2023-03-15T00:00:00.000Z')
+  })
+
+  it('uses START_DATE when PREVIOUS_YEAR_OF_USAGE is false', () => {
+    const { start, end } = getEmissionDateRange({
+      config: {
+        DATE_RANGE: { TYPE: 'month', VALUE: '2' },
+        MINIMAL_DATE_AGE: 0,
+        PREVIOUS_YEAR_OF_USAGE: false,
+        START_DATE: '2021-09-01',
+        END_DATE: '',
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+
+    expect(start.toISOString()).toEqual('2021-09-01T00:00:00.000Z')
+    expect(moment.isMoment(end)).toBe(true)
+  })
+
+  it('falls back to DATE_RANGE when PREVIOUS_YEAR_OF_USAGE and START_DATE are falsey', () => {
+    const nowSpy = jest
+      .spyOn(moment, 'now')
+      .mockReturnValue(+new Date('2023-03-10T00:00:00.000Z'))
+    const { start, end } = getEmissionDateRange({
+      config: {
+        DATE_RANGE: { TYPE: 'day', VALUE: '10' },
+        MINIMAL_DATE_AGE: 0,
+        PREVIOUS_YEAR_OF_USAGE: false,
+        START_DATE: '',
+        END_DATE: '',
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+
+    expect(end.toISOString()).toEqual('2023-03-10T00:00:00.000Z')
+    expect(start.toISOString()).toEqual('2023-02-28T00:00:00.000Z')
+    nowSpy.mockRestore()
+  })
+})
+
+describe('checkIfAllDatesExistForForecast', () => {
+  it('returns true when all expected dates are missing', () => {
+    expect(
+      checkIfAllDatesExistForForecast({
+        missingDates: [moment(), moment(), moment(), moment()],
+        groupBy: 'week',
+      }),
+    ).toBe(true)
+  })
+
+  it('returns false when only some dates are missing', () => {
+    expect(
+      checkIfAllDatesExistForForecast({
+        missingDates: [moment()],
+        groupBy: 'week',
+      }),
+    ).toBe(false)
   })
 })
