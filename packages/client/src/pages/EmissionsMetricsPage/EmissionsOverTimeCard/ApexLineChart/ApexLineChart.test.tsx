@@ -129,7 +129,7 @@ describe('ApexLineChart', () => {
       />,
     )
     const ser = testRenderer.root.findByType(Chart)?.props?.series
-    expect(ser[0].hidden).toBeUndefined()
+    expect(ser[0].hidden).toBe(false)
     expect(ser[1].hidden).toBe(true)
     expect(ser[2].hidden).toBe(true)
   })
@@ -151,9 +151,9 @@ describe('ApexLineChart', () => {
       />,
     )
     const ser = testRenderer.root.findByType(Chart)?.props?.series
-    expect(ser[0].hidden).toBeUndefined()
-    expect(ser[1].hidden).toBeUndefined()
-    expect(ser[2].hidden).toBeUndefined()
+    expect(ser[0].hidden).toBe(false)
+    expect(ser[1].hidden).toBe(false)
+    expect(ser[2].hidden).toBe(false)
   })
 
   it('should hide all series when all legends are disabled', () => {
@@ -190,6 +190,7 @@ describe('ApexLineChart', () => {
     expect(filteredSeries).toEqual([
       {
         name: 'CO2e',
+        hidden: false,
         data: [
           {
             x: new Date('2019-08-10T00:00:00.000Z'),
@@ -393,6 +394,7 @@ describe('ApexLineChart', () => {
       expect(filteredSeries).toEqual([
         {
           name: 'CO2e',
+          hidden: false,
           data: [
             {
               x: new Date('2019-08-10T00:00:00.000Z'),

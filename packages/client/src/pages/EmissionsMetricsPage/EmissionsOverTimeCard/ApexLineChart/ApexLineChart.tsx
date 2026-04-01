@@ -104,17 +104,17 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       {
         name: 'CO2e',
         data: co2SeriesData,
-        ...(visible[0] ? {} : { hidden: true }),
+        hidden: !visible[0],
       },
       {
         name: 'Kilowatt Hours',
         data: kilowattHoursSeriesData,
-        ...(visible[1] ? {} : { hidden: true }),
+        hidden: !visible[1],
       },
       {
         name: 'Cost',
         data: costSeriesData,
-        ...(visible[2] ? {} : { hidden: true }),
+        hidden: !visible[2],
       },
     ]
   }, [co2SeriesData, kilowattHoursSeriesData, costSeriesData, toggledSeries])
