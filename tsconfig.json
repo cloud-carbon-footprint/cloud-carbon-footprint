@@ -16,7 +16,8 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "noImplicitReturns": true,
-    "declaration": true
+    "declaration": true,
+    "jsx": "react-jsx"
   },
   "include": ["./src"],
   "exclude": ["./node_modules", "scripts", "**/__tests__/**" , "**/*.test.*"]

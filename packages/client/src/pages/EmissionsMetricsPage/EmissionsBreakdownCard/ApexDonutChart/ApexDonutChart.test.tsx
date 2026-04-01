@@ -106,6 +106,7 @@ describe('ApexDonutChart', () => {
     const mockReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: emissionsFactorData,
+      error: null,
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     fixture = create(<ApexDonutChart data={data} dataType="service" />)
@@ -133,5 +134,18 @@ describe('ApexDonutChart', () => {
       fixture.root.findByType(Chart).props?.options?.tooltip?.y?.formatter
     expect(yFormatter).toBeDefined()
     expect(yFormatter(2000.0140003)).toEqual('2000.014 metric tons')
+  })
+
+  it('returns null when data is empty', () => {
+    const mockReturnValue: ServiceResult<EmissionRatioResult> = {
+      loading: false,
+      data: emissionsFactorData,
+      error: null,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
+    const emptyData: EstimationResult[] = []
+    const chart = create(<ApexDonutChart data={emptyData} dataType="service" />)
+    expect(chart.toJSON()).toBeNull()
+    chart.unmount()
   })
 })
