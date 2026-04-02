@@ -74,6 +74,12 @@ const defaultTheme = () => {
   return createTheme({
     palette: {
       mode: 'light',
+      primary: {
+        main: '#3F51B5',
+        light: '#7986cb',
+        dark: '#303f9f',
+        contrastText: '#fff',
+      },
       background: {
         default: '#F1F1F1',
       },
