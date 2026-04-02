@@ -26,7 +26,8 @@
     "google-auth-library": "^9.0.0",
     "typescript": "5.5.4",
     "long": "4.0.0",
-    "@typespec/ts-http-runtime": "0.2.2"
+    "@typespec/ts-http-runtime": "0.2.2",
+    "axios": "1.14.0"
   },
   "workspaces": {
     "packages": [
