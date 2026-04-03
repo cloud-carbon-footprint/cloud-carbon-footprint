@@ -387,6 +387,8 @@ fileignoreconfig:
   checksum: b4619da2416bd6931676e6d2cdda49ea1ee3f71e867ffe3c879f25689c1c72cf
 - filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparison/CarbonComparison.tsx
   checksum: 620bd61bf8eaf781ffa1bd2595090fca78d51003d9de65c84cbdd7f1e1bb9698
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/Filters/DateFilter/dateFilterstyles.ts
+  checksum: b4bc403967e8515f8c0dfe277fb51a42427bdd7a4537631019de3b7ebcd2f17e
 - filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
   checksum: 7438bbcaf3c9c16ac00eea3efbfe0959c79e53db51cf24bb172a764bed68e500
 - filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter/DropdownFilter.tsx

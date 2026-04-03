@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import moment from 'moment'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DateRangePicker } from 'react-dates'
+import 'react-dates/initialize'
+import 'react-dates/lib/css/_datepicker.css'
 import { FiltersDateRange } from '../../../../../common/FilterBar/utils/Filters'
 import StyleWrapper from './dateFilterstyles'
 import { FilterProps } from '../../../../../Types'
@@ -21,48 +21,50 @@ const DateFilter: FunctionComponent<FilterProps> = ({
   )
   const startDate = filters.dateRange?.startDate || null
   const endDate = filters.dateRange?.endDate || null
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null)
 
-  const handleStartChange = (newStart: moment.Moment | null) => {
-    setFilters(filters.withDateRange(new FiltersDateRange(newStart, endDate)))
+  const isOutsideRange =
+    (start: moment.Moment, end: moment.Moment) => (current: moment.Moment) => {
+      return !current.isBetween(start, end, 'day', '[]')
+    }
+
+  const initialVisibleMonth = () => {
+    if (startDate && focusedInput === 'startDate') {
+      return startDate
+    } else if (endDate && focusedInput === 'endDate') {
+      return endDate.clone().subtract(1, 'M')
+    }
+    return today.clone().subtract(1, 'M')
   }
 
-  const handleEndChange = (newEnd: moment.Moment | null) => {
-    setFilters(filters.withDateRange(new FiltersDateRange(startDate, newEnd)))
+  const handleDatesChange = ({ startDate, endDate }) => {
+    setFilters(filters.withDateRange(new FiltersDateRange(startDate, endDate)))
+  }
+
+  const handleFocusChange = (focusedInput) => {
+    setFocusedInput(focusedInput)
   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
-      <StyleWrapper direction="row" spacing={1} alignItems="center">
-        <DatePicker
-          label="Start Date"
-          value={startDate}
-          onChange={handleStartChange}
-          minDate={startOfLastYear}
-          maxDate={endDate ?? today}
-          format="MM/DD/YYYY"
-          slotProps={{
-            textField: {
-              size: 'small',
-              placeholder: 'Start Date',
-            },
-          }}
-        />
-        <DatePicker
-          label="End Date"
-          value={endDate}
-          onChange={handleEndChange}
-          minDate={startDate ?? startOfLastYear}
-          maxDate={today}
-          format="MM/DD/YYYY"
-          slotProps={{
-            textField: {
-              size: 'small',
-              placeholder: 'End Date',
-            },
-          }}
-        />
-      </StyleWrapper>
-    </LocalizationProvider>
+    <StyleWrapper>
+      <DateRangePicker
+        withPortal={false}
+        withFullScreenPortal={false}
+        minDate={startOfLastYear}
+        maxDate={today}
+        initialVisibleMonth={initialVisibleMonth}
+        isOutsideRange={isOutsideRange(startOfLastYear, today)}
+        startDate={startDate}
+        startDateId="startDate"
+        endDate={endDate}
+        endDateId="endDate"
+        onDatesChange={handleDatesChange}
+        focusedInput={focusedInput}
+        onFocusChange={handleFocusChange}
+      />
+    </StyleWrapper>
   )
 }
 
