@@ -277,6 +277,8 @@ fileignoreconfig:
   checksum: 7a6fee67c4d98c6d43e79fe5131389ff4691a8525725a865356c817959a076e9
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/utils/FiltersUtil.ts
   checksum: 4a9658d657df170c27f66189a68561fb1699216c09b4513c2701508a6c06630e
+- filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/utils/options/AccountChooser.test.ts
+  checksum: 3f6b32154fc664447d45cb1d27b424a482d781e5cd80ba6584651b576266ec05
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsMetricsPage.test.tsx
   checksum: 16ab96f11c5fff523f3ffbcdb5c5fc5fd23daccbb5a57806f978b882259b32de
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
