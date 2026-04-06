@@ -4,7 +4,10 @@
 
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()(({ palette }) => ({
+const useStyles = makeStyles<void, 'toggle' | 'toggleHandler'>({
+  name: 'Toggle',
+  uniqId: 'ccf-toggle',
+})(({ palette }, _params, classes) => ({
   toggleWrapper: {
     position: 'relative',
     overflow: 'hidden',
@@ -23,16 +26,16 @@ const useStyles = makeStyles()(({ palette }) => ({
   toggleInput: {
     position: 'absolute',
     left: '-99em',
-    '&:checked + $toggle': {
+    [`&:checked + .${classes.toggle}`]: {
       background: palette.lightBlue,
     },
-    '&:checked + $toggle:before': {
+    [`&:checked + .${classes.toggle}::before`]: {
       color: palette.primaryBlue,
     },
-    '&:checked + $toggle:after': {
+    [`&:checked + .${classes.toggle}::after`]: {
       color: 'white',
     },
-    '&:checked + $toggle $toggleHandler': {
+    [`&:checked + .${classes.toggle} .${classes.toggleHandler}`]: {
       width: 110,
       transform: 'translateX(110px)',
       borderColor: '#fff',
