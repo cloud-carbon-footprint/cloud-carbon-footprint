@@ -479,6 +479,8 @@ fileignoreconfig:
   checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
+- filename: packages/create-app/templates/default-app/.yarn/releases/yarn-4.12.0.cjs
+  checksum: ""
 scopeconfig:
 - scope: node
 version: "1.0"

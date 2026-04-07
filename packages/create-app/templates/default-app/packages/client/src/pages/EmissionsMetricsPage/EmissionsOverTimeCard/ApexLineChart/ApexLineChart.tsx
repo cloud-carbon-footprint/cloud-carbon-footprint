@@ -2,11 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent, useEffect, useMemo } from 'react'
 import { equals } from 'ramda'
 import moment, { unitOfTime } from 'moment'
 import { renderToStaticMarkup } from 'react-dom/server'
-import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import { useTheme } from '@mui/material/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@mui/icons-material'
@@ -95,45 +94,42 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     }
   }, [data])
 
-  useEffect(() => {
-    ApexCharts.exec('lineChart', 'updateSeries', [
+  // Use series.hidden (declarative) instead of ApexCharts.exec show/hide — avoids races with
+  // react-apexcharts mount/update that caused querySelector / convertedCatToNumeric errors.
+  const lineSeries = useMemo(() => {
+    const visible = toggledSeries.map(
+      (legendToggle: LegendToggle) => Object.values(legendToggle)[0] as boolean,
+    )
+    return [
       {
         name: 'CO2e',
         data: co2SeriesData,
+        hidden: !visible[0],
       },
       {
         name: 'Kilowatt Hours',
         data: kilowattHoursSeriesData,
+        hidden: !visible[1],
       },
       {
         name: 'Cost',
         data: costSeriesData,
+        hidden: !visible[2],
       },
-    ])
-
-    ApexCharts.exec('lineChart', 'updateOptions', [
-      {
-        xaxis: {
-          category: global.labels,
-        },
-      },
-    ])
-
-    toggledSeries.forEach((legendToggle: LegendToggle) => {
-      const [seriesKey, toggleValue] = Object.entries(legendToggle)[0]
-      toggleValue
-        ? ApexCharts.exec('lineChart', 'showSeries', [seriesKey])
-        : ApexCharts.exec('lineChart', 'hideSeries', [seriesKey])
-    })
+    ]
   }, [co2SeriesData, kilowattHoursSeriesData, costSeriesData, toggledSeries])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line
   const options: any = {
     markers: {
       size: 5,
     },
     chart: {
       events: {
+        // ApexCharts Toolbar sets `xaxis = beforeZoomRange.xaxis` when the return value is
+        // truthy. Returning `{ dateRange }` made `xaxis` undefined and merged `{ xaxis: undefined }`,
+        // which broke `w.config.xaxis` (convertedCatToNumeric access). Return nothing to keep the
+        // computed zoom range when we only skip updating React state (< 2 points).
         beforeZoom: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
           const newFilteredData = filterBy(data, xaxis, defaultRange)
 
@@ -143,9 +139,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
               xaxis,
             }
           }
-          return {
-            dateRange,
-          }
+          return undefined
         },
         beforeResetZoom: () => {
           setDateRange(defaultRange)
@@ -184,20 +178,6 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     },
     colors: [blue, yellow, green],
     height: '500px',
-    series: [
-      {
-        name: 'CO2e',
-        data: co2SeriesData,
-      },
-      {
-        name: 'Kilowatt Hours',
-        data: kilowattHoursSeriesData,
-      },
-      {
-        name: 'Cost',
-        data: costSeriesData,
-      },
-    ],
     stroke: {
       width: 1,
     },
@@ -312,7 +292,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     <Chart
       aria-label="apex-line-chart"
       options={options}
-      series={options.series}
+      series={lineSeries}
       type="line"
       height={options.height}
     />

@@ -40,7 +40,7 @@ const useStyles = makeStyles<Pick<SidePanelProps, 'drawerWidth'>>()(
     },
     toolbar: {
       padding: spacing(10, 1),
-      ...mixins.toolbar,
+      ...(mixins.toolbar as Record<string, unknown>),
     },
     hide: {
       display: 'none',

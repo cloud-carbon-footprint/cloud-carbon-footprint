@@ -1,20 +1,24 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "module": "NodeNext",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "lib": ["es2019"],
+    "lib": ["ES2023"],
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "target": "ES5",
+    "target": "ES2023",
     "downlevelIteration": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
+    "declaration": true,
+    "jsx": "react-jsx"
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
+  "exclude": ["node_modules", "scripts", "**/__tests__/**", "**/*.test.*"]
 }

@@ -29,7 +29,14 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
   const onApiError = useCallback(
     (e: AxiosError) => {
       console.error(e)
-      setErrorMessage(e.response.data)
+      const data = e.response?.data
+      const message =
+        typeof data === 'string'
+          ? data
+          : data != null
+            ? JSON.stringify(data)
+            : (e.message ?? 'An unexpected error occurred')
+      setErrorMessage(message)
       navigate('/error', { state: formatAxiosError(e) })
     },
     [navigate],

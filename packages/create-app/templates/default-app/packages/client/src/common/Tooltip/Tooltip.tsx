@@ -3,7 +3,7 @@
  */
 
 import { FunctionComponent, ReactElement } from 'react'
-import { IconButton, Tooltip as MaterialTooltip } from '@mui/material'
+import { IconButton } from '@mui/material'
 import HelpIcon from '@mui/icons-material/Help'
 import useStyles, { TextOnlyTooltip } from './tooltipStyles'
 

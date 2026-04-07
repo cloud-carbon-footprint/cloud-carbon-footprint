@@ -3,6 +3,7 @@
  */
 
 import React, { FunctionComponent, ReactElement, useState } from 'react'
+import { SelectChangeEvent } from '@mui/material'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from '../../../Types'
 import SelectDropdown from '../../../common/SelectDropdown'
@@ -32,7 +33,7 @@ const EmissionsBreakdownCard: FunctionComponent<
     chartType,
   )
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChange = (event: SelectChangeEvent<ChartDataTypes>) => {
     setChartType(event.target.value as ChartDataTypes)
   }
 
