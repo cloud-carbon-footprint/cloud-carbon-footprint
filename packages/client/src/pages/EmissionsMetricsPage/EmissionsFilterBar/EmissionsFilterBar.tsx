@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { FunctionComponent, ReactElement, useMemo } from 'react'
 import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
@@ -19,12 +19,20 @@ import {
   ServiceFilter,
 } from './Filters'
 
+const filterComponents = [
+  CloudProviderFilter,
+  AccountFilter,
+  ServiceFilter,
+  DateFilter,
+  MonthFilter,
+]
+
 const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
   filterOptions,
 }): ReactElement => {
-  const getFilterOptions = (): FilterOptions => {
+  const memoizedFilterOptions: FilterOptions = useMemo(() => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
       filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
@@ -48,20 +56,16 @@ const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
       services: serviceOptions,
       cloudProviders: CLOUD_PROVIDER_OPTIONS,
     }
-  }
+  }, [filterOptions?.accounts, filterOptions?.services])
 
-  const filterComponents = [
-    CloudProviderFilter,
-    AccountFilter,
-    ServiceFilter,
-    DateFilter,
-    MonthFilter,
-  ]
-  const filterConfig = {
-    filters,
-    setFilters,
-    filterOptions: getFilterOptions(),
-  }
+  const filterConfig = useMemo(
+    () => ({
+      filters,
+      setFilters,
+      filterOptions: memoizedFilterOptions,
+    }),
+    [filters, setFilters, memoizedFilterOptions],
+  )
 
   return <FilterBar config={filterConfig} components={filterComponents} />
 }

@@ -2,8 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement, useCallback, useState } from 'react'
-import { Moment } from 'moment'
+import React, { ReactElement, useCallback, useMemo, useState } from 'react'
 import { AxiosError } from 'axios'
 import { Container } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
@@ -19,6 +18,13 @@ import loadConfig from './ConfigLoader'
 import { useFootprintData } from './utils/hooks'
 import { getEmissionDateRange } from './utils/helpers/handleDates'
 import LoadingMessage from './common/LoadingMessage'
+
+const useStyles = makeStyles()(() => ({
+  appContainer: {
+    padding: 0,
+    height: 'calc(100vh - 65px)',
+  },
+}))
 
 interface AppProps {
   config?: ClientConfig
@@ -42,12 +48,10 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     [navigate],
   )
 
-  const endDate: Moment = getEmissionDateRange({
-    config: loadConfig(),
-  }).end
-  const startDate: Moment = getEmissionDateRange({
-    config: loadConfig(),
-  }).start
+  const { start: startDate, end: endDate } = useMemo(
+    () => getEmissionDateRange({ config: loadConfig() }),
+    [],
+  )
 
   const footprint = useFootprintData({
     baseUrl: config.BASE_URL,
@@ -63,16 +67,9 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     window.innerWidth < 768,
   )
 
-  const handleWarningClose = () => {
+  const handleWarningClose = useCallback(() => {
     setMobileWarningEnabled(false)
-  }
-
-  const useStyles = makeStyles()(() => ({
-    appContainer: {
-      padding: 0,
-      height: 'calc(100vh - 65px)',
-    },
-  }))
+  }, [])
 
   const { classes } = useStyles()
 
@@ -101,7 +98,6 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
           <Route
             path="/"
             element={
-              // If checkDataLoad true show loading message
               <EmissionsMetricsPage
                 config={config}
                 onApiError={onApiError}

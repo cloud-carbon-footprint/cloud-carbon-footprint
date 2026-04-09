@@ -2,7 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, ReactElement, useCallback } from 'react'
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from 'react'
 import {
   Co2eUnit,
   DropdownOption,
@@ -23,13 +28,20 @@ import RegionFilter from './Filters/RegionFilter'
 import RecommendationTypeFilter from './Filters/RecommendationType'
 import Toggle from '../../../common/Toggle'
 
+const filterComponents = [
+  CloudProviderFilter,
+  AccountFilter,
+  RegionFilter,
+  RecommendationTypeFilter,
+]
+
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
   filterOptions,
   setCo2eUnit,
 }): ReactElement => {
-  const getFilterOptions = (): FilterOptions => {
+  const memoizedFilterOptions: FilterOptions = useMemo(() => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
       filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
@@ -66,7 +78,11 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
       regions: regionOptions,
       recommendationTypes: recommendationTypeOptions,
     }
-  }
+  }, [
+    filterOptions?.accounts,
+    filterOptions?.regions,
+    filterOptions?.recommendationTypes,
+  ])
 
   const toggleUnit = useCallback(
     (useKilograms: boolean) => {
@@ -75,21 +91,18 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     [setCo2eUnit],
   )
 
-  const filterComponents = [
-    CloudProviderFilter,
-    AccountFilter,
-    RegionFilter,
-    RecommendationTypeFilter,
-  ]
+  const filterConfig = useMemo(
+    () => ({
+      filters,
+      setFilters,
+      filterOptions: memoizedFilterOptions,
+    }),
+    [filters, setFilters, memoizedFilterOptions],
+  )
 
-  const filterConfig = {
-    filters,
-    setFilters,
-    filterOptions: getFilterOptions(),
-  }
-
-  const suffixComponents = (
-    <Toggle label="CO2e Units" handleToggle={toggleUnit} />
+  const suffixComponents = useMemo(
+    () => <Toggle label="CO2e Units" handleToggle={toggleUnit} />,
+    [toggleUnit],
   )
 
   return (

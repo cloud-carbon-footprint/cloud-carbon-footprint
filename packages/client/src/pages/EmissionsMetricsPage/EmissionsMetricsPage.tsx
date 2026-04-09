@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import { Grid } from '@mui/material'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { FilterOptions, FilterResultResponse } from 'src/Types'
@@ -42,12 +42,16 @@ export default function EmissionsMetricsPage({
     filterOptions,
   )
 
-  const filterBarProps = {
-    filterOptions: filterOptions as unknown as FilterOptions,
-    filters,
-    setFilters,
-    filteredData: filteredData as EstimationResult[],
-  }
+  const typedFilteredData = filteredData as EstimationResult[]
+
+  const filterBarProps = useMemo(
+    () => ({
+      filterOptions: filterOptions as unknown as FilterOptions,
+      filters,
+      setFilters,
+    }),
+    [filterOptions, filters, setFilters],
+  )
 
   return (
     <div className={classes.pageContainer}>
@@ -55,12 +59,12 @@ export default function EmissionsMetricsPage({
       <EmissionsFilterBar {...filterBarProps} />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard data={filterBarProps.filteredData} />
+          <EmissionsOverTimeCard data={typedFilteredData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard data={filterBarProps.filteredData} />
+              <CarbonComparisonCard data={typedFilteredData} />
               <EmissionsBreakdownCard
-                data={filterBarProps.filteredData}
+                data={typedFilteredData}
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />

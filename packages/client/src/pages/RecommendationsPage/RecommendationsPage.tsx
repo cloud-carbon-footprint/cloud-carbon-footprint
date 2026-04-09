@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useMemo, useState } from 'react'
 import { Grid } from '@mui/material'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
@@ -37,12 +37,17 @@ const RecommendationsPage = ({
   const groupBy = config.GROUP_BY
   const hasForecastValidationDisabled = config.DISABLE_FORECAST_VALIDATION
 
-  let forecastDetails = { missingDates: [], groupBy }
+  const slicedFootprint = useMemo(
+    () => sliceFootprintDataByLastMonth(footprint.data, groupBy),
+    [footprint.data, groupBy],
+  )
 
-  const slicedFootprint = sliceFootprintDataByLastMonth(footprint.data, groupBy)
-  if (!hasForecastValidationDisabled) {
-    forecastDetails = checkFootprintDates(slicedFootprint, groupBy)
-  }
+  const forecastDetails = useMemo(() => {
+    if (hasForecastValidationDisabled) {
+      return { missingDates: [], groupBy }
+    }
+    return checkFootprintDates(slicedFootprint, groupBy)
+  }, [slicedFootprint, groupBy, hasForecastValidationDisabled])
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,
