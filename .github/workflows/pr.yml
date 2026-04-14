@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths-ignore:
         - 'microsite/**'
+        - '.github/workflows/deploy-microsite.yml'
 jobs:
   lint-tests:
     runs-on: ubuntu-latest
@@ -13,23 +14,22 @@ jobs:
       - name: Ignore draft pull requests
         if: github.event.pull_request.draft
         run: exit
-      - name: setup node 18
+      - name: setup node 24
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      # Cache every node_modules folder inside the monorepo
-      - name: cache all node_modules
+          node-version: '24'
+      - name: cache node_modules
         id: cache-modules
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
           # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
+      - name: yarn cache dir
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+      - name: cache yarn
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
         with:

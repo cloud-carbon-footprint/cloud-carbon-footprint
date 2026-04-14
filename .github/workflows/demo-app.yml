@@ -16,7 +16,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:18-alpine
+      image: node:24-alpine
     environment:
       name: staging
     env:
