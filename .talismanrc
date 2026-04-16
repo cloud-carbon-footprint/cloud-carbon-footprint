@@ -294,11 +294,11 @@ fileignoreconfig:
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.test.tsx
-  checksum: bf8017c29b9d9aa70925897e93e8734b0d3a7d51e9f0a324c68e0b3755caaa64
+  checksum: 836c2caa8b1c19db71fbc0b1a163fd9df724a2a94bc6c88f5ba41bdc60d2c509
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.tsx
   checksum: 2b82491331fdf97d40600b5bc0ffae48fafc0b9cde278d529f2d37d8e9393007
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters.test.ts
-  checksum: 84bbf5b703296ad639893936b325d099930e737efa8074a203fd8e9f676bebd2
+  checksum: 9bd896db0c7d85df62257206c16746056ebc9c5f6fcbc3ff693e3abb7bf5a436
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/AccountChooser.ts
   checksum: d855e1996bab653563d051378916f01f0be4ccf3db37b4862847854d013f1b0a
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/CloudProviderChooser.ts
@@ -367,6 +367,7 @@ fileignoreconfig:
   checksum: 4033fa577fb1b42245c0471ce7da72f76713d394370a17695c022eb22ca7c42c
 - filename: packages/create-app/CHANGELOG.md
   checksum: a64d71c2fc2e45bccba7b7bdb9bcac70825eb78882799e789c130b60cae4558e
+- filename: packages/create-app/templates/default-app/.yarn/releases/yarn-4.12.0.cjs
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
   checksum: 6a3a9348d74dd6df5978cc0aa6a2fa0c5b51cb62484735614eb5338ccdb6458e
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template
@@ -479,8 +480,6 @@ fileignoreconfig:
   checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
-- filename: packages/create-app/templates/default-app/.yarn/releases/yarn-4.12.0.cjs
-  checksum: ""
 scopeconfig:
 - scope: node
 version: "1.0"

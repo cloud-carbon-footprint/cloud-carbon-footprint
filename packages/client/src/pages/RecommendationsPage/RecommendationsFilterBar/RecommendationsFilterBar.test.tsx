@@ -3,9 +3,16 @@
  */
 
 import React from 'react'
-import { render } from '@testing-library/react'
-import { Co2eUnit, FilterBarProps } from '../../../Types'
+import { fireEvent, act, render } from '@testing-library/react'
+import { Co2eUnit, FilterBarProps, FilterOptions } from '../../../Types'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
+import RecommendationTypeFilter from './Filters/RecommendationType'
+import RegionFilter from './Filters/RegionFilter'
+import { RecommendationsFilters } from './utils/RecommendationsFilters'
+import {
+  ALL_DROPDOWN_FILTER_OPTIONS,
+  CLOUD_PROVIDER_OPTIONS,
+} from '../../../common/FilterBar/utils/DropdownConstants'
 
 type MockFilterBarProps = {
   config: {
@@ -85,5 +92,98 @@ describe('RecommendationsFilterBar', () => {
     expect(config.filterOptions.accounts[0].key).toEqual('all')
     expect(config.filterOptions.regions[0].key).toEqual('all')
     expect(config.filterOptions.recommendationTypes[0].key).toEqual('all')
+  })
+})
+
+describe('RecommendationTypeFilter', () => {
+  const recType = {
+    key: 'delete-image',
+    name: 'DELETE_IMAGE',
+    cloudProvider: 'gcp',
+  }
+
+  const filterOptions: FilterOptions = {
+    accounts: [ALL_DROPDOWN_FILTER_OPTIONS.accounts],
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
+    regions: [ALL_DROPDOWN_FILTER_OPTIONS.regions],
+    recommendationTypes: [
+      ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+      recType,
+    ],
+  }
+
+  const filtersConfig = RecommendationsFilters.generateConfig({
+    accounts: [],
+    recommendationTypes: [recType],
+    regions: [],
+  })
+
+  it('calls setFilters when a recommendation type is selected', () => {
+    const mockFilters = new RecommendationsFilters(filtersConfig)
+    const setFilters = jest.fn()
+
+    const { getByLabelText, getByText } = render(
+      <RecommendationTypeFilter
+        filters={mockFilters}
+        setFilters={setFilters}
+        options={filterOptions}
+      />,
+    )
+
+    act(() => {
+      fireEvent.click(getByLabelText('Open'))
+    })
+
+    act(() => {
+      fireEvent.click(getByText('DELETE_IMAGE'))
+    })
+
+    expect(setFilters).toHaveBeenCalledTimes(1)
+    expect(setFilters).toHaveBeenCalledWith(expect.any(RecommendationsFilters))
+  })
+})
+
+describe('RegionFilter', () => {
+  const region = {
+    key: 'us-east-1',
+    name: 'US East 1',
+    cloudProvider: 'aws',
+  }
+
+  const filterOptions: FilterOptions = {
+    accounts: [ALL_DROPDOWN_FILTER_OPTIONS.accounts],
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
+    regions: [ALL_DROPDOWN_FILTER_OPTIONS.regions, region],
+    recommendationTypes: [ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes],
+  }
+
+  const filtersConfig = RecommendationsFilters.generateConfig({
+    accounts: [],
+    regions: [region],
+    recommendationTypes: [],
+  })
+
+  it('calls setFilters when a region is selected', () => {
+    const mockFilters = new RecommendationsFilters(filtersConfig)
+    const setFilters = jest.fn()
+
+    const { getByLabelText, getByText } = render(
+      <RegionFilter
+        filters={mockFilters}
+        setFilters={setFilters}
+        options={filterOptions}
+      />,
+    )
+
+    act(() => {
+      fireEvent.click(getByLabelText('Open'))
+    })
+
+    act(() => {
+      fireEvent.click(getByText('US East 1'))
+    })
+
+    expect(setFilters).toHaveBeenCalledTimes(1)
+    expect(setFilters).toHaveBeenCalledWith(expect.any(RecommendationsFilters))
   })
 })

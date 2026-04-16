@@ -430,4 +430,349 @@ describe('Recommendations Filters', () => {
       expectedAccountFiltered,
     )
   })
+
+  it('should filter recommendations by multiple recommendation types', () => {
+    const recommendationTypeOptions = [
+      {
+        key: 'delete-image',
+        name: 'DELETE_IMAGE',
+        cloudProvider: 'gcp',
+      },
+      {
+        key: 'modify',
+        name: 'Modify',
+        cloudProvider: 'aws',
+      },
+    ]
+
+    const filters = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      recommendationTypeOptions,
+      filterOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [rawResults[0], rawResults[1]],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should return all recommendations when "All Recommendation Types" is selected', () => {
+    const configWithAllOptions = {
+      options: {
+        accounts: [
+          ALL_DROPDOWN_FILTER_OPTIONS.accounts,
+          ...defaultConfig.options.accounts,
+        ],
+        cloudProviders: defaultConfig.options.cloudProviders,
+        regions: [
+          ALL_DROPDOWN_FILTER_OPTIONS.regions,
+          ...defaultConfig.options.regions,
+        ],
+        recommendationTypes: [
+          ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+          ...defaultConfig.options.recommendationTypes,
+        ],
+      },
+    }
+
+    const filters = new RecommendationsFilters(configWithAllOptions)
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      emissionsAndRecommendationsData,
+    )
+  })
+
+  it('should return empty recommendations when recommendation type matches none', () => {
+    const nonMatchingType = {
+      key: 'stop-vm',
+      name: 'STOP_VM',
+      cloudProvider: 'gcp',
+    }
+
+    const extendedFilterOptions: FilterOptions = {
+      ...filterOptions,
+      recommendationTypes: [
+        ...filterOptions.recommendationTypes,
+        nonMatchingType,
+      ],
+    }
+
+    const filters = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      [nonMatchingType],
+      extendedFilterOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should generate the correct label for recommendation types when all are selected', () => {
+    const allRecommendationTypeOptions = filterOptions.recommendationTypes
+    const filters = new RecommendationsFilters({
+      options: {
+        recommendationTypes: allRecommendationTypeOptions,
+      },
+    })
+
+    const label = filters.label(
+      allRecommendationTypeOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    expect(label).toEqual('Recommendation Types: 2 of 2')
+  })
+
+  it('should generate the correct label for recommendation types when a subset is selected', () => {
+    const allRecommendationTypeOptions = filterOptions.recommendationTypes
+    const singleSelection = [allRecommendationTypeOptions[1]]
+
+    const filters = new RecommendationsFilters({
+      options: {
+        recommendationTypes: singleSelection,
+      },
+    })
+
+    const label = filters.label(
+      allRecommendationTypeOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    expect(label).toEqual('Recommendation Types: 1 of 2')
+  })
+
+  it('should filter by recommendation type combined with cloud provider', () => {
+    const cloudProviderOption = {
+      key: 'gcp',
+      name: 'GCP',
+    }
+
+    const recommendationTypeOption = {
+      key: 'delete-image',
+      name: 'DELETE_IMAGE',
+      cloudProvider: 'gcp',
+    }
+
+    const filters = new RecommendationsFilters(defaultConfig)
+      .withDropdownOption(
+        [cloudProviderOption],
+        filterOptions,
+        DropdownFilterOptions.CLOUD_PROVIDERS,
+      )
+      .withDropdownOption(
+        [recommendationTypeOption],
+        filterOptions,
+        DropdownFilterOptions.RECOMMENDATION_TYPES,
+      )
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [rawResults[1]],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should filter by recommendation type combined with account', () => {
+    const accountOption = {
+      key: 'gcp account 1',
+      name: 'gcp account 1',
+      cloudProvider: 'gcp',
+    }
+
+    const recommendationTypeOption = {
+      key: 'delete-image',
+      name: 'DELETE_IMAGE',
+      cloudProvider: 'gcp',
+    }
+
+    const filters = new RecommendationsFilters(defaultConfig)
+      .withDropdownOption(
+        [accountOption],
+        filterOptions,
+        DropdownFilterOptions.ACCOUNTS,
+      )
+      .withDropdownOption(
+        [recommendationTypeOption],
+        filterOptions,
+        DropdownFilterOptions.RECOMMENDATION_TYPES,
+      )
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [rawResults[1]],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should filter by recommendation type combined with region', () => {
+    const regionOption = {
+      key: 'gcp region 1',
+      name: 'gcp region 1',
+      cloudProvider: 'gcp',
+    }
+
+    const recommendationTypeOption = {
+      key: 'delete-image',
+      name: 'DELETE_IMAGE',
+      cloudProvider: 'gcp',
+    }
+
+    const filters = new RecommendationsFilters(defaultConfig)
+      .withDropdownOption(
+        [regionOption],
+        filterOptions,
+        DropdownFilterOptions.REGIONS,
+      )
+      .withDropdownOption(
+        [recommendationTypeOption],
+        filterOptions,
+        DropdownFilterOptions.RECOMMENDATION_TYPES,
+      )
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [rawResults[1]],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should return empty when recommendation type and account filter exclude each other', () => {
+    const configWithMismatch = {
+      options: {
+        accounts: [
+          {
+            key: 'aws account 1',
+            name: 'aws account 1',
+            cloudProvider: 'aws',
+          },
+        ],
+        cloudProviders: defaultConfig.options.cloudProviders,
+        regions: [
+          ALL_DROPDOWN_FILTER_OPTIONS.regions,
+          ...defaultConfig.options.regions,
+        ],
+        recommendationTypes: [
+          {
+            key: 'delete-image',
+            name: 'DELETE_IMAGE',
+            cloudProvider: 'gcp',
+          },
+        ],
+      },
+    }
+
+    const filters = new RecommendationsFilters(configWithMismatch)
+
+    const expectedFiltered = {
+      emissions: [],
+      recommendations: [],
+    }
+
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedFiltered,
+    )
+  })
+
+  it('should preserve other filter selections when updating recommendation type', () => {
+    const accountOption = {
+      key: 'aws account 1',
+      name: 'aws account 1',
+      cloudProvider: 'aws',
+    }
+
+    const recommendationTypeOption = {
+      key: 'modify',
+      name: 'Modify',
+      cloudProvider: 'aws',
+    }
+
+    const filtersWithAccount = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      [accountOption],
+      filterOptions,
+      DropdownFilterOptions.ACCOUNTS,
+    )
+
+    const filtersWithBoth = filtersWithAccount.withDropdownOption(
+      [recommendationTypeOption],
+      filterOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    expect(filtersWithBoth.options.recommendationTypes).toEqual([
+      recommendationTypeOption,
+    ])
+    expect(filtersWithBoth.options.accounts).toBeDefined()
+  })
+
+  it('should match results with null account name when unknown account option is selected', () => {
+    const unknownAccountOption = {
+      key: 'unknown',
+      name: 'Unknown Account',
+      cloudProvider: '',
+    }
+
+    const dataWithNullAccount = {
+      emissions: [],
+      recommendations: [
+        {
+          cloudProvider: 'AWS',
+          accountId: null,
+          accountName: null,
+          region: 'aws region 1',
+          recommendationType: 'Modify',
+          instanceName: 'instance-1',
+          recommendationDetail: 'Modify instance.',
+          resourceId: 'i-abc123',
+          kilowattHourSavings: 1.0,
+          costSavings: 10.0,
+          co2eSavings: 0.5,
+        },
+      ],
+    }
+
+    const configWithUnknown = {
+      options: {
+        accounts: [unknownAccountOption],
+        cloudProviders: defaultConfig.options.cloudProviders,
+        regions: [
+          ALL_DROPDOWN_FILTER_OPTIONS.regions,
+          ...defaultConfig.options.regions,
+        ],
+        recommendationTypes: [
+          ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+          ...defaultConfig.options.recommendationTypes,
+        ],
+      },
+    }
+
+    const filters = new RecommendationsFilters(configWithUnknown)
+
+    expect(filters.filter(dataWithNullAccount)).toEqual(dataWithNullAccount)
+  })
 })
