@@ -142,7 +142,7 @@ export const rightsizingRecommendationModify1: GetRightsizingRecommendationComma
           InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
-              InstanceType: 't2.micro',
+              InstanceType: 'm5.xlarge',
               Region: 'US East (Ohio)',
               Vcpu: '1',
             },
@@ -155,7 +155,7 @@ export const rightsizingRecommendationModify1: GetRightsizingRecommendationComma
               EstimatedMonthlySavings: '226',
               ResourceDetails: {
                 EC2ResourceDetails: {
-                  InstanceType: 't2.nano',
+                  InstanceType: 'm5.large',
                   Region: 'US East (Ohio)',
                   Vcpu: '1',
                 },
@@ -165,7 +165,7 @@ export const rightsizingRecommendationModify1: GetRightsizingRecommendationComma
               EstimatedMonthlySavings: '116',
               ResourceDetails: {
                 EC2ResourceDetails: {
-                  InstanceType: 't2.large',
+                  InstanceType: 'm5.xlarge',
                   Region: 'US East (Ohio)',
                   Vcpu: '2',
                 },

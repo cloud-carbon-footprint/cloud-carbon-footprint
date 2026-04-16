@@ -23,6 +23,7 @@ import {
   rightsizingCrossFamilyRecommendationModify,
   rightsizingCrossFamilyRecommendationTerminate,
   rightsizingRecommendationModify,
+  rightsizingRecommendationModify1,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
@@ -135,6 +136,50 @@ describe('AWS Rightsizing Recommendations Service', () => {
         region: 'us-east-2',
         resourceId: 'test-id',
         instanceName: '',
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Get recommendations from Rightsizing API type: Modify with targetInstance Co2e', async () => {
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
+
+    // Simulate AWS returning case type from runtime payload
+    const modifyResponse: GetRightsizingRecommendationCommandOutput =
+      JSON.parse(JSON.stringify(rightsizingRecommendationModify1))
+
+    modifyResponse.RightsizingRecommendations![0].RightsizingType =
+      'Modify' as unknown as any
+
+    mockGetRightsizingRecommendation(modifyResponse)
+
+    const awsRecommendationsServices = new RightsizingRecommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await awsRecommendationsServices.getRecommendations(
+      AWS_DEFAULT_RECOMMENDATION_TARGET,
+    )
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'us-east-2',
+        recommendationType: 'Modify',
+        recommendationDetail:
+          'Modify instance: test-instance-name. Update instance type m5.xlarge to m5.large',
+        kilowattHourSavings: 2.0615368199999997,
+        resourceId: 'Test-resource-id',
+        instanceName: 'test-instance-name',
+        co2eSavings: 0.0007754023778385905,
+        costSavings: 226,
       },
     ]
 

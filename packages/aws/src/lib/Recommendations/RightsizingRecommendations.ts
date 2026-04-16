@@ -56,7 +56,6 @@ export default class RightsizingRecommendations implements ICloudRecommendations
     try {
       const results =
         await this.serviceWrapper.getRightsizingRecommendationsResponses(params)
-      console.log(results)
       const rightsizingRecommendations: AwsRightsizingRecommendation[] =
         results.flatMap(
           ({ RightsizingRecommendations }) => RightsizingRecommendations,
@@ -84,7 +83,10 @@ export default class RightsizingRecommendations implements ICloudRecommendations
           co2eSavings += currentMemoryFootprint.co2e
         }
 
-        if (recommendation.RightsizingType === RightsizingType.MODIFY) {
+        const normalizedRecommendationType = this.getNormalizedRightsizingType(
+          recommendation.RightsizingType,
+        )
+        if (normalizedRecommendationType === RightsizingType.MODIFY) {
           this.getTargetInstance(recommendation)
           const rightsizingTargetRecommendation =
             new RightsizingTargetRecommendation(recommendation)
@@ -138,11 +140,19 @@ export default class RightsizingRecommendations implements ICloudRecommendations
     if (!rightsizingCurrentRecommendation.instanceName) {
       defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
     }
-    const recommendationTypes: { [key: string]: string } = {
-      TERMINATE: defaultDetail,
-      MODIFY: `${defaultDetail} ${modifyDetail}`,
+    const recommendationTypes: Record<string, string> = {
+      [RightsizingType.TERMINATE]: defaultDetail,
+      [RightsizingType.MODIFY]: `${defaultDetail} ${modifyDetail}`,
     }
-    return recommendationTypes[rightsizingCurrentRecommendation.type]
+    const rightsizingType = this.getNormalizedRightsizingType(
+      rightsizingCurrentRecommendation.type,
+    )
+
+    return recommendationTypes[rightsizingType] ?? defaultDetail
+  }
+
+  private getNormalizedRightsizingType(rightsizingType?: string): string {
+    return (rightsizingType ?? '').toUpperCase()
   }
 
   private async getFootprintEstimates(
