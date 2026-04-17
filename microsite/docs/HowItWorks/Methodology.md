@@ -449,7 +449,7 @@ To understand in more detail how we are calculating embodied emissions, please r
 - SSD Storage Watt Hours / Terabyte: 1.2
 - Networking Kilowatt Hours / Gigabyte: 0.001
 - Memory Kilowatt Hours / Gigabyte: 0.000392
-- Average PUE: 1.125
+- Average PUE: 1.185
 
 ### Appendix II: Cloud provider compute processors and micro-architectures:
 
