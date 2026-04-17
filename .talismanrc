@@ -138,7 +138,7 @@ fileignoreconfig:
 - filename: packages/api/estimates.cache.test.json
   checksum: 47701f39ac93d11ebf30ebc3eb7499971094144b82bbd558aebdaa551d8228f3
 - filename: packages/api/mock-estimates.json
-  checksum: 1a811c04be292f000abe28d55a30aa3fc37bd4891e1ecfef8a9122e256f87a06
+  checksum: 51ef416cbeff6509a17f0dd86235154f37fe3737124ba92ccec63cdc1396e370
 - filename: packages/api/package.json
   checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
 - filename: packages/api/src/api.test.ts
@@ -324,7 +324,7 @@ fileignoreconfig:
 - filename: packages/client/stub-server/footprint.json
   checksum: 2a1551ebe105d866d121c17029d53c7466b67e2cfc1c71b13b5894ae5bc06b50
 - filename: packages/client/stub-server/mockData.json
-  checksum: c0e961bc6f9750fb6d304ef1e5650024454d327690a2755da61b755bdf166a85
+  checksum: c8863765ecd7bdaa2eed508064af9d173f8950684284b6d134aaeeea0f62c5dc
 - filename: packages/client/stub-server/recommendations.json
   checksum: fd9afa539a5991cb21416293ae9d17a57005b5bcacdd148fe9f4ce0fd3de145e
 - filename: packages/common/src/Config.ts
@@ -407,7 +407,7 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/create-app/templates/default-app/packages/client/stub-server/mockData.json
-  checksum: 9073338cab91e48f6b789c52f415d8559926d791d80aeb2954cb2fb842202a66
+  checksum: d1a55352726615a2a80386b6f68d29856b48795e13c04a783cc6d8ccd448ae9e
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
   checksum: 5f0e6c9f0b7d6894f4b70e4a197992eeeb142c4d3ff32bb35aaf0b10962575ab
 - filename: packages/gcp/src/__tests__/GCPAccount.test.ts
