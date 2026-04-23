@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/create-app
 
+## 3.0.0
+
+### Major Changes
+
+- b05c4ba: Updated MUI to v6, node to 24, and eslint version.
+  Updated mock data.
+
 ## 2.5.3
 
 ### Patch Changes
@@ -130,7 +137,6 @@
 - 2999c971: adds mongodb filter params and pagination to templates
 
   Please refer to these commits:
-
   - [e700bc76a0d8d27c01f30cf4d646e189cdd224b5](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/e700bc76a0d8d27c01f30cf4d646e189cdd224b5)
   - [e23b9b42b265d2c1be517a4b6d148a9dc1e9e8e5](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/e23b9b42b265d2c1be517a4b6d148a9dc1e9e8e5)
 
@@ -237,7 +243,6 @@
 - e72d9807: Fixes recommendations forecast projected totals showing negative numbers when current totals are too low
 
   For updates to create app templates, please review the following commits:
-
   - [Initial Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/73d505f79f8f4eccc0808d714a8b6c74020ee87e)
   - [Second Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7d60888a7b716427ffc7a934ca137d8a86b373f8)
   - [Final Commit]()https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d62bfc5837a96510882c75bca71249ddf6152b9a
@@ -426,7 +431,6 @@
 
   There are many files that have been added to the client package.
   In order to update the create-app templates, refer to the follow commits:
-
   - [a4bd92c](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/174c7b0229bf8d9b7ec37cb562ff2eac5ef45759)
   - [174c7b0](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/994cd3e4ebe86ba575c232e5092141a82b588e1b)
 
@@ -505,7 +509,6 @@
   ```
 
   Additionally, the following dependencies have been updated and should also be updated in their respective template package.json file:
-
   - @cloud-carbon-footprint root package.json:
     - "@types/fs-extra": "^9.0.11"
     - "concurrently": "^6.2.0"
@@ -665,7 +668,6 @@
 
 - 68770ef4: updates create app templates and bumps the following deps: `"typescript": "4.2.4"`, `"ts-node": "^9.1.1"`, `"fs-extra": "^10.0.0"`, `"@types/fs-extra": "^9.0.10"`
 - 1a7350ad: - b63d8a6: The default `aws-sdk` dependency was bumped to `"^2.890.0"`
-
   - 6917116: Updates the formula in the sidebar with new sources for emissions factor:
     In order to update, you need to apply the following changes in the `client` package:
 

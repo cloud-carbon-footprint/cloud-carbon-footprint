@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/on-premise
 
+## 1.0.0
+
+### Major Changes
+
+- b05c4ba: Upgraded the node to 24, jest and eslint.
+
+### Patch Changes
+
+- Updated dependencies [b05c4ba]
+  - @cloud-carbon-footprint/common@2.0.0
+  - @cloud-carbon-footprint/core@1.0.0
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/gcp
 
+## 1.0.0
+
+### Major Changes
+
+- b05c4ba: Upgraded node to 24, jest, eslint.
+  Upgraded google cloud related packages.
+  Added new GCP regions and instances.
+  Updated emission factors and coefficients.
+
+### Patch Changes
+
+- Updated dependencies [b05c4ba]
+  - @cloud-carbon-footprint/common@2.0.0
+  - @cloud-carbon-footprint/core@1.0.0
+
 ## 0.15.0
 
 ### Minor Changes

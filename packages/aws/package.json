@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/aws",
-  "version": "0.16.0",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Amazon Web Services.",
   "main": "src/index.ts",
@@ -48,8 +48,8 @@
     "@aws-sdk/client-glue": "^3.991.0",
     "@aws-sdk/client-s3": "^3.991.0",
     "@aws-sdk/credential-providers": "^3.991.0",
-    "@cloud-carbon-footprint/common": "^1.15.0",
-    "@cloud-carbon-footprint/core": "^0.17.3",
+    "@cloud-carbon-footprint/common": "^2.0.0",
+    "@cloud-carbon-footprint/core": "^1.0.0",
     "aws-sdk-client-mock": "^4.1.0",
     "csvtojson": "^2.0.10",
     "moment": "^2.29.1",

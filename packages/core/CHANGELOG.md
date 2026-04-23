@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/core
 
+## 1.0.0
+
+### Major Changes
+
+- b05c4ba: Upgraded the node to 24, jest and eslint.
+
+### Patch Changes
+
+- Updated dependencies [b05c4ba]
+  - @cloud-carbon-footprint/common@2.0.0
+
 ## 0.17.3
 
 ### Patch Changes
@@ -238,7 +249,6 @@
   ```
 
   Additionally, the following dependencies have been updated and should also be updated in their respective template package.json file:
-
   - @cloud-carbon-footprint root package.json:
     - "@types/fs-extra": "^9.0.11"
     - "concurrently": "^6.2.0"
