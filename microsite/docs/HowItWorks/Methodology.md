@@ -403,7 +403,7 @@ For most of Europe, however, we use [EEA emissions factors](https://www.eea.euro
 You can see the full list of emissions factors in Appendix V below.
 
 Since these data sources are averages over a given year that is pre-2020, and
-they also don’t take into account time of day. We have implemented the option to use [Electricty Maps API](https://api.electricitymap.org/), which provides realtime, historical and forecasted electricity emissions data. In order to use this feature, you will need to acquire and Electricity Maps API token. CCF will default to using the EPA eGRID2020 data if no token is provided.
+they also don’t take into account time of day. We have implemented the option to use [Electricity Maps API](https://www.electricitymap.com/?utm_source=cloudcarbonfootprint.org), which provides realtime, historical and forecasted electricity emissions data. In order to use this feature, you will need to acquire and Electricity Maps API token. CCF will default to using the EPA eGRID2020 data if no token is provided.
 
 ### Embodied Emissions
 

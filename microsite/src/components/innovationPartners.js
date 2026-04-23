@@ -9,9 +9,9 @@ import styles from './innovationPartnersStyles.module.css'
 
 const logosArray = [
   {
-    path: 'img/logos/TomorrowLogo-small.webp',
-    alt: 'Tomorrow logo',
-    url: 'https://www.tmrow.com',
+    path: 'img/logos/ElectricityMapsLogo.webp',
+    alt: 'Electricity Maps logo',
+    url: 'https://www.electricitymaps.com/?utm_source=cloudcarbonfootprint.org',
   },
   {
     path: 'img/logos/GOLogo.webp',
