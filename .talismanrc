@@ -112,7 +112,7 @@ fileignoreconfig:
 - filename: microsite/docs/EmbodiedEmissions.md
   checksum: b4632f1cedf090cc50021e2a45c57d25d81c73ddf4cdba517e21f28a9a4f549d
 - filename: microsite/docs/HowItWorks/EmbodiedEmissions.md
-  checksum: 2e54a71e139d3c5324e95ccb5c3d854ad06e8cb568570c56c0fcd52cd26ca95c
+  checksum: 8986b5d4f57ee3d73a541df6350d08dee5d81c5fbdfc57e1c86168976e74a1a4
 - filename: microsite/docs/RunWithDocker.md
   checksum: 9a603a0351717c055caf3529fe8aecb8a4ffb509ac598d089ed2a28ebd2d83ae
 - filename: microsite/src/components/differentiator.js

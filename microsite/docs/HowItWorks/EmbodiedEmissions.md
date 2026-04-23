@@ -26,7 +26,7 @@ The “Total Platform Scope 3 Emissions (kgCO₂eq)” can be successfully deriv
 2. **Query the server endpoint:** Use the identified platform archetype to query the /v1/server endpoint. This provides the unallocated, total impact of the physical host (lifecycle-style server record for that platform).
 3. **Extract the embedded GWP:** From the server response, use **impacts.gwp.embedded.value**. This represents the total manufacturing / Scope 3 impact of the platform.
 
-For a recent refresh of AWS and GCP embodied inputs we used Boavizta API endpoints only outside the application and consolidated values in [this spreadsheet](https://docs.google.com/spreadsheets/d/19BCiLfB0rtpFSAaXCl0UKhDdhwYYiiEaxPrra-hMSk4/edit?usp=sharing) and will be using the Cloud Carbon Footprint. Azure still follows the microarchitecture-based approach above for now.
+For a recent refresh of AWS and GCP embodied inputs we used Boavizta API endpoints only outside the application and consolidated values in [this spreadsheet](https://docs.google.com/spreadsheets/d/1k-6JtneEu4E9pXQ9QMCXAfyntNJl8MnV2YzO4aKHh-0/edit?usp=sharing) and will be using the Cloud Carbon Footprint. Azure still follows the microarchitecture-based approach above for now.
 
 For **TR (time reserved)** we used the amount of time a given compute instance was running for.
 
