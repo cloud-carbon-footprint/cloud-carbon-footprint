@@ -4,6 +4,8 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 
 ## Installation
 
+Use [Node.js](https://nodejs.org/) 24 or newer (see `engines` in `package.json`).
+
 ```console
 yarn install
 ```
