@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 2.0.0
+
+### Major Changes
+
+- b05c4ba: Upgraded the node to 24, jest and eslint.
+
 ## 1.15.0
 
 ### Minor Changes
