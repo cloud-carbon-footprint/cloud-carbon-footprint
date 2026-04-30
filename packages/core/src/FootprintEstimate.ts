@@ -181,14 +181,14 @@ export const appendOrAccumulateEstimatesByDay = (
 ): void => {
   const serviceEstimate: MutableServiceEstimate = {
     cloudProvider: rowData.cloudProvider,
-    kilowattHours: footprintEstimate.kilowattHours,
-    co2e: footprintEstimate.co2e,
+    kilowattHours: footprintEstimate.kilowattHours || 0,
+    co2e: footprintEstimate.co2e || 0,
     usesAverageCPUConstant: !!footprintEstimate?.usesAverageCPUConstant,
     serviceName: rowData.serviceName,
     accountId: rowData.accountId,
     accountName: rowData.accountName,
     region: rowData.region,
-    cost: rowData.cost,
+    cost: rowData.cost || 0,
     tags: rowData.tags,
   }
 
