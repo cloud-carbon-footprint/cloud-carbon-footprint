@@ -9,14 +9,15 @@ branch="$(git rev-parse --abbrev-ref HEAD)"
 if [ "$branch" != "trunk" ]; then
     if [ -t 1 ]; then
         # We're running interactive
-        read -p "Are you sure you want to use a branch that isn't trunk? (y/n): " -n 1 -r < /dev/tty
+        echo "Are you sure you want to use a branch that isn't trunk? (y/n): \c"
+        read REPLY < /dev/tty
     else
         # We're running non-interactive (possibly called by IDE)
         echo "This is not the trunk branch and we assume that's intended."
         REPLY="Y"
     fi
     echo
-    if [ $REPLY =~ ^[Yy]$ ]; then
+    if [ "$REPLY" = "Y" ] || [ "$REPLY" = "y" ]; then
         echo "Okie dokie. Be Careful out there :)"
         exit 0
     fi
