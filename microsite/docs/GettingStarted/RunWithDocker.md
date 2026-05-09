@@ -50,7 +50,7 @@ If you would like to run the client as a docker container, you can pull and run 
     docker pull cloudcarbonfootprint/client:latest
 
     docker run \
-        -p 80:80 \
+        -p 80:8080 \
         -v ${PWD}/docker/nginx.conf:/etc/nginx/nginx.conf \
         cloudcarbonfootprint/client:latest
 

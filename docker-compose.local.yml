@@ -4,7 +4,7 @@ services:
   client:
     build: packages/client
     ports:
-      - '80:80'
+      - '80:8080'
     volumes:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
