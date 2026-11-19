@@ -129,22 +129,26 @@ export class ServiceWrapper {
     end: Date,
     ...args: any
   ): Promise<Array<any>> {
-    let startCopy = new Date(start)
-    let endCopy = new Date(
-      new Date(start).setDate(start.getDate() + intervalInDays),
-    )
-    const promiseArray = []
-
-    while (endCopy < end) {
-      promiseArray.push(func(startCopy, endCopy, ...args))
-      startCopy = new Date(
-        new Date(startCopy).setDate(start.getDate() + intervalInDays),
-      )
-      endCopy = new Date(
-        new Date(startCopy).setDate(start.getDate() + intervalInDays),
-      )
+    if (intervalInDays <= 0) {
+      throw new RangeError('intervalInDays must be greater than 0')
     }
-    promiseArray.push(func(startCopy, end, ...args))
+
+    const promiseArray = []
+    let startCopy = new Date(start)
+
+    while (startCopy < end) {
+      const endCopy = new Date(startCopy)
+      endCopy.setDate(endCopy.getDate() + intervalInDays)
+
+      const windowEnd = endCopy < end ? endCopy : end
+      promiseArray.push(func(startCopy, windowEnd, ...args))
+      startCopy = windowEnd
+    }
+
+    if (promiseArray.length === 0) {
+      promiseArray.push(func(startCopy, end, ...args))
+    }
+
     return Promise.all(promiseArray)
   }
 

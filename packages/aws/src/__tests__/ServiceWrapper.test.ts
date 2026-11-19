@@ -260,6 +260,84 @@ describe('aws service helper', () => {
     expect(glueGetTableSpy).toHaveBeenCalledWith(params, expect.anything())
     expect(result).toEqual(mockTableDetails)
   })
+
+  describe('getQueryByInterval', () => {
+    const query = (
+      intervalInDays: number,
+      start: Date,
+      end: Date,
+      args: any[] = [],
+    ) => {
+      const calls: { start: Date; end: Date; args: any[] }[] = []
+      const result = getServiceWrapper().getQueryByInterval(
+        intervalInDays,
+        (queryStart: Date, queryEnd: Date, ...queryArgs: any[]) => {
+          calls.push({ start: queryStart, end: queryEnd, args: queryArgs })
+          return queryArgs
+        },
+        start,
+        end,
+        ...args,
+      )
+      return { calls, result }
+    }
+
+    it('splits the range into contiguous, non-overlapping intervals and ends on the requested end date', async () => {
+      const start = new Date(2025, 9, 1)
+      const end = new Date(2025, 11, 30)
+      const { calls, result } = query(30, start, end, ['log-group'])
+
+      await expect(result).resolves.toEqual([
+        ['log-group'],
+        ['log-group'],
+        ['log-group'],
+      ])
+      expect(calls).toEqual([
+        {
+          start: new Date(2025, 9, 1),
+          end: new Date(2025, 9, 31),
+          args: ['log-group'],
+        },
+        {
+          start: new Date(2025, 9, 31),
+          end: new Date(2025, 10, 30),
+          args: ['log-group'],
+        },
+        {
+          start: new Date(2025, 10, 30),
+          end: new Date(2025, 11, 30),
+          args: ['log-group'],
+        },
+      ])
+    })
+
+    it('returns a single interval when the range is shorter than the interval', async () => {
+      const start = new Date(2025, 9, 1)
+      const end = new Date(2025, 9, 5)
+      const { calls } = query(30, start, end)
+
+      expect(calls).toEqual([{ start, end, args: [] }])
+    })
+
+    it('returns a single interval when the range equals the interval', async () => {
+      const start = new Date(2025, 9, 1)
+      const end = new Date(2025, 9, 31)
+      const { calls } = query(30, start, end)
+
+      expect(calls).toEqual([{ start, end, args: [] }])
+    })
+
+    it('rejects a non-positive interval instead of looping forever', async () => {
+      await expect(
+        getServiceWrapper().getQueryByInterval(
+          0,
+          () => undefined,
+          new Date(2025, 9, 1),
+          new Date(2025, 11, 30),
+        ),
+      ).rejects.toThrow(RangeError)
+    })
+  })
 })
 
 function buildAwsCostExplorerGetRightsizingRecommendationsRequest(): GetRightsizingRecommendationRequest {
